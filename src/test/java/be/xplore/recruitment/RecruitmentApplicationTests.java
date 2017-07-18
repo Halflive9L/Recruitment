@@ -20,9 +20,4 @@ public class RecruitmentApplicationTests {
 	public void contextLoads() {
 		assertThat(prospectController).isNotNull();
 	}
-
-	@Test
-	public void testPOST(){
-
-	}
 }
