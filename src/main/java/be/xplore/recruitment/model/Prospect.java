@@ -6,35 +6,45 @@ package be.xplore.recruitment.model;
  */
 public class Prospect {
     private int id;
-    private String name;
+    private String firstName;
+    private String lastName;
     private String email;
     private String phone;
 
-    public Prospect(){
+    public Prospect() {
 
     }
 
-    public Prospect(int id, String name, String email, String phone) {
+    public Prospect(int id, String firstName, String lastName, String email, String phone) {
         this.id = id;
-        this.name = name;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.email = email;
         this.phone = phone;
     }
 
-    public Prospect(int id, Prospect prospect){
-        this(id, prospect.getName(), prospect.getEmail(), prospect.getPhone());
+    public Prospect(int id, Prospect prospect) {
+        this(id, prospect.getFirstName(), prospect.getLastName(), prospect.getEmail(), prospect.getPhone());
     }
 
     public int getId() {
         return id;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getEmail() {
@@ -53,8 +63,4 @@ public class Prospect {
         this.phone = phone;
     }
 
-    @Override
-    public String toString() {
-        return String.format("{\"id\":%d,\"name\":%s,\"email\":%s,\"phone\":%s}", id, name, email, phone);
-    }
 }
