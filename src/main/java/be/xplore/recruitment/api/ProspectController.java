@@ -53,21 +53,32 @@ public class ProspectController {
     }
 
     /**
-     * Vraagt een prospect op aan de hand van een naam.
-     * Indien de naam niet gevonden is wordt een 404 error gestuurd.
+     * Vraagt een prospect op aan de hand van een naam, een email of een telefoonnumber of een
+     * combinatie van deze 3 parameters.
+     * @param firstName de voornaam van de prospect
+     * @param lastName de achternaam van de prospect
+     * @param email het email adres van de prospect
+     * @param phone het telefoonnummer van de prospect
      */
     @RequestMapping(method = RequestMethod.GET, value = "/prospect")
-    public List<Prospect> prospect(@RequestParam(value = "name", required = false) String name,
+    public List<Prospect> prospect(@RequestParam(value = "firstName", required = false) String firstName,
+                                   @RequestParam(value = "lastName", required = false) String lastName,
                                    @RequestParam(value = "email", required = false) String email,
                                    @RequestParam(value = "phone", required = false) String phone) {
 
         List<Prospect> prospects = new ArrayList<>(prospectRepository.getMockData());
 
-        if (name != null && !name.isEmpty()) {
-            Optional<Prospect> optional = prospects.stream().filter(p -> p.getName().equalsIgnoreCase(name)).findFirst();
+        if (firstName != null && !firstName.isEmpty()) {
+            Optional<Prospect> optional = prospects.stream().filter(p -> p.getFirstName().equalsIgnoreCase(firstName)).findFirst();
             if(!optional.isPresent())
-                throw new NotFoundException(name);
-            prospects = prospects.stream().filter(p -> p.getName().equalsIgnoreCase(name)).collect(Collectors.toList());
+                throw new NotFoundException(firstName);
+            prospects = prospects.stream().filter(p -> p.getFirstName().equalsIgnoreCase(firstName)).collect(Collectors.toList());
+        }
+        if (lastName != null && !lastName.isEmpty()) {
+            Optional<Prospect> optional = prospects.stream().filter(p -> p.getLastName().equalsIgnoreCase(lastName)).findFirst();
+            if(!optional.isPresent())
+                throw new NotFoundException(lastName);
+            prospects = prospects.stream().filter(p -> p.getLastName().equalsIgnoreCase(lastName)).collect(Collectors.toList());
         }
         if (email != null && !email.isEmpty()) {
             Optional<Prospect> optional = prospects.stream().filter(p -> p.getEmail().equalsIgnoreCase(email)).findFirst();

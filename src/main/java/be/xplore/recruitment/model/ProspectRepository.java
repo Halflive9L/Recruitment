@@ -17,11 +17,11 @@ public class ProspectRepository implements IProspectRepository {
     @Override
     public List<Prospect> mockData() {
         List<Prospect> mockData = new ArrayList<>();
-        mockData.add(new Prospect(1, "Stijn", "stijn.schack@gmail.com", "03 123 45 67"));
-        mockData.add(new Prospect(2, "Lander", "lander.tuyteleers@gmail.com", "03 765 43 21"));
-        mockData.add(new Prospect(3, "Jan", "jan.janssens@gmail.com", "03 891 01 11"));
-        mockData.add(new Prospect(4, "Bart", "bart.peeters@gmail.com", "03 213 14 15"));
-        mockData.add(new Prospect(5, "kim", "kim.clijsters@gmail.com", "03 161 71 81"));
+        mockData.add(new Prospect(1, "Stijn", "Schack", "stijn.schack@gmail.com", "03 123 45 67"));
+        mockData.add(new Prospect(2, "Lander", "Tuyteleers", "lander.tuyteleers@gmail.com", "03 765 43 21"));
+        mockData.add(new Prospect(3, "Jan", "Janssens", "jan.janssens@gmail.com", "03 891 01 11"));
+        mockData.add(new Prospect(4, "Bart", "Peeters", "bart.peeters@gmail.com", "03 213 14 15"));
+        mockData.add(new Prospect(5, "kim", "Clijsters", "kim.clijsters@gmail.com", "03 161 71 81"));
         return mockData;
     }
 
