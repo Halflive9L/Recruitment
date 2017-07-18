@@ -5,16 +5,24 @@ package be.xplore.recruitment.model;
  * @since 7/18/2017
  */
 public class Prospect {
-    private final int id;
+    private int id;
     private String name;
     private String email;
     private String phone;
+
+    public Prospect(){
+
+    }
 
     public Prospect(int id, String name, String email, String phone) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.phone = phone;
+    }
+
+    public Prospect(int id, Prospect prospect){
+        this(id, prospect.getName(), prospect.getEmail(), prospect.getPhone());
     }
 
     public int getId() {

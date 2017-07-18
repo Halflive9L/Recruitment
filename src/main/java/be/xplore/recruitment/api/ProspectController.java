@@ -3,7 +3,8 @@ package be.xplore.recruitment.api;
 import be.xplore.recruitment.model.NotFoundException;
 import be.xplore.recruitment.model.Prospect;
 import be.xplore.recruitment.model.ProspectRepository;
-import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -25,15 +26,13 @@ public class ProspectController {
 
 
     /**
-     * Voegt een prospect via een POST toe aan de mockData lijst van prospectRepository
+    * Voegt een prospect via een POST toe aan de mockData lijst van prospectRepository
      */
-    @RequestMapping(method = RequestMethod.POST, value = "/prospect")
-    public Prospect addProspect(@RequestParam(value = "name") @NotEmpty String name,
-                                @RequestParam(value = "email") String email,
-                                @RequestParam(value = "phone") String phone) {
-        Prospect prospect = new Prospect(counter.incrementAndGet(), name, email, phone);
+    @RequestMapping(method = RequestMethod.POST, value = "/")
+    public ResponseEntity<Prospect> addProspect(@RequestBody Prospect input) {
+        Prospect prospect = new Prospect(counter.incrementAndGet(), input);
         prospectRepository.getMockData().add(prospect);
-        return prospect;
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     /**
@@ -62,9 +61,8 @@ public class ProspectController {
                                    @RequestParam(value = "email", required = false) String email,
                                    @RequestParam(value = "phone", required = false) String phone) {
 
-        List<Prospect> prospects = prospectRepository.getMockData().stream().collect(Collectors.toList());
+        List<Prospect> prospects = new ArrayList<>(prospectRepository.getMockData());
 
-        System.out.println("Email: " + email);
         if (name != null && !name.isEmpty()) {
             Optional<Prospect> optional = prospects.stream().filter(p -> p.getName().equalsIgnoreCase(name)).findFirst();
             if(!optional.isPresent())
