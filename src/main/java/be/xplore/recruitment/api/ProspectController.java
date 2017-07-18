@@ -58,22 +58,41 @@ public class ProspectController {
      * Indien de naam niet gevonden is wordt een 404 error gestuurd.
      */
     @RequestMapping(method = RequestMethod.GET, value = "/prospect")
-    public List<Prospect> prospect(@RequestParam(value="name", required = false) String name,
-                                   @RequestParam(value="email", required = false) String email,
-                                   @RequestParam(value="phone", required = false) String phone) {
+    public List<Prospect> prospect(@RequestParam(value = "name", required = false) String name,
+                                   @RequestParam(value = "email", required = false) String email,
+                                   @RequestParam(value = "phone", required = false) String phone) {
 
         List<Prospect> prospects = prospectRepository.getMockData().stream().collect(Collectors.toList());
 
         System.out.println("Email: " + email);
-        if(email != null && !email.isEmpty()) {
-            prospects = prospects.stream().filter(p->p.getEmail().equalsIgnoreCase(email)).collect(Collectors.toList());
+        if (name != null && !name.isEmpty()) {
+            Optional<Prospect> optional = prospects.stream().filter(p -> p.getName().equalsIgnoreCase(name)).findFirst();
+            if(!optional.isPresent())
+                throw new NotFoundException(name);
+            prospects = prospects.stream().filter(p -> p.getName().equalsIgnoreCase(name)).collect(Collectors.toList());
         }
-        if(name != null && !name.isEmpty()) {
-            prospects = prospects.stream().filter(p->p.getName().equalsIgnoreCase(name)).collect(Collectors.toList());
+        if (email != null && !email.isEmpty()) {
+            Optional<Prospect> optional = prospects.stream().filter(p -> p.getEmail().equalsIgnoreCase(email)).findFirst();
+            if(!optional.isPresent())
+                throw new NotFoundException(email);
+            prospects = prospects.stream().filter(p -> p.getEmail().equalsIgnoreCase(email)).collect(Collectors.toList());
         }
-        if(phone != null && !phone.isEmpty()) {
-            prospects = prospects.stream().filter(p->p.getPhone().equalsIgnoreCase(phone)).collect(Collectors.toList());
+
+        if (phone != null && !phone.isEmpty()) {
+            Optional<Prospect> optional = prospects.stream().filter(p -> p.getPhone().equalsIgnoreCase(phone)).findFirst();
+            if(!optional.isPresent())
+                throw new NotFoundException(phone);
+            prospects = prospects.stream().filter(p -> p.getPhone().equalsIgnoreCase(phone)).collect(Collectors.toList());
         }
         return prospects;
+    }
+
+    @RequestMapping(method = RequestMethod.DELETE, value = "/prospect/{id}")
+    public Prospect deleteProspect(@PathVariable int id) {
+        Optional<Prospect> optional = prospectRepository.getMockData().stream().filter(p -> p.getId() == id).findFirst();
+        if (!optional.isPresent())
+            throw new NotFoundException(id);
+        prospectRepository.getMockData().remove(optional.get());
+        return optional.get();
     }
 }
