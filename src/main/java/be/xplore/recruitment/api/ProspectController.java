@@ -25,9 +25,9 @@ public class ProspectController {
 
 
     /**
-    * Voegt een prospect via een POST toe aan de mockData lijst van prospectRepository
+     * Voegt een prospect via een POST toe aan de mockData lijst van prospectRepository
      */
-    @RequestMapping(method = RequestMethod.POST, value = "/addprospect")
+    @RequestMapping(method = RequestMethod.POST, value = "/prospect")
     public Prospect addProspect(@RequestParam(value = "name") @NotEmpty String name,
                                 @RequestParam(value = "email") String email,
                                 @RequestParam(value = "phone") String phone) {
@@ -37,41 +37,43 @@ public class ProspectController {
     }
 
     /**
-    * Vraagt een prospect op aan de hand van een id.
+     * Vraagt een prospect op aan de hand van een id.
      * Indien de id niet gevonden is wordt een 404 error gestuurd.
      */
     @SuppressWarnings("OptionalGetWithoutIsPresent")
-    @RequestMapping(method = RequestMethod.GET, value = "/prospect/id/{id}")
+    @RequestMapping(method = RequestMethod.GET, value = "/prospect/{id}")
     public Prospect prospect(@PathVariable int id) {
         Optional<Prospect> optional = prospectRepository.getMockData().stream().filter(p -> p.getId() == id).findFirst();
         Prospect prospect;
         try {
             prospect = optional.get();
-        }catch (NoSuchElementException e){
+        } catch (NoSuchElementException e) {
             throw new NotFoundException(id);
         }
         return prospect;
     }
 
     /**
-    * Vraagt een prospect op aan de hand van een naam.
-    * Indien de naam niet gevonden is wordt een 404 error gestuurd.
-     */
-    @RequestMapping(method = RequestMethod.GET, value = "/prospect/name/{name}")
-    public List<Prospect> prospect(@PathVariable String name) {
-        List<Prospect> prospects = prospectRepository.getMockData().stream().filter(p -> p.getName().equalsIgnoreCase(name)).collect(Collectors.toList());
-        if (prospects.isEmpty())
-            throw new NotFoundException(name);
-        return prospects;
-    }
-
-
-    /**
-    * Vraagt de volledige lijst van prospects op.
+     * Vraagt een prospect op aan de hand van een naam.
+     * Indien de naam niet gevonden is wordt een 404 error gestuurd.
      */
     @RequestMapping(method = RequestMethod.GET, value = "/prospect")
-    public List<Prospect> getProspects() {
-        return new ArrayList<>(prospectRepository.getMockData());
-    }
+    public List<Prospect> prospect(@RequestParam(value="name", required = false) String name,
+                                   @RequestParam(value="email", required = false) String email,
+                                   @RequestParam(value="phone", required = false) String phone) {
 
+        List<Prospect> prospects = prospectRepository.getMockData().stream().collect(Collectors.toList());
+
+        System.out.println("Email: " + email);
+        if(email != null && !email.isEmpty()) {
+            prospects = prospects.stream().filter(p->p.getEmail().equalsIgnoreCase(email)).collect(Collectors.toList());
+        }
+        if(name != null && !name.isEmpty()) {
+            prospects = prospects.stream().filter(p->p.getName().equalsIgnoreCase(name)).collect(Collectors.toList());
+        }
+        if(phone != null && !phone.isEmpty()) {
+            prospects = prospects.stream().filter(p->p.getPhone().equalsIgnoreCase(phone)).collect(Collectors.toList());
+        }
+        return prospects;
+    }
 }
