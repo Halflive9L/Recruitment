@@ -5,7 +5,9 @@ stages:
 
 variables:
   GRADLE_OPTS: "-Dorg.gradle.daemon=false"
-  GRADLE_USER_HOME: `pwd`/.gradle
+
+before_script:
+  - export GRADLE_USER_HOME=`pwd`/.gradle
 
 cache:
   paths:
