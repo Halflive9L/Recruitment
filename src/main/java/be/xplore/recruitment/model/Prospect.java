@@ -5,7 +5,7 @@ package be.xplore.recruitment.model;
  * @since 7/18/2017
  */
 public class Prospect {
-    private int id;
+    private final int id;
     private String name;
     private String email;
     private String phone;
@@ -47,6 +47,6 @@ public class Prospect {
 
     @Override
     public String toString() {
-        return String.format("%d;%s;%s;%s", id, name, email, phone);
+        return String.format("{\"id\":%d,\"name\":%s,\"email\":%s,\"phone\":%s}", id, name, email, phone);
     }
 }

@@ -22,11 +22,20 @@ public class ProspectController {
     public Prospect addProspect(@RequestParam(value = "name") @NotEmpty String name,
                                 @RequestParam(value = "email") String email,
                                 @RequestParam(value = "phone") String phone) {
-        return new Prospect(counter.incrementAndGet(), name, email, phone);
+        Prospect prospect = new Prospect(counter.incrementAndGet(), name, email, phone);
+        return prospect;
     }
 
+    /*
     @RequestMapping(method=RequestMethod.GET, value = "/prospect/{id}")
-    public String prospect() {
-        return "";
+    public Prospect prospect(@PathVariable int id) {
+        return Prospect.prospects.stream().filter(p -> p.getId() == id).findFirst().get();
     }
+    */
+    /*
+    @RequestMapping(method = RequestMethod.GET, value = "/prospect")
+    public List<Prospect> getProspects(){
+        return new ArrayList<>(Prospect.prospects);
+    }
+    */
 }
