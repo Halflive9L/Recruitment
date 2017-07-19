@@ -2,7 +2,7 @@ package be.xplore.recruitment.api;
 
 import be.xplore.recruitment.model.NotFoundException;
 import be.xplore.recruitment.model.Prospect;
-import be.xplore.recruitment.model.ProspectRepository;
+import be.xplore.recruitment.repository.ProspectRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

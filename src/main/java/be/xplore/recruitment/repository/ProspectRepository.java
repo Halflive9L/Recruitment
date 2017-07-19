@@ -1,4 +1,6 @@
-package be.xplore.recruitment.model;
+package be.xplore.recruitment.repository;
+
+import be.xplore.recruitment.model.Prospect;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +13,7 @@ public class ProspectRepository implements IProspectRepository {
     private List<Prospect> mockData;
 
     public ProspectRepository() {
-       mockData = mockData();
+        mockData = mockData();
     }
 
     @Override
@@ -23,6 +25,41 @@ public class ProspectRepository implements IProspectRepository {
         mockData.add(new Prospect(4, "Bart", "Peeters", "bart.peeters@gmail.com", "03 213 14 15"));
         mockData.add(new Prospect(5, "kim", "Clijsters", "kim.clijsters@gmail.com", "03 161 71 81"));
         return mockData;
+    }
+
+    @Override
+    public List<Prospect> findAll() {
+        return null;
+    }
+
+    @Override
+    public Prospect findProspectById(long id) {
+        return null;
+    }
+
+    @Override
+    public List<Prospect> findAllByLastName(String lastName) {
+        return null;
+    }
+
+    @Override
+    public List<Prospect> findAllByFirstName(String firstName) {
+        return null;
+    }
+
+    @Override
+    public List<Prospect> findAllByPhone(String phone) {
+        return null;
+    }
+
+    @Override
+    public List<Prospect> findAllByFirstNameAndLastName(String firstName, String lastName) {
+        return null;
+    }
+
+    @Override
+    public List<Prospect> findAllByFirstNameAndEmail(String firstName, String email) {
+        return null;
     }
 
     public List<Prospect> getMockData() {
