@@ -1,14 +1,28 @@
 package be.xplore.recruitment.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /**
  * @author Stijn Schack
  * @since 7/18/2017
  */
+
+@Entity
+@Table(name = "Prospect")
 public class Prospect {
+    @Id
+    @Column
     private int id;
+    @Column
     private String firstName;
+    @Column
     private String lastName;
+    @Column
     private String email;
+    @Column
     private String phone;
 
     public Prospect() {
