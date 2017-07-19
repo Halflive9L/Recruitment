@@ -10,10 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 
 /**
  * @author Stijn Schack
@@ -33,7 +30,7 @@ public class ProspectController {
     }
 
     /**
-    * Voegt een prospect via een POST toe aan de mockData lijst van prospectRepository
+     * Voegt een prospect via een POST toe aan de mockData lijst van prospectRepository
      */
     @RequestMapping(method = RequestMethod.POST, value = "/")
     public ResponseEntity<Prospect> addProspect(@RequestBody Prospect input) {
@@ -49,22 +46,20 @@ public class ProspectController {
     @SuppressWarnings("OptionalGetWithoutIsPresent")
     @RequestMapping(method = RequestMethod.GET, value = "/prospect/{prospectId}")
     public Prospect prospect(@PathVariable long prospectId) {
-        Prospect prospect;
-        try {
-            prospect = prospectRepository.findProspectByProspectId(prospectId);
-        } catch (NoSuchElementException e) {
+        Prospect prospect = prospectRepository.findProspectByProspectId(prospectId);
+        if (prospect == null)
             throw new NotFoundException(prospectId);
-        }
         return prospect;
     }
 
     /**
      * Vraagt een prospect op aan de hand van een naam, een email of een telefoonnumber of een
      * combinatie van deze 3 parameters.
+     *
      * @param firstName de voornaam van de prospect
-     * @param lastName de achternaam van de prospect
-     * @param email het email adres van de prospect
-     * @param phone het telefoonnummer van de prospect
+     * @param lastName  de achternaam van de prospect
+     * @param email     het email adres van de prospect
+     * @param phone     het telefoonnummer van de prospect
      */
     @RequestMapping(method = RequestMethod.GET, value = "/prospect")
     public List<Prospect> prospect(@RequestParam(value = "firstName", required = false) String firstName,
