@@ -72,33 +72,19 @@ public class ProspectController {
                                    @RequestParam(value = "email", required = false) String email,
                                    @RequestParam(value = "phone", required = false) String phone) {
 
-        //List<Prospect> prospects = new ArrayList<>(getMockData.getMockData());
         List<Prospect> prospects = prospectRepository.findAll();
 
         if (firstName != null && !firstName.isEmpty()) {
-            Optional<Prospect> optional = prospects.stream().filter(p -> p.getFirstName().equalsIgnoreCase(firstName)).findFirst();
-            if(!optional.isPresent())
-                throw new NotFoundException(firstName);
-            prospects = prospects.stream().filter(p -> p.getFirstName().equalsIgnoreCase(firstName)).collect(Collectors.toList());
+            prospects = prospectRepository.findAllByFirstName(firstName);
         }
         if (lastName != null && !lastName.isEmpty()) {
-            Optional<Prospect> optional = prospects.stream().filter(p -> p.getLastName().equalsIgnoreCase(lastName)).findFirst();
-            if(!optional.isPresent())
-                throw new NotFoundException(lastName);
-            prospects = prospects.stream().filter(p -> p.getLastName().equalsIgnoreCase(lastName)).collect(Collectors.toList());
+            prospects = prospectRepository.findAllByLastName(lastName);
         }
         if (email != null && !email.isEmpty()) {
-            Optional<Prospect> optional = prospects.stream().filter(p -> p.getEmail().equalsIgnoreCase(email)).findFirst();
-            if(!optional.isPresent())
-                throw new NotFoundException(email);
-            prospects = prospects.stream().filter(p -> p.getEmail().equalsIgnoreCase(email)).collect(Collectors.toList());
+            prospects = prospectRepository.findAllByEmail(email);
         }
-
         if (phone != null && !phone.isEmpty()) {
-            Optional<Prospect> optional = prospects.stream().filter(p -> p.getPhone().equalsIgnoreCase(phone)).findFirst();
-            if(!optional.isPresent())
-                throw new NotFoundException(phone);
-            prospects = prospects.stream().filter(p -> p.getPhone().equalsIgnoreCase(phone)).collect(Collectors.toList());
+            prospects = prospectRepository.findAllByPhone(phone);
         }
         return prospects;
     }
@@ -108,7 +94,7 @@ public class ProspectController {
         Optional<Prospect> optional = repository.getMockData().stream().filter(p -> p.getProspectId() == prospectId).findFirst();
         if (!optional.isPresent())
             throw new NotFoundException(prospectId);
-        repository.getMockData().remove(optional.get());
+        prospectRepository.delete(optional.get());
         return optional.get();
     }
 }
