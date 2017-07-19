@@ -14,6 +14,7 @@ import javax.persistence.Table;
 @Table(name = "Prospect")
 public class Prospect {
     @Id
+    @Column
     private long prospectId;
     @Column
     private String firstName;
@@ -25,17 +26,18 @@ public class Prospect {
     private String phone;
 
 
-
-    public Prospect(long prospectId, String firstName, String lastName, String email, String phone) {
-        this.prospectId = prospectId;
+    public Prospect(String firstName, String lastName, String email, String phone) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phone = phone;
     }
 
-    public Prospect(long prospectId, Prospect prospect) {
-        this(prospectId, prospect.getFirstName(), prospect.getLastName(), prospect.getEmail(), prospect.getPhone());
+    public Prospect() {
+    }
+
+    public Prospect(Prospect prospect) {
+        this(prospect.getFirstName(), prospect.getLastName(), prospect.getEmail(), prospect.getPhone());
     }
 
     public long getProspectId() {

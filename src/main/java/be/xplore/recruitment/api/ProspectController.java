@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 /**
@@ -23,19 +22,23 @@ import java.util.stream.Collectors;
 @RestController
 public class ProspectController {
 
-    private ProspectRepository getMockData = new ProspectRepository();
-    private final AtomicInteger counter = new AtomicInteger(getMockData.getMockData().size());
+    private ProspectRepository repository = new ProspectRepository();
+
+    private final IProspectRepository prospectRepository;
 
     @Autowired
-    private IProspectRepository prospectRepository;
+    public ProspectController(IProspectRepository prospectRepository) {
+        this.prospectRepository = prospectRepository;
+    }
 
     /**
     * Voegt een prospect via een POST toe aan de mockData lijst van prospectRepository
      */
     @RequestMapping(method = RequestMethod.POST, value = "/")
     public ResponseEntity<Prospect> addProspect(@RequestBody Prospect input) {
-        Prospect prospect = new Prospect(counter.incrementAndGet(), input);
-        getMockData.getMockData().add(prospect);
+        Prospect prospect = new Prospect(input);
+        System.out.println(prospect.getProspectId());
+        prospectRepository.save(prospect);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -46,7 +49,7 @@ public class ProspectController {
     @SuppressWarnings("OptionalGetWithoutIsPresent")
     @RequestMapping(method = RequestMethod.GET, value = "/prospect/{prospectId}")
     public Prospect prospect(@PathVariable int prospectId) {
-        Optional<Prospect> optional = getMockData.getMockData().stream().filter(p -> p.getProspectId() == prospectId).findFirst();
+        Optional<Prospect> optional = repository.getMockData().stream().filter(p -> p.getProspectId() == prospectId).findFirst();
         Prospect prospect;
         try {
             prospect = optional.get();
@@ -70,7 +73,7 @@ public class ProspectController {
                                    @RequestParam(value = "email", required = false) String email,
                                    @RequestParam(value = "phone", required = false) String phone) {
 
-        //List<Prospect> prospects = new ArrayList<>(getMockData.getMockData());
+        //List<Prospect> prospects = new ArrayList<>(repository.repository());
         List<Prospect> prospects = prospectRepository.findAll();
 
         if (firstName != null && !firstName.isEmpty()) {
@@ -103,10 +106,10 @@ public class ProspectController {
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/prospect/{prospectId}")
     public Prospect deleteProspect(@PathVariable int prospectId) {
-        Optional<Prospect> optional = getMockData.getMockData().stream().filter(p -> p.getProspectId() == prospectId).findFirst();
+        Optional<Prospect> optional = repository.getMockData().stream().filter(p -> p.getProspectId() == prospectId).findFirst();
         if (!optional.isPresent())
             throw new NotFoundException(prospectId);
-        getMockData.getMockData().remove(optional.get());
+        repository.getMockData().remove(optional.get());
         return optional.get();
     }
 }
