@@ -8,9 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -46,14 +44,14 @@ public class ProspectController {
      * Indien de id niet gevonden is wordt een 404 error gestuurd.
      */
     @SuppressWarnings("OptionalGetWithoutIsPresent")
-    @RequestMapping(method = RequestMethod.GET, value = "/prospect/{id}")
-    public Prospect prospect(@PathVariable int id) {
-        Optional<Prospect> optional = getMockData.getMockData().stream().filter(p -> p.getId() == id).findFirst();
+    @RequestMapping(method = RequestMethod.GET, value = "/prospect/{prospectId}")
+    public Prospect prospect(@PathVariable int prospectId) {
+        Optional<Prospect> optional = getMockData.getMockData().stream().filter(p -> p.getProspectId() == prospectId).findFirst();
         Prospect prospect;
         try {
             prospect = optional.get();
         } catch (NoSuchElementException e) {
-            throw new NotFoundException(id);
+            throw new NotFoundException(prospectId);
         }
         return prospect;
     }
@@ -103,11 +101,11 @@ public class ProspectController {
         return prospects;
     }
 
-    @RequestMapping(method = RequestMethod.DELETE, value = "/prospect/{id}")
-    public Prospect deleteProspect(@PathVariable int id) {
-        Optional<Prospect> optional = getMockData.getMockData().stream().filter(p -> p.getId() == id).findFirst();
+    @RequestMapping(method = RequestMethod.DELETE, value = "/prospect/{prospectId}")
+    public Prospect deleteProspect(@PathVariable int prospectId) {
+        Optional<Prospect> optional = getMockData.getMockData().stream().filter(p -> p.getProspectId() == prospectId).findFirst();
         if (!optional.isPresent())
-            throw new NotFoundException(id);
+            throw new NotFoundException(prospectId);
         getMockData.getMockData().remove(optional.get());
         return optional.get();
     }

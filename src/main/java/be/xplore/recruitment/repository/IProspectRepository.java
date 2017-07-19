@@ -3,6 +3,7 @@ package be.xplore.recruitment.repository;
 import be.xplore.recruitment.model.Prospect;
 import org.springframework.data.repository.Repository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+
 import java.util.List;
 
 /**
@@ -17,7 +18,7 @@ public interface IProspectRepository extends Repository<Prospect, Long> {
 
     List<Prospect> findAll();
 
-    Prospect findProspectById(long id);
+    Prospect findProspectByProspectId(long prospectId);
 
     List<Prospect> findAllByLastName(String lastName);
 

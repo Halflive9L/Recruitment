@@ -4,7 +4,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.io.Serializable;
 
 /**
  * @author Stijn Schack
@@ -13,10 +12,9 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "Prospect")
-public class Prospect implements Serializable{
+public class Prospect {
     @Id
-    @Column
-    private int id;
+    private long prospectId;
     @Column
     private String firstName;
     @Column
@@ -26,24 +24,22 @@ public class Prospect implements Serializable{
     @Column
     private String phone;
 
-    public Prospect() {
 
-    }
 
-    public Prospect(int id, String firstName, String lastName, String email, String phone) {
-        this.id = id;
+    public Prospect(long prospectId, String firstName, String lastName, String email, String phone) {
+        this.prospectId = prospectId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phone = phone;
     }
 
-    public Prospect(int id, Prospect prospect) {
-        this(id, prospect.getFirstName(), prospect.getLastName(), prospect.getEmail(), prospect.getPhone());
+    public Prospect(long prospectId, Prospect prospect) {
+        this(prospectId, prospect.getFirstName(), prospect.getLastName(), prospect.getEmail(), prospect.getPhone());
     }
 
-    public int getId() {
-        return id;
+    public long getProspectId() {
+        return prospectId;
     }
 
     public String getFirstName() {
