@@ -1,9 +1,6 @@
 package be.xplore.recruitment.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * @author Stijn Schack
@@ -14,6 +11,7 @@ import javax.persistence.Table;
 @Table(name = "Prospect")
 public class Prospect {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column
     private long prospectId;
     @Column

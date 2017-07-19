@@ -37,7 +37,6 @@ public class ProspectController {
     @RequestMapping(method = RequestMethod.POST, value = "/")
     public ResponseEntity<Prospect> addProspect(@RequestBody Prospect input) {
         Prospect prospect = new Prospect(input);
-        System.out.println(prospect.getProspectId());
         prospectRepository.save(prospect);
         return new ResponseEntity<>(HttpStatus.OK);
     }
