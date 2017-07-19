@@ -29,7 +29,7 @@ public interface IProspectRepository extends CrudRepository<Prospect, Long> {
 
     List<Prospect> findAllByEmail(@Param("email") String email);
 
-    List<Prospect> findAllByFirstNameAndLastName(String firstName, String lastName);
+    List<Prospect> findAllByFirstNameAndLastName(@Param("firstName") String firstName,@Param("lastName") String lastName);
 
 
 }
