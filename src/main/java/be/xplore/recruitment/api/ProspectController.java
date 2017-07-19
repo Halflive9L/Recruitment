@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 /**
@@ -47,11 +48,10 @@ public class ProspectController {
      */
     @SuppressWarnings("OptionalGetWithoutIsPresent")
     @RequestMapping(method = RequestMethod.GET, value = "/prospect/{prospectId}")
-    public Prospect prospect(@PathVariable int prospectId) {
-        Optional<Prospect> optional = repository.getMockData().stream().filter(p -> p.getProspectId() == prospectId).findFirst();
+    public Prospect prospect(@PathVariable long prospectId) {
         Prospect prospect;
         try {
-            prospect = optional.get();
+            prospect = prospectRepository.findProspectByProspectId(prospectId);
         } catch (NoSuchElementException e) {
             throw new NotFoundException(prospectId);
         }
@@ -72,7 +72,7 @@ public class ProspectController {
                                    @RequestParam(value = "email", required = false) String email,
                                    @RequestParam(value = "phone", required = false) String phone) {
 
-        //List<Prospect> prospects = new ArrayList<>(repository.repository());
+        //List<Prospect> prospects = new ArrayList<>(getMockData.getMockData());
         List<Prospect> prospects = prospectRepository.findAll();
 
         if (firstName != null && !firstName.isEmpty()) {

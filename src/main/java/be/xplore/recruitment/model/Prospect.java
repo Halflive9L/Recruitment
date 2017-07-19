@@ -23,7 +23,6 @@ public class Prospect {
     @Column
     private String phone;
 
-
     public Prospect(String firstName, String lastName, String email, String phone) {
         this.firstName = firstName;
         this.lastName = lastName;

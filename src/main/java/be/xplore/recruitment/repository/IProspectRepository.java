@@ -12,7 +12,7 @@ import java.util.List;
  */
 
 
-@RepositoryRestResource(collectionResourceRel = "prospects", path = "/prospects")
+@RepositoryRestResource(collectionResourceRel = "prospects", path = "prospects")
 public interface IProspectRepository extends CrudRepository<Prospect, Long> {
     /*List<Prospect> mockData();*/
 
@@ -27,4 +27,5 @@ public interface IProspectRepository extends CrudRepository<Prospect, Long> {
     List<Prospect> findAllByPhone(String phone);
 
     List<Prospect> findAllByFirstNameAndLastName(String firstName, String lastName);
+
 }

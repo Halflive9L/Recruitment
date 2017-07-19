@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ResponseStatus(value= HttpStatus.NOT_FOUND)
 public class NotFoundException extends RuntimeException {
 
-    public NotFoundException(int id) {
+    public NotFoundException(long id) {
         super(String.format("Prospect with id: %d is not found.", id));
     }
 
