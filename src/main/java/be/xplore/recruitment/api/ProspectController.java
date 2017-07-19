@@ -2,10 +2,13 @@ package be.xplore.recruitment.api;
 
 import be.xplore.recruitment.model.NotFoundException;
 import be.xplore.recruitment.model.Prospect;
+import be.xplore.recruitment.repository.IProspectRepository;
 import be.xplore.recruitment.repository.ProspectRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,12 +21,15 @@ import java.util.stream.Collectors;
  * @author Stijn Schack
  * @since 7/18/2017
  */
+
 @RestController
 public class ProspectController {
 
-    private ProspectRepository prospectRepository = new ProspectRepository();
-    private final AtomicInteger counter = new AtomicInteger(prospectRepository.getMockData().size());
+    private ProspectRepository getMockData = new ProspectRepository();
+    private final AtomicInteger counter = new AtomicInteger(getMockData.getMockData().size());
 
+    @Autowired
+    private IProspectRepository prospectRepository;
 
     /**
     * Voegt een prospect via een POST toe aan de mockData lijst van prospectRepository
@@ -31,7 +37,7 @@ public class ProspectController {
     @RequestMapping(method = RequestMethod.POST, value = "/")
     public ResponseEntity<Prospect> addProspect(@RequestBody Prospect input) {
         Prospect prospect = new Prospect(counter.incrementAndGet(), input);
-        prospectRepository.getMockData().add(prospect);
+        getMockData.getMockData().add(prospect);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -42,7 +48,7 @@ public class ProspectController {
     @SuppressWarnings("OptionalGetWithoutIsPresent")
     @RequestMapping(method = RequestMethod.GET, value = "/prospect/{id}")
     public Prospect prospect(@PathVariable int id) {
-        Optional<Prospect> optional = prospectRepository.getMockData().stream().filter(p -> p.getId() == id).findFirst();
+        Optional<Prospect> optional = getMockData.getMockData().stream().filter(p -> p.getId() == id).findFirst();
         Prospect prospect;
         try {
             prospect = optional.get();
@@ -66,7 +72,8 @@ public class ProspectController {
                                    @RequestParam(value = "email", required = false) String email,
                                    @RequestParam(value = "phone", required = false) String phone) {
 
-        List<Prospect> prospects = new ArrayList<>(prospectRepository.getMockData());
+        //List<Prospect> prospects = new ArrayList<>(getMockData.getMockData());
+        List<Prospect> prospects = prospectRepository.findAll();
 
         if (firstName != null && !firstName.isEmpty()) {
             Optional<Prospect> optional = prospects.stream().filter(p -> p.getFirstName().equalsIgnoreCase(firstName)).findFirst();
@@ -98,10 +105,10 @@ public class ProspectController {
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/prospect/{id}")
     public Prospect deleteProspect(@PathVariable int id) {
-        Optional<Prospect> optional = prospectRepository.getMockData().stream().filter(p -> p.getId() == id).findFirst();
+        Optional<Prospect> optional = getMockData.getMockData().stream().filter(p -> p.getId() == id).findFirst();
         if (!optional.isPresent())
             throw new NotFoundException(id);
-        prospectRepository.getMockData().remove(optional.get());
+        getMockData.getMockData().remove(optional.get());
         return optional.get();
     }
 }

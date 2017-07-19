@@ -7,7 +7,6 @@ buildscript {
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-        classpath("org.yaml:snakeyaml:1.15")
     }
 }
 
@@ -26,7 +25,9 @@ repositories {
 dependencies {
     compile('org.springframework.boot:spring-boot-starter-web')
     compile('org.liquibase:liquibase-core')
+    compile('org.yaml:snakeyaml')
     compile('org.springframework.boot:spring-boot-starter-data-jpa')
+    compile("org.springframework.boot:spring-boot-starter-data-rest")
     runtime('org.springframework.boot:spring-boot-devtools')
     runtime('com.h2database:h2')
     testCompile('org.springframework.boot:spring-boot-starter-test')
