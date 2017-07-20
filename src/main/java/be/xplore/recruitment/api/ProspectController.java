@@ -2,13 +2,15 @@ package be.xplore.recruitment.api;
 
 import be.xplore.recruitment.model.Prospect;
 import be.xplore.recruitment.repository.ProspectRepository;
+import be.xplore.recruitment.repository.ProspectSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+import static org.springframework.data.jpa.domain.Specifications.where;
 
 
 /**
@@ -58,14 +60,14 @@ public class ProspectController {
      * @param email het email adres van de prospect
      * @param phone het telefoonnummer van de prospect
      */
-    /*
+
     @RequestMapping(method = RequestMethod.GET, value = "/prospect")
     public List<Prospect> prospect(@RequestParam(value = "firstName", required = false) String firstName,
                                    @RequestParam(value = "lastName", required = false) String lastName,
                                    @RequestParam(value = "email", required = false) String email,
                                    @RequestParam(value = "phone", required = false) String phone) {
 
-        List<Prospect> prospects = prospectRepository.findAll();
+       /* List<Prospect> prospects = prospectRepository.findAll();
 
         if (firstName != null && !firstName.isEmpty()) {
             prospects = prospectRepository.findAllByFirstName(firstName);
@@ -79,9 +81,11 @@ public class ProspectController {
         if (phone != null && !phone.isEmpty()) {
             prospects = prospectRepository.findAllByPhone(phone);
         }
-        return prospects;
-    }
+        return prospects;*/
+        return prospectRepository.findAll(where(ProspectSpecification.hasPhone(phone)).and(where(ProspectSpecification.hasEmail(email))));
 
+    }
+/*
     @RequestMapping(method = RequestMethod.DELETE, value = "/prospect/{prospectId}")
     public Prospect deleteProspect(@PathVariable int prospectId) {
         Prospect prospect = prospectRepository.findProspectByProspectId(prospectId);
