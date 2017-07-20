@@ -37,20 +37,24 @@ public class ProspectQuery implements Specification<Prospect> {
     public Predicate toPredicate(Root<Prospect> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
         List<Predicate> predicates = new ArrayList<>();
 
-        if (StringUtils.hasText(firstName)) {
+        if (isEmptyString(firstName)) {
             predicates.add(cb.like(root.get("firstName"), firstName));
         }
-        if (StringUtils.hasText(lastName)){
+        if (isEmptyString(lastName)){
             predicates.add(cb.like(root.get("lastName"), lastName));
         }
-        if (StringUtils.hasText(email)){
+        if (isEmptyString(email)){
             predicates.add(cb.like(root.get("email"), email));
         }
-        if (StringUtils.hasText(phone)){
+        if (isEmptyString(phone)){
             predicates.add(cb.like(root.get("phone"), phone));
         }
 
         return cb.and(predicates.toArray(new Predicate[predicates.size()]));
+    }
+
+    private boolean isEmptyString(String string) {
+        return StringUtils.hasText(string);
     }
 
     @Override
