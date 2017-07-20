@@ -1,6 +1,5 @@
 package be.xplore.recruitment;
 
-import be.xplore.recruitment.model.Prospect;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

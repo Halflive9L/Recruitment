@@ -1,6 +1,6 @@
 package be.xplore.recruitment;
 
-import be.xplore.recruitment.api.ProspectController;
+import be.xplore.recruitment.web.api.ProspectController;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

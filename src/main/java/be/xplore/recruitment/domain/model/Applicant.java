@@ -1,9 +1,10 @@
-package be.xplore.recruitment.model;
+package be.xplore.recruitment.domain.model;
 
 import org.hibernate.validator.constraints.Email;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.sql.Date;
 
 /**
  * @author Stijn Schack
@@ -24,6 +25,7 @@ public class Applicant {
     @Column
     private String lastName;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column
     private Date dateOfBirth;
 

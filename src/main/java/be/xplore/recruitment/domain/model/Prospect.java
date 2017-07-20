@@ -1,4 +1,4 @@
-package be.xplore.recruitment.model;
+package be.xplore.recruitment.domain.model;
 
 import javax.persistence.*;
 

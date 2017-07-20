@@ -1,7 +1,7 @@
-package be.xplore.recruitment.api;
+package be.xplore.recruitment.web.api;
 
-import be.xplore.recruitment.model.Applicant;
-import be.xplore.recruitment.model.exceptions.NotFoundException;
+import be.xplore.recruitment.domain.model.Applicant;
+import be.xplore.recruitment.domain.model.exceptions.NotFoundException;
 import be.xplore.recruitment.repository.ApplicantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +16,7 @@ import java.util.List;
  */
 @RestController
 public class ApplicantController {
+    @Autowired
     private final ApplicantRepository applicantRepository;
 
     @Autowired
@@ -50,6 +51,15 @@ public class ApplicantController {
         Applicant applicant = applicantRepository.findOne(applicantId);
         if (applicant == null) throw new NotFoundException(applicantId);
         applicantRepository.delete(applicant);
+        return applicant;
+    }
+
+    //// TODO: DATA INPUT
+    @RequestMapping(method = RequestMethod.PUT, value = "/prospect/{prospectId}")
+    public Applicant updateApplicant(@PathVariable long prospectId, @RequestBody Applicant applicant) {
+        Applicant foundApplicant = applicantRepository.findOne(prospectId);
+        foundApplicant = applicant;
+        applicantRepository.save(foundApplicant);
         return applicant;
     }
 }

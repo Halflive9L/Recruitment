@@ -1,6 +1,6 @@
-package be.xplore.recruitment.api;
+package be.xplore.recruitment.web.api;
 
-import be.xplore.recruitment.model.Applicant;
+import be.xplore.recruitment.domain.model.Applicant;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.StringUtils;
 
@@ -8,6 +8,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +23,9 @@ public class ApplicantQuery implements Specification<Applicant> {
     private String email;
     private String phone;
     private String education;
+    private String address;
+    private Date dateOfBirth;
+
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
@@ -43,29 +47,39 @@ public class ApplicantQuery implements Specification<Applicant> {
         this.email = email;
     }
 
+    public void setAddress(String address) {
+        this.address = address;
+    }
+    public void setDateOfBirth(Date dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
     @Override
     public Predicate toPredicate(Root<Applicant> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
         List<Predicate> predicates = new ArrayList<>();
 
-        if (isEmptyString(firstName)) {
+        if (isNotEmptyString(firstName)) {
             predicates.add(cb.like(root.get("firstName"), firstName));
         }
-        if (isEmptyString(lastName)){
+        if (isNotEmptyString(lastName)){
             predicates.add(cb.like(root.get("lastName"), lastName));
         }
-        if (isEmptyString(email)){
+        if (isNotEmptyString(email)){
             predicates.add(cb.like(root.get("email"), email));
         }
-        if (isEmptyString(phone)){
+        if (isNotEmptyString(phone)){
             predicates.add(cb.like(root.get("phone"), phone));
         }
-        if (isEmptyString(education)) {
+        if (isNotEmptyString(education)) {
             predicates.add(cb.like(root.get("education"), education));
+        }
+        if (isNotEmptyString(address)) {
+            predicates.add(cb.like(root.get("address"), address));
         }
         return cb.and(predicates.toArray(new Predicate[predicates.size()]));
     }
 
-    private boolean isEmptyString(String string) {
+    private boolean isNotEmptyString(String string) {
         return StringUtils.hasText(string);
     }
 
