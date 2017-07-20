@@ -3,14 +3,12 @@ package be.xplore.recruitment;
 import be.xplore.recruitment.api.ApplicantController;
 import be.xplore.recruitment.model.Applicant;
 import be.xplore.recruitment.repository.ApplicantRepository;
+import com.github.springtestdbunit.annotation.DatabaseSetup;
+import com.github.springtestdbunit.annotation.ExpectedDatabase;
 import net.minidev.json.JSONObject;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.embedded.LocalServerPort;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -22,17 +20,11 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author Stijn Schack
  * @since 7/20/2017
  */
-@RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class ApplicantTest {
-    @LocalServerPort
-    private int port;
 
+@RunWith(SpringRunner.class)
+public class ApplicantTest extends TestBase{
     @Autowired
     private ApplicantController applicantController;
-
-    @Autowired
-    private TestRestTemplate restTemplate;
 
     @Autowired
     private ApplicantRepository applicantRepository;
@@ -44,20 +36,21 @@ public class ApplicantTest {
         assertThat(applicantRepository).isNotNull();
     }
 
-    @Ignore
+    @Override
     public JSONObject getJsonTestObject() {
         JSONObject jsonTestObject = new JSONObject();
         jsonTestObject.put("firstName", "jos");
         jsonTestObject.put("lastName", "vermeulen");
-        jsonTestObject.put("dateOfBirth", "1990-1-1");
+        jsonTestObject.put("dateOfBirth", "1990-01-01");
         jsonTestObject.put("address", "antwerpen");
-        jsonTestObject.put("education","toegepaste informatica");
+        jsonTestObject.put("education","none");
         jsonTestObject.put("email", "jos.vermeulen@example.com");
-        jsonTestObject.put("phone", "0493587565");
+        jsonTestObject.put("phone", "0356854598");
         return jsonTestObject;
     }
 
-    @Test
+    @Override
+    @ExpectedDatabase(value = "/ApplicantTest.testPOST.xml")
     public void testPOST() {
         URI applicantUri = URI.create("http://localhost:" + port + "/applicant");
         HttpHeaders headers = new HttpHeaders();
@@ -68,17 +61,17 @@ public class ApplicantTest {
                 .isEqualTo(new ResponseEntity<>(HttpStatus.OK).getStatusCodeValue());
     }
 
-    @Test
+    @Override
+    @DatabaseSetup("/ApplicantTest.testGetById.xml")
     public void testGetById(){
         URI prospectUri = URI.create("http://localhost:" + port + "/applicant");
-        JSONObject jsonObject = getJsonTestObject();
         Applicant applicant = restTemplate.getForEntity(URI.create(prospectUri.toString() + "/1"), Applicant.class).getBody();
-        assertThat(applicant.getFirstName()).isEqualTo(jsonObject.getAsString("firstName"));
-        assertThat(applicant.getLastName()).isEqualTo(jsonObject.getAsString("lastName"));
-        assertThat(applicant.getDateOfBirth()).isInSameDayAs(jsonObject.getAsString("dateOfBirth"));
-        assertThat(applicant.getAddress()).isEqualTo(jsonObject.getAsString("address"));
-        assertThat(applicant.getEducation()).isEqualTo(jsonObject.getAsString("education"));
-        assertThat(applicant.getEmail()).isEqualTo(jsonObject.getAsString("email"));
-        assertThat(applicant.getPhone()).isEqualTo(jsonObject.getAsString("phone"));
+        assertThat(applicant.getFirstName()).isEqualTo("jos");
+        assertThat(applicant.getLastName()).isEqualTo("vermeulen");
+        assertThat(applicant.getDateOfBirth()).isInSameDayAs("1990-01-01");
+        assertThat(applicant.getAddress()).isEqualTo("antwerpen");
+        assertThat(applicant.getEducation()).isEqualTo("none");
+        assertThat(applicant.getEmail()).isEqualTo("jos.vermeulen@example.com");
+        assertThat(applicant.getPhone()).isEqualTo("0356854598");
     }
 }

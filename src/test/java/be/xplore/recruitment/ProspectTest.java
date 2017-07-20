@@ -3,14 +3,12 @@ package be.xplore.recruitment;
 import be.xplore.recruitment.api.ProspectController;
 import be.xplore.recruitment.model.Prospect;
 import be.xplore.recruitment.repository.ProspectRepository;
+import com.github.springtestdbunit.annotation.DatabaseSetup;
+import com.github.springtestdbunit.annotation.ExpectedDatabase;
 import net.minidev.json.JSONObject;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.embedded.LocalServerPort;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -22,17 +20,11 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author Stijn Schack
  * @since 7/20/2017
  */
-@RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class ProspectTest {
-    @LocalServerPort
-    private int port;
 
+@RunWith(SpringRunner.class)
+public class ProspectTest extends TestBase {
     @Autowired
     private ProspectController prospectController;
-
-    @Autowired
-    private TestRestTemplate restTemplate;
 
     @Autowired
     private ProspectRepository prospectRepository;
@@ -44,17 +36,18 @@ public class ProspectTest {
         assertThat(prospectRepository).isNotNull();
     }
 
-    @Ignore
-    public JSONObject getJsonTestObject() {
+    @Override
+    protected JSONObject getJsonTestObject() {
         JSONObject jsonTestObject = new JSONObject();
         jsonTestObject.put("firstName", "jos");
         jsonTestObject.put("lastName", "vermeulen");
         jsonTestObject.put("email", "jos.vermeulen@example.com");
-        jsonTestObject.put("phone", "0493587565");
+        jsonTestObject.put("phone", "0356854598");
         return jsonTestObject;
     }
 
-    @Test
+    @Override
+    @ExpectedDatabase(value = "/ProspectTest.testPOST.xml")
     public void testPOST() {
         URI prospectUri = URI.create("http://localhost:" + port + "/prospect");
         HttpHeaders headers = new HttpHeaders();
@@ -65,14 +58,14 @@ public class ProspectTest {
                 .isEqualTo(new ResponseEntity<>(HttpStatus.OK).getStatusCodeValue());
     }
 
-    @Test
-    public void testGetById(){
+    @Override
+    @DatabaseSetup("/ProspectTest.testGetById.xml")
+    public void testGetById() {
         URI prospectUri = URI.create("http://localhost:" + port + "/prospect");
-        JSONObject jsonObject = getJsonTestObject();
         Prospect prospect = restTemplate.getForEntity(URI.create(prospectUri.toString() + "/1"), Prospect.class).getBody();
-        assertThat(prospect.getFirstName()).isEqualTo(jsonObject.getAsString("firstName"));
-        assertThat(prospect.getLastName()).isEqualTo(jsonObject.getAsString("lastName"));
-        assertThat(prospect.getEmail()).isEqualTo(jsonObject.getAsString("email"));
-        assertThat(prospect.getPhone()).isEqualTo(jsonObject.getAsString("phone"));
+        assertThat(prospect.getFirstName()).isEqualTo("jos");
+        assertThat(prospect.getLastName()).isEqualTo("vermeulen");
+        assertThat(prospect.getEmail()).isEqualTo("jos.vermeulen@example.com");
+        assertThat(prospect.getPhone()).isEqualTo("0356854598");
     }
 }
