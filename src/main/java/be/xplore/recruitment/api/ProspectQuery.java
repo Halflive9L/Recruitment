@@ -2,6 +2,7 @@ package be.xplore.recruitment.api;
 
 import be.xplore.recruitment.model.Prospect;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -36,8 +37,17 @@ public class ProspectQuery implements Specification<Prospect> {
     public Predicate toPredicate(Root<Prospect> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
         List<Predicate> predicates = new ArrayList<>();
 
-        if (firstName != null) {
+        if (StringUtils.hasText(firstName)) {
             predicates.add(cb.like(root.get("firstName"), firstName));
+        }
+        if (StringUtils.hasText(lastName)){
+            predicates.add(cb.like(root.get("lastName"), lastName));
+        }
+        if (StringUtils.hasText(email)){
+            predicates.add(cb.like(root.get("email"), email));
+        }
+        if (StringUtils.hasText(phone)){
+            predicates.add(cb.like(root.get("phone"), phone));
         }
 
         return cb.and(predicates.toArray(new Predicate[predicates.size()]));
