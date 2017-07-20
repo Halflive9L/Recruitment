@@ -1,6 +1,6 @@
 package be.xplore.recruitment.repository;
 
-import be.xplore.recruitment.model.Applicant;
+import be.xplore.recruitment.domain.model.Applicant;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.CrudRepository;

@@ -1,6 +1,6 @@
 package be.xplore.recruitment.repository;
 
-import be.xplore.recruitment.model.Prospect;
+import be.xplore.recruitment.domain.model.Prospect;
 import org.springframework.data.jpa.domain.Specification;
 
 /**
