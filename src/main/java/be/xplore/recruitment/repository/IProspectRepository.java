@@ -2,6 +2,7 @@ package be.xplore.recruitment.repository;
 
 import be.xplore.recruitment.model.Prospect;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 import java.util.List;
@@ -18,14 +19,17 @@ public interface IProspectRepository extends CrudRepository<Prospect, Long> {
 
     List<Prospect> findAll();
 
-    Prospect findProspectByProspectId(long prospectId);
+    Prospect findProspectByProspectId(@Param("prospectId") long prospectId);
 
-    List<Prospect> findAllByLastName(String lastName);
+    List<Prospect> findAllByLastName(@Param("lastName") String lastName);
 
-    List<Prospect> findAllByFirstName(String firstName);
+    List<Prospect> findAllByFirstName(@Param("firstName") String firstName);
 
-    List<Prospect> findAllByPhone(String phone);
+    List<Prospect> findAllByPhone(@Param("phone") String phone);
 
-    List<Prospect> findAllByEmail(String email);
+    List<Prospect> findAllByEmail(@Param("email") String email);
+
+    List<Prospect> findAllByFirstNameAndLastName(String firstName, String lastName);
+
 
 }

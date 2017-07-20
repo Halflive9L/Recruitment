@@ -48,12 +48,9 @@ public class ProspectController {
     @SuppressWarnings("OptionalGetWithoutIsPresent")
     @RequestMapping(method = RequestMethod.GET, value = "/prospect/{prospectId}")
     public Prospect prospect(@PathVariable long prospectId) {
-        Prospect prospect;
-        try {
-            prospect = prospectRepository.findProspectByProspectId(prospectId);
-        } catch (NoSuchElementException e) {
+        Prospect prospect = prospectRepository.findProspectByProspectId(prospectId);
+        if (prospect == null)
             throw new NotFoundException(prospectId);
-        }
         return prospect;
     }
 
