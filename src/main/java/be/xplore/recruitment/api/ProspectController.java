@@ -88,7 +88,7 @@ public class ProspectController {
     @RequestMapping(method = RequestMethod.DELETE, value = "/prospect/{prospectId}")
     public Prospect deleteProspect(@PathVariable int prospectId) {
         Prospect prospect = prospectRepository.findProspectByProspectId(prospectId);
-        if(prospect == null || prospect.toString().isEmpty()) throw new NotFoundException(prospectId);
+        if(prospect == null) throw new NotFoundException(prospectId);
         prospectRepository.delete(prospect);
         return prospect;
     }
