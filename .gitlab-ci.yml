@@ -7,22 +7,18 @@ stages:
 variables:
   GRADLE_OPTS: "-Dorg.gradle.daemon=false"
 
-before_script:
-  - chmod +x gradlew
-  - export GRADLE_USER_HOME=`pwd`/.gradle
-
 cache:
   paths:
-    - .gradle/wrapper
-    - .gradle/caches
+    - .cache/gradle/caches
+    - .cache/gradle/wrapper
 
 build:
   allow_failure: false
   script:
-    - ./gradlew assemble
+    - ./gradlew -g .cache/gradle clean assemble
   stage: build
 
 test:
   script:
-    - ./gradlew check
+    - ./gradlew -g .cache/gradle check
   stage: test
