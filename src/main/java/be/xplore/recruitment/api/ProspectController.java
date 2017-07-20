@@ -2,15 +2,16 @@ package be.xplore.recruitment.api;
 
 import be.xplore.recruitment.model.Prospect;
 import be.xplore.recruitment.repository.ProspectRepository;
-import be.xplore.recruitment.repository.ProspectSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-
-import static org.springframework.data.jpa.domain.Specifications.where;
 
 
 /**
@@ -55,34 +56,19 @@ public class ProspectController {
     /**
      * Vraagt een prospect op aan de hand van een naam, een email of een telefoonnumber of een
      * combinatie van deze 3 parameters.
+     *
      * @param firstName de voornaam van de prospect
-     * @param lastName de achternaam van de prospect
-     * @param email het email adres van de prospect
-     * @param phone het telefoonnummer van de prospect
+     * @param lastName  de achternaam van de prospect
+     * @param email     het email adres van de prospect
+     * @param phone     het telefoonnummer van de prospect
      */
 
     @RequestMapping(method = RequestMethod.GET, value = "/prospect")
-    public List<Prospect> prospect(@RequestParam(value = "firstName", required = false) String firstName,
-                                   @RequestParam(value = "lastName", required = false) String lastName,
-                                   @RequestParam(value = "email", required = false) String email,
-                                   @RequestParam(value = "phone", required = false) String phone) {
+    public List<Prospect> prospect(@ModelAttribute ProspectQuery query) {
 
-       /* List<Prospect> prospects = prospectRepository.findAll();
+        System.out.println("query = " + query);
 
-        if (firstName != null && !firstName.isEmpty()) {
-            prospects = prospectRepository.findAllByFirstName(firstName);
-        }
-        if (lastName != null && !lastName.isEmpty()) {
-            prospects = prospectRepository.findAllByLastName(lastName);
-        }
-        if (email != null && !email.isEmpty()) {
-            prospects = prospectRepository.findAllByEmail(email);
-        }
-        if (phone != null && !phone.isEmpty()) {
-            prospects = prospectRepository.findAllByPhone(phone);
-        }
-        return prospects;*/
-        return prospectRepository.findAll(where(ProspectSpecification.hasPhone(phone)).and(where(ProspectSpecification.hasEmail(email))));
+        return prospectRepository.findAll(query);
 
     }
 /*
