@@ -12,8 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
+
 
 /**
  * @author Stijn Schack
@@ -91,10 +90,9 @@ public class ProspectController {
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/prospect/{prospectId}")
     public Prospect deleteProspect(@PathVariable int prospectId) {
-        Optional<Prospect> optional = repository.getMockData().stream().filter(p -> p.getProspectId() == prospectId).findFirst();
-        if (!optional.isPresent())
-            throw new NotFoundException(prospectId);
-        prospectRepository.delete(optional.get());
-        return optional.get();
+        Prospect prospect = prospectRepository.findProspectByProspectId(prospectId);
+        if(prospect == null || prospect.toString().isEmpty()) throw new NotFoundException(prospectId);
+        prospectRepository.delete(prospect);
+        return prospect;
     }
 }
