@@ -49,7 +49,6 @@ public class ProspectQuery implements Specification<Prospect> {
         if (isEmptyString(phone)){
             predicates.add(cb.like(root.get("phone"), phone));
         }
-
         return cb.and(predicates.toArray(new Predicate[predicates.size()]));
     }
 

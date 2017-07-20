@@ -1,4 +1,4 @@
-package be.xplore.recruitment.model;
+package be.xplore.recruitment.model.exceptions;
 
 import org.omg.SendingContext.RunTime;
 import org.springframework.http.HttpStatus;

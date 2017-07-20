@@ -1,17 +1,14 @@
 package be.xplore.recruitment.api;
 
-import be.xplore.recruitment.model.NotFoundException;
+import be.xplore.recruitment.model.exceptions.NotFoundException;
 import be.xplore.recruitment.model.Prospect;
 import be.xplore.recruitment.repository.ProspectRepository;
-import be.xplore.recruitment.repository.ProspectSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
-import static org.springframework.data.jpa.domain.Specifications.where;
 
 
 /**
