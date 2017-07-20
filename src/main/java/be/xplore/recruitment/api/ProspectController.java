@@ -28,7 +28,7 @@ public class ProspectController {
     /**
      * Voegt een prospect via een POST toe aan de mockData lijst van prospectRepository
      */
-    @RequestMapping(method = RequestMethod.POST, value = "/")
+    @RequestMapping(method = RequestMethod.POST, value = "/prospect")
     public ResponseEntity<Prospect> addProspect(@RequestBody Prospect input) {
         Prospect prospect = new Prospect(input);
         prospectRepository.save(prospect);

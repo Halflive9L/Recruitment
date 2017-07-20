@@ -16,7 +16,9 @@ import java.util.List;
 
 @RepositoryRestResource(collectionResourceRel = "prospects", path = "prospects")
 public interface ProspectRepository extends CrudRepository<Prospect, Long>, JpaSpecificationExecutor<Prospect> {
+    @Override
     List<Prospect> findAll();
 
+    @Override
     List<Prospect> findAll(Specification<Prospect> spec);
 }
