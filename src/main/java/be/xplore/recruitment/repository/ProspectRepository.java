@@ -19,6 +19,8 @@ public interface ProspectRepository extends CrudRepository<Prospect, Long>, JpaS
     @Override
     List<Prospect> findAll();
 
+    Prospect findProspectByProspectId(long prospectId);
+
     @Override
     List<Prospect> findAll(Specification<Prospect> spec);
 }
