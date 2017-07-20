@@ -1,17 +1,14 @@
 package be.xplore.recruitment.api;
 
-import be.xplore.recruitment.model.NotFoundException;
 import be.xplore.recruitment.model.Prospect;
-import be.xplore.recruitment.repository.IProspectRepository;
 import be.xplore.recruitment.repository.ProspectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 
 /**
@@ -21,18 +18,15 @@ import java.util.Optional;
 
 @RestController
 public class ProspectController {
-
-    private ProspectRepository repository = new ProspectRepository();
-
-    private final IProspectRepository prospectRepository;
+    private final ProspectRepository prospectRepository;
 
     @Autowired
-    public ProspectController(IProspectRepository prospectRepository) {
+    public ProspectController(ProspectRepository prospectRepository) {
         this.prospectRepository = prospectRepository;
     }
 
     /**
-    * Voegt een prospect via een POST toe aan de mockData lijst van prospectRepository
+     * Voegt een prospect via een POST toe aan de mockData lijst van prospectRepository
      */
     @RequestMapping(method = RequestMethod.POST, value = "/")
     public ResponseEntity<Prospect> addProspect(@RequestBody Prospect input) {
@@ -45,6 +39,7 @@ public class ProspectController {
      * Vraagt een prospect op aan de hand van een id.
      * Indien de id niet gevonden is wordt een 404 error gestuurd.
      */
+    /*
     @SuppressWarnings("OptionalGetWithoutIsPresent")
     @RequestMapping(method = RequestMethod.GET, value = "/prospect/{prospectId}")
     public Prospect prospect(@PathVariable long prospectId) {
@@ -53,6 +48,7 @@ public class ProspectController {
             throw new NotFoundException(prospectId);
         return prospect;
     }
+    */
 
     /**
      * Vraagt een prospect op aan de hand van een naam, een email of een telefoonnumber of een
@@ -62,6 +58,7 @@ public class ProspectController {
      * @param email het email adres van de prospect
      * @param phone het telefoonnummer van de prospect
      */
+    /*
     @RequestMapping(method = RequestMethod.GET, value = "/prospect")
     public List<Prospect> prospect(@RequestParam(value = "firstName", required = false) String firstName,
                                    @RequestParam(value = "lastName", required = false) String lastName,
@@ -92,4 +89,6 @@ public class ProspectController {
         prospectRepository.delete(prospect);
         return prospect;
     }
+    */
+
 }
