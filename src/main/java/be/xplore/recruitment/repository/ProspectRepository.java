@@ -18,5 +18,7 @@ import java.util.List;
 public interface ProspectRepository extends CrudRepository<Prospect, Long>, JpaSpecificationExecutor<Prospect> {
     List<Prospect> findAll();
 
+    Prospect findProspectByProspectId(long prospectId);
+
     List<Prospect> findAll(Specification<Prospect> spec);
 }

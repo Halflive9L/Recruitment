@@ -36,8 +36,17 @@ public class ProspectQuery implements Specification<Prospect> {
     public Predicate toPredicate(Root<Prospect> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
         List<Predicate> predicates = new ArrayList<>();
 
-        if (firstName != null) {
+        if (firstName != null && !firstName.isEmpty()) {
             predicates.add(cb.like(root.get("firstName"), firstName));
+        }
+        if (lastName != null && !lastName.isEmpty()) {
+            predicates.add(cb.like(root.get("lastName"), lastName));
+        }
+        if (email != null && !email.isEmpty()) {
+            predicates.add(cb.like(root.get("email"), email));
+        }
+        if (phone != null && !phone.isEmpty()) {
+            predicates.add(cb.like(root.get("phone"), phone));
         }
 
         return cb.and(predicates.toArray(new Predicate[predicates.size()]));
