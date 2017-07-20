@@ -45,11 +45,11 @@ public class ApplicantController {
         return applicantRepository.findAll(query);
     }
 
-    @RequestMapping(method = RequestMethod.DELETE, value = "/prospect/{prospectId}")
-    public Applicant deleteApplicant(@PathVariable long prospectId) {
-        Applicant prospect = applicantRepository.findOne(prospectId);
-        if (prospect == null) throw new NotFoundException(prospectId);
-        applicantRepository.delete(prospect);
-        return prospect;
+    @RequestMapping(method = RequestMethod.DELETE, value = "/applicant/{applicantId}")
+    public Applicant deleteApplicant(@PathVariable long applicantId) {
+        Applicant applicant = applicantRepository.findOne(applicantId);
+        if (applicant == null) throw new NotFoundException(applicantId);
+        applicantRepository.delete(applicant);
+        return applicant;
     }
 }

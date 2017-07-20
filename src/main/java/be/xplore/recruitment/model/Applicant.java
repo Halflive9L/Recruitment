@@ -40,6 +40,9 @@ public class Applicant {
     @Column
     private String phone;
 
+    public Applicant() {
+    }
+
     public Applicant(String firstName, String lastName, Date dateOfBirth, String address, String education, String email, String phone) {
         this.firstName = firstName;
         this.lastName = lastName;
