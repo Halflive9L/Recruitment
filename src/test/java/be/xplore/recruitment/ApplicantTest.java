@@ -74,4 +74,9 @@ public class ApplicantTest extends TestBase{
         assertThat(applicant.getEmail()).isEqualTo("jos.vermeulen@example.com");
         assertThat(applicant.getPhone()).isEqualTo("0356854598");
     }
+
+    @Override
+    public void testGetByParam() {
+
+    }
 }
