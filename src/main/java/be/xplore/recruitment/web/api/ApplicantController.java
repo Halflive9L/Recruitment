@@ -55,11 +55,11 @@ public class ApplicantController {
     }
 
     //// TODO: DATA INPUT
-    @RequestMapping(method = RequestMethod.PUT, value = "/prospect/{prospectId}")
-    public Applicant updateApplicant(@PathVariable long prospectId, @RequestBody Applicant applicant) {
-        Applicant foundApplicant = applicantRepository.findOne(prospectId);
-        foundApplicant = applicant;
-        applicantRepository.save(foundApplicant);
+    @RequestMapping(method = RequestMethod.PUT, value = "/applicant/{applicantId}")
+    public Applicant updateApplicant(@PathVariable long applicantId, @RequestBody Applicant applicant) {
+        Applicant foundApplicant = applicantRepository.findOne(applicantId);
+        applicant.setApplicantId(foundApplicant.getApplicantId());
+        applicantRepository.save(applicant);
         return applicant;
     }
 }
