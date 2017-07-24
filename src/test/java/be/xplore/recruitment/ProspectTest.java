@@ -1,8 +1,8 @@
 package be.xplore.recruitment;
 
-import be.xplore.recruitment.api.ProspectController;
-import be.xplore.recruitment.model.Prospect;
+import be.xplore.recruitment.domain.model.Prospect;
 import be.xplore.recruitment.repository.ProspectRepository;
+import be.xplore.recruitment.web.api.ProspectController;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.ExpectedDatabase;
 import net.minidev.json.JSONObject;
