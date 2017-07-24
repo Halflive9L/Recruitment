@@ -118,4 +118,8 @@ public class Applicant {
     public void setPhone(String phone) {
         this.phone = phone;
     }
+
+    public void setApplicantId(long applicantId) {
+        this.applicantId = applicantId;
+    }
 }

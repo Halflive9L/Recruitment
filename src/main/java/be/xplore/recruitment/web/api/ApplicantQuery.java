@@ -77,7 +77,7 @@ public class ApplicantQuery implements Specification<Applicant> {
             predicates.add(cb.like(root.get("address"), address));
         }
         if (dateOfBirth != null) {
-            predicates.add(cb.like(cb.toString(root.get("dateOfBirth")), dateOfBirth.toString()));
+            predicates.add(cb.equal(root.get("dateOfBirth"), dateOfBirth));
         } else {
             System.out.println("Date:" + dateOfBirth);
         }
