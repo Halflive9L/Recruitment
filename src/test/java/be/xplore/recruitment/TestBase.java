@@ -24,8 +24,6 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 @TestExecutionListeners({DependencyInjectionTestExecutionListener.class, TransactionDbUnitTestExecutionListener.class})
 @Rollback
 public abstract class TestBase {
-    @LocalServerPort
-    protected int port = 9191;
 
     @Autowired
     protected TestRestTemplate restTemplate;

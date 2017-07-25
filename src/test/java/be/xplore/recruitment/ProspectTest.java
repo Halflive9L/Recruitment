@@ -1,7 +1,6 @@
 package be.xplore.recruitment;
 
 import be.xplore.recruitment.domain.model.Prospect;
-import be.xplore.recruitment.repository.ProspectRepository;
 import be.xplore.recruitment.web.api.ProspectController;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.ExpectedDatabase;
@@ -45,22 +44,20 @@ public class ProspectTest extends TestBase {
     }
 
     @Test
-    @ExpectedDatabase(value = "/ProspectTest.testPOST.xml", assertionMode = DatabaseAssertionMode.NON_STRICT)
+    @ExpectedDatabase(value = "/prospect/ProspectTest.testPOST.xml", assertionMode = DatabaseAssertionMode.NON_STRICT)
     public void testPOST() {
-        URI prospectUri = URI.create("http://localhost:" + port + "/prospect");
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<String> httpEntity = new HttpEntity<>(getJsonTestObject().toJSONString(), headers);
 
-        assertThat(restTemplate.postForEntity(prospectUri, httpEntity, ResponseEntity.class).getStatusCodeValue())
+        assertThat(restTemplate.postForEntity("/prospect", httpEntity, ResponseEntity.class).getStatusCodeValue())
                 .isEqualTo(new ResponseEntity<>(HttpStatus.OK).getStatusCodeValue());
     }
 
     @Test
-    @DatabaseSetup("/ProspectTest.testGetById.xml")
+    @DatabaseSetup("/prospect/ProspectTest.testGetById.xml")
     public void testGetById() {
-        URI prospectUri = URI.create("http://localhost:" + port + "/prospect");
-        Prospect prospect = restTemplate.getForEntity(URI.create(prospectUri.toString() + "/1"), Prospect.class).getBody();
+        Prospect prospect = restTemplate.getForEntity(URI.create("/prospect/1"), Prospect.class).getBody();
         assertThat(prospect.getFirstName()).isEqualTo("jos");
         assertThat(prospect.getLastName()).isEqualTo("vermeulen");
         assertThat(prospect.getEmail()).isEqualTo("jos.vermeulen@example.com");
@@ -68,11 +65,10 @@ public class ProspectTest extends TestBase {
     }
 
     @Test
-    @DatabaseSetup(value = "/ProspectTest.testGetByParam.xml")//, type = DatabaseOperation.CLEAN_INSERT)
+    @DatabaseSetup(value = "/prospect/ProspectTest.testGetByParam.xml")//, type = DatabaseOperation.CLEAN_INSERT)
     public void testGetByParam() {
-        URI uri = URI.create("http://localhost:" + port + "/prospect");
         ParameterizedTypeReference<List<Prospect>> typeReference = new ParameterizedTypeReference<List<Prospect>>() {};
-        List<Prospect> prospects = restTemplate.exchange(uri, HttpMethod.GET, null, typeReference).getBody();
+        List<Prospect> prospects = restTemplate.exchange("/prospect", HttpMethod.GET, null, typeReference).getBody();
         prospects.forEach(System.out::println);
         assertThat(prospects).isNotEmpty();
     }

@@ -78,8 +78,6 @@ public class ApplicantQuery implements Specification<Applicant> {
         }
         if (dateOfBirth != null) {
             predicates.add(cb.equal(root.get("dateOfBirth"), dateOfBirth));
-        } else {
-            System.out.println("Date:" + dateOfBirth);
         }
         return cb.and(predicates.toArray(new Predicate[predicates.size()]));
     }
