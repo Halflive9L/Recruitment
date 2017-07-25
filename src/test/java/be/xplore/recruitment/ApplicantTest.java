@@ -9,7 +9,11 @@ import net.minidev.json.JSONObject;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 
 import java.net.URI;
 import java.util.List;
@@ -72,7 +76,8 @@ public class ApplicantTest extends TestBase {
     public void testGetAll() {
         ParameterizedTypeReference<List<Applicant>> typeReference = new ParameterizedTypeReference<List<Applicant>>() {
         };
-        List<Applicant> prospects = restTemplate.exchange("/applicant", HttpMethod.GET, null, typeReference).getBody();
+        List<Applicant> prospects =
+                restTemplate.exchange("/applicant", HttpMethod.GET, null, typeReference).getBody();
         prospects.forEach(System.out::println);
         assertThat(prospects).hasSize(3);
     }
@@ -82,14 +87,17 @@ public class ApplicantTest extends TestBase {
     public void testGetByParam() {
         ParameterizedTypeReference<List<Applicant>> typeReference = new ParameterizedTypeReference<List<Applicant>>() {
         };
-        List<Applicant> prospects = restTemplate.exchange("/applicant?firstName=stijn", HttpMethod.GET, null, typeReference).getBody();
+        List<Applicant> prospects =
+                restTemplate.exchange("/applicant?firstName=stijn", HttpMethod.GET, null, typeReference).getBody();
         assertThat(prospects).hasSize(2);
-        assertThat(prospects.get(0).getFirstName()).isEqualTo(prospects.get(1).getFirstName()).isEqualToIgnoringCase("stijn");
+        assertThat(prospects.get(0).getFirstName()).isEqualTo(prospects.get(1).getFirstName())
+                .isEqualToIgnoringCase("stijn");
     }
 
     @Test
     @DatabaseSetup(value = "/applicant/ApplicantTest.testUpdateApplicant.setup.xml")
-    @ExpectedDatabase(value = "/applicant/ApplicantTest.testUpdateApplicant.expected.xml", assertionMode = DatabaseAssertionMode.NON_STRICT)
+    @ExpectedDatabase(value = "/applicant/ApplicantTest.testUpdateApplicant.expected.xml",
+            assertionMode = DatabaseAssertionMode.NON_STRICT)
     public void testUpdateApplicant() {
         String jsonBody = "{" +
                 "\"firstName\":\"lander\"," +

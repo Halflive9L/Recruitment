@@ -6,7 +6,12 @@ import be.xplore.recruitment.repository.ApplicantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -33,8 +38,9 @@ public class ApplicantController {
     @RequestMapping(method = RequestMethod.GET, value = "/applicant/{applicantId}")
     public Applicant getApplicantById(@PathVariable long applicantId) {
         Applicant applicant = applicantRepository.findOne(applicantId);
-        if (applicant == null)
+        if (applicant == null) {
             throw new NotFoundException(applicantId);
+        }
         return applicant;
     }
 
@@ -46,7 +52,9 @@ public class ApplicantController {
     @RequestMapping(method = RequestMethod.DELETE, value = "/applicant/{applicantId}")
     public Applicant deleteApplicant(@PathVariable long applicantId) {
         Applicant applicant = applicantRepository.findOne(applicantId);
-        if (applicant == null) throw new NotFoundException(applicantId);
+        if (applicant == null) {
+            throw new NotFoundException(applicantId);
+        }
         applicantRepository.delete(applicant);
         return applicant;
     }

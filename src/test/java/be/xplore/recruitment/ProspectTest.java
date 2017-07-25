@@ -7,7 +7,11 @@ import com.github.springtestdbunit.assertion.DatabaseAssertionMode;
 import net.minidev.json.JSONObject;
 import org.junit.Test;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
@@ -58,8 +62,10 @@ public class ProspectTest extends TestBase {
     @Test
     @DatabaseSetup(value = "/prospect/ProspectTest.testGetAll.xml")
     public void testGetAll() {
-        ParameterizedTypeReference<List<Prospect>> typeReference = new ParameterizedTypeReference<List<Prospect>>() {};
-        List<Prospect> prospects = restTemplate.exchange("/prospect", HttpMethod.GET, null, typeReference).getBody();
+        ParameterizedTypeReference<List<Prospect>> typeReference = new ParameterizedTypeReference<List<Prospect>>() {
+        };
+        List<Prospect> prospects =
+                restTemplate.exchange("/prospect", HttpMethod.GET, null, typeReference).getBody();
         prospects.forEach(System.out::println);
         assertThat(prospects).hasSize(2);
     }
@@ -67,9 +73,12 @@ public class ProspectTest extends TestBase {
     @Test
     @DatabaseSetup(value = "/prospect/ProspectTest.testGetByParam.xml")//, type = DatabaseOperation.CLEAN_INSERT)
     public void testGetByParam() {
-        ParameterizedTypeReference<List<Prospect>> typeReference = new ParameterizedTypeReference<List<Prospect>>() {};
-        List<Prospect> prospects = restTemplate.exchange("/prospect?firstName=stijn", HttpMethod.GET, null, typeReference).getBody();
+        ParameterizedTypeReference<List<Prospect>> typeReference = new ParameterizedTypeReference<List<Prospect>>() {
+        };
+        List<Prospect> prospects =
+                restTemplate.exchange("/prospect?firstName=stijn", HttpMethod.GET, null, typeReference).getBody();
         assertThat(prospects).hasSize(2);
-        assertThat(prospects.get(0).getFirstName()).isEqualTo(prospects.get(1).getFirstName()).isEqualToIgnoringCase("stijn");
+        assertThat(prospects.get(0).getFirstName()).isEqualTo(prospects.get(1).getFirstName())
+                .isEqualToIgnoringCase("stijn");
     }
 }

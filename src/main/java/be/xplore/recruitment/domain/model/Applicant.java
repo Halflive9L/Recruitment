@@ -3,7 +3,12 @@ package be.xplore.recruitment.domain.model;
 import org.hibernate.validator.constraints.Email;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.sql.Date;
 
 /**
@@ -45,18 +50,14 @@ public class Applicant {
     public Applicant() {
     }
 
-    public Applicant(String firstName, String lastName, Date dateOfBirth, String address, String education, String email, String phone) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.dateOfBirth = dateOfBirth;
-        this.address = address;
-        this.education = education;
-        this.email = email;
-        this.phone = phone;
-    }
-
     public Applicant(Applicant applicant) {
-        this(applicant.firstName, applicant.lastName, applicant.dateOfBirth, applicant.address, applicant.education, applicant.email, applicant.phone);
+        this.firstName = applicant.firstName;
+        this.lastName = applicant.lastName;
+        this.dateOfBirth = applicant.dateOfBirth;
+        this.address = applicant.address;
+        this.education = applicant.education;
+        this.email = applicant.email;
+        this.phone = applicant.phone;
     }
 
     public long getApplicantId() {

@@ -6,7 +6,12 @@ import be.xplore.recruitment.repository.ProspectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -37,8 +42,9 @@ public class ProspectController {
     @RequestMapping(method = RequestMethod.GET, value = "/prospect/{prospectId}")
     public Prospect getProspectById(@PathVariable long prospectId) {
         Prospect prospect = prospectRepository.findOne(prospectId);
-        if (prospect == null)
+        if (prospect == null) {
             throw new NotFoundException(prospectId);
+        }
         return prospect;
     }
 
@@ -51,7 +57,9 @@ public class ProspectController {
     @RequestMapping(method = RequestMethod.DELETE, value = "/prospect/{prospectId}")
     public Prospect deleteProspect(@PathVariable long prospectId) {
         Prospect prospect = prospectRepository.findOne(prospectId);
-        if (prospect == null) throw new NotFoundException(prospectId);
+        if (prospect == null) {
+            throw new NotFoundException(prospectId);
+        }
         prospectRepository.delete(prospect);
         return prospect;
     }
