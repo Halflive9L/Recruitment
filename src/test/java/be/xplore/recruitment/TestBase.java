@@ -1,6 +1,7 @@
 package be.xplore.recruitment;
 
 import com.github.springtestdbunit.TransactionDbUnitTestExecutionListener;
+import com.github.springtestdbunit.annotation.DbUnitConfiguration;
 import net.minidev.json.JSONObject;
 import org.junit.Ignore;
 import org.junit.runner.RunWith;
@@ -19,6 +20,7 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+@DbUnitConfiguration(databaseConnection = "dataSource")
 @TestExecutionListeners({DependencyInjectionTestExecutionListener.class, TransactionDbUnitTestExecutionListener.class})
 @Rollback
 public abstract class TestBase {
@@ -31,4 +33,5 @@ public abstract class TestBase {
 
     @Ignore
     protected abstract JSONObject getJsonTestObject();
+
 }

@@ -49,7 +49,7 @@ public class ApplicantTest extends TestBase{
         return jsonTestObject;
     }
 
-    @Override
+    @Test
     @ExpectedDatabase(value = "/ApplicantTest.testPOST.xml")
     public void testPOST() {
         URI applicantUri = URI.create("http://localhost:" + port + "/applicant");
@@ -61,7 +61,7 @@ public class ApplicantTest extends TestBase{
                 .isEqualTo(new ResponseEntity<>(HttpStatus.OK).getStatusCodeValue());
     }
 
-    @Override
+    @Test
     @DatabaseSetup("/ApplicantTest.testGetById.xml")
     public void testGetById(){
         URI prospectUri = URI.create("http://localhost:" + port + "/applicant");
@@ -75,7 +75,7 @@ public class ApplicantTest extends TestBase{
         assertThat(applicant.getPhone()).isEqualTo("0356854598");
     }
 
-    @Override
+    @Test
     public void testGetByParam() {
 
     }
