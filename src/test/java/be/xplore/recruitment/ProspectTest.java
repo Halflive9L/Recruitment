@@ -66,9 +66,18 @@ public class ProspectTest extends TestBase {
 
     @Test
     @DatabaseSetup(value = "/prospect/ProspectTest.testGetByParam.xml")//, type = DatabaseOperation.CLEAN_INSERT)
-    public void testGetByParam() {
+    public void testGetAll() {
         ParameterizedTypeReference<List<Prospect>> typeReference = new ParameterizedTypeReference<List<Prospect>>() {};
         List<Prospect> prospects = restTemplate.exchange("/prospect", HttpMethod.GET, null, typeReference).getBody();
+        prospects.forEach(System.out::println);
+        assertThat(prospects).isNotEmpty();
+    }
+
+    @Test
+    @DatabaseSetup(value = "/prospect/ProspectTest.testGetByParam.xml")//, type = DatabaseOperation.CLEAN_INSERT)
+    public void testGetByParam() {
+        ParameterizedTypeReference<List<Prospect>> typeReference = new ParameterizedTypeReference<List<Prospect>>() {};
+        List<Prospect> prospects = restTemplate.exchange("/prospect?firstName=jos&lastName=vermeulen&phone=0356854598", HttpMethod.GET, null, typeReference).getBody();
         prospects.forEach(System.out::println);
         assertThat(prospects).isNotEmpty();
     }
