@@ -16,7 +16,6 @@ import java.util.List;
  */
 @RestController
 public class ApplicantController {
-    @Autowired
     private final ApplicantRepository applicantRepository;
 
     @Autowired
@@ -31,9 +30,8 @@ public class ApplicantController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @SuppressWarnings("OptionalGetWithoutIsPresent")
     @RequestMapping(method = RequestMethod.GET, value = "/applicant/{applicantId}")
-    public Applicant applicant(@PathVariable long applicantId) {
+    public Applicant getApplicantById(@PathVariable long applicantId) {
         Applicant applicant = applicantRepository.findOne(applicantId);
         if (applicant == null)
             throw new NotFoundException(applicantId);
@@ -41,8 +39,7 @@ public class ApplicantController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/applicant")
-    public List<Applicant> applicant(@ModelAttribute ApplicantQuery query) {
-        System.out.println("query = " + query);
+    public List<Applicant> getApplicantByParam(@ModelAttribute ApplicantQuery query) {
         return applicantRepository.findAll(query);
     }
 
@@ -54,7 +51,6 @@ public class ApplicantController {
         return applicant;
     }
 
-    //// TODO: DATA INPUT
     @RequestMapping(method = RequestMethod.PUT, value = "/applicant/{applicantId}")
     public Applicant updateApplicant(@PathVariable long applicantId, @RequestBody Applicant applicant) {
         Applicant foundApplicant = applicantRepository.findOne(applicantId);

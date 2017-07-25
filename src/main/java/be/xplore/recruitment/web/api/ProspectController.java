@@ -1,7 +1,7 @@
 package be.xplore.recruitment.web.api;
 
-import be.xplore.recruitment.domain.model.exceptions.NotFoundException;
 import be.xplore.recruitment.domain.model.Prospect;
+import be.xplore.recruitment.domain.model.exceptions.NotFoundException;
 import be.xplore.recruitment.repository.ProspectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,9 +25,6 @@ public class ProspectController {
         this.prospectRepository = prospectRepository;
     }
 
-    /**
-     * Voegt een prospect via een POST toe aan de mockData lijst van prospectRepository
-     */
     @RequestMapping(method = RequestMethod.POST, value = "/prospect")
     public ResponseEntity<Prospect> addProspect(@RequestBody Prospect input) {
         Prospect prospect = new Prospect(input);
@@ -35,28 +32,18 @@ public class ProspectController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    /**
-     * Vraagt een prospect op aan de hand van een id.
-     * Indien de id niet gevonden is wordt een 404 error gestuurd.
-     */
 
     @SuppressWarnings("OptionalGetWithoutIsPresent")
     @RequestMapping(method = RequestMethod.GET, value = "/prospect/{prospectId}")
-    public Prospect prospect(@PathVariable long prospectId) {
+    public Prospect getProspectById(@PathVariable long prospectId) {
         Prospect prospect = prospectRepository.findOne(prospectId);
         if (prospect == null)
             throw new NotFoundException(prospectId);
         return prospect;
     }
 
-
-    /**
-     * Vraagt een prospect op aan de hand van een naam, een email of een telefoonnumber of een
-     * combinatie van deze 3 parameters.
-     */
-
     @RequestMapping(method = RequestMethod.GET, value = "/prospect")
-    public List<Prospect> prospect(@ModelAttribute ProspectQuery query) {
+    public List<Prospect> getProspectByParam(@ModelAttribute ProspectQuery query) {
         System.out.println("query = " + query);
         return prospectRepository.findAll(query);
     }
