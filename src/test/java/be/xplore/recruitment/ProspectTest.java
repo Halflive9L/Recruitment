@@ -1,8 +1,8 @@
 package be.xplore.recruitment;
 
 import be.xplore.recruitment.domain.model.Prospect;
+import be.xplore.recruitment.repository.ProspectRepository;
 import be.xplore.recruitment.web.api.ProspectController;
-import com.github.springtestdbunit.annotation.DatabaseOperation;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.ExpectedDatabase;
 import com.github.springtestdbunit.assertion.DatabaseAssertionMode;
@@ -21,6 +21,8 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author Stijn Schack
  * @since 7/20/2017
  */
+
+
 public class ProspectTest extends TestBase {
 
     @Autowired
@@ -38,7 +40,7 @@ public class ProspectTest extends TestBase {
         jsonTestObject.put("firstName", "jos");
         jsonTestObject.put("lastName", "vermeulen");
         jsonTestObject.put("email", "jos.vermeulen@example.com");
-        jsonTestObject.put("phone", "0356854598");
+        jsonTestObject.put("phone", "03568545981");
         return jsonTestObject;
     }
 
@@ -55,7 +57,7 @@ public class ProspectTest extends TestBase {
     }
 
     @Test
-    @DatabaseSetup(value = "/ProspectTest.testGetById.xml")
+    @DatabaseSetup("/ProspectTest.testGetById.xml")
     public void testGetById() {
         URI prospectUri = URI.create("http://localhost:" + port + "/prospect");
         Prospect prospect = restTemplate.getForEntity(URI.create(prospectUri.toString() + "/1"), Prospect.class).getBody();
@@ -66,11 +68,10 @@ public class ProspectTest extends TestBase {
     }
 
     @Test
-    @DatabaseSetup(value = "/ProspectTest.testGetByParam.xml", type = DatabaseOperation.CLEAN_INSERT)
+    @DatabaseSetup(value = "/ProspectTest.testGetByParam.xml")//, type = DatabaseOperation.CLEAN_INSERT)
     public void testGetByParam() {
         URI uri = URI.create("http://localhost:" + port + "/prospect");
-        ParameterizedTypeReference<List<Prospect>> typeReference = new ParameterizedTypeReference<List<Prospect>>() {
-        };
+        ParameterizedTypeReference<List<Prospect>> typeReference = new ParameterizedTypeReference<List<Prospect>>() {};
         List<Prospect> prospects = restTemplate.exchange(uri, HttpMethod.GET, null, typeReference).getBody();
         prospects.forEach(System.out::println);
         assertThat(prospects).isNotEmpty();
