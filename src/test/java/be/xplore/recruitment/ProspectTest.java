@@ -1,17 +1,14 @@
 package be.xplore.recruitment;
 
 import be.xplore.recruitment.domain.model.Prospect;
-import be.xplore.recruitment.web.api.ProspectController;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.ExpectedDatabase;
 import com.github.springtestdbunit.assertion.DatabaseAssertionMode;
 import net.minidev.json.JSONObject;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 
-import java.net.URI;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -24,12 +21,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class ProspectTest extends TestBase {
 
-    @Autowired
-    private ProspectController prospectController;
-
     @Test
     public void contextLoads() {
-        assertThat(prospectController).isNotNull();
         assertThat(restTemplate).isNotNull();
     }
 
@@ -49,15 +42,13 @@ public class ProspectTest extends TestBase {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<String> httpEntity = new HttpEntity<>(getJsonTestObject().toJSONString(), headers);
-
-        assertThat(restTemplate.postForEntity("/prospect", httpEntity, ResponseEntity.class).getStatusCodeValue())
-                .isEqualTo(new ResponseEntity<>(HttpStatus.OK).getStatusCodeValue());
+        restTemplate.postForEntity("/prospect", httpEntity, ResponseEntity.class);
     }
 
     @Test
     @DatabaseSetup("/prospect/ProspectTest.testGetById.xml")
     public void testGetById() {
-        Prospect prospect = restTemplate.getForEntity(URI.create("/prospect/1"), Prospect.class).getBody();
+        Prospect prospect = restTemplate.getForEntity("/prospect/1", Prospect.class).getBody();
         assertThat(prospect.getFirstName()).isEqualTo("jos");
         assertThat(prospect.getLastName()).isEqualTo("vermeulen");
         assertThat(prospect.getEmail()).isEqualTo("jos.vermeulen@example.com");
@@ -65,20 +56,20 @@ public class ProspectTest extends TestBase {
     }
 
     @Test
-    @DatabaseSetup(value = "/prospect/ProspectTest.testGetByParam.xml")//, type = DatabaseOperation.CLEAN_INSERT)
+    @DatabaseSetup(value = "/prospect/ProspectTest.testGetAll.xml")
     public void testGetAll() {
         ParameterizedTypeReference<List<Prospect>> typeReference = new ParameterizedTypeReference<List<Prospect>>() {};
         List<Prospect> prospects = restTemplate.exchange("/prospect", HttpMethod.GET, null, typeReference).getBody();
         prospects.forEach(System.out::println);
-        assertThat(prospects).isNotEmpty();
+        assertThat(prospects).hasSize(2);
     }
 
     @Test
     @DatabaseSetup(value = "/prospect/ProspectTest.testGetByParam.xml")//, type = DatabaseOperation.CLEAN_INSERT)
     public void testGetByParam() {
         ParameterizedTypeReference<List<Prospect>> typeReference = new ParameterizedTypeReference<List<Prospect>>() {};
-        List<Prospect> prospects = restTemplate.exchange("/prospect?firstName=jos&lastName=vermeulen&phone=0356854598", HttpMethod.GET, null, typeReference).getBody();
-        prospects.forEach(System.out::println);
-        assertThat(prospects).isNotEmpty();
+        List<Prospect> prospects = restTemplate.exchange("/prospect?firstName=stijn", HttpMethod.GET, null, typeReference).getBody();
+        assertThat(prospects).hasSize(2);
+        assertThat(prospects.get(0).getFirstName()).isEqualTo(prospects.get(1).getFirstName()).isEqualToIgnoringCase("stijn");
     }
 }
