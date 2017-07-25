@@ -1,6 +1,6 @@
 package be.xplore.recruitment.repository;
 
-import be.xplore.recruitment.model.Prospect;
+import be.xplore.recruitment.domain.model.Prospect;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.CrudRepository;
@@ -16,7 +16,11 @@ import java.util.List;
 
 @RepositoryRestResource(collectionResourceRel = "prospects", path = "prospects")
 public interface ProspectRepository extends CrudRepository<Prospect, Long>, JpaSpecificationExecutor<Prospect> {
+    @Override
     List<Prospect> findAll();
 
+    Prospect findProspectByProspectId(long prospectId);
+
+    @Override
     List<Prospect> findAll(Specification<Prospect> spec);
 }

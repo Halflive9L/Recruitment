@@ -1,4 +1,4 @@
-package be.xplore.recruitment.model;
+package be.xplore.recruitment.domain.model;
 
 import javax.persistence.*;
 
@@ -73,4 +73,14 @@ public class Prospect {
         this.phone = phone;
     }
 
+    @Override
+    public String toString() {
+        return "Prospect{" +
+                "prospectId=" + prospectId +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                '}';
+    }
 }

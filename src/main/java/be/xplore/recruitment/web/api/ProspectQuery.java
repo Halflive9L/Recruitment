@@ -1,7 +1,8 @@
-package be.xplore.recruitment.api;
+package be.xplore.recruitment.web.api;
 
-import be.xplore.recruitment.model.Prospect;
+import be.xplore.recruitment.domain.model.Prospect;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -36,11 +37,23 @@ public class ProspectQuery implements Specification<Prospect> {
     public Predicate toPredicate(Root<Prospect> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
         List<Predicate> predicates = new ArrayList<>();
 
-        if (firstName != null) {
+        if (isEmptyString(firstName)) {
             predicates.add(cb.like(root.get("firstName"), firstName));
         }
-
+        if (isEmptyString(lastName)){
+            predicates.add(cb.like(root.get("lastName"), lastName));
+        }
+        if (isEmptyString(email)){
+            predicates.add(cb.like(root.get("email"), email));
+        }
+        if (isEmptyString(phone)){
+            predicates.add(cb.like(root.get("phone"), phone));
+        }
         return cb.and(predicates.toArray(new Predicate[predicates.size()]));
+    }
+
+    private boolean isEmptyString(String string) {
+        return StringUtils.hasText(string);
     }
 
     @Override

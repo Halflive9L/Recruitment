@@ -1,6 +1,5 @@
-package be.xplore.recruitment.model;
+package be.xplore.recruitment.domain.model.exceptions;
 
-import org.omg.SendingContext.RunTime;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
