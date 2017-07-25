@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dataset>
+    <applicant applicant_id="1" first_name="jos" last_name="vermeulen" date_Of_Birth="1990-01-01"
+               email="jos.vermeulen@example.com"
+               phone="0356854598" address="villermontstraat 9" education="university"/>
+    <applicant applicant_id="2" first_name="stijn" last_name="schack" date_Of_Birth="1996-01-01"
+               email="stijn.schack@example.com"
+               phone="0458723694" address="Mortsel" education="college"/>
+    <applicant applicant_id="3" first_name="lander" last_name="tuyteleers" date_Of_Birth="1996-01-01"
+               email="lander.tuyteleers@example.com" phone="0458621475"
+               address="Kontich" education="college"/>
+</dataset>

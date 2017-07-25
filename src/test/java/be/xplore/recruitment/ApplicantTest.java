@@ -87,5 +87,26 @@ public class ApplicantTest extends TestBase {
         assertThat(prospects.get(0).getFirstName()).isEqualTo(prospects.get(1).getFirstName()).isEqualToIgnoringCase("stijn");
     }
 
+    @Test
+    @DatabaseSetup(value = "/applicant/ApplicantTest.testUpdateApplicant.setup.xml")
+    @ExpectedDatabase(value = "/applicant/ApplicantTest.testUpdateApplicant.expected.xml", assertionMode = DatabaseAssertionMode.NON_STRICT)
+    public void testUpdateApplicant() {
+        String jsonBody = "{" +
+                "\"firstName\":\"lander\"," +
+                "\"lastName\":\"tuyteleers\"," +
+                "\"dateOfBirth\":\"1996-01-01\"," +
+                "\"email\":\"lander.tuyteleers@example.com\"," +
+                "\"phone\":\"0458621475\"," +
+                "\"address\":\"Kontich\", " +
+                "\"education\":\"college\"" +
+                "}";
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<String> httpEntity = new HttpEntity<>(jsonBody, headers);
+        restTemplate.put("/applicant/3", httpEntity, ResponseEntity.class);
+
+    }
+
 
 }

@@ -52,10 +52,10 @@ public class ApplicantController {
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/applicant/{applicantId}")
-    public Applicant updateApplicant(@PathVariable long applicantId, @RequestBody Applicant applicant) {
+    public ResponseEntity<Applicant> updateApplicant(@PathVariable long applicantId, @RequestBody Applicant applicant) {
         Applicant foundApplicant = applicantRepository.findOne(applicantId);
         applicant.setApplicantId(foundApplicant.getApplicantId());
         applicantRepository.save(applicant);
-        return applicant;
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
