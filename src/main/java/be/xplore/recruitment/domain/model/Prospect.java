@@ -1,6 +1,11 @@
 package be.xplore.recruitment.domain.model;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * @author Stijn Schack
@@ -23,18 +28,14 @@ public class Prospect {
     @Column
     private String phone;
 
-    public Prospect(String firstName, String lastName, String email, String phone) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.phone = phone;
-    }
-
     public Prospect() {
     }
 
     public Prospect(Prospect prospect) {
-        this(prospect.getFirstName(), prospect.getLastName(), prospect.getEmail(), prospect.getPhone());
+        this.firstName = prospect.firstName;
+        this.lastName = prospect.lastName;
+        this.email = prospect.email;
+        this.phone = prospect.phone;
     }
 
     public long getProspectId() {
