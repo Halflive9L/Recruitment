@@ -4,6 +4,6 @@ package be.xplore.recruitment.domain.prospect;
  * @author Stijn Schack
  * @since 7/25/2017
  */
-public class createProspectUseCase {
-
+public interface CreateProspect {
+    void createProspect();
 }

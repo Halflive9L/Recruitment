@@ -7,7 +7,7 @@ import java.util.Date;
  * @author Stijn Schack
  * @since 7/20/2017
  */
-public class Applicant {
+class Applicant {
     private long applicantId;
     private String firstName;
     private String lastName;
@@ -17,10 +17,7 @@ public class Applicant {
     private String email;
     private String phone;
 
-    public Applicant() {
-    }
-
-    public Applicant(Applicant applicant) {
+    Applicant(Applicant applicant) {
         this.firstName = applicant.firstName;
         this.lastName = applicant.lastName;
         this.dateOfBirth = applicant.dateOfBirth;
@@ -30,67 +27,67 @@ public class Applicant {
         this.phone = applicant.phone;
     }
 
-    public long getApplicantId() {
+    long getApplicantId() {
         return applicantId;
     }
 
-    public String getFirstName() {
+    String getFirstName() {
         return firstName;
     }
 
-    public void setFirstName(String firstName) {
+    void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
-    public String getLastName() {
+    String getLastName() {
         return lastName;
     }
 
-    public void setLastName(String lastName) {
+    void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
-    public Date getDateOfBirth() {
+    Date getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(Date dateOfBirth) {
+    void setDateOfBirth(Date dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public String getAddress() {
+    String getAddress() {
         return address;
     }
 
-    public void setAddress(String address) {
+    void setAddress(String address) {
         this.address = address;
     }
 
-    public String getEducation() {
+    String getEducation() {
         return education;
     }
 
-    public void setEducation(String education) {
+    void setEducation(String education) {
         this.education = education;
     }
 
-    public String getEmail() {
+    String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
+    void setEmail(String email) {
         this.email = email;
     }
 
-    public String getPhone() {
+    String getPhone() {
         return phone;
     }
 
-    public void setPhone(String phone) {
+    void setPhone(String phone) {
         this.phone = phone;
     }
 
-    public void setApplicantId(long applicantId) {
+    void setApplicantId(long applicantId) {
         this.applicantId = applicantId;
     }
 }
