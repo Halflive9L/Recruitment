@@ -8,9 +8,11 @@ import com.github.springtestdbunit.assertion.DatabaseAssertionMode;
 import net.minidev.json.JSONObject;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 
 import java.net.URI;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -19,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @since 7/20/2017
  */
 
-public class ApplicantTest extends TestBase{
+public class ApplicantTest extends TestBase {
 
     @Autowired
     private ApplicantController applicantController;
@@ -37,7 +39,7 @@ public class ApplicantTest extends TestBase{
         jsonTestObject.put("lastName", "vermeulen");
         jsonTestObject.put("dateOfBirth", "1990-01-01");
         jsonTestObject.put("address", "antwerpen");
-        jsonTestObject.put("education","none");
+        jsonTestObject.put("education", "none");
         jsonTestObject.put("email", "jos.vermeulen@example.com");
         jsonTestObject.put("phone", "0356854598");
         return jsonTestObject;
@@ -49,14 +51,12 @@ public class ApplicantTest extends TestBase{
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<String> httpEntity = new HttpEntity<>(getJsonTestObject().toJSONString(), headers);
-
-        assertThat(restTemplate.postForEntity("/applicant", httpEntity, ResponseEntity.class).getStatusCodeValue())
-                .isEqualTo(new ResponseEntity<>(HttpStatus.OK).getStatusCodeValue());
+        restTemplate.postForEntity("/applicant", httpEntity, ResponseEntity.class);
     }
 
     @Test
     @DatabaseSetup("/applicant/ApplicantTest.testGetById.xml")
-    public void testGetById(){
+    public void testGetById() {
         Applicant applicant = restTemplate.getForEntity(URI.create("/applicant/1"), Applicant.class).getBody();
         assertThat(applicant.getFirstName()).isEqualTo("jos");
         assertThat(applicant.getLastName()).isEqualTo("vermeulen");
@@ -68,7 +68,24 @@ public class ApplicantTest extends TestBase{
     }
 
     @Test
-    public void testGetByParam() {
-
+    @DatabaseSetup(value = "/applicant/ApplicantTest.testGetAll.xml")
+    public void testGetAll() {
+        ParameterizedTypeReference<List<Applicant>> typeReference = new ParameterizedTypeReference<List<Applicant>>() {
+        };
+        List<Applicant> prospects = restTemplate.exchange("/applicant", HttpMethod.GET, null, typeReference).getBody();
+        prospects.forEach(System.out::println);
+        assertThat(prospects).hasSize(3);
     }
+
+    @Test
+    @DatabaseSetup(value = "/applicant/ApplicantTest.testGetByParam.xml")
+    public void testGetByParam() {
+        ParameterizedTypeReference<List<Applicant>> typeReference = new ParameterizedTypeReference<List<Applicant>>() {
+        };
+        List<Applicant> prospects = restTemplate.exchange("/applicant?firstName=stijn", HttpMethod.GET, null, typeReference).getBody();
+        assertThat(prospects).hasSize(2);
+        assertThat(prospects.get(0).getFirstName()).isEqualTo(prospects.get(1).getFirstName()).isEqualToIgnoringCase("stijn");
+    }
+
+
 }
