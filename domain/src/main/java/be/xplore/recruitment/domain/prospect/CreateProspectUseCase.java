@@ -8,7 +8,7 @@ import be.xplore.recruitment.domain.exception.NotFoundException;
  * @author Stijn Schack
  * @since 7/25/2017
  */
-class CreateProspectUseCase implements CreateProspect {
+public class CreateProspectUseCase implements CreateProspect {
     private final ProspectRepository repository;
 
     CreateProspectUseCase(ProspectRepository repository) {

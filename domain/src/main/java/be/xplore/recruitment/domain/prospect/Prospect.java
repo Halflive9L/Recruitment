@@ -20,12 +20,12 @@ public class Prospect {
     public Prospect() {
     }
 
-    public Prospect(long prospectId, Prospect prospect) {
+    Prospect(long prospectId, Prospect prospect) {
         this(prospect.getFirstName(), prospect.getLastName(), prospect.getEmail(), prospect.getPhone());
         this.prospectId = prospectId;
     }
 
-    public Prospect(String firstName, String lastName, String email, String phone) {
+    private Prospect(String firstName, String lastName, String email, String phone) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -49,7 +49,7 @@ public class Prospect {
         return firstName;
     }
 
-    public void setFirstName(String firstName) {
+    void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
@@ -57,7 +57,7 @@ public class Prospect {
         return lastName;
     }
 
-    public void setLastName(String lastName) {
+    void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
@@ -65,7 +65,7 @@ public class Prospect {
         return email;
     }
 
-    public void setEmail(String email) {
+    void setEmail(String email) {
         this.email = email;
     }
 
@@ -73,7 +73,7 @@ public class Prospect {
         return phone;
     }
 
-    public void setPhone(String phone) {
+    void setPhone(String phone) {
         this.phone = phone;
     }
 
@@ -88,27 +88,27 @@ public class Prospect {
                 '}';
     }
 
-    static class ProspectBuilder {
+    public static class ProspectBuilder {
         private String firstName;
         private String lastName;
         private String email;
         private String phone;
 
-        ProspectBuilder(String firstName, String lastName) {
+        public ProspectBuilder(String firstName, String lastName) {
             this.firstName = firstName;
             this.lastName = lastName;
         }
 
-        Prospect createProspect() {
+        public Prospect createProspect() {
             return new Prospect(firstName, lastName, email, phone);
         }
 
-        ProspectBuilder setEmail(String email) {
+        public ProspectBuilder setEmail(String email) {
             this.email = email;
             return this;
         }
 
-        ProspectBuilder setPhone(String phone) {
+        public ProspectBuilder setPhone(String phone) {
             this.phone = phone;
             return this;
         }

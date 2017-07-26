@@ -1,5 +1,17 @@
+buildscript {
+    ext {
+        springBootVersion = '1.5.4.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+apply plugin: 'org.springframework.boot'
 dependencies {
     compile project(':domain')
-    compile('org.springframework.boot:spring-boot-starter-data-rest:1.0.0.RELEASE')
+    compile("org.springframework.boot:spring-boot-starter-web")
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
