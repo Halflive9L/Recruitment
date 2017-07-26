@@ -1,6 +1,5 @@
-package be.xplore.recruitment.web.controller;
+package be.xplore.recruitment.persistence.prospect;
 
-import be.xplore.recruitment.domain.model.Prospect;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.StringUtils;
 
@@ -11,7 +10,7 @@ import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProspectQuery implements Specification<Prospect> {
+public class ProspectQuery implements Specification<JpaProspect> {
     private String firstName;
     private String lastName;
     private String email;
@@ -34,19 +33,19 @@ public class ProspectQuery implements Specification<Prospect> {
     }
 
     @Override
-    public Predicate toPredicate(Root<Prospect> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+    public Predicate toPredicate(Root<JpaProspect> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
         List<Predicate> predicates = new ArrayList<>();
 
         if (isEmptyString(firstName)) {
             predicates.add(cb.like(root.get("firstName"), firstName));
         }
-        if (isEmptyString(lastName)){
+        if (isEmptyString(lastName)) {
             predicates.add(cb.like(root.get("lastName"), lastName));
         }
-        if (isEmptyString(email)){
+        if (isEmptyString(email)) {
             predicates.add(cb.like(root.get("email"), email));
         }
-        if (isEmptyString(phone)){
+        if (isEmptyString(phone)) {
             predicates.add(cb.like(root.get("phone"), phone));
         }
         return cb.and(predicates.toArray(new Predicate[predicates.size()]));

@@ -3,8 +3,8 @@ package be.xplore.recruitment.persistence.prospect;
 
 import be.xplore.recruitment.domain.prospect.Prospect;
 import be.xplore.recruitment.domain.prospect.ProspectRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,7 +17,7 @@ import static be.xplore.recruitment.persistence.prospect.JpaProspect.QUERY_FIND_
  */
 public class ProspectRepoJpa implements ProspectRepository {
 
-    @Inject
+    @Autowired
     private EntityManager entityManager;
 
     public void setEntityManager(EntityManager entityManager) {
@@ -57,13 +57,9 @@ public class ProspectRepoJpa implements ProspectRepository {
     }
 
     private Prospect toProspect(JpaProspect jpaProspect) {
-        Prospect result = new Prospect();
-        result.setFirstName(jpaProspect.getFirstName());
-        result.setPhone(jpaProspect.getPhone());
-        result.setLastName(jpaProspect.getLastName());
-        result.setEmail(jpaProspect.getEmail());
-
-        return result;
+        return new Prospect.ProspectBuilder(jpaProspect.getFirstName(), jpaProspect.getLastName())
+                .setEmail(jpaProspect.getEmail())
+                .setPhone(jpaProspect.getPhone()).createProspect();
     }
 
 
