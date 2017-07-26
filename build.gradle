@@ -1,4 +1,4 @@
-subprojects{
+subprojects {
     apply plugin: 'java'
     apply plugin: 'checkstyle'
     apply plugin: 'eclipse'
@@ -8,5 +8,10 @@ subprojects{
 
     repositories {
         mavenCentral()
+    }
+
+    dependencies {
+        testCompile 'junit:junit:4.12'
+        testCompile group: 'org.mockito', name: 'mockito-all', version: '1.8.4'
     }
 }

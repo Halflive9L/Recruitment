@@ -5,5 +5,5 @@ package be.xplore.recruitment.domain.prospect;
  * @since 7/25/2017
  */
 public interface CreateProspect {
-    void createProspect();
+    void createProspect(Prospect prospect);
 }
