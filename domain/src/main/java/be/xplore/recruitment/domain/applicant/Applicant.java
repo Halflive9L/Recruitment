@@ -22,7 +22,7 @@ public class Applicant {
     private String email;
     private String phone;
 
-    public Applicant(String firstName, String lastName, Date dateOfBirth, String address, String education, String email, String phone) {
+    private Applicant(String firstName, String lastName, Date dateOfBirth, String address, String education, String email, String phone) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
