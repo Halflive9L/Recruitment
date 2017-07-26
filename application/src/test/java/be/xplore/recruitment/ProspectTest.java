@@ -1,5 +1,6 @@
 package be.xplore.recruitment;
 
+import be.xplore.recruitment.domain.prospect.Prospect;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.ExpectedDatabase;
 import com.github.springtestdbunit.assertion.DatabaseAssertionMode;

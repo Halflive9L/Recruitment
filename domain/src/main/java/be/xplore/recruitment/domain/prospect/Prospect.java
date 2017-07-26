@@ -25,7 +25,7 @@ public class Prospect {
         this.prospectId = prospectId;
     }
 
-    private Prospect(String firstName, String lastName, String email, String phone) {
+    public Prospect(String firstName, String lastName, String email, String phone) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;

@@ -12,7 +12,8 @@ import java.util.stream.Collectors;
 import static be.xplore.recruitment.persistence.prospect.JpaProspect.QUERY_FIND_ALL;
 
 /**
- * Created by Lander on 26/07/2017.
+ * @author Lander
+ * @since 26/07/2017
  */
 public class ProspectRepoJpa implements ProspectRepository {
 

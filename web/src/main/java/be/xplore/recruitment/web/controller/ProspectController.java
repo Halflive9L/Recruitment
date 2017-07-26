@@ -18,7 +18,6 @@ import java.util.List;
 
 @RestController
 public class ProspectController {
-    private final ProspectRepository prospectRepository;
 
     @Autowired
     public ProspectController(ProspectRepository prospectRepository) {
