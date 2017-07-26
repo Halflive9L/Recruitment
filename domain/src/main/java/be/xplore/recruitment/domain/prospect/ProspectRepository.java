@@ -8,6 +8,8 @@ import java.util.List;
  */
 public interface ProspectRepository {
     void createProspect(Prospect prospect);
+
     List<Prospect> findAll();
+
     Prospect findProspectById(long id);
 }

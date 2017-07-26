@@ -1,6 +1,5 @@
 package be.xplore.recruitment.persistence.applicant;
 
-
 import be.xplore.recruitment.domain.applicant.Applicant;
 import org.springframework.data.jpa.domain.Specification;
 

@@ -6,10 +6,10 @@ import be.xplore.recruitment.domain.prospect.ProspectRepository;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
-import static be.xplore.recruitment.persistence.prospect.JpaProspect.*;
+import static be.xplore.recruitment.persistence.prospect.JpaProspect.QUERY_FIND_ALL;
 
 /**
  * Created by Lander on 26/07/2017.
@@ -19,6 +19,9 @@ public class ProspectRepoJpa implements ProspectRepository {
     @Inject
     private EntityManager entityManager;
 
+    public void setEntityManager(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
 
     @Override
     public void createProspect(Prospect prospect) {
@@ -34,19 +37,7 @@ public class ProspectRepoJpa implements ProspectRepository {
     public List<Prospect> findAll() {
         List<JpaProspect> list = entityManager.createNamedQuery(QUERY_FIND_ALL)
                 .getResultList();
-        List<Prospect> result = new ArrayList<>();
-        for (JpaProspect p : list) {
-            result.add(toProspect(p));
-        }
-    return result;
-}
-
-    private Prospect toProspect(JpaProspect jpaProspect) {
-        Prospect result = new Prospect();
-        result.setFirstName(jpaProspect.getFirstName());
-        result.setPhone(jpaProspect.getPhone());
-        result.setLastName(jpaProspect.getLastName());
-        result.setEmail(jpaProspect.getEmail());
+        List<Prospect> result = list.stream().map(this::toProspect).collect(Collectors.toList());
         return result;
     }
 
@@ -64,7 +55,15 @@ public class ProspectRepoJpa implements ProspectRepository {
         return toProspect(jpaProspect);
     }
 
-    public void setEntityManager(EntityManager entityManager) {
-        this.entityManager = entityManager;
+    private Prospect toProspect(JpaProspect jpaProspect) {
+        Prospect result = new Prospect();
+        result.setFirstName(jpaProspect.getFirstName());
+        result.setPhone(jpaProspect.getPhone());
+        result.setLastName(jpaProspect.getLastName());
+        result.setEmail(jpaProspect.getEmail());
+
+        return result;
     }
+
+
 }
