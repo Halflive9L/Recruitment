@@ -11,4 +11,6 @@ public interface ApplicantRepository {
     List<Applicant> findAll();
 
     void createApplicant(Applicant a);
+
+    Applicant findApplicantById(long id);
 }
