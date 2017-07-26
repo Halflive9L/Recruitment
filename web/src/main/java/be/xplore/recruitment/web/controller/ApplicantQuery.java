@@ -26,7 +26,6 @@ public class ApplicantQuery implements Specification<Applicant> {
     private String address;
     private Date dateOfBirth;
 
-
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }

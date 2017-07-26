@@ -5,14 +5,14 @@ package be.xplore.recruitment.domain.prospect;
  * @since 7/18/2017
  */
 
-class Prospect {
+public class Prospect {
     private long prospectId;
     private String firstName;
     private String lastName;
     private String email;
     private String phone;
 
-    Prospect() {
+    public Prospect() {
     }
 
     Prospect(Prospect prospect) {
@@ -22,41 +22,42 @@ class Prospect {
         this.phone = prospect.phone;
     }
 
-    long getProspectId() {
+    public long getProspectId() {
         return prospectId;
     }
 
-    String getFirstName() {
+    public String getFirstName() {
         return firstName;
     }
 
-    void setFirstName(String firstName) {
+    public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
-    String getLastName() {
+    public String getLastName() {
         return lastName;
     }
 
-    void setLastName(String lastName) {
+    public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
-    String getEmail() {
+    public String getEmail() {
         return email;
     }
 
-    void setEmail(String email) {
+    public void setEmail(String email) {
         this.email = email;
     }
 
-    String getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    void setPhone(String phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
+
 
     @Override
     public String toString() {

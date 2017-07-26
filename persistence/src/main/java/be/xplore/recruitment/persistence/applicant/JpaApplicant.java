@@ -1,23 +1,49 @@
-package be.xplore.recruitment.domain.applicant;
+package be.xplore.recruitment.persistence.applicant;
 
-
+import javax.persistence.*;
 import java.util.Date;
 
 /**
- * @author Stijn Schack
- * @since 7/20/2017
+ * Created by Lander on 26/07/2017.
  */
-public class Applicant {
+
+@Entity
+@Table(name = "Applicant")
+@NamedQueries({
+        @NamedQuery(name = JpaApplicant.QUERY_FIND_BY_ID, query = "SELECT a from Applicent a where a.prospectId = :prospectId"),
+        @NamedQuery(name = JpaApplicant.QUERY_FIND_ALL, query = "SELECT a from Prospect a") })
+
+public class JpaApplicant {
+
+        public static final String QUERY_FIND_BY_ID = "Applicant.findApplicantById";
+        public static final String QUERY_FIND_ALL = "Applicant.findAll";
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long applicantId;
+
+    @Column
     private String firstName;
+
+    @Column
     private String lastName;
+
+    @Column
     private Date dateOfBirth;
+
+    @Column
     private String address;
+
+    @Column
     private String education;
+
+    @Column
     private String email;
+
+    @Column
     private String phone;
 
-    public Applicant(Applicant applicant) {
+    public JpaApplicant(JpaApplicant applicant) {
         this.firstName = applicant.firstName;
         this.lastName = applicant.lastName;
         this.dateOfBirth = applicant.dateOfBirth;
@@ -90,4 +116,5 @@ public class Applicant {
     public void setApplicantId(long applicantId) {
         this.applicantId = applicantId;
     }
+
 }

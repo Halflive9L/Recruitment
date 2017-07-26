@@ -1,6 +1,6 @@
-package be.xplore.recruitment.persistence;
+package be.xplore.recruitment.persistence.prospect;
 
-import be.xplore.recruitment.domain.model.Prospect;
+import be.xplore.recruitment.domain.prospect.Prospect;
 import org.springframework.data.jpa.domain.Specification;
 
 /**
