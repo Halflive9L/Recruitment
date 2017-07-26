@@ -23,6 +23,14 @@ public class Applicant {
     private String email;
     private String phone;
 
+    public Applicant(long applicantId, Applicant applicant) {
+        this(applicant.getFirstName(), applicant.getLastName(),
+                applicant.getDateOfBirth(),
+                applicant.getAddress(), applicant.getEducation(),
+                applicant.getEmail(), applicant.getPhone());
+        this.applicantId = applicantId;
+    }
+
     private Applicant(String firstName, String lastName,
                       Date dateOfBirth, String address,
                       String education, String email, String phone) {
@@ -125,24 +133,29 @@ public class Applicant {
             this.lastName = lastName;
         }
 
-        public void setDateOfBirth(Date dateOfBirth) {
+        public ApplicantBuilder setDateOfBirth(Date dateOfBirth) {
             this.dateOfBirth = dateOfBirth;
+            return this;
         }
 
-        public void setAddress(String address) {
+        public ApplicantBuilder setAddress(String address) {
             this.address = address;
+            return this;
         }
 
-        public void setEducation(String education) {
+        public ApplicantBuilder setEducation(String education) {
             this.education = education;
+            return this;
         }
 
-        public void setEmail(String email) {
+        public ApplicantBuilder setEmail(String email) {
             this.email = email;
+            return this;
         }
 
-        public void setPhone(String phone) {
+        public ApplicantBuilder setPhone(String phone) {
             this.phone = phone;
+            return this;
         }
 
         public Applicant createApplicant() {

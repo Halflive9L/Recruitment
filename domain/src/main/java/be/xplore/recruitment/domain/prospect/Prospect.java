@@ -20,6 +20,11 @@ public class Prospect {
     public Prospect() {
     }
 
+    public Prospect(long prospectId, Prospect prospect) {
+        this(prospect.getFirstName(), prospect.getLastName(), prospect.getEmail(), prospect.getPhone());
+        this.prospectId = prospectId;
+    }
+
     private Prospect(String firstName, String lastName, String email, String phone) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -98,12 +103,14 @@ public class Prospect {
             return new Prospect(firstName, lastName, email, phone);
         }
 
-        public void setEmail(String email) {
+        ProspectBuilder setEmail(String email) {
             this.email = email;
+            return this;
         }
 
-        public void setPhone(String phone) {
+        ProspectBuilder setPhone(String phone) {
             this.phone = phone;
+            return this;
         }
     }
 }
