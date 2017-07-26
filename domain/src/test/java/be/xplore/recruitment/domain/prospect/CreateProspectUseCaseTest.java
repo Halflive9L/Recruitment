@@ -13,7 +13,7 @@ import org.mockito.runners.MockitoJUnitRunner;
  * @since 7/26/2017
  */
 @RunWith(MockitoJUnitRunner.class)
-public class ProspectUseCaseTest {
+public class CreateProspectUseCaseTest {
 
     @Mock
     private ProspectRepository repository;

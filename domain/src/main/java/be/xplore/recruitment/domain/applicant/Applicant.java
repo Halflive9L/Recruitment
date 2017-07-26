@@ -1,7 +1,12 @@
 package be.xplore.recruitment.domain.applicant;
 
 
+import be.xplore.recruitment.domain.exception.InvalidEmailException;
+import be.xplore.recruitment.domain.exception.InvalidPhoneException;
+
 import java.util.Date;
+
+import static be.xplore.recruitment.domain.util.Validator.*;
 
 /**
  * @author Stijn Schack
@@ -17,14 +22,21 @@ public class Applicant {
     private String email;
     private String phone;
 
-    public Applicant(Applicant applicant) {
-        this.firstName = applicant.firstName;
-        this.lastName = applicant.lastName;
-        this.dateOfBirth = applicant.dateOfBirth;
-        this.address = applicant.address;
-        this.education = applicant.education;
-        this.email = applicant.email;
-        this.phone = applicant.phone;
+    public Applicant(String firstName, String lastName, Date dateOfBirth, String address, String education, String email, String phone) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.dateOfBirth = dateOfBirth;
+        this.address = address;
+        this.education = education;
+        this.email = email;
+        this.phone = phone;
+    }
+
+    void validateApplicant() {
+        if (!isNullOrEmpty(email) && !isValidEmail(email))
+            throw new InvalidEmailException();
+        if (!isNullOrEmpty(phone) && !isValidPhone(phone))
+            throw new InvalidPhoneException();
     }
 
     public long getApplicantId() {
@@ -89,5 +101,44 @@ public class Applicant {
 
     public void setApplicantId(long applicantId) {
         this.applicantId = applicantId;
+    }
+
+    static class ApplicantBuilder {
+        private String firstName;
+        private String lastName;
+        private Date dateOfBirth;
+        private String address;
+        private String education;
+        private String email;
+        private String phone;
+
+        public ApplicantBuilder(String firstName, String lastName) {
+            this.firstName = firstName;
+            this.lastName = lastName;
+        }
+
+        public void setDateOfBirth(Date dateOfBirth) {
+            this.dateOfBirth = dateOfBirth;
+        }
+
+        public void setAddress(String address) {
+            this.address = address;
+        }
+
+        public void setEducation(String education) {
+            this.education = education;
+        }
+
+        public void setEmail(String email) {
+            this.email = email;
+        }
+
+        public void setPhone(String phone) {
+            this.phone = phone;
+        }
+
+        public Applicant createApplicant() {
+            return new Applicant(firstName, lastName, dateOfBirth, address, education, email, phone);
+        }
     }
 }
