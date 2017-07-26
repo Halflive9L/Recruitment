@@ -23,7 +23,9 @@ public class Applicant {
     private String email;
     private String phone;
 
-    private Applicant(String firstName, String lastName, Date dateOfBirth, String address, String education, String email, String phone) {
+    private Applicant(String firstName, String lastName,
+                      Date dateOfBirth, String address,
+                      String education, String email, String phone) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
@@ -34,12 +36,15 @@ public class Applicant {
     }
 
     void validateApplicant() {
-        if (!isNullOrEmpty(email) && !isValidEmail(email))
+        if (!isNullOrEmpty(email) && !isValidEmail(email)) {
             throw new InvalidEmailException();
-        if (!isNullOrEmpty(phone) && !isValidPhone(phone))
+        }
+        if (!isNullOrEmpty(phone) && !isValidPhone(phone)) {
             throw new InvalidPhoneException();
-        if (dateOfBirth != null && !isValidDate(dateOfBirth))
+        }
+        if (dateOfBirth != null && !isValidDate(dateOfBirth)) {
             throw new InvalidDateException();
+        }
     }
 
     public long getApplicantId() {

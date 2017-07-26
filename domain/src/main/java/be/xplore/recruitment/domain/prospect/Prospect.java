@@ -28,10 +28,12 @@ public class Prospect {
     }
 
     void validateProspect() throws InvalidEmailException, InvalidPhoneException {
-        if (!isNullOrEmpty(email) && !isValidEmail(email))
+        if (!isNullOrEmpty(email) && !isValidEmail(email)) {
             throw new InvalidEmailException();
-        if (!isNullOrEmpty(phone) && !isValidPhone(phone))
+        }
+        if (!isNullOrEmpty(phone) && !isValidPhone(phone)) {
             throw new InvalidPhoneException();
+        }
     }
 
     long getProspectId() {
