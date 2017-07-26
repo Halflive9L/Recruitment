@@ -13,4 +13,14 @@ public class ApplicantRepoJpa implements ApplicantRepository {
     public List<Applicant> findAll() {
         return null;
     }
+
+    @Override
+    public void createApplicant(Applicant a) {
+
+    }
+
+    @Override
+    public Applicant findApplicantById(long id) {
+        return null;
+    }
 }
