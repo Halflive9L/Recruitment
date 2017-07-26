@@ -14,6 +14,7 @@ class CreateProspectUseCase implements CreateProspect {
         this.repository = repository;
     }
 
+    @Override
     public void createProspect(Prospect p) throws InvalidEmailException, InvalidPhoneException {
         p.validateProspect();
         repository.createProspect(p);
