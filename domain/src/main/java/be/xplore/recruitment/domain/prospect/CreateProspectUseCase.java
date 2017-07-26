@@ -22,9 +22,7 @@ class CreateProspectUseCase implements CreateProspect {
         Prospect prospect = new Prospect(request.prospect.getFirstName(),
                 request.prospect.getLastName(), request.prospect.getEmail(),
                 request.prospect.getPhone());
-
         storeProspect(prospect);
-
         output.onResponse(prospect.getProspectId());
     }
 
