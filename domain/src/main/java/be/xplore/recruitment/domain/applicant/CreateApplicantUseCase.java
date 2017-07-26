@@ -1,5 +1,6 @@
 package be.xplore.recruitment.domain.applicant;
 
+import be.xplore.recruitment.domain.exception.InvalidDateException;
 import be.xplore.recruitment.domain.exception.InvalidEmailException;
 import be.xplore.recruitment.domain.exception.InvalidPhoneException;
 
@@ -14,7 +15,7 @@ class CreateApplicantUseCase {
         this.repository = repository;
     }
 
-    void createApplicant(Applicant a) throws InvalidEmailException, InvalidPhoneException {
+    void createApplicant(Applicant a) throws InvalidEmailException, InvalidPhoneException, InvalidDateException {
         a.validateApplicant();
         repository.createApplicant(a);
     }

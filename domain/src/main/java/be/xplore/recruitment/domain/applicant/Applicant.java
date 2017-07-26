@@ -1,6 +1,7 @@
 package be.xplore.recruitment.domain.applicant;
 
 
+import be.xplore.recruitment.domain.exception.InvalidDateException;
 import be.xplore.recruitment.domain.exception.InvalidEmailException;
 import be.xplore.recruitment.domain.exception.InvalidPhoneException;
 
@@ -37,6 +38,8 @@ public class Applicant {
             throw new InvalidEmailException();
         if (!isNullOrEmpty(phone) && !isValidPhone(phone))
             throw new InvalidPhoneException();
+        if (dateOfBirth != null && !isValidDate(dateOfBirth))
+            throw new InvalidDateException();
     }
 
     public long getApplicantId() {

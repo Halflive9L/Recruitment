@@ -1,5 +1,7 @@
 package be.xplore.recruitment.domain.util;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -26,5 +28,10 @@ public class Validator {
 
     public static boolean isNullOrEmpty(String s) {
         return s == null || s.isEmpty();
+    }
+
+    public static boolean isValidDate(Date date){
+        Date after = new Calendar.Builder().setDate(1900, 1, 1).build().getTime();
+        return date.after(after);
     }
 }
