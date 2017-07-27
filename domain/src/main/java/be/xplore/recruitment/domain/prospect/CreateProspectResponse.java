@@ -5,5 +5,5 @@ package be.xplore.recruitment.domain.prospect;
  * @since 26/07/2017
  */
 public interface CreateProspectResponse {
-        void onResponse(long prospectId);
+    void onResponse(long prospectId);
 }

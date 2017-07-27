@@ -27,6 +27,10 @@ public class Prospect {
         this.phone = builder.phone;
     }
 
+    public static ProspectBuilder builder(String firstName, String lastName) {
+        return new ProspectBuilder(firstName, lastName);
+    }
+
     void validateProspect() throws InvalidEmailException, InvalidPhoneException {
         if (!isNullOrEmpty(email) && !isValidEmail(email)) {
             throw new InvalidEmailException();
@@ -72,11 +76,6 @@ public class Prospect {
         this.phone = phone;
     }
 
-
-    public static ProspectBuilder builder(String firstName, String lastName) {
-        return new ProspectBuilder(firstName, lastName);
-    }
-
     @Override
     public String toString() {
         return "Prospect{" +
@@ -104,7 +103,7 @@ public class Prospect {
             return new Prospect(this);
         }
 
-        public ProspectBuilder withId(long id){
+        public ProspectBuilder withId(long id) {
             this.prospectId = id;
             return this;
         }

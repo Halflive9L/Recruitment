@@ -27,7 +27,6 @@ public abstract class TestBase {
     protected TestRestTemplate restTemplate;
 
 
-
     protected abstract JSONObject getJsonTestObject();
 
 }

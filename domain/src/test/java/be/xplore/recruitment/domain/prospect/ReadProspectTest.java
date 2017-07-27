@@ -76,7 +76,7 @@ public class ReadProspectTest {
     }
 
     @Test
-    public void testReadProspectById_IdDoesNotExist(){
+    public void testReadProspectById_IdDoesNotExist() {
         Prospect result = useCase.readProspectById(100);
         assertNull(result);
     }

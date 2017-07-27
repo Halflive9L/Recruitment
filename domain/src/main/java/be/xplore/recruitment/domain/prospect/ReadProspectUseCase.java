@@ -6,7 +6,7 @@ import java.util.List;
  * @author Stijn Schack
  * @since 7/26/2017
  */
-public class ReadProspectUseCase implements ReadProspect{
+public class ReadProspectUseCase implements ReadProspect {
 
     private final ProspectRepository repository;
 

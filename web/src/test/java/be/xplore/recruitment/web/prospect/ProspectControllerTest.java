@@ -29,9 +29,9 @@ public class ProspectControllerTest {
 
     @Test
     public void addProspectTest() {
-        ArgumentCaptor<CreateProspectRequest> requestArgumentCaptor = ArgumentCaptor.forClass(CreateProspectRequest.class);
+        ArgumentCaptor<CreateProspectRequest> captor = ArgumentCaptor.forClass(CreateProspectRequest.class);
         assertEquals(controller.addProspect(new JsonProspect()).getStatusCodeValue(), HttpStatus.CREATED.value());
-        verify(createProspect).createProspect(requestArgumentCaptor.capture(), isA(CreateProspectResponse.class));
-        System.out.println(requestArgumentCaptor.getValue());
+        verify(createProspect).createProspect(captor.capture(), isA(CreateProspectResponse.class));
+        System.out.println(captor.getValue());
     }
 }

@@ -1,6 +1,13 @@
 package be.xplore.recruitment.persistence.applicant;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 import java.util.Date;
 
 /**
@@ -10,8 +17,10 @@ import java.util.Date;
 @Entity
 @Table(name = "Applicant")
 @NamedQueries({
-        @NamedQuery(name = JpaApplicant.QUERY_FIND_BY_ID, query = "SELECT a from JpaApplicant a where a.applicantId = :applicantId")})//,
-        //@NamedQuery(name = JpaApplicant.QUERY_FIND_ALL, query = "SELECT a from JpaApplicant a")})
+        @NamedQuery(name = JpaApplicant.QUERY_FIND_BY_ID,
+                query = "SELECT a from JpaApplicant a where a.applicantId = :applicantId")})
+//,
+//@NamedQuery(name = JpaApplicant.QUERY_FIND_ALL, query = "SELECT a from JpaApplicant a")})
 
 public class JpaApplicant {
 
@@ -56,6 +65,10 @@ public class JpaApplicant {
 
     public long getApplicantId() {
         return applicantId;
+    }
+
+    public void setApplicantId(long applicantId) {
+        this.applicantId = applicantId;
     }
 
     public String getFirstName() {
@@ -112,10 +125,6 @@ public class JpaApplicant {
 
     public void setPhone(String phone) {
         this.phone = phone;
-    }
-
-    public void setApplicantId(long applicantId) {
-        this.applicantId = applicantId;
     }
 
 }
