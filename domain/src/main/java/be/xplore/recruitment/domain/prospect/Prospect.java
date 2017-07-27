@@ -17,9 +17,6 @@ public class Prospect {
     private String email;
     private String phone;
 
-    public Prospect() {
-    }
-
     Prospect(long prospectId, Prospect prospect) {
         this(prospect.getFirstName(), prospect.getLastName(), prospect.getEmail(), prospect.getPhone());
         this.prospectId = prospectId;
