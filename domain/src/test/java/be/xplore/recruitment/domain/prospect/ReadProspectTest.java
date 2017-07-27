@@ -1,17 +1,18 @@
 package be.xplore.recruitment.domain.prospect;
 
+import be.xplore.recruitment.domain.exception.InvalidEmailException;
+import be.xplore.recruitment.domain.exception.NotFoundException;
 import org.hamcrest.CoreMatchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.List;
 
 import static java.util.Arrays.asList;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.*;
 
 /**
  * @author Stijn Schack
@@ -49,6 +50,15 @@ public class ReadProspectTest {
             }
             return null;
         }
+
+        @Override
+        public void deleteProspect(long id) {
+        }
+
+        @Override
+        public Prospect updateProspect() {
+            return null;
+        }
     };
 
     private ReadProspect useCase;
@@ -58,26 +68,28 @@ public class ReadProspectTest {
         useCase = new ReadProspectUseCase(repository);
     }
 
+
     @Test
     public void testReadAllProspects() {
-        List<Prospect> allProspects = useCase.readAllProspects();
-        allProspects.forEach(System.out::println);
-        assertThat(allProspects, CoreMatchers.equalTo(asList(prospects)));
+            final Prospect[][] prospectResponse = new Prospect[1][2];
+            useCase.readAllProspects(prospects -> prospectResponse[0] = (Prospect[]) prospects.toArray());
+        for (int i = 0; i < 2; i++) {
+            System.out.println(prospectResponse[0][i]);
+        }
+        assertArrayEquals(prospects, prospectResponse[0]);
     }
 
     @Test
     public void testReadProspectById() {
-        Prospect result = useCase.readProspectById(1);
-        Prospect expected = prospects[0];
-        assertEquals(result.getFirstName(), expected.getFirstName());
-        assertEquals(result.getLastName(), expected.getLastName());
-        assertEquals(result.getEmail(), expected.getEmail());
-        assertEquals(result.getPhone(), expected.getPhone());
+        ReadProspectRequest request = new ReadProspectRequest();
+        request.prospectId = 1;
+        useCase.readProspectById(request, Prospect -> {});
     }
 
-    @Test
+    @Test(expected = NotFoundException.class)
     public void testReadProspectById_IdDoesNotExist() {
-        Prospect result = useCase.readProspectById(100);
-        assertNull(result);
+        ReadProspectRequest request = new ReadProspectRequest();
+        request.prospectId = 63544;
+        useCase.readProspectById(request, Prospect -> {});
     }
 }

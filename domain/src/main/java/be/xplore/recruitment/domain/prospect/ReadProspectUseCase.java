@@ -1,5 +1,7 @@
 package be.xplore.recruitment.domain.prospect;
 
+import be.xplore.recruitment.domain.exception.NotFoundException;
+
 import java.util.List;
 
 /**
@@ -15,12 +17,14 @@ public class ReadProspectUseCase implements ReadProspect {
     }
 
     @Override
-    public List<Prospect> readAllProspects() {
-        return repository.findAll();
+    public void readAllProspects(ReadAllProspectsResponse response) {
+        response.onResponse(repository.findAll());
     }
 
     @Override
-    public Prospect readProspectById(long id) {
-        return repository.findProspectById(id);
+    public void readProspectById(ReadProspectRequest request, ReadProspectResponse response) {
+        if (repository.findProspectById(request.prospectId) == null) throw new NotFoundException();
+        response.onResponse(repository.findProspectById(request.prospectId));
+
     }
 }

@@ -14,7 +14,7 @@ import org.mockito.runners.MockitoJUnitRunner;
  * @since 7/26/2017
  */
 @RunWith(MockitoJUnitRunner.class)
-public class CreateProspectTest {
+public class DeleteProspectTest {
 
     @Mock
     private ProspectRepository repository;

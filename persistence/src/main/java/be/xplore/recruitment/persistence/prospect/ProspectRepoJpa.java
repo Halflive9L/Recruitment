@@ -69,6 +69,16 @@ public class ProspectRepoJpa implements ProspectRepository {
         return toProspect(jpaProspect);
     }
 
+    @Override
+    public void deleteProspect(long id) {
+
+    }
+
+    @Override
+    public Prospect updateProspect() {
+        return null;
+    }
+
     private Prospect toProspect(JpaProspect jpaProspect) {
         return new Prospect.ProspectBuilder(jpaProspect.getFirstName(), jpaProspect.getLastName())
                 .withEmail(jpaProspect.getEmail())

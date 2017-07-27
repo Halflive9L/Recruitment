@@ -30,9 +30,10 @@ public class ProspectController {
     @RequestMapping(method = RequestMethod.POST, value = "/prospect")
     public ResponseEntity<JsonProspect> addProspect(@RequestBody JsonProspect input) {
         CreateProspectRequest request = new CreateProspectRequest();
-        request.prospect = new Prospect.ProspectBuilder(input.getFirstName(), input.getLastName())
-                .withEmail(input.getEmail())
-                .withPhone(input.getPhone()).build();
+        request.firstName = input.getFirstName();
+        request.lastName = input.getLastName();
+        request.email = input.getEmail();
+        request.phone = input.getPhone();
         try {
             createProspect.createProspect(request, prospectId -> {
             });

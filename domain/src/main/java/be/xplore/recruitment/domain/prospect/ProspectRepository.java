@@ -12,4 +12,8 @@ public interface ProspectRepository {
     List<Prospect> findAll();
 
     Prospect findProspectById(long id);
+
+    void deleteProspect(long id);
+
+    Prospect updateProspect();
 }

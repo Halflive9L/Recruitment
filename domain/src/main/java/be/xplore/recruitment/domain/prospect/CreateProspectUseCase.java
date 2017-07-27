@@ -22,8 +22,17 @@ public class CreateProspectUseCase implements CreateProspect {
     @Override
     public void createProspect(CreateProspectRequest request, CreateProspectResponse response)
             throws InvalidEmailException, InvalidPhoneException {
-        request.prospect.validateProspect();
-        repository.createProspect(request.prospect);
-        response.onResponse(request.prospect.getProspectId());
+        Prospect prospect = createProspectFromRequest(request);
+        prospect.validateProspect();
+        repository.createProspect(prospect);
+        System.out.println(prospect.getProspectId());
+        response.onResponse(prospect.getProspectId());
+    }
+
+    private Prospect createProspectFromRequest(CreateProspectRequest request) {
+        return Prospect.builder(request.firstName, request.lastName)
+                .withEmail(request.email)
+                .withPhone(request.phone)
+                .withId(request.prospectId).build();
     }
 }

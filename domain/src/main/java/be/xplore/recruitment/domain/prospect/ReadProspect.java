@@ -7,7 +7,8 @@ import java.util.List;
  * @since 7/26/2017
  */
 public interface ReadProspect {
-    List<Prospect> readAllProspects();
 
-    Prospect readProspectById(long id);
+    void readAllProspects(ReadAllProspectsResponse response);
+
+    void readProspectById(ReadProspectRequest request, ReadProspectResponse response);
 }
