@@ -1,0 +1,5 @@
+dependencies {
+    compile project(':domain')
+    compile("org.springframework.boot:spring-boot-starter-web:1.5.4.RELEASE")
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
