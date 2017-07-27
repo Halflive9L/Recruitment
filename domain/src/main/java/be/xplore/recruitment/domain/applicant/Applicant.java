@@ -7,7 +7,10 @@ import be.xplore.recruitment.domain.exception.InvalidPhoneException;
 
 import java.util.Date;
 
-import static be.xplore.recruitment.domain.util.Validator.*;
+import static be.xplore.recruitment.domain.util.Validator.isNullOrEmpty;
+import static be.xplore.recruitment.domain.util.Validator.isValidDate;
+import static be.xplore.recruitment.domain.util.Validator.isValidEmail;
+import static be.xplore.recruitment.domain.util.Validator.isValidPhone;
 
 /**
  * @author Stijn Schack
@@ -110,6 +113,10 @@ public class Applicant {
         this.applicantId = applicantId;
     }
 
+    public static ApplicantBuilder builder(String firstName, String lastName) {
+        return new ApplicantBuilder(firstName, lastName);
+    }
+
     static class ApplicantBuilder {
         private long applicantId;
         private String firstName;
@@ -125,7 +132,7 @@ public class Applicant {
             this.lastName = lastName;
         }
 
-        public ApplicantBuilder withId(long id){
+        public ApplicantBuilder withId(long id) {
             this.applicantId = id;
             return this;
         }

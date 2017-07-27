@@ -3,7 +3,9 @@ package be.xplore.recruitment.domain.prospect;
 import be.xplore.recruitment.domain.exception.InvalidEmailException;
 import be.xplore.recruitment.domain.exception.InvalidPhoneException;
 
-import static be.xplore.recruitment.domain.util.Validator.*;
+import static be.xplore.recruitment.domain.util.Validator.isNullOrEmpty;
+import static be.xplore.recruitment.domain.util.Validator.isValidEmail;
+import static be.xplore.recruitment.domain.util.Validator.isValidPhone;
 
 /**
  * @author Stijn Schack
