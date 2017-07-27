@@ -34,7 +34,7 @@ public class Validator {
         return s == null || s.isEmpty();
     }
 
-    public static boolean isValidDate(Date date){
+    public static boolean isValidDate(Date date) {
         Date after = new Calendar.Builder().setDate(1900, 1, 1).build().getTime();
         return date.after(after);
     }

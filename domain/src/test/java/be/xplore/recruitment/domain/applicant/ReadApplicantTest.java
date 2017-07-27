@@ -10,7 +10,9 @@ import java.util.Calendar;
 import java.util.List;
 
 import static java.util.Arrays.asList;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThat;
 
 /**
  * @author Stijn Schack
@@ -19,18 +21,20 @@ import static org.junit.Assert.*;
 @RunWith(MockitoJUnitRunner.class)
 public class ReadApplicantTest {
     private Applicant[] applicants = {
-            new Applicant(1, new Applicant.ApplicantBuilder("john", "smith")
+            Applicant.builder("john", "smith")
+                    .withId(1)
                     .setDateOfBirth(new Calendar.Builder().setDate(1996, 10, 3).build().getTime())
                     .setAddress("Antwerp")
                     .setEducation("College")
                     .setEmail("john.smith@example.com")
-                    .setPhone("+32424963258").build()),
-            new Applicant(2, new Applicant.ApplicantBuilder("leeroy", "jenkins")
+                    .setPhone("+32424963258").build(),
+            Applicant.builder("leeroy", "jenkins")
+                    .withId(2)
                     .setDateOfBirth(new Calendar.Builder().setDate(1986, 3, 10).build().getTime())
                     .setAddress("Kontich")
                     .setEducation("University")
                     .setEmail("leeroy@jenkins.com")
-                    .setPhone("+32 420 00 1337").build())
+                    .setPhone("+32 420 00 1337").build()
     };
     private final ApplicantRepository repository = new ApplicantRepository() {
 

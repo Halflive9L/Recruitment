@@ -9,7 +9,9 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.List;
 
 import static java.util.Arrays.asList;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThat;
 
 /**
  * @author Stijn Schack
@@ -74,7 +76,7 @@ public class ReadProspectTest {
     }
 
     @Test
-    public void testReadProspectById_IdDoesNotExist(){
+    public void testReadProspectById_IdDoesNotExist() {
         Prospect result = useCase.readProspectById(100);
         assertNull(result);
     }

@@ -48,10 +48,10 @@ public class ApplicantSpecification {
             Calendar cal = Calendar.getInstance();
             cal.setTime(date);
             cal.add(Calendar.DATE, 1);
-            Date lowDate = (Date)cal.getTime();
+            Date lowDate = (Date) cal.getTime();
             cal.setTime(date);
             cal.add(Calendar.DATE, -1);
-            Date highDate = (Date)cal.getTime();
+            Date highDate = (Date) cal.getTime();
             return cb.between(root.get("dateOfBirth"), lowDate, highDate);
         };
     }

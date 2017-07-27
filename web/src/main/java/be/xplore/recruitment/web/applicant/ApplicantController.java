@@ -2,7 +2,12 @@ package be.xplore.recruitment.web.applicant;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author Stijn Schack
@@ -31,7 +36,8 @@ public class ApplicantController {
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/applicant/{applicantId}")
-    public ResponseEntity<JsonApplicant> updateApplicant(@PathVariable long applicantId, @RequestBody JsonApplicant applicant) {
+    public ResponseEntity<JsonApplicant> updateApplicant(@PathVariable long applicantId,
+                                                         @RequestBody JsonApplicant applicant) {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

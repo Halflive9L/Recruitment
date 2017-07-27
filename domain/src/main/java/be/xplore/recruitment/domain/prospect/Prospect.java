@@ -3,7 +3,9 @@ package be.xplore.recruitment.domain.prospect;
 import be.xplore.recruitment.domain.exception.InvalidEmailException;
 import be.xplore.recruitment.domain.exception.InvalidPhoneException;
 
-import static be.xplore.recruitment.domain.util.Validator.*;
+import static be.xplore.recruitment.domain.util.Validator.isNullOrEmpty;
+import static be.xplore.recruitment.domain.util.Validator.isValidEmail;
+import static be.xplore.recruitment.domain.util.Validator.isValidPhone;
 
 /**
  * @author Stijn Schack
@@ -23,6 +25,10 @@ public class Prospect {
         this.lastName = builder.lastName;
         this.email = builder.email;
         this.phone = builder.phone;
+    }
+
+    public static ProspectBuilder builder(String firstName, String lastName) {
+        return new ProspectBuilder(firstName, lastName);
     }
 
     void validateProspect() throws InvalidEmailException, InvalidPhoneException {
@@ -70,11 +76,6 @@ public class Prospect {
         this.phone = phone;
     }
 
-
-    public static ProspectBuilder builder(String firstName, String lastName) {
-        return new ProspectBuilder(firstName, lastName);
-    }
-
     @Override
     public String toString() {
         return "Prospect{" +
@@ -102,7 +103,7 @@ public class Prospect {
             return new Prospect(this);
         }
 
-        public ProspectBuilder withId(long id){
+        public ProspectBuilder withId(long id) {
             this.prospectId = id;
             return this;
         }

@@ -30,7 +30,8 @@ public class CreateProspectTest {
     public void testCreateProspect() {
         CreateProspectRequest request = new CreateProspectRequest();
         request.prospect = new Prospect.ProspectBuilder("John", "Smith").build();
-        useCase.createProspect(request, prospectId -> {});
+        useCase.createProspect(request, prospectId -> {
+        });
     }
 
     @Test(expected = InvalidEmailException.class)
@@ -38,7 +39,8 @@ public class CreateProspectTest {
         CreateProspectRequest request = new CreateProspectRequest();
         request.prospect = new Prospect.ProspectBuilder("John", "Smith")
                 .withEmail("a").build();
-        useCase.createProspect(request, prospectId -> {});
+        useCase.createProspect(request, prospectId -> {
+        });
     }
 
     @Test
@@ -46,7 +48,8 @@ public class CreateProspectTest {
         CreateProspectRequest request = new CreateProspectRequest();
         request.prospect = new Prospect.ProspectBuilder("John", "Smith")
                 .withEmail("test@example.com").build();
-        useCase.createProspect(request, prospectId -> {});
+        useCase.createProspect(request, prospectId -> {
+        });
     }
 
     @Test(expected = InvalidPhoneException.class)
@@ -54,7 +57,8 @@ public class CreateProspectTest {
         CreateProspectRequest request = new CreateProspectRequest();
         request.prospect = new Prospect.ProspectBuilder("John", "Smith")
                 .withPhone("a").build();
-        useCase.createProspect(request, prospectId -> {});
+        useCase.createProspect(request, prospectId -> {
+        });
     }
 
     @Test
@@ -62,6 +66,7 @@ public class CreateProspectTest {
         CreateProspectRequest request = new CreateProspectRequest();
         request.prospect = new Prospect.ProspectBuilder("John", "Smith")
                 .withPhone("+3248657569").build();
-        useCase.createProspect(request, prospectId -> {});
+        useCase.createProspect(request, prospectId -> {
+        });
     }
 }
