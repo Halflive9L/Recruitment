@@ -23,18 +23,18 @@ public class ReadApplicantTest {
     private Applicant[] applicants = {
             Applicant.builder("john", "smith")
                     .withId(1)
-                    .setDateOfBirth(new Calendar.Builder().setDate(1996, 10, 3).build().getTime())
-                    .setAddress("Antwerp")
-                    .setEducation("College")
-                    .setEmail("john.smith@example.com")
-                    .setPhone("+32424963258").build(),
+                    .withDateOfBirth(new Calendar.Builder().setDate(1996, 10, 3).build().getTime())
+                    .withAddress("Antwerp")
+                    .withEducation("College")
+                    .withEmail("john.smith@example.com")
+                    .withPhone("+32424963258").build(),
             Applicant.builder("leeroy", "jenkins")
                     .withId(2)
-                    .setDateOfBirth(new Calendar.Builder().setDate(1986, 3, 10).build().getTime())
-                    .setAddress("Kontich")
-                    .setEducation("University")
-                    .setEmail("leeroy@jenkins.com")
-                    .setPhone("+32 420 00 1337").build()
+                    .withDateOfBirth(new Calendar.Builder().setDate(1986, 3, 10).build().getTime())
+                    .withAddress("Kontich")
+                    .withEducation("University")
+                    .withEmail("leeroy@jenkins.com")
+                    .withPhone("+32 420 00 1337").build()
     };
     private final ApplicantRepository repository = new ApplicantRepository() {
 

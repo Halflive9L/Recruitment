@@ -137,27 +137,27 @@ public class Applicant {
             return this;
         }
 
-        public ApplicantBuilder setDateOfBirth(Date dateOfBirth) {
+        public ApplicantBuilder withDateOfBirth(Date dateOfBirth) {
             this.dateOfBirth = dateOfBirth;
             return this;
         }
 
-        public ApplicantBuilder setAddress(String address) {
+        public ApplicantBuilder withAddress(String address) {
             this.address = address;
             return this;
         }
 
-        public ApplicantBuilder setEducation(String education) {
+        public ApplicantBuilder withEducation(String education) {
             this.education = education;
             return this;
         }
 
-        public ApplicantBuilder setEmail(String email) {
+        public ApplicantBuilder withEmail(String email) {
             this.email = email;
             return this;
         }
 
-        public ApplicantBuilder setPhone(String phone) {
+        public ApplicantBuilder withPhone(String phone) {
             this.phone = phone;
             return this;
         }

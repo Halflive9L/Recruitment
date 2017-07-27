@@ -4,6 +4,7 @@ import be.xplore.recruitment.domain.exception.InvalidDateException;
 import be.xplore.recruitment.domain.exception.InvalidEmailException;
 import be.xplore.recruitment.domain.exception.InvalidPhoneException;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -29,65 +30,72 @@ public class CreateApplicantTest {
 
     @Test
     public void testCreateApplicant() {
-        CreateApplicantRequest request = new CreateApplicantRequest();
-        request.applicant = new Applicant.ApplicantBuilder("John", "Smith").build();
+        CreateApplicantRequest request = getRequestFromApplicant(Applicant.builder("John", "Smith").build());
         useCase.createApplicant(request, applicantId -> {
         });
     }
 
     @Test(expected = InvalidPhoneException.class)
     public void testCreateApplicantWithInvalidPhone() {
-        CreateApplicantRequest request = new CreateApplicantRequest();
-        request.applicant = new Applicant.ApplicantBuilder("John", "Smith")
-                .setPhone("a").build();
+        CreateApplicantRequest request = getRequestFromApplicant(Applicant.builder("John", "Smith")
+                .withPhone("a").build());
         useCase.createApplicant(request, applicantId -> {
         });
     }
 
     @Test
     public void testCreateApplicantWithValidPhone() {
-        CreateApplicantRequest request = new CreateApplicantRequest();
-        request.applicant = new Applicant.ApplicantBuilder("John", "Smith")
-                .setPhone("+32424589632").build();
+        CreateApplicantRequest request = getRequestFromApplicant(Applicant.builder("John", "Smith")
+                .withPhone("+32424589632").build());
         useCase.createApplicant(request, id -> {
         });
     }
 
     @Test(expected = InvalidEmailException.class)
     public void testCreateApplicantWithInvalidEmail() {
-        CreateApplicantRequest request = new CreateApplicantRequest();
-        request.applicant = new Applicant.ApplicantBuilder("John", "Smith")
-                .setEmail("a").build();
+        CreateApplicantRequest request = getRequestFromApplicant(Applicant.builder("John", "Smith")
+                .withEmail("a").build());
         useCase.createApplicant(request, id -> {
         });
     }
 
     @Test
     public void testCreateApplicantWithValidEmail() {
-        CreateApplicantRequest request = new CreateApplicantRequest();
-        request.applicant = new Applicant.ApplicantBuilder("John", "Smith")
-                .setEmail("test.name@example.com").build();
+        CreateApplicantRequest request = getRequestFromApplicant(Applicant.builder("John", "Smith")
+                .withEmail("test.name@example.com").build());
         useCase.createApplicant(request, id -> {
         });
     }
 
     @Test(expected = InvalidDateException.class)
     public void testCreateApplicantWithInvalidDate() {
-        CreateApplicantRequest request = new CreateApplicantRequest();
-        request.applicant = new Applicant.ApplicantBuilder("John", "Smith")
-                .setDateOfBirth(new Calendar.Builder().setDate(1899, 12, 31).build().getTime())
-                .build();
+        CreateApplicantRequest request =getRequestFromApplicant(Applicant.builder("John", "Smith")
+                .withDateOfBirth(new Calendar.Builder().setDate(1899, 12, 31).build().getTime())
+                .build());
         useCase.createApplicant(request, id -> {
         });
     }
 
     @Test
     public void testCreateApplicantWithValidDate() {
-        CreateApplicantRequest request = new CreateApplicantRequest();
-        request.applicant = new Applicant.ApplicantBuilder("John", "Smith")
-                .setDateOfBirth(new Calendar.Builder().setDate(1993, 4, 4).build().getTime())
-                .build();
+        CreateApplicantRequest request =getRequestFromApplicant(Applicant.builder("John", "Smith")
+                .withDateOfBirth(new Calendar.Builder().setDate(1993, 4, 4).build().getTime())
+                .build());
         useCase.createApplicant(request, id -> {
         });
+    }
+
+    @Ignore
+    private CreateApplicantRequest getRequestFromApplicant(Applicant applicant) {
+        CreateApplicantRequest request = new CreateApplicantRequest();
+        request.applicantId = applicant.getApplicantId();
+        request.address = applicant.getAddress();
+        request.dateOfBirth = applicant.getDateOfBirth();
+        request.education = applicant.getEducation();
+        request.firstName = applicant.getFirstName();
+        request.lastName = applicant.getLastName();
+        request.email = applicant.getEmail();
+        request.phone = applicant.getPhone();
+        return request;
     }
 }
