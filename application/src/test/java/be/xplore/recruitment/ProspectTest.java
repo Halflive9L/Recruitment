@@ -26,15 +26,7 @@ public class ProspectTest extends TestBase {
         assertThat(restTemplate).isNotNull();
     }
 
-    @Override
-    protected JSONObject getJsonTestObject() {
-        JSONObject jsonTestObject = new JSONObject();
-        jsonTestObject.put("firstName", "jos");
-        jsonTestObject.put("lastName", "vermeulen");
-        jsonTestObject.put("email", "jos.vermeulen@example.com");
-        jsonTestObject.put("phone", "03568545981");
-        return jsonTestObject;
-    }
+
 
     @Test
     @ExpectedDatabase(value = "/prospect/ProspectTest.testPOST.xml", assertionMode = DatabaseAssertionMode.NON_STRICT)
@@ -76,5 +68,10 @@ public class ProspectTest extends TestBase {
         assertThat(prospects).hasSize(2);
         assertThat(prospects.get(0).getFirstName()).isEqualTo(prospects.get(1).getFirstName())
                 .isEqualToIgnoringCase("stijn");
+    }
+
+    @Override
+    protected JSONObject getJsonTestObject() {
+        return null;
     }
 }

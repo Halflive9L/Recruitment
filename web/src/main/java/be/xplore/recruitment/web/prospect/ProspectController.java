@@ -1,6 +1,8 @@
 package be.xplore.recruitment.web.prospect;
 
+import be.xplore.recruitment.domain.prospect.CreateProspect;
 import be.xplore.recruitment.domain.prospect.CreateProspectRequest;
+import be.xplore.recruitment.domain.prospect.CreateProspectUseCase;
 import be.xplore.recruitment.domain.prospect.Prospect;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +22,8 @@ public class ProspectController {
         request.prospect = new Prospect.ProspectBuilder(input.getFirstName(), input.getLastName())
                 .setEmail(input.getEmail())
                 .setPhone(input.getPhone()).createProspect();
-
+        CreateProspect createProspect = new CreateProspectUseCase();
+        createProspect.createProspect(request, prospectId -> {});
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -40,6 +43,4 @@ public class ProspectController {
     public ResponseEntity<JsonProspect> deleteProspect(@PathVariable long prospectId) {
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
-
 }
