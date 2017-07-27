@@ -8,10 +8,12 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static be.xplore.recruitment.persistence.prospect.JpaProspect.QUERY_FIND_ALL;
+import static org.apache.commons.beanutils.BeanUtils.copyProperties;
 
 /**
  * @author Lander
@@ -31,10 +33,17 @@ public class ProspectRepoJpa implements ProspectRepository {
     @Override
     public void createProspect(Prospect prospect) {
         JpaProspect jpaProspectDatabaseInput = new JpaProspect();
-        jpaProspectDatabaseInput.setFirstName(prospect.getFirstName());
+        /*jpaProspectDatabaseInput.setFirstName(prospect.getFirstName());
         jpaProspectDatabaseInput.setLastName(prospect.getLastName());
         jpaProspectDatabaseInput.setEmail(prospect.getEmail());
-        jpaProspectDatabaseInput.setPhone(prospect.getPhone());
+        jpaProspectDatabaseInput.setPhone(prospect.getPhone());*/
+        System.out.println(prospect);
+        try {
+            copyProperties(jpaProspectDatabaseInput, prospect);
+        } catch (ReflectiveOperationException e) {
+            System.out.println("Kopieren mislukt!");
+        }
+        System.out.println(jpaProspectDatabaseInput);
         entityManager.persist(jpaProspectDatabaseInput);
     }
 

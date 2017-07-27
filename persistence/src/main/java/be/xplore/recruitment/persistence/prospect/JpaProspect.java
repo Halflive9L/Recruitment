@@ -51,7 +51,7 @@ public class JpaProspect {
         return firstName;
     }
 
-    void setFirstName(String firstName) {
+    public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
@@ -59,7 +59,7 @@ public class JpaProspect {
         return lastName;
     }
 
-    void setLastName(String lastName) {
+    public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
@@ -67,7 +67,7 @@ public class JpaProspect {
         return email;
     }
 
-    void setEmail(String email) {
+    public void setEmail(String email) {
         this.email = email;
     }
 
@@ -75,7 +75,7 @@ public class JpaProspect {
         return phone;
     }
 
-    void setPhone(String phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 
