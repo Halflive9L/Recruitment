@@ -30,7 +30,7 @@ public class CreateApplicantTest {
     @Test
     public void testCreateApplicant() {
         CreateApplicantRequest request = new CreateApplicantRequest();
-        request.applicant = new Applicant.ApplicantBuilder("John", "Smith").createApplicant();
+        request.applicant = new Applicant.ApplicantBuilder("John", "Smith").build();
         useCase.createApplicant(request, applicantId -> {
         });
     }
@@ -39,7 +39,7 @@ public class CreateApplicantTest {
     public void testCreateApplicantWithInvalidPhone() {
         CreateApplicantRequest request = new CreateApplicantRequest();
         request.applicant = new Applicant.ApplicantBuilder("John", "Smith")
-                .setPhone("a").createApplicant();
+                .setPhone("a").build();
         useCase.createApplicant(request, applicantId -> {
         });
     }
@@ -48,7 +48,7 @@ public class CreateApplicantTest {
     public void testCreateApplicantWithValidPhone() {
         CreateApplicantRequest request = new CreateApplicantRequest();
         request.applicant = new Applicant.ApplicantBuilder("John", "Smith")
-                .setPhone("+32424589632").createApplicant();
+                .setPhone("+32424589632").build();
         useCase.createApplicant(request, id -> {
         });
     }
@@ -57,7 +57,7 @@ public class CreateApplicantTest {
     public void testCreateApplicantWithInvalidEmail() {
         CreateApplicantRequest request = new CreateApplicantRequest();
         request.applicant = new Applicant.ApplicantBuilder("John", "Smith")
-                .setEmail("a").createApplicant();
+                .setEmail("a").build();
         useCase.createApplicant(request, id -> {
         });
     }
@@ -66,7 +66,7 @@ public class CreateApplicantTest {
     public void testCreateApplicantWithValidEmail() {
         CreateApplicantRequest request = new CreateApplicantRequest();
         request.applicant = new Applicant.ApplicantBuilder("John", "Smith")
-                .setEmail("test.name@example.com").createApplicant();
+                .setEmail("test.name@example.com").build();
         useCase.createApplicant(request, id -> {
         });
     }
@@ -76,7 +76,7 @@ public class CreateApplicantTest {
         CreateApplicantRequest request = new CreateApplicantRequest();
         request.applicant = new Applicant.ApplicantBuilder("John", "Smith")
                 .setDateOfBirth(new Calendar.Builder().setDate(1899, 12, 31).build().getTime())
-                .createApplicant();
+                .build();
         useCase.createApplicant(request, id -> {
         });
     }
@@ -86,7 +86,7 @@ public class CreateApplicantTest {
         CreateApplicantRequest request = new CreateApplicantRequest();
         request.applicant = new Applicant.ApplicantBuilder("John", "Smith")
                 .setDateOfBirth(new Calendar.Builder().setDate(1993, 4, 4).build().getTime())
-                .createApplicant();
+                .build();
         useCase.createApplicant(request, id -> {
         });
     }

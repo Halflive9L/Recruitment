@@ -17,16 +17,12 @@ public class Prospect {
     private String email;
     private String phone;
 
-    Prospect(long prospectId, Prospect prospect) {
-        this(prospect.getFirstName(), prospect.getLastName(), prospect.getEmail(), prospect.getPhone());
-        this.prospectId = prospectId;
-    }
-
-    private Prospect(String firstName, String lastName, String email, String phone) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.phone = phone;
+    private Prospect(ProspectBuilder builder) {
+        this.prospectId = builder.prospectId;
+        this.firstName = builder.firstName;
+        this.lastName = builder.lastName;
+        this.email = builder.email;
+        this.phone = builder.phone;
     }
 
     void validateProspect() throws InvalidEmailException, InvalidPhoneException {
@@ -74,6 +70,11 @@ public class Prospect {
         this.phone = phone;
     }
 
+
+    public static ProspectBuilder builder(String firstName, String lastName) {
+        return new ProspectBuilder(firstName, lastName);
+    }
+
     @Override
     public String toString() {
         return "Prospect{" +
@@ -86,6 +87,7 @@ public class Prospect {
     }
 
     public static class ProspectBuilder {
+        private long prospectId;
         private String firstName;
         private String lastName;
         private String email;
@@ -96,8 +98,13 @@ public class Prospect {
             this.lastName = lastName;
         }
 
-        public Prospect createProspect() {
-            return new Prospect(firstName, lastName, email, phone);
+        public Prospect build() {
+            return new Prospect(this);
+        }
+
+        public ProspectBuilder withId(long id){
+            this.prospectId = id;
+            return this;
         }
 
         public ProspectBuilder withEmail(String email) {

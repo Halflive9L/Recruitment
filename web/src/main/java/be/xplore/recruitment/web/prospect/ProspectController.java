@@ -27,7 +27,7 @@ public class ProspectController {
         CreateProspectRequest request = new CreateProspectRequest();
         request.prospect = new Prospect.ProspectBuilder(input.getFirstName(), input.getLastName())
                 .withEmail(input.getEmail())
-                .withPhone(input.getPhone()).createProspect();
+                .withPhone(input.getPhone()).build();
         try {
             createProspect.createProspect(request, prospectId -> {
             });

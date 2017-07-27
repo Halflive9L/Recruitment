@@ -24,13 +24,13 @@ public class ReadApplicantTest {
                     .setAddress("Antwerp")
                     .setEducation("College")
                     .setEmail("john.smith@example.com")
-                    .setPhone("+32424963258").createApplicant()),
+                    .setPhone("+32424963258").build()),
             new Applicant(2, new Applicant.ApplicantBuilder("leeroy", "jenkins")
                     .setDateOfBirth(new Calendar.Builder().setDate(1986, 3, 10).build().getTime())
                     .setAddress("Kontich")
                     .setEducation("University")
                     .setEmail("leeroy@jenkins.com")
-                    .setPhone("+32 420 00 1337").createApplicant())
+                    .setPhone("+32 420 00 1337").build())
     };
     private final ApplicantRepository repository = new ApplicantRepository() {
 

@@ -18,12 +18,14 @@ import static org.junit.Assert.*;
 @RunWith(MockitoJUnitRunner.class)
 public class ReadProspectTest {
     private Prospect[] prospects = {
-            new Prospect(1, new Prospect.ProspectBuilder("john", "smith")
+            Prospect.builder("john", "smith")
+                    .withId(1)
                     .withEmail("john.smith@example.com")
-                    .withPhone("+32424963258").createProspect()),
-            new Prospect(2, new Prospect.ProspectBuilder("leeroy", "jenkins")
+                    .withPhone("+32424963258").build(),
+            Prospect.builder("leeroy", "jenkins")
+                    .withId(2)
                     .withEmail("leeroy@jenkins.com")
-                    .withPhone("+32 420 00 1337").createProspect())
+                    .withPhone("+32 420 00 1337").build()
     };
     private final ProspectRepository repository = new ProspectRepository() {
 

@@ -29,7 +29,7 @@ public class CreateProspectTest {
     @Test
     public void testCreateProspect() {
         CreateProspectRequest request = new CreateProspectRequest();
-        request.prospect = new Prospect.ProspectBuilder("John", "Smith").createProspect();
+        request.prospect = new Prospect.ProspectBuilder("John", "Smith").build();
         useCase.createProspect(request, prospectId -> {});
     }
 
@@ -37,7 +37,7 @@ public class CreateProspectTest {
     public void testCreateProspectWithInvalidEmail() {
         CreateProspectRequest request = new CreateProspectRequest();
         request.prospect = new Prospect.ProspectBuilder("John", "Smith")
-                .withEmail("a").createProspect();
+                .withEmail("a").build();
         useCase.createProspect(request, prospectId -> {});
     }
 
@@ -45,7 +45,7 @@ public class CreateProspectTest {
     public void testCreateProspectWithValidEmail() {
         CreateProspectRequest request = new CreateProspectRequest();
         request.prospect = new Prospect.ProspectBuilder("John", "Smith")
-                .withEmail("test@example.com").createProspect();
+                .withEmail("test@example.com").build();
         useCase.createProspect(request, prospectId -> {});
     }
 
@@ -53,7 +53,7 @@ public class CreateProspectTest {
     public void testCreateProspectWithInvalidPhone() {
         CreateProspectRequest request = new CreateProspectRequest();
         request.prospect = new Prospect.ProspectBuilder("John", "Smith")
-                .withPhone("a").createProspect();
+                .withPhone("a").build();
         useCase.createProspect(request, prospectId -> {});
     }
 
@@ -61,7 +61,7 @@ public class CreateProspectTest {
     public void testCreateProspectWithValidPhone() {
         CreateProspectRequest request = new CreateProspectRequest();
         request.prospect = new Prospect.ProspectBuilder("John", "Smith")
-                .withPhone("+3248657569").createProspect();
+                .withPhone("+3248657569").build();
         useCase.createProspect(request, prospectId -> {});
     }
 }

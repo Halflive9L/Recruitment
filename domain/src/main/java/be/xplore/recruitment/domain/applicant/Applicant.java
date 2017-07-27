@@ -23,24 +23,15 @@ public class Applicant {
     private String email;
     private String phone;
 
-    public Applicant(long applicantId, Applicant applicant) {
-        this(applicant.getFirstName(), applicant.getLastName(),
-                applicant.getDateOfBirth(),
-                applicant.getAddress(), applicant.getEducation(),
-                applicant.getEmail(), applicant.getPhone());
-        this.applicantId = applicantId;
-    }
-
-    private Applicant(String firstName, String lastName,
-                      Date dateOfBirth, String address,
-                      String education, String email, String phone) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.dateOfBirth = dateOfBirth;
-        this.address = address;
-        this.education = education;
-        this.email = email;
-        this.phone = phone;
+    private Applicant(ApplicantBuilder builder) {
+        this.applicantId = builder.applicantId;
+        this.firstName = builder.firstName;
+        this.lastName = builder.lastName;
+        this.dateOfBirth = builder.dateOfBirth;
+        this.address = builder.address;
+        this.education = builder.education;
+        this.email = builder.email;
+        this.phone = builder.phone;
     }
 
     void validateApplicant() {
@@ -120,6 +111,7 @@ public class Applicant {
     }
 
     static class ApplicantBuilder {
+        private long applicantId;
         private String firstName;
         private String lastName;
         private Date dateOfBirth;
@@ -131,6 +123,11 @@ public class Applicant {
         public ApplicantBuilder(String firstName, String lastName) {
             this.firstName = firstName;
             this.lastName = lastName;
+        }
+
+        public ApplicantBuilder withId(long id){
+            this.applicantId = id;
+            return this;
         }
 
         public ApplicantBuilder setDateOfBirth(Date dateOfBirth) {
@@ -158,8 +155,8 @@ public class Applicant {
             return this;
         }
 
-        public Applicant createApplicant() {
-            return new Applicant(firstName, lastName, dateOfBirth, address, education, email, phone);
+        public Applicant build() {
+            return new Applicant(this);
         }
     }
 }

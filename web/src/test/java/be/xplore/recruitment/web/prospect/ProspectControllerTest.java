@@ -11,7 +11,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.verify;
 
@@ -30,7 +30,7 @@ public class ProspectControllerTest {
     @Test
     public void addProspectTest() {
         ArgumentCaptor<CreateProspectRequest> requestArgumentCaptor = ArgumentCaptor.forClass(CreateProspectRequest.class);
-        assertThat(controller.addProspect(new JsonProspect()).getStatusCodeValue()).isEqualTo(HttpStatus.CREATED.value());
+        assertEquals(controller.addProspect(new JsonProspect()).getStatusCodeValue(), HttpStatus.CREATED.value());
         verify(createProspect).createProspect(requestArgumentCaptor.capture(), isA(CreateProspectResponse.class));
         System.out.println(requestArgumentCaptor.getValue());
     }

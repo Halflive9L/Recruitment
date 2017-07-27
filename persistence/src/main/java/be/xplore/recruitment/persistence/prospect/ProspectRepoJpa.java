@@ -63,7 +63,7 @@ public class ProspectRepoJpa implements ProspectRepository {
     private Prospect toProspect(JpaProspect jpaProspect) {
         return new Prospect.ProspectBuilder(jpaProspect.getFirstName(), jpaProspect.getLastName())
                 .withEmail(jpaProspect.getEmail())
-                .withPhone(jpaProspect.getPhone()).createProspect();
+                .withPhone(jpaProspect.getPhone()).build();
     }
 
 
