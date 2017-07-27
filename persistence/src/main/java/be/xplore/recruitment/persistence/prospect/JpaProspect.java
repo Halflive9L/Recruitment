@@ -8,8 +8,8 @@ import javax.persistence.*;
 @Entity
 @Table(name = "Prospect")
 @NamedQueries({
-        @NamedQuery(name = JpaProspect.QUERY_FIND_BY_ID, query = "SELECT p from Prospect p where p.prospectId = :prospectId"),
-        @NamedQuery(name = JpaProspect.QUERY_FIND_ALL, query = "SELECT p from Prospect p") })
+        @NamedQuery(name = JpaProspect.QUERY_FIND_BY_ID, query = "SELECT p from JpaProspect p where p.prospectId = :prospectId"),
+        @NamedQuery(name = JpaProspect.QUERY_FIND_ALL, query = "SELECT p from JpaProspect p") })
 
 public class JpaProspect {
 

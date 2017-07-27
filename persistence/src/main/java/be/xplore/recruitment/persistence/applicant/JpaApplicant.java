@@ -10,13 +10,13 @@ import java.util.Date;
 @Entity
 @Table(name = "Applicant")
 @NamedQueries({
-        @NamedQuery(name = JpaApplicant.QUERY_FIND_BY_ID, query = "SELECT a from Applicant a where a.applicantId = :applicantId"),
-        @NamedQuery(name = JpaApplicant.QUERY_FIND_ALL, query = "SELECT a from Applicant a")})
+        @NamedQuery(name = JpaApplicant.QUERY_FIND_BY_ID, query = "SELECT a from JpaApplicant a where a.applicantId = :applicantId")})//,
+        //@NamedQuery(name = JpaApplicant.QUERY_FIND_ALL, query = "SELECT a from JpaApplicant a")})
 
 public class JpaApplicant {
 
-    private static final String QUERY_FIND_BY_ID = "Applicant.findApplicantById";
-    private static final String QUERY_FIND_ALL = "Applicant.findAll";
+    static final String QUERY_FIND_BY_ID = "Applicant.findApplicantById";
+    //static final String QUERY_FIND_ALL = "Applicant.findAll";
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

@@ -1,9 +1,6 @@
 package be.xplore.recruitment.web.prospect;
 
-import be.xplore.recruitment.domain.prospect.CreateProspect;
-import be.xplore.recruitment.domain.prospect.CreateProspectRequest;
-import be.xplore.recruitment.domain.prospect.CreateProspectUseCase;
-import be.xplore.recruitment.domain.prospect.Prospect;
+import be.xplore.recruitment.domain.prospect.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +20,7 @@ public class ProspectController {
                 .setEmail(input.getEmail())
                 .setPhone(input.getPhone()).createProspect();
         CreateProspect createProspect = new CreateProspectUseCase();
+        CreateProspectResponse p;
         createProspect.createProspect(request, prospectId -> {});
         return new ResponseEntity<>(HttpStatus.OK);
     }
