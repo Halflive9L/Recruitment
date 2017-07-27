@@ -37,8 +37,22 @@ public class Applicant {
         this.phone = builder.phone;
     }
 
-    public static ApplicantBuilder builder(String firstName, String lastName) {
-        return new ApplicantBuilder(firstName, lastName);
+    @Override
+    public String toString() {
+        return "Applicant{" +
+                "applicantId=" + applicantId +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", dateOfBirth=" + dateOfBirth +
+                ", address='" + address + '\'' +
+                ", education='" + education + '\'' +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                '}';
+    }
+
+    public static ApplicantBuilder builder() {
+        return new ApplicantBuilder();
     }
 
     void validateApplicant() {
@@ -127,9 +141,14 @@ public class Applicant {
         private String email;
         private String phone;
 
-        public ApplicantBuilder(String firstName, String lastName) {
+        public ApplicantBuilder withFirstName(String firstName){
             this.firstName = firstName;
+            return this;
+        }
+
+        public ApplicantBuilder withLastName(String lastName){
             this.lastName = lastName;
+            return this;
         }
 
         public ApplicantBuilder withId(long id) {
@@ -160,6 +179,37 @@ public class Applicant {
         public ApplicantBuilder withPhone(String phone) {
             this.phone = phone;
             return this;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            ApplicantBuilder builder = (ApplicantBuilder) o;
+
+            if (applicantId != builder.applicantId) return false;
+            if (firstName != null ? !firstName.equals(builder.firstName) : builder.firstName != null) return false;
+            if (lastName != null ? !lastName.equals(builder.lastName) : builder.lastName != null) return false;
+            if (dateOfBirth != null ? !dateOfBirth.equals(builder.dateOfBirth) : builder.dateOfBirth != null)
+                return false;
+            if (address != null ? !address.equals(builder.address) : builder.address != null) return false;
+            if (education != null ? !education.equals(builder.education) : builder.education != null) return false;
+            if (email != null ? !email.equals(builder.email) : builder.email != null) return false;
+            return phone != null ? phone.equals(builder.phone) : builder.phone == null;
+        }
+
+        @Override
+        public int hashCode() {
+            int result = (int) (applicantId ^ (applicantId >>> 32));
+            result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
+            result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
+            result = 31 * result + (dateOfBirth != null ? dateOfBirth.hashCode() : 0);
+            result = 31 * result + (address != null ? address.hashCode() : 0);
+            result = 31 * result + (education != null ? education.hashCode() : 0);
+            result = 31 * result + (email != null ? email.hashCode() : 0);
+            result = 31 * result + (phone != null ? phone.hashCode() : 0);
+            return result;
         }
 
         public Applicant build() {

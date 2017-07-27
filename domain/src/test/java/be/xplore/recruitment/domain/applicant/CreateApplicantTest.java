@@ -30,14 +30,14 @@ public class CreateApplicantTest {
 
     @Test
     public void testCreateApplicant() {
-        CreateApplicantRequest request = getRequestFromApplicant(Applicant.builder("John", "Smith").build());
+        CreateApplicantRequest request = getRequestFromApplicant(Applicant.builder().build());
         useCase.createApplicant(request, applicantId -> {
         });
     }
 
     @Test(expected = InvalidPhoneException.class)
     public void testCreateApplicantWithInvalidPhone() {
-        CreateApplicantRequest request = getRequestFromApplicant(Applicant.builder("John", "Smith")
+        CreateApplicantRequest request = getRequestFromApplicant(Applicant.builder()
                 .withPhone("a").build());
         useCase.createApplicant(request, applicantId -> {
         });
@@ -45,7 +45,7 @@ public class CreateApplicantTest {
 
     @Test
     public void testCreateApplicantWithValidPhone() {
-        CreateApplicantRequest request = getRequestFromApplicant(Applicant.builder("John", "Smith")
+        CreateApplicantRequest request = getRequestFromApplicant(Applicant.builder()
                 .withPhone("+32424589632").build());
         useCase.createApplicant(request, id -> {
         });
@@ -53,7 +53,7 @@ public class CreateApplicantTest {
 
     @Test(expected = InvalidEmailException.class)
     public void testCreateApplicantWithInvalidEmail() {
-        CreateApplicantRequest request = getRequestFromApplicant(Applicant.builder("John", "Smith")
+        CreateApplicantRequest request = getRequestFromApplicant(Applicant.builder()
                 .withEmail("a").build());
         useCase.createApplicant(request, id -> {
         });
@@ -61,7 +61,7 @@ public class CreateApplicantTest {
 
     @Test
     public void testCreateApplicantWithValidEmail() {
-        CreateApplicantRequest request = getRequestFromApplicant(Applicant.builder("John", "Smith")
+        CreateApplicantRequest request = getRequestFromApplicant(Applicant.builder()
                 .withEmail("test.name@example.com").build());
         useCase.createApplicant(request, id -> {
         });
@@ -69,7 +69,7 @@ public class CreateApplicantTest {
 
     @Test(expected = InvalidDateException.class)
     public void testCreateApplicantWithInvalidDate() {
-        CreateApplicantRequest request =getRequestFromApplicant(Applicant.builder("John", "Smith")
+        CreateApplicantRequest request =getRequestFromApplicant(Applicant.builder()
                 .withDateOfBirth(new Calendar.Builder().setDate(1899, 12, 31).build().getTime())
                 .build());
         useCase.createApplicant(request, id -> {
@@ -78,7 +78,7 @@ public class CreateApplicantTest {
 
     @Test
     public void testCreateApplicantWithValidDate() {
-        CreateApplicantRequest request =getRequestFromApplicant(Applicant.builder("John", "Smith")
+        CreateApplicantRequest request =getRequestFromApplicant(Applicant.builder()
                 .withDateOfBirth(new Calendar.Builder().setDate(1993, 4, 4).build().getTime())
                 .build());
         useCase.createApplicant(request, id -> {

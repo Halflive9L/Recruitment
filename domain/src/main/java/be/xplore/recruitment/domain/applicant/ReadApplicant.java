@@ -1,14 +1,13 @@
 package be.xplore.recruitment.domain.applicant;
 
-import java.util.List;
-
 /**
  * @author Stijn Schack
  * @since 7/26/2017
  */
 public interface ReadApplicant {
+    void readAllApplicants(ReadAllApplicantsResponse response);
 
-    List<Applicant> readAllApplicants();
+    void readApplicantsByParam(ReadApplicantRequest request, ReadApplicantsByParamResponse response);
 
-    Applicant readApplicantById(long id);
+    void readApplicantById(ReadApplicantRequest request, ReadApplicantByIdResponse response);
 }

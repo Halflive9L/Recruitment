@@ -14,12 +14,18 @@ public class ReadApplicantUseCase implements ReadApplicant {
     }
 
     @Override
-    public List<Applicant> readAllApplicants() {
-        return repository.findAll();
+    public void readAllApplicants(ReadAllApplicantsResponse response) {
+        List<Applicant> applicants = repository.findAll();
+        response.onResponse(applicants);
     }
 
     @Override
-    public Applicant readApplicantById(long id) {
-        return repository.findApplicantById(id);
+    public void readApplicantsByParam(ReadApplicantRequest request, ReadApplicantsByParamResponse response) {
+
+    }
+
+    @Override
+    public void readApplicantById(ReadApplicantRequest request, ReadApplicantByIdResponse response) {
+
     }
 }
