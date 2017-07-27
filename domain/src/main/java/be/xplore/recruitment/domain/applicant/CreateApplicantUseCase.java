@@ -16,8 +16,10 @@ class CreateApplicantUseCase implements CreateApplicant {
     }
 
     @Override
-    public void createApplicant(Applicant a) throws InvalidEmailException, InvalidPhoneException, InvalidDateException {
-        a.validateApplicant();
-        repository.createApplicant(a);
+    public void createApplicant(CreateApplicantRequest request, CreateApplicantResponse response)
+            throws InvalidEmailException, InvalidPhoneException, InvalidDateException {
+        request.applicant.validateApplicant();
+        repository.createApplicant(request.applicant);
+        response.onResponse(request.applicant.getApplicantId());
     }
 }

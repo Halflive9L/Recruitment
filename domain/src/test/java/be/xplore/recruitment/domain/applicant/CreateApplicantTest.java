@@ -23,54 +23,71 @@ public class CreateApplicantTest {
     private CreateApplicant useCase;
 
     @Before
-    public void initUseCase(){
+    public void initUseCase() {
         useCase = new CreateApplicantUseCase(repository);
     }
 
     @Test
     public void testCreateApplicant() {
-        useCase.createApplicant(new Applicant.ApplicantBuilder("John", "Smith").createApplicant());
+        CreateApplicantRequest request = new CreateApplicantRequest();
+        request.applicant = new Applicant.ApplicantBuilder("John", "Smith").createApplicant();
+        useCase.createApplicant(request, applicantId -> {
+        });
     }
 
     @Test(expected = InvalidPhoneException.class)
     public void testCreateApplicantWithInvalidPhone() {
-        Applicant.ApplicantBuilder builder = new Applicant.ApplicantBuilder("John", "Smith");
-        builder.setPhone("a");
-        useCase.createApplicant(builder.createApplicant());
+        CreateApplicantRequest request = new CreateApplicantRequest();
+        request.applicant = new Applicant.ApplicantBuilder("John", "Smith")
+                .setPhone("a").createApplicant();
+        useCase.createApplicant(request, applicantId -> {
+        });
     }
 
     @Test
     public void testCreateApplicantWithValidPhone() {
-        Applicant.ApplicantBuilder builder = new Applicant.ApplicantBuilder("John", "Smith");
-        builder.setPhone("+32425786314");
-        useCase.createApplicant(builder.createApplicant());
+        CreateApplicantRequest request = new CreateApplicantRequest();
+        request.applicant = new Applicant.ApplicantBuilder("John", "Smith")
+                .setPhone("+32424589632").createApplicant();
+        useCase.createApplicant(request, id -> {
+        });
     }
 
     @Test(expected = InvalidEmailException.class)
     public void testCreateApplicantWithInvalidEmail() {
-        Applicant.ApplicantBuilder builder = new Applicant.ApplicantBuilder("John", "Smith");
-        builder.setEmail("a");
-        useCase.createApplicant(builder.createApplicant());
+        CreateApplicantRequest request = new CreateApplicantRequest();
+        request.applicant = new Applicant.ApplicantBuilder("John", "Smith")
+                .setEmail("a").createApplicant();
+        useCase.createApplicant(request, id -> {
+        });
     }
 
     @Test
     public void testCreateApplicantWithValidEmail() {
-        Applicant.ApplicantBuilder builder = new Applicant.ApplicantBuilder("John", "Smith");
-        builder.setEmail("test.name@example.com");
-        useCase.createApplicant(builder.createApplicant());
+        CreateApplicantRequest request = new CreateApplicantRequest();
+        request.applicant = new Applicant.ApplicantBuilder("John", "Smith")
+                .setEmail("test.name@example.com").createApplicant();
+        useCase.createApplicant(request, id -> {
+        });
     }
 
     @Test(expected = InvalidDateException.class)
     public void testCreateApplicantWithInvalidDate() {
-        Applicant.ApplicantBuilder builder = new Applicant.ApplicantBuilder("John", "Smith");
-        builder.setDateOfBirth(new Calendar.Builder().setDate(1899, 12, 31).build().getTime());
-        useCase.createApplicant(builder.createApplicant());
+        CreateApplicantRequest request = new CreateApplicantRequest();
+        request.applicant = new Applicant.ApplicantBuilder("John", "Smith")
+                .setDateOfBirth(new Calendar.Builder().setDate(1899, 12, 31).build().getTime())
+                .createApplicant();
+        useCase.createApplicant(request, id -> {
+        });
     }
 
     @Test
     public void testCreateApplicantWithValidDate() {
-        Applicant.ApplicantBuilder builder = new Applicant.ApplicantBuilder("John", "Smith");
-        builder.setDateOfBirth(new Calendar.Builder().setDate(1993, 4, 4).build().getTime());
-        useCase.createApplicant(builder.createApplicant());
+        CreateApplicantRequest request = new CreateApplicantRequest();
+        request.applicant = new Applicant.ApplicantBuilder("John", "Smith")
+                .setDateOfBirth(new Calendar.Builder().setDate(1993, 4, 4).build().getTime())
+                .createApplicant();
+        useCase.createApplicant(request, id -> {
+        });
     }
 }

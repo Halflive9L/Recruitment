@@ -16,16 +16,10 @@ public class CreateProspectUseCase implements CreateProspect {
 
 
     @Override
-    public void createProspect(CreateProspectRequest request, CreateProspectResponse response) {
-        Prospect prospect = new Prospect.ProspectBuilder(request.prospect.getFirstName(), request.prospect.getLastName())
-                .setEmail(request.prospect.getEmail())
-                .setPhone(request.prospect.getPhone()).createProspect();
-        storeProspect(prospect);
-        response.onResponse(prospect.getProspectId());
-    }
-
-    private void storeProspect(Prospect p) throws InvalidEmailException, InvalidPhoneException {
-        p.validateProspect();
-        repository.createProspect(p);
+    public void createProspect(CreateProspectRequest request, CreateProspectResponse response)
+            throws InvalidEmailException, InvalidPhoneException {
+        request.prospect.validateProspect();
+        repository.createProspect(request.prospect);
+        response.onResponse(request.prospect.getProspectId());
     }
 }
