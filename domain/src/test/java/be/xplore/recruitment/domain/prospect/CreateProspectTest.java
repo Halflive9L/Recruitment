@@ -22,40 +22,46 @@ public class CreateProspectTest {
     private CreateProspect useCase;
 
     @Before
-    public void initUseCase(){
+    public void initUseCase() {
         useCase = new CreateProspectUseCase(repository);
     }
 
     @Test
     public void testCreateProspect() {
-        useCase.createProspect(new Prospect.ProspectBuilder("John", "Smith").createProspect());
+        CreateProspectRequest request = new CreateProspectRequest();
+        request.prospect = new Prospect.ProspectBuilder("John", "Smith").createProspect();
+        useCase.createProspect(request, prospectId -> {});
     }
 
     @Test(expected = InvalidEmailException.class)
     public void testCreateProspectWithInvalidEmail() {
-        Prospect.ProspectBuilder builder = new Prospect.ProspectBuilder("John", "Smith");
-        builder.setEmail("a");
-        useCase.createProspect(builder.createProspect());
-    }
-
-    @Test(expected = InvalidPhoneException.class)
-    public void testCreateProspectWithInvalidPhone() {
-        Prospect.ProspectBuilder builder = new Prospect.ProspectBuilder("John", "Smith");
-        builder.setPhone("a");
-        useCase.createProspect(builder.createProspect());
+        CreateProspectRequest request = new CreateProspectRequest();
+        request.prospect = new Prospect.ProspectBuilder("John", "Smith")
+                .setEmail("a").createProspect();
+        useCase.createProspect(request, prospectId -> {});
     }
 
     @Test
     public void testCreateProspectWithValidEmail() {
-        Prospect.ProspectBuilder builder = new Prospect.ProspectBuilder("John", "Smith");
-        builder.setEmail("test.name@example.com");
-        useCase.createProspect(builder.createProspect());
+        CreateProspectRequest request = new CreateProspectRequest();
+        request.prospect = new Prospect.ProspectBuilder("John", "Smith")
+                .setEmail("test@example.com").createProspect();
+        useCase.createProspect(request, prospectId -> {});
+    }
+
+    @Test(expected = InvalidPhoneException.class)
+    public void testCreateProspectWithInvalidPhone() {
+        CreateProspectRequest request = new CreateProspectRequest();
+        request.prospect = new Prospect.ProspectBuilder("John", "Smith")
+                .setPhone("a").createProspect();
+        useCase.createProspect(request, prospectId -> {});
     }
 
     @Test
     public void testCreateProspectWithValidPhone() {
-        Prospect.ProspectBuilder builder = new Prospect.ProspectBuilder("John", "Smith");
-        builder.setPhone("+32425786314");
-        useCase.createProspect(builder.createProspect());
+        CreateProspectRequest request = new CreateProspectRequest();
+        request.prospect = new Prospect.ProspectBuilder("John", "Smith")
+                .setPhone("+3248657569").createProspect();
+        useCase.createProspect(request, prospectId -> {});
     }
 }

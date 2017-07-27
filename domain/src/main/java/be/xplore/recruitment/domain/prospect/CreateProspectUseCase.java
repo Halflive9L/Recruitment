@@ -2,7 +2,6 @@ package be.xplore.recruitment.domain.prospect;
 
 import be.xplore.recruitment.domain.exception.InvalidEmailException;
 import be.xplore.recruitment.domain.exception.InvalidPhoneException;
-import be.xplore.recruitment.domain.exception.NotFoundException;
 
 /**
  * @author Stijn Schack
@@ -17,16 +16,15 @@ public class CreateProspectUseCase implements CreateProspect {
 
 
     @Override
-    public void createProspect(CreateProspectRequest request, CreateProspectResponse output) throws NotFoundException {
-
-        Prospect prospect = new Prospect(request.prospect.getFirstName(),
-                request.prospect.getLastName(), request.prospect.getEmail(),
-                request.prospect.getPhone());
+    public void createProspect(CreateProspectRequest request, CreateProspectResponse response) {
+        Prospect prospect = new Prospect.ProspectBuilder(request.prospect.getFirstName(), request.prospect.getLastName())
+                .setEmail(request.prospect.getEmail())
+                .setPhone(request.prospect.getPhone()).createProspect();
         storeProspect(prospect);
-        output.onResponse(prospect.getProspectId());
+        response.onResponse(prospect.getProspectId());
     }
 
-    public void storeProspect(Prospect p) throws InvalidEmailException, InvalidPhoneException {
+    private void storeProspect(Prospect p) throws InvalidEmailException, InvalidPhoneException {
         p.validateProspect();
         repository.createProspect(p);
     }
