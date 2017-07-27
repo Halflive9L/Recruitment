@@ -4,6 +4,8 @@ package be.xplore.recruitment.persistence.prospect;
 import be.xplore.recruitment.domain.prospect.Prospect;
 import be.xplore.recruitment.domain.prospect.ProspectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -15,14 +17,16 @@ import static be.xplore.recruitment.persistence.prospect.JpaProspect.QUERY_FIND_
  * @author Lander
  * @since 26/07/2017
  */
+@Component
+@Transactional
 public class ProspectRepoJpa implements ProspectRepository {
 
     @Autowired
     private EntityManager entityManager;
 
-    public void setEntityManager(EntityManager entityManager) {
-        this.entityManager = entityManager;
-    }
+    // public void setEntityManager(EntityManager entityManager) {
+    //    this.entityManager = entityManager;
+    // }
 
     @Override
     public void createProspect(Prospect prospect) {
@@ -58,8 +62,8 @@ public class ProspectRepoJpa implements ProspectRepository {
 
     private Prospect toProspect(JpaProspect jpaProspect) {
         return new Prospect.ProspectBuilder(jpaProspect.getFirstName(), jpaProspect.getLastName())
-                .setEmail(jpaProspect.getEmail())
-                .setPhone(jpaProspect.getPhone()).createProspect();
+                .withEmail(jpaProspect.getEmail())
+                .withPhone(jpaProspect.getPhone()).createProspect();
     }
 
 

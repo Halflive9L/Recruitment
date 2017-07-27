@@ -37,7 +37,7 @@ public class CreateProspectTest {
     public void testCreateProspectWithInvalidEmail() {
         CreateProspectRequest request = new CreateProspectRequest();
         request.prospect = new Prospect.ProspectBuilder("John", "Smith")
-                .setEmail("a").createProspect();
+                .withEmail("a").createProspect();
         useCase.createProspect(request, prospectId -> {});
     }
 
@@ -45,7 +45,7 @@ public class CreateProspectTest {
     public void testCreateProspectWithValidEmail() {
         CreateProspectRequest request = new CreateProspectRequest();
         request.prospect = new Prospect.ProspectBuilder("John", "Smith")
-                .setEmail("test@example.com").createProspect();
+                .withEmail("test@example.com").createProspect();
         useCase.createProspect(request, prospectId -> {});
     }
 
@@ -53,7 +53,7 @@ public class CreateProspectTest {
     public void testCreateProspectWithInvalidPhone() {
         CreateProspectRequest request = new CreateProspectRequest();
         request.prospect = new Prospect.ProspectBuilder("John", "Smith")
-                .setPhone("a").createProspect();
+                .withPhone("a").createProspect();
         useCase.createProspect(request, prospectId -> {});
     }
 
@@ -61,7 +61,7 @@ public class CreateProspectTest {
     public void testCreateProspectWithValidPhone() {
         CreateProspectRequest request = new CreateProspectRequest();
         request.prospect = new Prospect.ProspectBuilder("John", "Smith")
-                .setPhone("+3248657569").createProspect();
+                .withPhone("+3248657569").createProspect();
         useCase.createProspect(request, prospectId -> {});
     }
 }

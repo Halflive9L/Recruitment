@@ -1,16 +1,7 @@
 package be.xplore.recruitment;
 
-import be.xplore.recruitment.domain.entity.Applicant;
-import com.github.springtestdbunit.annotation.DatabaseSetup;
-import com.github.springtestdbunit.annotation.ExpectedDatabase;
-import com.github.springtestdbunit.assertion.DatabaseAssertionMode;
 import net.minidev.json.JSONObject;
 import org.junit.Test;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.*;
-
-import java.net.URI;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -37,7 +28,7 @@ public class ApplicantTest extends TestBase {
         jsonTestObject.put("phone", "0356854598");
         return jsonTestObject;
     }
-
+/*
     @Test
     @ExpectedDatabase(value = "/applicant/ApplicantTest.testPOST.xml", assertionMode = DatabaseAssertionMode.NON_STRICT)
     public void testPOST() {
@@ -104,6 +95,6 @@ public class ApplicantTest extends TestBase {
         restTemplate.put("/applicant/3", httpEntity, ResponseEntity.class);
 
     }
-
+*/
 
 }

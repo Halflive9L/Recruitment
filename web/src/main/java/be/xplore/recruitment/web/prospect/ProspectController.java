@@ -1,6 +1,11 @@
 package be.xplore.recruitment.web.prospect;
 
-import be.xplore.recruitment.domain.prospect.*;
+import be.xplore.recruitment.domain.exception.InvalidEmailException;
+import be.xplore.recruitment.domain.exception.InvalidPhoneException;
+import be.xplore.recruitment.domain.prospect.CreateProspect;
+import be.xplore.recruitment.domain.prospect.CreateProspectRequest;
+import be.xplore.recruitment.domain.prospect.Prospect;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,16 +18,23 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class ProspectController {
+
+    @Autowired
+    private CreateProspect createProspect;
+
     @RequestMapping(method = RequestMethod.POST, value = "/prospect")
     public ResponseEntity<JsonProspect> addProspect(@RequestBody JsonProspect input) {
         CreateProspectRequest request = new CreateProspectRequest();
         request.prospect = new Prospect.ProspectBuilder(input.getFirstName(), input.getLastName())
-                .setEmail(input.getEmail())
-                .setPhone(input.getPhone()).createProspect();
-        CreateProspect createProspect = new CreateProspectUseCase();
-        CreateProspectResponse p;
-        createProspect.createProspect(request, prospectId -> {});
-        return new ResponseEntity<>(HttpStatus.OK);
+                .withEmail(input.getEmail())
+                .withPhone(input.getPhone()).createProspect();
+        try {
+            createProspect.createProspect(request, prospectId -> {
+            });
+        } catch (InvalidEmailException | InvalidPhoneException e) {
+            return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
 

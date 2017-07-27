@@ -7,5 +7,4 @@ package be.xplore.recruitment.domain.prospect;
 
 public class CreateProspectRequest {
     public Prospect prospect;
-
 }

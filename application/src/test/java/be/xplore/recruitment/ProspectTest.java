@@ -1,15 +1,13 @@
 package be.xplore.recruitment;
 
-import be.xplore.recruitment.domain.prospect.Prospect;
-import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.ExpectedDatabase;
 import com.github.springtestdbunit.assertion.DatabaseAssertionMode;
 import net.minidev.json.JSONObject;
 import org.junit.Test;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.*;
-
-import java.util.List;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -26,7 +24,16 @@ public class ProspectTest extends TestBase {
         assertThat(restTemplate).isNotNull();
     }
 
-
+    @SuppressWarnings("Duplicates")
+    @Override
+    protected JSONObject getJsonTestObject() {
+        JSONObject jsonTestObject = new JSONObject();
+        jsonTestObject.put("firstName", "jos");
+        jsonTestObject.put("lastName", "vermeulen");
+        jsonTestObject.put("email", "jos.vermeulen@example.com");
+        jsonTestObject.put("phone", "+323568545981");
+        return jsonTestObject;
+    }
 
     @Test
     @ExpectedDatabase(value = "/prospect/ProspectTest.testPOST.xml", assertionMode = DatabaseAssertionMode.NON_STRICT)
@@ -36,7 +43,7 @@ public class ProspectTest extends TestBase {
         HttpEntity<String> httpEntity = new HttpEntity<>(getJsonTestObject().toJSONString(), headers);
         restTemplate.postForEntity("/prospect", httpEntity, ResponseEntity.class);
     }
-
+/*
     @Test
     @DatabaseSetup("/prospect/ProspectTest.testGetById.xml")
     public void testGetById() {
@@ -69,9 +76,5 @@ public class ProspectTest extends TestBase {
         assertThat(prospects.get(0).getFirstName()).isEqualTo(prospects.get(1).getFirstName())
                 .isEqualToIgnoringCase("stijn");
     }
-
-    @Override
-    protected JSONObject getJsonTestObject() {
-        return null;
-    }
+    */
 }

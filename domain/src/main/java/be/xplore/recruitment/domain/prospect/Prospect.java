@@ -103,12 +103,12 @@ public class Prospect {
             return new Prospect(firstName, lastName, email, phone);
         }
 
-        public ProspectBuilder setEmail(String email) {
+        public ProspectBuilder withEmail(String email) {
             this.email = email;
             return this;
         }
 
-        public ProspectBuilder setPhone(String phone) {
+        public ProspectBuilder withPhone(String phone) {
             this.phone = phone;
             return this;
         }

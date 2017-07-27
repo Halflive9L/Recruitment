@@ -19,11 +19,11 @@ import static org.junit.Assert.*;
 public class ReadProspectTest {
     private Prospect[] prospects = {
             new Prospect(1, new Prospect.ProspectBuilder("john", "smith")
-                    .setEmail("john.smith@example.com")
-                    .setPhone("+32424963258").createProspect()),
+                    .withEmail("john.smith@example.com")
+                    .withPhone("+32424963258").createProspect()),
             new Prospect(2, new Prospect.ProspectBuilder("leeroy", "jenkins")
-                    .setEmail("leeroy@jenkins.com")
-                    .setPhone("+32 420 00 1337").createProspect())
+                    .withEmail("leeroy@jenkins.com")
+                    .withPhone("+32 420 00 1337").createProspect())
     };
     private final ProspectRepository repository = new ProspectRepository() {
 

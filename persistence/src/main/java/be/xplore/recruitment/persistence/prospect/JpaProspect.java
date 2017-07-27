@@ -5,6 +5,7 @@ import javax.persistence.*;
 /**
  * Created by Lander on 26/07/2017.
  */
+@SuppressWarnings("JpaDataSourceORMInspection")
 @Entity
 @Table(name = "Prospect")
 @NamedQueries({
@@ -32,7 +33,7 @@ public class JpaProspect {
     @Column
     private String phone;
 
-    JpaProspect() {
+    public JpaProspect() {
     }
 
     JpaProspect(JpaProspect jpaProspect) {
