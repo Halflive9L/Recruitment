@@ -7,10 +7,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.Calendar;
-import java.util.List;
-
-import static java.util.Arrays.asList;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
@@ -20,50 +16,14 @@ import static org.junit.Assert.assertEquals;
  */
 @RunWith(MockitoJUnitRunner.class)
 public class ReadApplicantTest {
-    private Applicant[] mockApplicants = {
-            Applicant.builder()
-                    .withFirstName("John").withLastName("Smith").withId(1)
-                    .withDateOfBirth(new Calendar.Builder().setDate(1996, 10, 3).build()
-                            .getTime())
-                    .withAddress("Antwerp")
-                    .withEducation("College")
-                    .withEmail("john.smith@example.com")
-                    .withPhone("+32424963258").build(),
-            Applicant.builder()
-                    .withFirstName("Leeroy").withLastName("Jenkins").withId(2)
-                    .withDateOfBirth(new Calendar.Builder().setDate(1986, 3, 10).build()
-                            .getTime())
-                    .withAddress("Kontich")
-                    .withEducation("University")
-                    .withEmail("leeroy@jenkins.com")
-                    .withPhone("+32 420 00 1337").build()
-    };
-    private final ApplicantRepository repository = new ApplicantRepository() {
-
-        @Override
-        public void createApplicant(Applicant applicant) {
-        }
-
-        @Override
-        public List<Applicant> findAll() {
-            return asList(mockApplicants);
-        }
-
-        @Override
-        public Applicant findApplicantById(long id) {
-            for (Applicant p : mockApplicants) {
-                if (p.getApplicantId() == id) {
-                    return p;
-                }
-            }
-            return null;
-        }
-    };
-
     private ReadApplicant useCase;
+
+    private Applicant[] mockApplicants;
 
     @Before
     public void initUseCase() {
+        MockApplicantRepo repository = new MockApplicantRepo();
+        mockApplicants = repository.mockApplicants;
         useCase = new ReadApplicantUseCase(repository);
     }
 

@@ -1,5 +1,7 @@
 package be.xplore.recruitment.domain.applicant;
 
+import be.xplore.recruitment.domain.exception.NotFoundException;
+
 import java.util.List;
 
 /**
@@ -12,5 +14,7 @@ public interface ApplicantRepository {
 
     void createApplicant(Applicant a);
 
-    Applicant findApplicantById(long id);
+    Applicant findApplicantById(long id) throws NotFoundException;
+
+    void deleteApplicant(long id) throws NotFoundException;
 }
