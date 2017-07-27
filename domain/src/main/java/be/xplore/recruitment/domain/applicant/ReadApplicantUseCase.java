@@ -1,5 +1,7 @@
 package be.xplore.recruitment.domain.applicant;
 
+import be.xplore.recruitment.domain.exception.NotFoundException;
+
 import java.util.List;
 
 /**
@@ -9,7 +11,7 @@ import java.util.List;
 public class ReadApplicantUseCase implements ReadApplicant {
     private final ApplicantRepository repository;
 
-    public ReadApplicantUseCase(ApplicantRepository repository) {
+    ReadApplicantUseCase(ApplicantRepository repository) {
         this.repository = repository;
     }
 
@@ -26,6 +28,10 @@ public class ReadApplicantUseCase implements ReadApplicant {
 
     @Override
     public void readApplicantById(ReadApplicantRequest request, ReadApplicantByIdResponse response) {
-
+        Applicant applicant = repository.findApplicantById(request.applicantId);
+        if (applicant == null) {
+            throw new NotFoundException();
+        }
+        response.onResponse(applicant);
     }
 }

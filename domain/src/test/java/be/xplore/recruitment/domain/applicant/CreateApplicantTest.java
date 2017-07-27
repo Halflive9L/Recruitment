@@ -69,7 +69,7 @@ public class CreateApplicantTest {
 
     @Test(expected = InvalidDateException.class)
     public void testCreateApplicantWithInvalidDate() {
-        CreateApplicantRequest request =getRequestFromApplicant(Applicant.builder()
+        CreateApplicantRequest request = getRequestFromApplicant(Applicant.builder()
                 .withDateOfBirth(new Calendar.Builder().setDate(1899, 12, 31).build().getTime())
                 .build());
         useCase.createApplicant(request, id -> {
@@ -78,7 +78,7 @@ public class CreateApplicantTest {
 
     @Test
     public void testCreateApplicantWithValidDate() {
-        CreateApplicantRequest request =getRequestFromApplicant(Applicant.builder()
+        CreateApplicantRequest request = getRequestFromApplicant(Applicant.builder()
                 .withDateOfBirth(new Calendar.Builder().setDate(1993, 4, 4).build().getTime())
                 .build());
         useCase.createApplicant(request, id -> {

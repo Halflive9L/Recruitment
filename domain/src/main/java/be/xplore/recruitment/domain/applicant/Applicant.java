@@ -37,6 +37,10 @@ public class Applicant {
         this.phone = builder.phone;
     }
 
+    static ApplicantBuilder builder() {
+        return new ApplicantBuilder();
+    }
+
     @Override
     public String toString() {
         return "Applicant{" +
@@ -51,10 +55,6 @@ public class Applicant {
                 '}';
     }
 
-    public static ApplicantBuilder builder() {
-        return new ApplicantBuilder();
-    }
-
     void validateApplicant() {
         if (!isNullOrEmpty(email) && !isValidEmail(email)) {
             throw new InvalidEmailException();
@@ -67,7 +67,7 @@ public class Applicant {
         }
     }
 
-    public long getApplicantId() {
+    long getApplicantId() {
         return applicantId;
     }
 
@@ -141,61 +141,79 @@ public class Applicant {
         private String email;
         private String phone;
 
-        public ApplicantBuilder withFirstName(String firstName){
+        ApplicantBuilder withFirstName(String firstName) {
             this.firstName = firstName;
             return this;
         }
 
-        public ApplicantBuilder withLastName(String lastName){
+        ApplicantBuilder withLastName(String lastName) {
             this.lastName = lastName;
             return this;
         }
 
-        public ApplicantBuilder withId(long id) {
+        ApplicantBuilder withId(long id) {
             this.applicantId = id;
             return this;
         }
 
-        public ApplicantBuilder withDateOfBirth(Date dateOfBirth) {
+        ApplicantBuilder withDateOfBirth(Date dateOfBirth) {
             this.dateOfBirth = dateOfBirth;
             return this;
         }
 
-        public ApplicantBuilder withAddress(String address) {
+        ApplicantBuilder withAddress(String address) {
             this.address = address;
             return this;
         }
 
-        public ApplicantBuilder withEducation(String education) {
+        ApplicantBuilder withEducation(String education) {
             this.education = education;
             return this;
         }
 
-        public ApplicantBuilder withEmail(String email) {
+        ApplicantBuilder withEmail(String email) {
             this.email = email;
             return this;
         }
 
-        public ApplicantBuilder withPhone(String phone) {
+        ApplicantBuilder withPhone(String phone) {
             this.phone = phone;
             return this;
         }
 
+        @SuppressWarnings("SimplifiableIfStatement")
         @Override
         public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
 
             ApplicantBuilder builder = (ApplicantBuilder) o;
 
-            if (applicantId != builder.applicantId) return false;
-            if (firstName != null ? !firstName.equals(builder.firstName) : builder.firstName != null) return false;
-            if (lastName != null ? !lastName.equals(builder.lastName) : builder.lastName != null) return false;
-            if (dateOfBirth != null ? !dateOfBirth.equals(builder.dateOfBirth) : builder.dateOfBirth != null)
+            if (applicantId != builder.applicantId) {
                 return false;
-            if (address != null ? !address.equals(builder.address) : builder.address != null) return false;
-            if (education != null ? !education.equals(builder.education) : builder.education != null) return false;
-            if (email != null ? !email.equals(builder.email) : builder.email != null) return false;
+            }
+            if (firstName != null ? !firstName.equals(builder.firstName) : builder.firstName != null) {
+                return false;
+            }
+            if (lastName != null ? !lastName.equals(builder.lastName) : builder.lastName != null) {
+                return false;
+            }
+            if (dateOfBirth != null ? !dateOfBirth.equals(builder.dateOfBirth) : builder.dateOfBirth != null) {
+                return false;
+            }
+            if (address != null ? !address.equals(builder.address) : builder.address != null) {
+                return false;
+            }
+            if (education != null ? !education.equals(builder.education) : builder.education != null) {
+                return false;
+            }
+            if (email != null ? !email.equals(builder.email) : builder.email != null) {
+                return false;
+            }
             return phone != null ? phone.equals(builder.phone) : builder.phone == null;
         }
 
