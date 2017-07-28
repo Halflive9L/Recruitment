@@ -16,7 +16,9 @@ public class DeleteProspectUseCase implements DeleteProspect {
 
     @Override
     public void deleteProspect(DeleteProspectRequest request, DeleteProspectResponse response) {
-        if (repository.findProspectById(request.prospectId) == null) throw new NotFoundException();
+        if (repository.findProspectById(request.prospectId) == null) {
+            throw new NotFoundException();
+        }
         repository.deleteProspect(request.prospectId);
         response.onResponse(request.prospectId);
     }

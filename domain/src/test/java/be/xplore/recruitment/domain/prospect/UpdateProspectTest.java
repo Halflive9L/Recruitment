@@ -1,20 +1,12 @@
 package be.xplore.recruitment.domain.prospect;
 
 
-import be.xplore.recruitment.domain.exception.InvalidEmailException;
-import be.xplore.recruitment.domain.exception.InvalidPhoneException;
-import be.xplore.recruitment.domain.exception.NotFoundException;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.List;
-
 import static be.xplore.recruitment.domain.prospect.Prospect.builder;
-import static java.util.Arrays.asList;
 
 /**
  * @author Stijn Schack

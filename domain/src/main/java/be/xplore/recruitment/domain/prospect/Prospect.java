@@ -89,15 +89,27 @@ public class Prospect {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         Prospect prospect = (Prospect) o;
 
-        if (prospectId != prospect.prospectId) return false;
-        if (firstName != null ? !firstName.equals(prospect.firstName) : prospect.firstName != null) return false;
-        if (lastName != null ? !lastName.equals(prospect.lastName) : prospect.lastName != null) return false;
-        if (email != null ? !email.equals(prospect.email) : prospect.email != null) return false;
+        if (prospectId != prospect.prospectId) {
+            return false;
+        }
+        if (firstName != null ? !firstName.equals(prospect.firstName) : prospect.firstName != null) {
+            return false;
+        }
+        if (lastName != null ? !lastName.equals(prospect.lastName) : prospect.lastName != null) {
+            return false;
+        }
+        if (email != null ? !email.equals(prospect.email) : prospect.email != null) {
+            return false;
+        }
         return phone != null ? phone.equals(prospect.phone) : prospect.phone == null;
 
     }

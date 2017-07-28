@@ -47,22 +47,16 @@ class MockProspectRepo implements ProspectRepository {
 
     @Override
     public Prospect updateProspect(Prospect prospect) {
-            /*for (int i = 0; i < mockProspects.length; i++) {
-                if (mockProspects[i].getProspectId() == prospect.getProspectId()) {
-                    mockProspects[i] = Prospect.builder()
-                            .withId(prospect.getProspectId())
-                            .withFirstName(firstName(prospect, i))
-                            .withLastName(lastName(prospect, i))
-                            .withEmail(email(prospect, i))
-                            .withPhone(phone(prospect, i))
-                }
-            }*/
-        if (findProspectById(prospect.getProspectId()) == null) throw new NotFoundException();
+        if (findProspectById(prospect.getProspectId()) == null) {
+            throw new NotFoundException();
+        }
         Prospect zoekProspect = findProspectById(prospect.getProspectId());
-        if (prospect.getEmail() != null || isValidEmail(prospect.getEmail()))
+        if (prospect.getEmail() != null || isValidEmail(prospect.getEmail())) {
             prospect.setEmail(zoekProspect.getEmail());
-        if (prospect.getPhone() != null || isValidPhone(prospect.getPhone()))
+        }
+        if (prospect.getPhone() != null || isValidPhone(prospect.getPhone())) {
             prospect.setPhone(zoekProspect.getPhone());
+        }
         zoekProspect = builder(prospect.getFirstName(), prospect.getLastName())
                 .withEmail(prospect.getEmail())
                 .withPhone(prospect.getPhone())
@@ -89,7 +83,9 @@ class MockProspectRepo implements ProspectRepository {
 
     @Override
     public void deleteProspect(long id) throws NotFoundException {
-        if (findProspectById(id) == null) throw new NotFoundException();
+        if (findProspectById(id) == null) {
+            throw new NotFoundException();
+        }
         mockProspects[(int) id] = null;
     }
 }

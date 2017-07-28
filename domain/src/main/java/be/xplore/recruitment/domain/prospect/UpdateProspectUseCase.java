@@ -1,18 +1,16 @@
 package be.xplore.recruitment.domain.prospect;
 
-import be.xplore.recruitment.domain.exception.InvalidEmailException;
-import be.xplore.recruitment.domain.exception.InvalidPhoneException;
 import be.xplore.recruitment.domain.exception.NotFoundException;
-import be.xplore.recruitment.domain.util.Validator;
 
 import static be.xplore.recruitment.domain.prospect.Prospect.builder;
-import static be.xplore.recruitment.domain.util.Validator.*;
+import static be.xplore.recruitment.domain.util.Validator.isValidEmail;
+import static be.xplore.recruitment.domain.util.Validator.isValidPhone;
 
 /**
  * @author Lander
  * @since 27/07/2017
  */
-public class UpdateProspectUseCase implements  UpdateProspect{
+public class UpdateProspectUseCase implements UpdateProspect {
 
     private final ProspectRepository repository;
 
@@ -22,7 +20,9 @@ public class UpdateProspectUseCase implements  UpdateProspect{
 
     @Override
     public void updateProspect(UpdateProspectRequest request, UpdateProspectResponse response) {
-        if(repository.findProspectById(request.prospectId) == null) throw new NotFoundException();
+        if (repository.findProspectById(request.prospectId) == null) {
+            throw new NotFoundException();
+        }
         checkEmail(request);
         checkPhone(request);
 
@@ -35,13 +35,13 @@ public class UpdateProspectUseCase implements  UpdateProspect{
     }
 
     private void checkPhone(UpdateProspectRequest request) {
-        if(request.email == null || !isValidPhone(request.phone)) {
+        if (request.email == null || !isValidPhone(request.phone)) {
             request.phone = repository.findProspectById(request.prospectId).getPhone();
         }
     }
 
     private void checkEmail(UpdateProspectRequest request) {
-        if(request.email == null || !isValidEmail(request.email)) {
+        if (request.email == null || !isValidEmail(request.email)) {
             request.email = repository.findProspectById(request.prospectId).getEmail();
         }
     }

@@ -3,18 +3,15 @@ package be.xplore.recruitment.persistence.prospect;
 
 import be.xplore.recruitment.domain.prospect.Prospect;
 import be.xplore.recruitment.domain.prospect.ProspectRepository;
-import be.xplore.recruitment.persistence.applicant.JpaApplicant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static be.xplore.recruitment.persistence.prospect.JpaProspect.QUERY_FIND_ALL;
-import static org.apache.commons.beanutils.BeanUtils.copyProperties;
 
 /**
  * @author Lander

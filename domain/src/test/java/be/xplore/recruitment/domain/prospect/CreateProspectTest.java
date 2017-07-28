@@ -48,8 +48,8 @@ public class CreateProspectTest {
     @Test
     public void testCreateProspectWithValidEmail() {
         CreateProspectRequest request = new CreateProspectRequest();
-       // request.prospect = new Prospect.ProspectBuilder("John", "Smith")
-         //       .withEmail("test@example.com").build();
+        // request.prospect = new Prospect.ProspectBuilder("John", "Smith")
+        //       .withEmail("test@example.com").build();
         request.firstName = "John";
         request.lastName = "Smith";
         request.email = "test@example.com";
