@@ -27,7 +27,7 @@ public class Prospect {
         this.phone = builder.phone;
     }
 
-    static ProspectBuilder builder(String firstName, String lastName) {
+    public static ProspectBuilder builder(String firstName, String lastName) {
         return new ProspectBuilder(firstName, lastName);
     }
 

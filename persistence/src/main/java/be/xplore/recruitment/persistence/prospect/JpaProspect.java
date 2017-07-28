@@ -22,7 +22,7 @@ import javax.persistence.Table;
         @NamedQuery(name = JpaProspect.QUERY_FIND_ALL,
                 query = "SELECT p from JpaProspect p")})
 
-class JpaProspect {
+public class JpaProspect {
 
     static final String QUERY_FIND_BY_ID = "Prospect.findProspectById";
     static final String QUERY_FIND_ALL = "Prospect.findAll";
@@ -43,7 +43,7 @@ class JpaProspect {
     @Column
     private String phone;
 
-    JpaProspect() {
+    public JpaProspect() {
     }
 
     JpaProspect(JpaProspect jpaProspect) {
@@ -61,7 +61,7 @@ class JpaProspect {
         this.prospectId = prospectId;
     }
 
-    String getFirstName() {
+    public String getFirstName() {
         return firstName;
     }
 
@@ -69,7 +69,7 @@ class JpaProspect {
         this.firstName = firstName;
     }
 
-    String getLastName() {
+    public String getLastName() {
         return lastName;
     }
 
@@ -77,7 +77,7 @@ class JpaProspect {
         this.lastName = lastName;
     }
 
-    String getEmail() {
+    public String getEmail() {
         return email;
     }
 
@@ -85,7 +85,7 @@ class JpaProspect {
         this.email = email;
     }
 
-    String getPhone() {
+    public String getPhone() {
         return phone;
     }
 
