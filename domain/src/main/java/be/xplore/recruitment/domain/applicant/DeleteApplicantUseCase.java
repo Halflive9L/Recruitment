@@ -15,7 +15,8 @@ public class DeleteApplicantUseCase implements DeleteApplicant {
     }
 
     @Override
-    public void deleteApplicant(DeleteApplicantRequest request, DeleteApplicantResponse response) throws NotFoundException{
+    public void deleteApplicant(DeleteApplicantRequest request, DeleteApplicantResponse response)
+            throws NotFoundException {
         repository.deleteApplicant(request.id);
         response.onResponse(request.id);
     }
