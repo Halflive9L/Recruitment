@@ -88,7 +88,6 @@ public class CreateApplicantTest {
     @Ignore
     private CreateApplicantRequest getRequestFromApplicant(Applicant applicant) {
         CreateApplicantRequest request = new CreateApplicantRequest();
-        request.applicantId = applicant.getApplicantId();
         request.address = applicant.getAddress();
         request.dateOfBirth = applicant.getDateOfBirth();
         request.education = applicant.getEducation();
