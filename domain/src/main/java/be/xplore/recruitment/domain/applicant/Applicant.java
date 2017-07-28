@@ -37,7 +37,7 @@ public class Applicant {
         this.phone = builder.phone;
     }
 
-    static ApplicantBuilder builder() {
+    public static ApplicantBuilder builder() {
         return new ApplicantBuilder();
     }
 
@@ -179,7 +179,7 @@ public class Applicant {
         return result;
     }
 
-    static class ApplicantBuilder {
+    public static class ApplicantBuilder {
         private long applicantId;
         private String firstName;
         private String lastName;
@@ -189,42 +189,42 @@ public class Applicant {
         private String email;
         private String phone;
 
-        ApplicantBuilder withFirstName(String firstName) {
+        public ApplicantBuilder withFirstName(String firstName) {
             this.firstName = firstName;
             return this;
         }
 
-        ApplicantBuilder withLastName(String lastName) {
+        public ApplicantBuilder withLastName(String lastName) {
             this.lastName = lastName;
             return this;
         }
 
-        ApplicantBuilder withId(long id) {
+        public ApplicantBuilder withId(long id) {
             this.applicantId = id;
             return this;
         }
 
-        ApplicantBuilder withDateOfBirth(Date dateOfBirth) {
+        public ApplicantBuilder withDateOfBirth(Date dateOfBirth) {
             this.dateOfBirth = dateOfBirth;
             return this;
         }
 
-        ApplicantBuilder withAddress(String address) {
+        public ApplicantBuilder withAddress(String address) {
             this.address = address;
             return this;
         }
 
-        ApplicantBuilder withEducation(String education) {
+        public ApplicantBuilder withEducation(String education) {
             this.education = education;
             return this;
         }
 
-        ApplicantBuilder withEmail(String email) {
+        public ApplicantBuilder withEmail(String email) {
             this.email = email;
             return this;
         }
 
-        ApplicantBuilder withPhone(String phone) {
+        public ApplicantBuilder withPhone(String phone) {
             this.phone = phone;
             return this;
         }

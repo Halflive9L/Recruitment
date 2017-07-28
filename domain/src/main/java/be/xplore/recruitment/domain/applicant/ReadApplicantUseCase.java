@@ -2,12 +2,14 @@ package be.xplore.recruitment.domain.applicant;
 
 import be.xplore.recruitment.domain.exception.NotFoundException;
 
+import javax.inject.Named;
 import java.util.List;
 
 /**
  * @author Stijn Schack
  * @since 7/26/2017
  */
+@Named
 public class ReadApplicantUseCase implements ReadApplicant {
     private final ApplicantRepository repository;
 
@@ -22,12 +24,14 @@ public class ReadApplicantUseCase implements ReadApplicant {
     }
 
     @Override
-    public void readApplicantsByParam(ReadApplicantRequest request, ReadApplicantsByParamResponse response) {
+    public void readApplicantsByParam(ReadApplicantRequest request, ReadApplicantsByParamResponse response)
+            throws NotFoundException{
 
     }
 
     @Override
-    public void readApplicantById(ReadApplicantRequest request, ReadApplicantByIdResponse response) {
+    public void readApplicantById(ReadApplicantRequest request, ReadApplicantByIdResponse response)
+            throws NotFoundException {
         Applicant applicant = repository.findApplicantById(request.applicantId);
         if (applicant == null) {
             throw new NotFoundException();

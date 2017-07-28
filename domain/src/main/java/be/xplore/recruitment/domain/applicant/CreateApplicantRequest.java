@@ -7,11 +7,11 @@ import java.util.Date;
  * @since 7/27/2017
  */
 public class CreateApplicantRequest {
-    String firstName;
-    String lastName;
-    Date dateOfBirth;
-    String address;
-    String education;
-    String email;
-    String phone;
+   public String firstName;
+   public String lastName;
+   public Date dateOfBirth;
+   public String address;
+   public String education;
+   public String email;
+   public String phone;
 }

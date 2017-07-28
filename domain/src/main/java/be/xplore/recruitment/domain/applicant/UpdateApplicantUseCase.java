@@ -5,10 +5,13 @@ import be.xplore.recruitment.domain.exception.InvalidEmailException;
 import be.xplore.recruitment.domain.exception.InvalidPhoneException;
 import be.xplore.recruitment.domain.exception.NotFoundException;
 
+import javax.inject.Named;
+
 /**
  * @author Stijn Schack
  * @since 7/28/2017
  */
+@Named
 public class UpdateApplicantUseCase implements UpdateApplicant {
     private final ApplicantRepository repository;
 

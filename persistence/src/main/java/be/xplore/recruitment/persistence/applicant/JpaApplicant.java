@@ -1,5 +1,7 @@
 package be.xplore.recruitment.persistence.applicant;
 
+import be.xplore.recruitment.domain.applicant.Applicant;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,6 +16,7 @@ import java.util.Date;
  * Created by Lander on 26/07/2017.
  */
 
+@SuppressWarnings("JpaDataSourceORMInspection")
 @Entity
 @Table(name = "Applicant")
 @NamedQueries({
@@ -25,7 +28,7 @@ import java.util.Date;
 public class JpaApplicant {
 
     static final String QUERY_FIND_BY_ID = "Applicant.findApplicantById";
-    //static final String QUERY_FIND_ALL = "Applicant.findAll";
+    static final String QUERY_FIND_ALL = "Applicant.findAll";
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -61,6 +64,22 @@ public class JpaApplicant {
         this.education = applicant.education;
         this.email = applicant.email;
         this.phone = applicant.phone;
+    }
+
+    Applicant toApplicant() {
+        return Applicant.builder()
+                .withId(this.getApplicantId())
+                .withFirstName(this.getFirstName())
+                .withLastName(this.getLastName())
+                .withAddress(this.getAddress())
+                .withEducation(this.getEducation())
+                .withDateOfBirth(this.getDateOfBirth())
+                .withEmail(this.getEmail())
+                .withPhone(this.getPhone())
+                .build();
+    }
+
+    public JpaApplicant() {
     }
 
     public long getApplicantId() {

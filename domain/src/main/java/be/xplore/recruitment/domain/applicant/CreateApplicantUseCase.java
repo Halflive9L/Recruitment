@@ -4,10 +4,13 @@ import be.xplore.recruitment.domain.exception.InvalidDateException;
 import be.xplore.recruitment.domain.exception.InvalidEmailException;
 import be.xplore.recruitment.domain.exception.InvalidPhoneException;
 
+import javax.inject.Named;
+
 /**
  * @author Stijn Schack
  * @since 7/26/2017
  */
+@Named
 class CreateApplicantUseCase implements CreateApplicant {
     private final ApplicantRepository repository;
 

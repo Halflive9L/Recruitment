@@ -2,10 +2,13 @@ package be.xplore.recruitment.domain.applicant;
 
 import be.xplore.recruitment.domain.exception.NotFoundException;
 
+import javax.inject.Named;
+
 /**
  * @author Stijn Schack
  * @since 7/27/2017
  */
+@Named
 public class DeleteApplicantUseCase implements DeleteApplicant {
 
     private ApplicantRepository repository;
