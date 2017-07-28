@@ -28,7 +28,6 @@ class CreateApplicantUseCase implements CreateApplicant {
         return Applicant.builder()
                 .withFirstName(request.firstName)
                 .withLastName(request.lastName)
-                .withId(request.applicantId)
                 .withAddress(request.address)
                 .withDateOfBirth(request.dateOfBirth)
                 .withEducation(request.education)
