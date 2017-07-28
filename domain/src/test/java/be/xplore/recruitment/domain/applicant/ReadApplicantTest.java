@@ -1,6 +1,5 @@
 package be.xplore.recruitment.domain.applicant;
 
-import be.xplore.recruitment.domain.exception.NotFoundException;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -9,6 +8,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Stijn Schack
@@ -38,15 +38,20 @@ public class ReadApplicantTest {
     public void testReadApplicantById() {
         ReadApplicantRequest request = getRequestFromApplicant(Applicant.builder().withId(1).build());
         final Applicant[] responseApplicant = new Applicant[1];
-        useCase.readApplicantById(request, applicant -> responseApplicant[0] = applicant);
+        useCase.readApplicantById(request, applicantResponseModel -> {
+            responseApplicant[0] = getApplicantFromApplicantResponseModel(applicantResponseModel);
+        });
         assertEquals(responseApplicant[0], mockApplicants[0]);
     }
 
-    @Test(expected = NotFoundException.class)
+    @Test
     public void testReadApplicantById_IdDoesNotExist() {
         ReadApplicantRequest request = getRequestFromApplicant(Applicant.builder().withId(500).build());
-        useCase.readApplicantById(request, applicant -> {
+        final boolean[] isResponseModelEmpty = new boolean[1];
+        useCase.readApplicantById(request, applicantResponseModel -> {
+            isResponseModelEmpty[0] = applicantResponseModel.isEmpty();
         });
+        assertTrue(isResponseModelEmpty[0]);
     }
 
     @Ignore
@@ -61,5 +66,19 @@ public class ReadApplicantTest {
         request.email = applicant.getEmail();
         request.phone = applicant.getPhone();
         return request;
+    }
+
+    @Ignore
+    private Applicant getApplicantFromApplicantResponseModel(ApplicantResponseModel responseModel) {
+        return Applicant.builder()
+                .withId(responseModel.getApplicantId())
+                .withFirstName(responseModel.getFirstName())
+                .withLastName(responseModel.getLastName())
+                .withAddress(responseModel.getAddress())
+                .withEducation(responseModel.getEducation())
+                .withEmail(responseModel.getEmail())
+                .withDateOfBirth(responseModel.getDateOfBirth())
+                .withPhone(responseModel.getPhone())
+                .build();
     }
 }

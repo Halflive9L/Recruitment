@@ -5,6 +5,7 @@ import be.xplore.recruitment.domain.exception.InvalidEmailException;
 import be.xplore.recruitment.domain.exception.InvalidPhoneException;
 
 import javax.inject.Named;
+import java.util.function.Consumer;
 
 /**
  * @author Stijn Schack
@@ -19,12 +20,12 @@ class CreateApplicantUseCase implements CreateApplicant {
     }
 
     @Override
-    public void createApplicant(CreateApplicantRequest request, CreateApplicantResponse response)
+    public void createApplicant(CreateApplicantRequest request, Consumer<ApplicantResponseModel> response)
             throws InvalidEmailException, InvalidPhoneException, InvalidDateException {
         Applicant a = createApplicantFromRequest(request);
         a.validateApplicant();
         repository.createApplicant(a);
-        response.onResponse(a.getApplicantId());
+        response.accept(new ApplicantResponseModel(a));
     }
 
     private Applicant createApplicantFromRequest(CreateApplicantRequest request) {

@@ -1,6 +1,6 @@
 package be.xplore.recruitment.web.applicant;
 
-import be.xplore.recruitment.domain.applicant.Applicant;
+import be.xplore.recruitment.domain.applicant.ApplicantResponseModel;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.boot.jackson.JsonComponent;
@@ -116,7 +116,7 @@ public class JsonApplicant {
                 phone == null;
     }
 
-    static JsonApplicant asJsonApplicant(Applicant a){
+    static JsonApplicant asJsonApplicant(ApplicantResponseModel a) {
         JsonApplicant jsonApplicant = new JsonApplicant();
         jsonApplicant.setFirstName(a.getFirstName());
         jsonApplicant.setLastName(a.getLastName());

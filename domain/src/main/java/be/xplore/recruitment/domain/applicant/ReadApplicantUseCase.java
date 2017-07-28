@@ -4,6 +4,7 @@ import be.xplore.recruitment.domain.exception.NotFoundException;
 
 import javax.inject.Named;
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * @author Stijn Schack
@@ -25,17 +26,17 @@ public class ReadApplicantUseCase implements ReadApplicant {
 
     @Override
     public void readApplicantsByParam(ReadApplicantRequest request, ReadApplicantsByParamResponse response)
-            throws NotFoundException{
+            throws NotFoundException {
 
     }
 
     @Override
-    public void readApplicantById(ReadApplicantRequest request, ReadApplicantByIdResponse response)
-            throws NotFoundException {
+    public void readApplicantById(ReadApplicantRequest request, Consumer<ApplicantResponseModel> consumer) {
         Applicant applicant = repository.findApplicantById(request.applicantId);
         if (applicant == null) {
-            throw new NotFoundException();
+            applicant = Applicant.builder().build();
         }
-        response.onResponse(applicant);
+        ApplicantResponseModel responseModel = new ApplicantResponseModel(applicant);
+        consumer.accept(responseModel);
     }
 }

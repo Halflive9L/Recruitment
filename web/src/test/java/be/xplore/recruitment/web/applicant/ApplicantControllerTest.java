@@ -2,11 +2,9 @@ package be.xplore.recruitment.web.applicant;
 
 import be.xplore.recruitment.domain.applicant.CreateApplicant;
 import be.xplore.recruitment.domain.applicant.CreateApplicantRequest;
-import be.xplore.recruitment.domain.applicant.CreateApplicantResponse;
 import be.xplore.recruitment.domain.applicant.DeleteApplicant;
 import be.xplore.recruitment.domain.applicant.ReadAllApplicantsResponse;
 import be.xplore.recruitment.domain.applicant.ReadApplicant;
-import be.xplore.recruitment.domain.applicant.ReadApplicantByIdResponse;
 import be.xplore.recruitment.domain.applicant.ReadApplicantRequest;
 import be.xplore.recruitment.domain.applicant.ReadApplicantsByParamResponse;
 import be.xplore.recruitment.domain.applicant.UpdateApplicant;
@@ -17,6 +15,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
+
+import java.util.function.Consumer;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.isA;
@@ -47,14 +47,14 @@ public class ApplicantControllerTest {
     public void testCreateApplicant() {
         ArgumentCaptor<CreateApplicantRequest> captor = ArgumentCaptor.forClass(CreateApplicantRequest.class);
         assertEquals(controller.addApplicant(new JsonApplicant()).getStatusCodeValue(), HttpStatus.CREATED.value());
-        verify(createApplicant).createApplicant(captor.capture(), isA(CreateApplicantResponse.class));
+        verify(createApplicant).createApplicant(captor.capture(), isA(Consumer.class));
     }
 
     @Test
     public void testReadApplicantById(){
         ArgumentCaptor<ReadApplicantRequest> captor = ArgumentCaptor.forClass(ReadApplicantRequest.class);
-        assertEquals(controller.getApplicantById(1L).getStatusCodeValue(), HttpStatus.OK.value());
-        verify(readApplicant).readApplicantById(captor.capture(), isA(ReadApplicantByIdResponse.class));
+        assertEquals(controller.getApplicantById(1).getStatusCodeValue(), HttpStatus.OK.value());
+        verify(readApplicant).readApplicantById(captor.capture(), isA(Consumer.class));
     }
 
     @Test
