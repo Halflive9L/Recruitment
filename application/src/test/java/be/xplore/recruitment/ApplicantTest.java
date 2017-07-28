@@ -1,7 +1,13 @@
 package be.xplore.recruitment;
 
+import com.github.springtestdbunit.annotation.ExpectedDatabase;
+import com.github.springtestdbunit.assertion.DatabaseAssertionMode;
 import net.minidev.json.JSONObject;
 import org.junit.Test;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -25,10 +31,10 @@ public class ApplicantTest extends TestBase {
         jsonTestObject.put("address", "antwerpen");
         jsonTestObject.put("education", "none");
         jsonTestObject.put("email", "jos.vermeulen@example.com");
-        jsonTestObject.put("phone", "0356854598");
+        jsonTestObject.put("phone", "+32356854598");
         return jsonTestObject;
     }
-/*
+
     @Test
     @ExpectedDatabase(value = "/applicant/ApplicantTest.testPOST.xml", assertionMode = DatabaseAssertionMode.NON_STRICT)
     public void testPOST() {
@@ -37,7 +43,7 @@ public class ApplicantTest extends TestBase {
         HttpEntity<String> httpEntity = new HttpEntity<>(getJsonTestObject().toJSONString(), headers);
         restTemplate.postForEntity("/applicant", httpEntity, ResponseEntity.class);
     }
-
+/*
     @Test
     @DatabaseSetup("/applicant/ApplicantTest.testGetById.xml")
     public void testGetById() {

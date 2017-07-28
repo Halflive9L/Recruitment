@@ -54,10 +54,10 @@ public class ApplicantRepoJpa implements ApplicantRepository {
     }
 
     @Override
-    public Applicant findApplicantById(long id) {
+    public Applicant findApplicantById(long applicantId) {
         List<JpaApplicant> list = entityManager
                 .createNamedQuery(JpaApplicant.QUERY_FIND_BY_ID)
-                .setParameter("id", id).getResultList();
+                .setParameter("applicantId", applicantId).getResultList();
         if (list.isEmpty()) {
             return null;
         }

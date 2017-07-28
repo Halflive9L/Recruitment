@@ -54,14 +54,16 @@ public class ApplicantController {
     @RequestMapping(method = RequestMethod.GET, value = "/applicant/{applicantId}")
     public ResponseEntity<JsonApplicant> getApplicantById(@PathVariable long applicantId) {
         ReadApplicantRequest request = new ReadApplicantRequest();
+        final ResponseEntity<JsonApplicant>[] responseEntity = new ResponseEntity[1];
         request.applicantId = applicantId;
         try {
             readApplicant.readApplicantById(request, applicant -> {
+                responseEntity[0] = new ResponseEntity<>(JsonApplicant.asJsonApplicant(applicant), HttpStatus.OK);
             });
         } catch (NotFoundException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            responseEntity[0] = new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(HttpStatus.OK);
+        return responseEntity[0];
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/applicant")

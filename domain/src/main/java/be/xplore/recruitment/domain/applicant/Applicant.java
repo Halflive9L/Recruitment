@@ -67,7 +67,7 @@ public class Applicant {
         }
     }
 
-    long getApplicantId() {
+    public long getApplicantId() {
         return applicantId;
     }
 
