@@ -9,12 +9,13 @@ import java.util.List;
  * @since 7/20/2017
  */
 public interface ApplicantRepository {
+    void createApplicant(Applicant applicant);
 
     List<Applicant> findAll();
 
-    void createApplicant(Applicant a);
-
     Applicant findApplicantById(long id) throws NotFoundException;
+
+    void updateApplicant(Applicant applicant) throws NotFoundException;
 
     void deleteApplicant(long id) throws NotFoundException;
 }

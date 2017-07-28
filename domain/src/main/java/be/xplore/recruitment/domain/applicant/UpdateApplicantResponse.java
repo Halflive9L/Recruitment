@@ -5,5 +5,5 @@ package be.xplore.recruitment.domain.applicant;
  * @since 7/28/2017
  */
 public interface UpdateApplicantResponse {
-    void onResponse();
+    void onResponse(Applicant applicant);
 }

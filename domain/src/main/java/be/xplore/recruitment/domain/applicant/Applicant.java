@@ -131,6 +131,54 @@ public class Applicant {
         this.phone = phone;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        Applicant applicant = (Applicant) o;
+
+        if (applicantId != applicant.applicantId) {
+            return false;
+        }
+        if (firstName != null ? !firstName.equals(applicant.firstName) : applicant.firstName != null) {
+            return false;
+        }
+        if (lastName != null ? !lastName.equals(applicant.lastName) : applicant.lastName != null) {
+            return false;
+        }
+        if (dateOfBirth != null ? !dateOfBirth.equals(applicant.dateOfBirth) : applicant.dateOfBirth != null) {
+            return false;
+        }
+        if (address != null ? !address.equals(applicant.address) : applicant.address != null) {
+            return false;
+        }
+        if (education != null ? !education.equals(applicant.education) : applicant.education != null) {
+            return false;
+        }
+        if (email != null ? !email.equals(applicant.email) : applicant.email != null) {
+            return false;
+        }
+        return phone != null ? phone.equals(applicant.phone) : applicant.phone == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (int) (applicantId ^ (applicantId >>> 32));
+        result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
+        result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
+        result = 31 * result + (dateOfBirth != null ? dateOfBirth.hashCode() : 0);
+        result = 31 * result + (address != null ? address.hashCode() : 0);
+        result = 31 * result + (education != null ? education.hashCode() : 0);
+        result = 31 * result + (email != null ? email.hashCode() : 0);
+        result = 31 * result + (phone != null ? phone.hashCode() : 0);
+        return result;
+    }
+
     static class ApplicantBuilder {
         private long applicantId;
         private String firstName;
@@ -179,55 +227,6 @@ public class Applicant {
         ApplicantBuilder withPhone(String phone) {
             this.phone = phone;
             return this;
-        }
-
-        @SuppressWarnings("SimplifiableIfStatement")
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) {
-                return true;
-            }
-            if (o == null || getClass() != o.getClass()) {
-                return false;
-            }
-
-            ApplicantBuilder builder = (ApplicantBuilder) o;
-
-            if (applicantId != builder.applicantId) {
-                return false;
-            }
-            if (firstName != null ? !firstName.equals(builder.firstName) : builder.firstName != null) {
-                return false;
-            }
-            if (lastName != null ? !lastName.equals(builder.lastName) : builder.lastName != null) {
-                return false;
-            }
-            if (dateOfBirth != null ? !dateOfBirth.equals(builder.dateOfBirth) : builder.dateOfBirth != null) {
-                return false;
-            }
-            if (address != null ? !address.equals(builder.address) : builder.address != null) {
-                return false;
-            }
-            if (education != null ? !education.equals(builder.education) : builder.education != null) {
-                return false;
-            }
-            if (email != null ? !email.equals(builder.email) : builder.email != null) {
-                return false;
-            }
-            return phone != null ? phone.equals(builder.phone) : builder.phone == null;
-        }
-
-        @Override
-        public int hashCode() {
-            int result = (int) (applicantId ^ (applicantId >>> 32));
-            result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
-            result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
-            result = 31 * result + (dateOfBirth != null ? dateOfBirth.hashCode() : 0);
-            result = 31 * result + (address != null ? address.hashCode() : 0);
-            result = 31 * result + (education != null ? education.hashCode() : 0);
-            result = 31 * result + (email != null ? email.hashCode() : 0);
-            result = 31 * result + (phone != null ? phone.hashCode() : 0);
-            return result;
         }
 
         public Applicant build() {
