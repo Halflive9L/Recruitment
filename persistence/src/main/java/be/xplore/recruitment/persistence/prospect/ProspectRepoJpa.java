@@ -68,7 +68,7 @@ public class ProspectRepoJpa implements ProspectRepository {
 
     @Override
     public void deleteProspect(long id) {
-
+        entityManager.remove(findProspectById(id));
     }
 
     @Override
