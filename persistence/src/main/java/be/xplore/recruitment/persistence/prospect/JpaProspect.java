@@ -10,7 +10,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 /**
- * Created by Lander on 26/07/2017.
+ * @author Lander
+ * @since 26/07/2017
  */
 @SuppressWarnings("JpaDataSourceORMInspection")
 @Entity
@@ -21,10 +22,10 @@ import javax.persistence.Table;
         @NamedQuery(name = JpaProspect.QUERY_FIND_ALL,
                 query = "SELECT p from JpaProspect p")})
 
-public class JpaProspect {
+class JpaProspect {
 
-    public static final String QUERY_FIND_BY_ID = "Prospect.findProspectById";
-    public static final String QUERY_FIND_ALL = "Prospect.findAll";
+    static final String QUERY_FIND_BY_ID = "Prospect.findProspectById";
+    static final String QUERY_FIND_ALL = "Prospect.findAll";
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -42,7 +43,7 @@ public class JpaProspect {
     @Column
     private String phone;
 
-    public JpaProspect() {
+    JpaProspect() {
     }
 
     JpaProspect(JpaProspect jpaProspect) {
@@ -56,11 +57,15 @@ public class JpaProspect {
         return prospectId;
     }
 
+    public void setProspectId(long prospectId) {
+        this.prospectId = prospectId;
+    }
+
     String getFirstName() {
         return firstName;
     }
 
-    public void setFirstName(String firstName) {
+    void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
@@ -68,7 +73,7 @@ public class JpaProspect {
         return lastName;
     }
 
-    public void setLastName(String lastName) {
+    void setLastName(String lastName) {
         this.lastName = lastName;
     }
 

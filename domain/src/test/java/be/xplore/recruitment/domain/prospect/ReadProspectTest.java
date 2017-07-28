@@ -20,76 +20,24 @@ import static org.junit.Assert.*;
  */
 @RunWith(MockitoJUnitRunner.class)
 public class ReadProspectTest {
-    private Prospect[] prospects = {
-            Prospect.builder("john", "smith")
-                    .withId(1)
-                    .withEmail("john.smith@example.com")
-                    .withPhone("+32424963258").build(),
-            Prospect.builder("leeroy", "jenkins")
-                    .withId(2)
-                    .withEmail("leeroy@jenkins.com")
-                    .withPhone("+32 420 00 1337").build()
-    };
-    private final ProspectRepository repository = new ProspectRepository() {
 
-        @Override
-        public void createProspect(Prospect prospect) {
-        }
-
-        @Override
-        public List<Prospect> findAll() {
-            return asList(prospects);
-        }
-
-        @Override
-        public Prospect findProspectById(long id) {
-            for (Prospect p : prospects) {
-                if (p.getProspectId() == id) {
-                    return p;
-                }
-            }
-            return null;
-        }
-
-        @Override
-        public void deleteProspect(long id) {
-        }
-
-        @Override
-        public Prospect updateProspect() {
-            return null;
-        }
-    };
-
-    private ReadProspect useCase;
-
-    @Before
-    public void initUseCase() {
-        useCase = new ReadProspectUseCase(repository);
-    }
+    private MockProspectRepo repository = new MockProspectRepo();
 
 
     @Test
     public void testReadAllProspects() {
-            final Prospect[][] prospectResponse = new Prospect[1][2];
-            useCase.readAllProspects(prospects -> prospectResponse[0] = (Prospect[]) prospects.toArray());
-        for (int i = 0; i < 2; i++) {
-            System.out.println(prospectResponse[0][i]);
-        }
-        assertArrayEquals(prospects, prospectResponse[0]);
+        List<Prospect> prospects = repository.findAll();
+        assertEquals(prospects, asList(repository.mockProspects));
     }
 
     @Test
     public void testReadProspectById() {
-        ReadProspectRequest request = new ReadProspectRequest();
-        request.prospectId = 1;
-        useCase.readProspectById(request, Prospect -> {});
+        Prospect prospect = repository.findProspectById(1);
+        assertEquals(prospect, repository.mockProspects[0]);
     }
 
     @Test(expected = NotFoundException.class)
     public void testReadProspectById_IdDoesNotExist() {
-        ReadProspectRequest request = new ReadProspectRequest();
-        request.prospectId = 63544;
-        useCase.readProspectById(request, Prospect -> {});
+        Prospect prospect = repository.findProspectById(45465);
     }
 }

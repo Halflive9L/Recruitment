@@ -15,5 +15,5 @@ public interface ProspectRepository {
 
     void deleteProspect(long id);
 
-    Prospect updateProspect();
+    Prospect updateProspect(Prospect prospect);
 }

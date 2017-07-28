@@ -3,6 +3,7 @@ package be.xplore.recruitment.persistence.prospect;
 
 import be.xplore.recruitment.domain.prospect.Prospect;
 import be.xplore.recruitment.domain.prospect.ProspectRepository;
+import be.xplore.recruitment.persistence.applicant.JpaApplicant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -75,8 +76,15 @@ public class ProspectRepoJpa implements ProspectRepository {
     }
 
     @Override
-    public Prospect updateProspect() {
-        return null;
+    public Prospect updateProspect(Prospect prospect) {
+        JpaProspect zoekProspect = (JpaProspect) entityManager.createNamedQuery(JpaProspect.QUERY_FIND_BY_ID)
+                .setParameter("id", prospect.getProspectId()).getSingleResult();
+        zoekProspect.setEmail(prospect.getEmail());
+        zoekProspect.setPhone(prospect.getPhone());
+        zoekProspect.setLastName(prospect.getLastName());
+        zoekProspect.setFirstName(prospect.getFirstName());
+        entityManager.persist(zoekProspect);
+        return toProspect(zoekProspect);
     }
 
     private Prospect toProspect(JpaProspect jpaProspect) {

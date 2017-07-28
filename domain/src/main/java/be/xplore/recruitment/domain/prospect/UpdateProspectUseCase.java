@@ -1,8 +1,12 @@
 package be.xplore.recruitment.domain.prospect;
 
+import be.xplore.recruitment.domain.exception.InvalidEmailException;
+import be.xplore.recruitment.domain.exception.InvalidPhoneException;
 import be.xplore.recruitment.domain.exception.NotFoundException;
+import be.xplore.recruitment.domain.util.Validator;
 
 import static be.xplore.recruitment.domain.prospect.Prospect.builder;
+import static be.xplore.recruitment.domain.util.Validator.*;
 
 /**
  * @author Lander
@@ -19,12 +23,26 @@ public class UpdateProspectUseCase implements  UpdateProspect{
     @Override
     public void updateProspect(UpdateProspectRequest request, UpdateProspectResponse response) {
         if(repository.findProspectById(request.prospectId) == null) throw new NotFoundException();
-        Prospect prospect = repository.findProspectById(request.prospectId);
-        System.out.println(prospect);
-        Prospect prospect1 = builder(request.firstName, request.lastName)
-                .withEmail(request.email)
-                .withPhone(request.phone)
-                .withId(prospect.getProspectId()).build();
-        repository.createProspect(prospect1);
+        checkEmail(request);
+        checkPhone(request);
+
+        Prospect prospect = builder(request.firstName, request.lastName)
+                .withId(request.prospectId).withEmail(request.email)
+                .withPhone(request.phone).build();
+
+        repository.updateProspect(prospect);
+        response.onResponse(prospect);
+    }
+
+    private void checkPhone(UpdateProspectRequest request) {
+        if(request.email == null || !isValidPhone(request.phone)) {
+            request.phone = repository.findProspectById(request.prospectId).getPhone();
+        }
+    }
+
+    private void checkEmail(UpdateProspectRequest request) {
+        if(request.email == null || !isValidEmail(request.email)) {
+            request.email = repository.findProspectById(request.prospectId).getEmail();
+        }
     }
 }

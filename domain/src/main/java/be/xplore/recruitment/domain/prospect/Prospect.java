@@ -27,7 +27,7 @@ public class Prospect {
         this.phone = builder.phone;
     }
 
-    public static ProspectBuilder builder(String firstName, String lastName) {
+    static ProspectBuilder builder(String firstName, String lastName) {
         return new ProspectBuilder(firstName, lastName);
     }
 
@@ -40,7 +40,7 @@ public class Prospect {
         }
     }
 
-    long getProspectId() {
+    public long getProspectId() {
         return prospectId;
     }
 
@@ -87,6 +87,31 @@ public class Prospect {
                 '}';
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Prospect prospect = (Prospect) o;
+
+        if (prospectId != prospect.prospectId) return false;
+        if (firstName != null ? !firstName.equals(prospect.firstName) : prospect.firstName != null) return false;
+        if (lastName != null ? !lastName.equals(prospect.lastName) : prospect.lastName != null) return false;
+        if (email != null ? !email.equals(prospect.email) : prospect.email != null) return false;
+        return phone != null ? phone.equals(prospect.phone) : prospect.phone == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (int) (prospectId ^ (prospectId >>> 32));
+        result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
+        result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
+        result = 31 * result + (email != null ? email.hashCode() : 0);
+        result = 31 * result + (phone != null ? phone.hashCode() : 0);
+        return result;
+    }
+
     public static class ProspectBuilder {
         private long prospectId;
         private String firstName;
@@ -103,7 +128,7 @@ public class Prospect {
             return new Prospect(this);
         }
 
-        public ProspectBuilder withId(long id) {
+        ProspectBuilder withId(long id) {
             this.prospectId = id;
             return this;
         }
