@@ -23,12 +23,14 @@ public class DeleteApplicantTest {
 
     @Test
     public void testDeleteApplicantTest() {
-        useCase.deleteApplicant(1);
+        useCase.deleteApplicant(new DeleteApplicantRequest(1), applicantId -> {
+        });
         assertNull(mockApplicants[0]);
     }
 
     @Test(expected = NotFoundException.class)
     public void testDeleteNonExistingApplicantTest() {
-        useCase.deleteApplicant(500);
+        useCase.deleteApplicant(new DeleteApplicantRequest(500), applicantId -> {
+        });
     }
 }
