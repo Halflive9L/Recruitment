@@ -67,7 +67,9 @@ public class ApplicantRepoJpa implements ApplicantRepository {
 
     @Override
     public void updateApplicant(Applicant applicant) throws NotFoundException {
-
+        JpaApplicant jpaApplicant = applicantToJpaApplicant(applicant);
+        jpaApplicant.setApplicantId(applicant.getApplicantId());
+        entityManager.merge(jpaApplicant);
     }
 
     @Override
