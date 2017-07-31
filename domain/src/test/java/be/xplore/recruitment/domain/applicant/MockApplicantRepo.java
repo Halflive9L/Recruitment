@@ -46,8 +46,13 @@ class MockApplicantRepo implements ApplicantRepository {
     }
 
     @Override
-    public Applicant findApplicantById(long id) {
-        return mockApplicants.stream().filter(p -> p.getApplicantId() == id).findFirst().orElse(null);
+    public Applicant findApplicantById(long id) throws NotFoundException {
+        for (Applicant mockApplicant : mockApplicants) {
+            if (mockApplicant.getApplicantId() == id){
+                return mockApplicant;
+            }
+        }
+        throw new NotFoundException();
     }
 
     @Override

@@ -1,10 +1,9 @@
 package be.xplore.recruitment.domain.applicant;
 
+import be.xplore.recruitment.domain.exception.NotFoundException;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,13 +11,11 @@ import java.util.List;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
 
 /**
  * @author Stijn Schack
  * @since 7/26/2017
  */
-@RunWith(MockitoJUnitRunner.class)
 public class ReadApplicantTest {
     private ReadApplicant useCase;
 
@@ -45,19 +42,15 @@ public class ReadApplicantTest {
         ReadApplicantRequest request = getRequestFromApplicant(Applicant.builder().withId(1).build());
         final Applicant[] responseApplicant = new Applicant[1];
         useCase.readApplicantById(request, applicantResponseModel -> {
-            responseApplicant[0] = getApplicantFromApplicantResponseModel(applicantResponseModel);
+            responseApplicant[0] = getApplicantFromApplicantResponseModel(applicantResponseModel.get(0));
         });
         assertEquals(responseApplicant[0], mockApplicants.get(0));
     }
 
-    @Test
+    @Test(expected = NotFoundException.class)
     public void testReadApplicantById_IdDoesNotExist() {
         ReadApplicantRequest request = getRequestFromApplicant(Applicant.builder().withId(500).build());
-        final boolean[] isResponseModelEmpty = new boolean[1];
-        useCase.readApplicantById(request, applicantResponseModel -> {
-            isResponseModelEmpty[0] = applicantResponseModel.isEmpty();
-        });
-        assertTrue(isResponseModelEmpty[0]);
+        useCase.readApplicantById(request, applicantResponseModel -> {});
     }
 
     @Ignore

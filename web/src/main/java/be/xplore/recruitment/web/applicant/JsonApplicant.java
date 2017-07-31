@@ -26,6 +26,19 @@ public class JsonApplicant {
     public JsonApplicant() {
     }
 
+    static JsonApplicant asJsonApplicant(ApplicantResponseModel a) {
+        JsonApplicant jsonApplicant = new JsonApplicant();
+        jsonApplicant.setFirstName(a.getFirstName());
+        jsonApplicant.setLastName(a.getLastName());
+        jsonApplicant.setAddress(a.getAddress());
+        jsonApplicant.setDateOfBirth(a.getDateOfBirth());
+        jsonApplicant.setEducation(a.getEducation());
+        jsonApplicant.setEmail(a.getEmail());
+        jsonApplicant.setPhone(a.getPhone());
+        jsonApplicant.setApplicantId(a.getApplicantId());
+        return jsonApplicant;
+    }
+
     @JsonProperty
     long getApplicantId() {
         return applicantId;
@@ -37,7 +50,7 @@ public class JsonApplicant {
     }
 
     @JsonProperty
-    String getFirstName() {
+    public String getFirstName() {
         return firstName;
     }
 
@@ -47,7 +60,7 @@ public class JsonApplicant {
     }
 
     @JsonProperty
-    String getLastName() {
+    public String getLastName() {
         return lastName;
     }
 
@@ -57,7 +70,7 @@ public class JsonApplicant {
     }
 
     @JsonProperty
-    Date getDateOfBirth() {
+    public Date getDateOfBirth() {
         return dateOfBirth;
     }
 
@@ -67,7 +80,7 @@ public class JsonApplicant {
     }
 
     @JsonProperty
-    String getAddress() {
+    public String getAddress() {
         return address;
     }
 
@@ -77,7 +90,7 @@ public class JsonApplicant {
     }
 
     @JsonProperty
-    String getEducation() {
+    public String getEducation() {
         return education;
     }
 
@@ -87,7 +100,7 @@ public class JsonApplicant {
     }
 
     @JsonProperty
-    String getEmail() {
+    public String getEmail() {
         return email;
     }
 
@@ -97,7 +110,7 @@ public class JsonApplicant {
     }
 
     @JsonProperty
-    String getPhone() {
+    public String getPhone() {
         return phone;
     }
 
@@ -114,19 +127,6 @@ public class JsonApplicant {
                 education == null &&
                 email == null &&
                 phone == null;
-    }
-
-    static JsonApplicant asJsonApplicant(ApplicantResponseModel a) {
-        JsonApplicant jsonApplicant = new JsonApplicant();
-        jsonApplicant.setFirstName(a.getFirstName());
-        jsonApplicant.setLastName(a.getLastName());
-        jsonApplicant.setAddress(a.getAddress());
-        jsonApplicant.setDateOfBirth(a.getDateOfBirth());
-        jsonApplicant.setEducation(a.getEducation());
-        jsonApplicant.setEmail(a.getEmail());
-        jsonApplicant.setPhone(a.getPhone());
-        jsonApplicant.setApplicantId(a.getApplicantId());
-        return jsonApplicant;
     }
 
     @Override

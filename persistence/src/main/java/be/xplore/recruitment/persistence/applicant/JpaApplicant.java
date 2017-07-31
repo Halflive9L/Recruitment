@@ -21,14 +21,16 @@ import java.util.Date;
 @Table(name = "Applicant")
 @NamedQueries({
         @NamedQuery(name = JpaApplicant.QUERY_FIND_BY_ID,
-                query = "SELECT a from JpaApplicant a where a.applicantId = :applicantId")})
-//,
-//@NamedQuery(name = JpaApplicant.QUERY_FIND_ALL, query = "SELECT a from JpaApplicant a")})
+                query = "SELECT a from JpaApplicant a where a.applicantId = :applicantId"),
+        @NamedQuery(name = JpaApplicant.QUERY_FIND_ALL, query = "SELECT a from JpaApplicant a"),
+        @NamedQuery(name = JpaApplicant.QUERY_DELETE,
+                query = "DELETE FROM JpaApplicant a WHERE a.applicantId = :applicantId")})
 
 public class JpaApplicant {
 
     static final String QUERY_FIND_BY_ID = "Applicant.findApplicantById";
     static final String QUERY_FIND_ALL = "Applicant.findAll";
+    static final String QUERY_DELETE = "Applicant.deleteApplicant";
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -66,6 +68,9 @@ public class JpaApplicant {
         this.phone = applicant.phone;
     }
 
+    public JpaApplicant() {
+    }
+
     Applicant toApplicant() {
         return Applicant.builder()
                 .withId(this.getApplicantId())
@@ -77,9 +82,6 @@ public class JpaApplicant {
                 .withEmail(this.getEmail())
                 .withPhone(this.getPhone())
                 .build();
-    }
-
-    public JpaApplicant() {
     }
 
     public long getApplicantId() {

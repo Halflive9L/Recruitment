@@ -54,16 +54,14 @@ public class ApplicantRepoJpa implements ApplicantRepository {
     }
 
     @Override
-    public Applicant findApplicantById(long applicantId) {
-        List<JpaApplicant> list = entityManager
+    public Applicant findApplicantById(long applicantId) throws NotFoundException {
+        List list = entityManager
                 .createNamedQuery(JpaApplicant.QUERY_FIND_BY_ID)
                 .setParameter("applicantId", applicantId).getResultList();
         if (list.isEmpty()) {
-            return null;
+            throw new NotFoundException();
         }
-
-        JpaApplicant jpaApplicant = list.get(0);
-
+        JpaApplicant jpaApplicant = (JpaApplicant) list.get(0);
         return jpaApplicant.toApplicant();
     }
 
@@ -73,8 +71,15 @@ public class ApplicantRepoJpa implements ApplicantRepository {
     }
 
     @Override
-    public void deleteApplicant(long id) throws NotFoundException {
-
+    public Applicant deleteApplicant(long applicantId) throws NotFoundException {
+        List applicantList = entityManager.createNamedQuery(JpaApplicant.QUERY_FIND_BY_ID)
+                .setParameter("applicantId", applicantId).getResultList();
+        if (applicantList.isEmpty()) {
+            throw new NotFoundException();
+        }
+        entityManager.createNamedQuery(JpaApplicant.QUERY_DELETE).setParameter("applicantId", applicantId)
+                .executeUpdate();
+        return ((JpaApplicant) applicantList.get(0)).toApplicant();
     }
 
 

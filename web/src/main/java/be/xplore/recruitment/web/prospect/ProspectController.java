@@ -45,7 +45,7 @@ public class ProspectController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/prospect/{prospectId}")
     public ResponseEntity<JsonProspect> getProspectById(@PathVariable long prospectId) {
-            return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/prospect")

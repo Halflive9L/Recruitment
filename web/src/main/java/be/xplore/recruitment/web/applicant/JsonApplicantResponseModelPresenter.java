@@ -4,25 +4,25 @@ import be.xplore.recruitment.domain.applicant.ApplicantResponseModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Consumer;
 
 /**
  * @author Stijn Schack
  * @since 7/28/2017
  */
-public class JsonApplicantResponseModelPresenter implements Consumer<ApplicantResponseModel> {
-    private ResponseEntity<JsonApplicant> responseEntity;
+public class JsonApplicantResponseModelPresenter implements Consumer<List<ApplicantResponseModel>> {
+    private ResponseEntity<List<JsonApplicant>> responseEntity;
 
     @Override
-    public void accept(ApplicantResponseModel applicantResponseModel) {
-        if (applicantResponseModel.isEmpty()) {
-            responseEntity = new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } else {
-            responseEntity = new ResponseEntity<>(JsonApplicant.asJsonApplicant(applicantResponseModel), HttpStatus.OK);
-        }
+    public void accept(List<ApplicantResponseModel> applicantResponseModel) {
+        List<JsonApplicant> responseBody = new ArrayList<>();
+        applicantResponseModel.forEach(responseModel -> responseBody.add(JsonApplicant.asJsonApplicant(responseModel)));
+        responseEntity = new ResponseEntity<>(responseBody, HttpStatus.OK);
     }
 
-    public ResponseEntity<JsonApplicant> getResponseEntity(){
+    public ResponseEntity<List<JsonApplicant>> getResponseEntity() {
         return this.responseEntity;
     }
 }
