@@ -1,8 +1,7 @@
 package be.xplore.recruitment.domain.applicant;
 
-import be.xplore.recruitment.domain.exception.NotFoundException;
-
 import javax.inject.Named;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -18,15 +17,17 @@ public class ReadApplicantUseCase implements ReadApplicant {
         this.repository = repository;
     }
 
+
     @Override
-    public void readAllApplicants(ReadAllApplicantsResponse response) {
+    public void readAllApplicants(Consumer<List<ApplicantResponseModel>> response) {
         List<Applicant> applicants = repository.findAll();
-        response.onResponse(applicants);
+        List<ApplicantResponseModel> responseList = new LinkedList<>();
+        applicants.forEach(applicant -> responseList.add(new ApplicantResponseModel(applicant)));
+        response.accept(responseList);
     }
 
     @Override
-    public void readApplicantsByParam(ReadApplicantRequest request, ReadApplicantsByParamResponse response)
-            throws NotFoundException {
+    public void readApplicantsByParam(ReadApplicantRequest request, Consumer<List<ApplicantResponseModel>> response) {
 
     }
 

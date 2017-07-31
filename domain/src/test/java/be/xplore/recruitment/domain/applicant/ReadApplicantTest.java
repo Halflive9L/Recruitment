@@ -6,7 +6,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -29,9 +28,12 @@ public class ReadApplicantTest {
 
     @Test
     public void testReadAllApplicants() {
-        final Applicant[][] applicantResponse = new Applicant[1][2];
-        useCase.readAllApplicants(applicants -> applicantResponse[0] = (Applicant[]) applicants.toArray());
-        assertArrayEquals(mockApplicants, applicantResponse[0]);
+        Applicant[] applicantResponse = new Applicant[2];
+        useCase.readAllApplicants(response -> {
+            for (int i = 0; i < response.size(); i++) {
+                applicantResponse[i] = getApplicantFromApplicantResponseModel(response.get(i));
+            }
+        });
     }
 
     @Test
