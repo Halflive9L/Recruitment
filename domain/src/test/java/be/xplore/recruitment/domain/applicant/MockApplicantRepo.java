@@ -98,7 +98,15 @@ class MockApplicantRepo implements ApplicantRepository {
     }
 
     @Override
-    public void deleteApplicant(long id) {
-        mockApplicants.stream().findFirst().ifPresent(applicant -> mockApplicants.remove(applicant));
+    public Applicant deleteApplicant(long id) {
+        Applicant deletedApplicant;
+        for (int i = 0; i < mockApplicants.size(); i++) {
+            if (mockApplicants.get(i).getApplicantId() == id) {
+                deletedApplicant = mockApplicants.get(i);
+                mockApplicants.remove(i);
+                return deletedApplicant;
+            }
+        }
+        throw new NotFoundException();
     }
 }

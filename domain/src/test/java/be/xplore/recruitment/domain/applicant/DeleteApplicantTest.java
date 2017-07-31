@@ -4,7 +4,9 @@ import be.xplore.recruitment.domain.exception.NotFoundException;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertNull;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author Stijn Schack
@@ -12,7 +14,7 @@ import static org.junit.Assert.assertNull;
  */
 public class DeleteApplicantTest {
     private DeleteApplicant useCase;
-    private Applicant[] mockApplicants;
+    private List<Applicant> mockApplicants;
 
     @Before
     public void initUseCase() {
@@ -25,7 +27,7 @@ public class DeleteApplicantTest {
     public void testDeleteApplicantTest() {
         useCase.deleteApplicant(new DeleteApplicantRequest(1), applicantId -> {
         });
-        assertNull(mockApplicants[0]);
+        assertEquals(1, mockApplicants.size());
     }
 
     @Test(expected = NotFoundException.class)

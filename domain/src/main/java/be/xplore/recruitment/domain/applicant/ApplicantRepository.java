@@ -17,5 +17,5 @@ public interface ApplicantRepository {
 
     void updateApplicant(Applicant applicant) throws NotFoundException;
 
-    void deleteApplicant(long id) throws NotFoundException;
+    Applicant deleteApplicant(long id) throws NotFoundException;
 }

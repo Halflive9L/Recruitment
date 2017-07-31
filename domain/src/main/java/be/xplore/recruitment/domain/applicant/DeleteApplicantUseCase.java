@@ -3,6 +3,7 @@ package be.xplore.recruitment.domain.applicant;
 import be.xplore.recruitment.domain.exception.NotFoundException;
 
 import javax.inject.Named;
+import java.util.function.Consumer;
 
 /**
  * @author Stijn Schack
@@ -18,9 +19,9 @@ public class DeleteApplicantUseCase implements DeleteApplicant {
     }
 
     @Override
-    public void deleteApplicant(DeleteApplicantRequest request, DeleteApplicantResponse response)
+    public void deleteApplicant(DeleteApplicantRequest request, Consumer<ApplicantResponseModel> response)
             throws NotFoundException {
-        repository.deleteApplicant(request.id);
-        response.onResponse(request.id);
+        Applicant applicant = repository.deleteApplicant(request.id);
+        response.accept(new ApplicantResponseModel(applicant));
     }
 }
