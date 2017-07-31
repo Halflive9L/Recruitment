@@ -7,10 +7,12 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.Calendar;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author Stijn Schack
@@ -18,21 +20,24 @@ import java.util.Calendar;
  */
 @RunWith(MockitoJUnitRunner.class)
 public class CreateApplicantTest {
-    @Mock
-    private ApplicantRepository repository;
-
     private CreateApplicant useCase;
+    private List<Applicant> mockRepo;
 
     @Before
     public void initUseCase() {
-        useCase = new CreateApplicantUseCase(repository);
+        MockApplicantRepo repo = new MockApplicantRepo();
+        mockRepo = repo.mockApplicants;
+        useCase = new CreateApplicantUseCase(repo);
     }
 
     @Test
     public void testCreateApplicant() {
-        CreateApplicantRequest request = getRequestFromApplicant(Applicant.builder().build());
+        Applicant expected = Applicant.builder().withFirstName("stijn").build();
+        CreateApplicantRequest request = getRequestFromApplicant(expected);
         useCase.createApplicant(request, applicantId -> {
         });
+        assertEquals(3, mockRepo.size());
+        assertEquals(expected, mockRepo.get(2));
     }
 
     @Test(expected = InvalidPhoneException.class)
@@ -55,7 +60,8 @@ public class CreateApplicantTest {
     public void testCreateApplicantWithInvalidEmail() {
         CreateApplicantRequest request = getRequestFromApplicant(Applicant.builder()
                 .withEmail("a").build());
-        useCase.createApplicant(request, id -> {
+        useCase.createApplicant(request, applicant -> {
+
         });
     }
 

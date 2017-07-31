@@ -22,10 +22,10 @@ class CreateApplicantUseCase implements CreateApplicant {
     @Override
     public void createApplicant(CreateApplicantRequest request, Consumer<ApplicantResponseModel> response)
             throws InvalidEmailException, InvalidPhoneException, InvalidDateException {
-        Applicant a = createApplicantFromRequest(request);
-        a.validateApplicant();
-        repository.createApplicant(a);
-        response.accept(new ApplicantResponseModel(a));
+        Applicant applicant = createApplicantFromRequest(request);
+        applicant.validateApplicant();
+        repository.createApplicant(applicant);
+        response.accept(new ApplicantResponseModel(applicant));
     }
 
     private Applicant createApplicantFromRequest(CreateApplicantRequest request) {

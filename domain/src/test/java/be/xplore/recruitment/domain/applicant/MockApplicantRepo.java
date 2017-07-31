@@ -2,7 +2,7 @@ package be.xplore.recruitment.domain.applicant;
 
 import be.xplore.recruitment.domain.exception.NotFoundException;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -14,27 +14,30 @@ import static be.xplore.recruitment.domain.util.Validator.isNullOrEmpty;
  * @since 7/27/2017
  */
 class MockApplicantRepo implements ApplicantRepository {
-    List<Applicant> mockApplicants = Arrays.asList(
-            Applicant.builder()
-                    .withFirstName("John").withLastName("Smith").withId(1)
-                    .withDateOfBirth(new Calendar.Builder().setDate(1996, 10, 3).build()
-                            .getTime())
-                    .withAddress("Antwerp")
-                    .withEducation("College")
-                    .withEmail("john.smith@example.com")
-                    .withPhone("+32424963258").build(),
-            Applicant.builder()
-                    .withFirstName("Leeroy").withLastName("Jenkins").withId(2)
-                    .withDateOfBirth(new Calendar.Builder().setDate(1986, 3, 10).build()
-                            .getTime())
-                    .withAddress("Kontich")
-                    .withEducation("University")
-                    .withEmail("leeroy@jenkins.com")
-                    .withPhone("+32 420 00 1337").build()
-    );
+    List<Applicant> mockApplicants = new ArrayList<>();
+
+    MockApplicantRepo() {
+        mockApplicants.add(Applicant.builder()
+                .withFirstName("John").withLastName("Smith").withId(1)
+                .withDateOfBirth(new Calendar.Builder().setDate(1996, 10, 3).build()
+                        .getTime())
+                .withAddress("Antwerp")
+                .withEducation("College")
+                .withEmail("john.smith@example.com")
+                .withPhone("+32424963258").build());
+        mockApplicants.add(Applicant.builder()
+                .withFirstName("Leeroy").withLastName("Jenkins").withId(2)
+                .withDateOfBirth(new Calendar.Builder().setDate(1986, 3, 10).build()
+                        .getTime())
+                .withAddress("Kontich")
+                .withEducation("University")
+                .withEmail("leeroy@jenkins.com")
+                .withPhone("+32 420 00 1337").build());
+    }
 
     @Override
     public void createApplicant(Applicant a) {
+        mockApplicants.add(a);
     }
 
     @Override
