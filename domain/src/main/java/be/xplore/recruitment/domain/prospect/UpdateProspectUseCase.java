@@ -2,6 +2,8 @@ package be.xplore.recruitment.domain.prospect;
 
 import be.xplore.recruitment.domain.exception.NotFoundException;
 
+import java.util.function.Consumer;
+
 import static be.xplore.recruitment.domain.prospect.Prospect.builder;
 import static be.xplore.recruitment.domain.util.Validator.isValidEmail;
 import static be.xplore.recruitment.domain.util.Validator.isValidPhone;
@@ -19,7 +21,7 @@ public class UpdateProspectUseCase implements UpdateProspect {
     }
 
     @Override
-    public void updateProspect(UpdateProspectRequest request, UpdateProspectResponse response) {
+    public void updateProspect(UpdateProspectRequest request, Consumer<ProspectResponseModel> response) {
         if (repository.findProspectById(request.prospectId) == null) {
             throw new NotFoundException();
         }
@@ -31,7 +33,7 @@ public class UpdateProspectUseCase implements UpdateProspect {
                 .withPhone(request.phone).build();
 
         repository.updateProspect(prospect);
-        response.onResponse(prospect);
+        response.accept(new ProspectResponseModel(prospect));
     }
 
     private void checkPhone(UpdateProspectRequest request) {

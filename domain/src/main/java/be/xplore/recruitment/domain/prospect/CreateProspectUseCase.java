@@ -4,6 +4,7 @@ import be.xplore.recruitment.domain.exception.InvalidEmailException;
 import be.xplore.recruitment.domain.exception.InvalidPhoneException;
 
 import javax.inject.Named;
+import java.util.function.Consumer;
 
 /**
  * @author Stijn Schack
@@ -20,13 +21,12 @@ public class CreateProspectUseCase implements CreateProspect {
 
 
     @Override
-    public void createProspect(CreateProspectRequest request, CreateProspectResponse response)
+    public void createProspect(CreateProspectRequest request, Consumer<ProspectResponseModel> response)
             throws InvalidEmailException, InvalidPhoneException {
         Prospect prospect = createProspectFromRequest(request);
         prospect.validateProspect();
         repository.createProspect(prospect);
-        System.out.println(prospect.getProspectId());
-        response.onResponse(prospect.getProspectId());
+        response.accept(new ProspectResponseModel(prospect));
     }
 
     private Prospect createProspectFromRequest(CreateProspectRequest request) {

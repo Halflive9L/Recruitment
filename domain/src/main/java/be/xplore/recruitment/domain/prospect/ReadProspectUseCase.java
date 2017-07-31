@@ -2,6 +2,10 @@ package be.xplore.recruitment.domain.prospect;
 
 import be.xplore.recruitment.domain.exception.NotFoundException;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Consumer;
+
 /**
  * @author Stijn Schack
  * @since 7/26/2017
@@ -15,16 +19,20 @@ public class ReadProspectUseCase implements ReadProspect {
     }
 
     @Override
-    public void readAllProspects(ReadAllProspectsResponse response) {
-        response.onResponse(repository.findAll());
+    public void readAllProspects(Consumer<List<ProspectResponseModel>> response) {
+        List<Prospect> prospects = repository.findAll();
+        List<ProspectResponseModel> prospectResponseModels = new ArrayList<>();
+        for(Prospect p : prospects) {
+            prospectResponseModels.add(new ProspectResponseModel(p));
+        }
+        response.accept(prospectResponseModels);
     }
 
     @Override
-    public void readProspectById(ReadProspectRequest request, ReadProspectResponse response) {
+    public void readProspectById(ReadProspectRequest request, Consumer<ProspectResponseModel> response) {
         if (repository.findProspectById(request.prospectId) == null) {
             throw new NotFoundException();
         }
-        response.onResponse(repository.findProspectById(request.prospectId));
-
+        response.accept(new ProspectResponseModel(repository.findProspectById(request.prospectId)));
     }
 }

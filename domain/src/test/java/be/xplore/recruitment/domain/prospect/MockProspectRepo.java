@@ -2,37 +2,41 @@ package be.xplore.recruitment.domain.prospect;
 
 import be.xplore.recruitment.domain.exception.NotFoundException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static be.xplore.recruitment.domain.prospect.Prospect.builder;
 import static be.xplore.recruitment.domain.util.Validator.isNullOrEmpty;
 import static be.xplore.recruitment.domain.util.Validator.isValidEmail;
 import static be.xplore.recruitment.domain.util.Validator.isValidPhone;
-import static java.util.Arrays.asList;
 
 /**
  * @author Lander
  * @since 28/07/2017
  */
 class MockProspectRepo implements ProspectRepository {
-    Prospect[] mockProspects = {
-            Prospect.builder("John", "Smith")
-                    .withId(1)
-                    .withEmail("john.smith@example.com")
-                    .withPhone("+32424963258").build(),
-            Prospect.builder("Leroy", "Jenkins")
-                    .withId(2)
-                    .withEmail("leeroy@jenkins.com")
-                    .withPhone("+325435435435").build()
-    };
+
+    List<Prospect> mockProspects = new ArrayList<>();
+
+    MockProspectRepo() {
+        mockProspects.add(Prospect.builder("John", "Smith")
+                .withId(1)
+                .withEmail("john.smith@example.com")
+                .withPhone("+32424963258").build());
+        mockProspects.add(Prospect.builder("Leroy", "Jenkins")
+                .withId(2)
+                .withEmail("leeroy@jenkins.com")
+                .withPhone("+325435435435").build());
+    }
 
     @Override
     public void createProspect(Prospect a) {
+        mockProspects.add(a);
     }
 
     @Override
     public List<Prospect> findAll() {
-        return asList(mockProspects);
+        return mockProspects;
     }
 
     @Override
@@ -61,24 +65,25 @@ class MockProspectRepo implements ProspectRepository {
                 .withEmail(prospect.getEmail())
                 .withPhone(prospect.getPhone())
                 .withId(prospect.getProspectId()).build();
-        mockProspects[(int) prospect.getProspectId() - 1] = zoekProspect;
+        int index = (int) prospect.getProspectId() - 1;
+        mockProspects.set(index, zoekProspect);
         return zoekProspect;
     }
 
     private String firstName(Prospect prospect, int i) {
-        return isNullOrEmpty(prospect.getFirstName()) ? mockProspects[i].getFirstName() : prospect.getFirstName();
+        return isNullOrEmpty(prospect.getFirstName()) ? mockProspects.get(i).getFirstName() : prospect.getFirstName();
     }
 
     private String lastName(Prospect prospect, int i) {
-        return isNullOrEmpty(prospect.getLastName()) ? mockProspects[i].getLastName() : prospect.getLastName();
+        return isNullOrEmpty(prospect.getLastName()) ? mockProspects.get(i).getLastName() : prospect.getLastName();
     }
 
     private String email(Prospect prospect, int i) {
-        return isNullOrEmpty(prospect.getEmail()) ? mockProspects[i].getEmail() : prospect.getEmail();
+        return isNullOrEmpty(prospect.getEmail()) ? mockProspects.get(i).getEmail() : prospect.getEmail();
     }
 
     private String phone(Prospect prospect, int i) {
-        return isNullOrEmpty(prospect.getPhone()) ? mockProspects[i].getPhone() : prospect.getPhone();
+        return isNullOrEmpty(prospect.getPhone()) ? mockProspects.get(i).getPhone() : prospect.getPhone();
     }
 
     @Override
@@ -86,6 +91,6 @@ class MockProspectRepo implements ProspectRepository {
         if (findProspectById(id) == null) {
             throw new NotFoundException();
         }
-        mockProspects[(int) id] = null;
+        mockProspects.remove((int) id);
     }
 }

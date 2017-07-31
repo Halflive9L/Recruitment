@@ -29,7 +29,7 @@ public class ReadProspectTest {
     @Test
     public void testReadProspectById() {
         Prospect prospect = repository.findProspectById(1);
-        assertEquals(prospect, repository.mockProspects[0]);
+        assertEquals(prospect, repository.mockProspects.get(0));
     }
 
     @Test(expected = NotFoundException.class)

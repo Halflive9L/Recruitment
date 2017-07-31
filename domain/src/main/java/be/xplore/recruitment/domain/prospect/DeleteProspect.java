@@ -1,9 +1,11 @@
 package be.xplore.recruitment.domain.prospect;
 
+import java.util.function.Consumer;
+
 /**
  * @author Lander
  * @since 27/07/2017
  */
 public interface DeleteProspect {
-    void deleteProspect(DeleteProspectRequest request, DeleteProspectResponse response);
+    void deleteProspect(DeleteProspectRequest request, Consumer<Long> response);
 }

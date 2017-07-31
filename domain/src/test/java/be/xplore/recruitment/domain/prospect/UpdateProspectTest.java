@@ -24,7 +24,7 @@ public class UpdateProspectTest {
                 .withPhone("+325435435435")
                 .withId(2).build();
         repository.updateProspect(prospect);
-        Assert.assertEquals(repository.mockProspects[1], getExpectedProspect());
+        Assert.assertEquals(repository.mockProspects.get(1), getExpectedProspect());
     }
 
     @Test
@@ -34,7 +34,7 @@ public class UpdateProspectTest {
                 .withPhone("+325435435435")
                 .withId(2).build();
         repository.updateProspect(prospect);
-        Assert.assertEquals(repository.mockProspects[1], getExpectedProspect());
+        Assert.assertEquals(repository.mockProspects.get(1), getExpectedProspect());
     }
 
     @Test
@@ -44,7 +44,7 @@ public class UpdateProspectTest {
                 .withPhone("a")
                 .withId(2).build();
         repository.updateProspect(prospect);
-        Assert.assertEquals(repository.mockProspects[1], getExpectedProspect());
+        Assert.assertEquals(repository.mockProspects.get(1), getExpectedProspect());
     }
 
 

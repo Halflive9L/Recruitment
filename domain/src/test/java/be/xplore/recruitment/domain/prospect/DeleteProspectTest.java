@@ -2,8 +2,10 @@ package be.xplore.recruitment.domain.prospect;
 
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 /**
@@ -13,11 +15,23 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class DeleteProspectTest {
 
-    private MockProspectRepo repository = new MockProspectRepo();
+    @Mock
+    private MockProspectRepo repository;
+
+    private DeleteProspect useCase;
+
+    @Before
+    public void initUseCase() {
+        useCase = new DeleteProspectUseCase(repository);
+        repository = new MockProspectRepo();
+    }
 
     @Test
     public void testDeleteProspect() {
+        DeleteProspectRequest request = new DeleteProspectRequest();
+        request.prospectId = 1;
+        useCase.deleteProspect(request, prospectId -> {});
         repository.deleteProspect(1);
-        Assert.assertEquals(repository.mockProspects[1], null);
+        Assert.assertEquals(repository.mockProspects.size(), 1);
     }
 }

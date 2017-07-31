@@ -26,6 +26,7 @@ public class ProspectController {
     @Autowired
     private CreateProspect createProspect;
 
+
     @RequestMapping(method = RequestMethod.POST, value = "/prospect")
     public ResponseEntity<JsonProspect> addProspect(@RequestBody JsonProspect input) {
         CreateProspectRequest request = new CreateProspectRequest();
