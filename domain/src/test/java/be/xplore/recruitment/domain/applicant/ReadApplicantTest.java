@@ -6,7 +6,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -17,7 +22,7 @@ import static org.junit.Assert.assertTrue;
 public class ReadApplicantTest {
     private ReadApplicant useCase;
 
-    private Applicant[] mockApplicants;
+    private List<Applicant> mockApplicants;
 
     @Before
     public void initUseCase() {
@@ -28,12 +33,11 @@ public class ReadApplicantTest {
 
     @Test
     public void testReadAllApplicants() {
-        Applicant[] applicantResponse = new Applicant[2];
+        List<Applicant> applicantResponse = new ArrayList<>();
         useCase.readAllApplicants(response -> {
-            for (int i = 0; i < response.size(); i++) {
-                applicantResponse[i] = getApplicantFromApplicantResponseModel(response.get(i));
-            }
+            applicantResponse.addAll(getApplicantListFromResponseModelList(response));
         });
+        assertThat(mockApplicants, is(applicantResponse));
     }
 
     @Test
@@ -43,7 +47,7 @@ public class ReadApplicantTest {
         useCase.readApplicantById(request, applicantResponseModel -> {
             responseApplicant[0] = getApplicantFromApplicantResponseModel(applicantResponseModel);
         });
-        assertEquals(responseApplicant[0], mockApplicants[0]);
+        assertEquals(responseApplicant[0], mockApplicants.get(0));
     }
 
     @Test
@@ -68,6 +72,16 @@ public class ReadApplicantTest {
         request.email = applicant.getEmail();
         request.phone = applicant.getPhone();
         return request;
+    }
+
+    @Ignore
+    private List<Applicant> getApplicantListFromResponseModelList(List<ApplicantResponseModel> responseModels) {
+        List<Applicant> applicants = new ArrayList<>();
+        for (ApplicantResponseModel responseModel : responseModels) {
+            applicants.add(getApplicantFromApplicantResponseModel(responseModel));
+        }
+
+        return applicants;
     }
 
     @Ignore
