@@ -50,6 +50,11 @@ class MockProspectRepo implements ProspectRepository {
     }
 
     @Override
+    public List<Prospect> findProspectByParam(Prospect prospect) {
+        return null;
+    }
+
+    @Override
     public Prospect updateProspect(Prospect prospect) {
         if (findProspectById(prospect.getProspectId()) == null) {
             throw new NotFoundException();

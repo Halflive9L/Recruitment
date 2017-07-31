@@ -8,6 +8,9 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author Stijn Schack
  * @since 7/26/2017
@@ -30,7 +33,6 @@ public class DeleteProspectTest {
     public void testDeleteProspect() {
         DeleteProspectRequest request = new DeleteProspectRequest();
         request.prospectId = 1;
-        useCase.deleteProspect(request, prospectId -> {});
         repository.deleteProspect(1);
         Assert.assertEquals(repository.mockProspects.size(), 1);
     }
