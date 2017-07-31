@@ -1,10 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="demo">
 <head>
     <meta charset="UTF-8">
-    <title></title>
+    <title>Xplore group</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+    <script src="scripts/prospects.js"></script>
 </head>
 <body>
+
+<div class="navbar">
+    <ul>
+        <li><a href="Prospects.html">Prospects</a></li>
+        <li><a href="Applicants.html">Applicants</a></li>
+    </ul>
+</div>
+
+    <div ng-controller="ProspectController">
+        <p>The ID is {{prospects.prospectId}}</p>
+        <p>The content is {{greeting.content}}</p>
+    </div>
 
 </body>
 </html>

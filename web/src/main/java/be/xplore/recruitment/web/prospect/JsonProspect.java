@@ -15,6 +15,7 @@ import java.io.Serializable;
  */
 @JsonComponent
 class JsonProspect implements Serializable {
+    private long prospectId;
     private String firstName;
     private String lastName;
     private String email;
@@ -25,6 +26,7 @@ class JsonProspect implements Serializable {
     }
 
     private JsonProspect(JsonProspectBuilder builder) {
+        this.prospectId = builder.prospectId;
         this.firstName = builder.firstName;
         this.lastName = builder.lastName;
         this.email = builder.email;
@@ -33,11 +35,22 @@ class JsonProspect implements Serializable {
 
     static JsonProspect asJsonProspect(ProspectResponseModel responseModel) {
         JsonProspect jsonProspect = new JsonProspect();
+        jsonProspect.setProspectId(responseModel.getProspectId());
         jsonProspect.setFirstName(responseModel.getFirstName());
         jsonProspect.setLastName(responseModel.getLastName());
         jsonProspect.setPhone(responseModel.getPhone());
         jsonProspect.setEmail(responseModel.getEmail());
         return jsonProspect;
+    }
+
+    @JsonProperty
+    public long getProspectId() {
+        return prospectId;
+    }
+
+    @JsonProperty
+    public void setProspectId(long prospectId) {
+        this.prospectId = prospectId;
     }
 
     @JsonProperty
@@ -96,6 +109,7 @@ class JsonProspect implements Serializable {
         private String lastName;
         private String email;
         private String phone;
+        private long prospectId;
 
         public JsonProspectBuilder(String firstName, String lastName) {
             this.firstName = firstName;
@@ -113,6 +127,11 @@ class JsonProspect implements Serializable {
 
         public JsonProspectBuilder withPhone(String phone) {
             this.phone = phone;
+            return this;
+        }
+
+        public JsonProspectBuilder withId(long prospectId) {
+            this.prospectId = prospectId;
             return this;
         }
 

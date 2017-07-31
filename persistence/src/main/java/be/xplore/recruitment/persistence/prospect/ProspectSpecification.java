@@ -3,6 +3,11 @@ package be.xplore.recruitment.persistence.prospect;
 import be.xplore.recruitment.domain.prospect.Prospect;
 import org.springframework.data.jpa.domain.Specification;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+
 /**
  * @author Stijn Schack
  * @since 7/20/2017

@@ -22,13 +22,13 @@ import javax.persistence.Table;
         @NamedQuery(name = JpaProspect.QUERY_FIND_ALL,
                 query = "SELECT p from JpaProspect p"),
         @NamedQuery(name = JpaProspect.QUERY_DELETE,
-                query = "DELETE  from JpaProspect p where p.prospectId = :prospectId") })
+                query = "DELETE FROM JpaProspect p where p.prospectId = :prospectId") })
 
 public class JpaProspect {
 
     static final String QUERY_FIND_BY_ID = "Prospect.findProspectById";
     static final String QUERY_FIND_ALL = "Prospect.findAll";
-    static final String QUERY_DELETE = "Prospect.delete";
+    static final String QUERY_DELETE = "Prospect.deleteProspect";
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

@@ -13,6 +13,8 @@ public interface ProspectRepository {
 
     Prospect findProspectById(long id);
 
+    List<Prospect> findProspectByParam(Prospect prospect);
+
     void deleteProspect(long id);
 
     Prospect updateProspect(Prospect prospect);

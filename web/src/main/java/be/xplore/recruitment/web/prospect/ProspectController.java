@@ -81,12 +81,7 @@ public class ProspectController {
         request.lastName = query.getLastName();
         request.email = query.getEmail();
         request.phone = query.getPhone();
-        readProspect.readAllProspects(prospectResponseModels -> {
-            for (ProspectResponseModel p: prospectResponseModels
-                 ) {
-                prospectPresenter.accept(p);
-            }
-        });
+        readProspect.readAllProspects(prospectPresenter);
         return prospectPresenter.getResponseEntity();
     }
 
@@ -95,7 +90,7 @@ public class ProspectController {
         DeleteProspectRequest request = new DeleteProspectRequest();
         JsonProspectPresenter presenter = new JsonProspectPresenter();
         request.prospectId = prospectId;
-        deleteProspect.deleteProspect(request, id -> {});
+        deleteProspect.deleteProspect(request, presenter);
         return presenter.getResponseEntity();
     }
 }

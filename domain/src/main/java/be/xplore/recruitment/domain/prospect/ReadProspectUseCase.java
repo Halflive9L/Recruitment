@@ -31,11 +31,13 @@ public class ReadProspectUseCase implements ReadProspect {
     }
 
     @Override
-    public void readProspectById(ReadProspectRequest request, Consumer<ProspectResponseModel> response) {
+    public void readProspectById(ReadProspectRequest request, Consumer<List<ProspectResponseModel>> response) {
         if (repository.findProspectById(request.prospectId) == null) {
             throw new NotFoundException();
         }
-        response.accept(new ProspectResponseModel(repository.findProspectById(request.prospectId)));
+        List<ProspectResponseModel> prospectResponseModels = new ArrayList<>();
+        prospectResponseModels.add(new ProspectResponseModel(repository.findProspectById(request.prospectId)));
+        response.accept(prospectResponseModels);
     }
 
     @Override

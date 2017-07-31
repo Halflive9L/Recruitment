@@ -4,10 +4,15 @@ package be.xplore.recruitment.persistence.prospect;
 import be.xplore.recruitment.domain.prospect.Prospect;
 import be.xplore.recruitment.domain.prospect.ProspectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -66,11 +71,17 @@ public class ProspectRepoJpa implements ProspectRepository {
         return toProspect(jpaProspect);
     }
 
+    @Override
+    public List<Prospect> findProspectByParam(Prospect prospect) {
+        List<Prospect> prospects = findAll();
+        return prospects;
+    }
+
 
     @Override
     public void deleteProspect(long prospectId) {
         entityManager.createNamedQuery(JpaProspect.QUERY_DELETE)
-        .setParameter("prospectId", prospectId);
+        .setParameter("prospectId", prospectId).executeUpdate();
         //entityManager.remove(findProspectById(id));
     }
 

@@ -11,7 +11,7 @@ public interface ReadProspect {
 
     void readAllProspects(Consumer<List<ProspectResponseModel>> response);
 
-    void readProspectById(ReadProspectRequest request, Consumer<ProspectResponseModel> response);
+    void readProspectById(ReadProspectRequest request, Consumer<List<ProspectResponseModel>> response);
 
     void readProspectByParam(ReadProspectRequest request, Consumer<List<ProspectResponseModel>> response);
 }
