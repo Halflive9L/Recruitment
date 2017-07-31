@@ -5,6 +5,8 @@ import be.xplore.recruitment.domain.exception.InvalidPhoneException;
 import be.xplore.recruitment.domain.prospect.CreateProspect;
 import be.xplore.recruitment.domain.prospect.CreateProspectRequest;
 import be.xplore.recruitment.domain.prospect.DeleteProspect;
+import be.xplore.recruitment.domain.prospect.DeleteProspectRequest;
+import be.xplore.recruitment.domain.prospect.ProspectResponseModel;
 import be.xplore.recruitment.domain.prospect.ReadProspect;
 import be.xplore.recruitment.domain.prospect.ReadProspectRequest;
 import be.xplore.recruitment.domain.prospect.UpdateProspect;
@@ -17,6 +19,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -59,22 +64,38 @@ public class ProspectController {
 
 
     @RequestMapping(method = RequestMethod.GET, value = "/prospect/{prospectId}")
-    public ResponseEntity<JsonProspect> getProspectById(@PathVariable long prospectId) {
+    public ResponseEntity<List<JsonProspect>> getProspectById(@PathVariable long prospectId) {
         ReadProspectRequest request = new ReadProspectRequest();
         request.prospectId = prospectId;
         JsonProspectPresenter presenter = new JsonProspectPresenter();
-        readProspect.readProspectById(request, presenter);
+        readProspect.readProspectById(request,presenter);
         return presenter.getResponseEntity();
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/prospect")
-    public ResponseEntity<JsonProspect> getProspectByParam(@ModelAttribute JsonProspect query) {
+    public ResponseEntity<List<JsonProspect>> getProspectByParam(@ModelAttribute JsonProspect query) {
         System.out.println("query = " + query);
-        return new ResponseEntity<>(HttpStatus.OK);
+        ReadProspectRequest request = new ReadProspectRequest();
+        JsonProspectPresenter prospectPresenter = new JsonProspectPresenter();
+        request.firstName = query.getFirstName();
+        request.lastName = query.getLastName();
+        request.email = query.getEmail();
+        request.phone = query.getPhone();
+        readProspect.readAllProspects(prospectResponseModels -> {
+            for (ProspectResponseModel p: prospectResponseModels
+                 ) {
+                prospectPresenter.accept(p);
+            }
+        });
+        return prospectPresenter.getResponseEntity();
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/prospect/{prospectId}")
-    public ResponseEntity<JsonProspect> deleteProspect(@PathVariable long prospectId) {
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<List<JsonProspect>> deleteProspect(@PathVariable long prospectId) {
+        DeleteProspectRequest request = new DeleteProspectRequest();
+        JsonProspectPresenter presenter = new JsonProspectPresenter();
+        request.prospectId = prospectId;
+        deleteProspect.deleteProspect(request, id -> {});
+        return presenter.getResponseEntity();
     }
 }

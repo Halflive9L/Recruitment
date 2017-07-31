@@ -66,9 +66,12 @@ public class ProspectRepoJpa implements ProspectRepository {
         return toProspect(jpaProspect);
     }
 
+
     @Override
-    public void deleteProspect(long id) {
-        entityManager.remove(findProspectById(id));
+    public void deleteProspect(long prospectId) {
+        entityManager.createNamedQuery(JpaProspect.QUERY_DELETE)
+        .setParameter("prospectId", prospectId);
+        //entityManager.remove(findProspectById(id));
     }
 
     @Override
@@ -86,7 +89,7 @@ public class ProspectRepoJpa implements ProspectRepository {
     private Prospect toProspect(JpaProspect jpaProspect) {
         return new Prospect.ProspectBuilder(jpaProspect.getFirstName(), jpaProspect.getLastName())
                 .withEmail(jpaProspect.getEmail())
-                .withPhone(jpaProspect.getPhone()).build();
+                .withPhone(jpaProspect.getPhone()).withId(jpaProspect.getProspectId()).build();
     }
 
 

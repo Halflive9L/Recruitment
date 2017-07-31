@@ -5,6 +5,7 @@ import be.xplore.recruitment.domain.prospect.ProspectResponseModel;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.boot.jackson.JsonComponent;
+import org.springframework.http.ResponseEntity;
 
 import java.io.Serializable;
 
@@ -88,6 +89,7 @@ class JsonProspect implements Serializable {
                 ", phone='" + phone + '\'' +
                 '}';
     }
+
 
     public static class JsonProspectBuilder {
         private String firstName;

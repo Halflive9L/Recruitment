@@ -1,5 +1,7 @@
 package be.xplore.recruitment.domain.prospect;
 
+import java.util.List;
+
 /**
  * @author Lander
  * @since 31/07/2017
@@ -18,7 +20,9 @@ public class ProspectResponseModel {
             this.lastName = prospect.getLastName();
             this.email = prospect.getEmail();
             this.phone = prospect.getPhone();
+
         }
+
 
         public boolean isEmpty() {
             return prospectId == 0 &&
@@ -73,4 +77,14 @@ public class ProspectResponseModel {
             this.phone = phone;
         }
 
+    @Override
+    public String toString() {
+        return "ProspectResponseModel{" +
+                "prospectId=" + prospectId +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                '}';
+    }
 }

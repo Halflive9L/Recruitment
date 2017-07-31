@@ -140,7 +140,7 @@ public class Prospect {
             return new Prospect(this);
         }
 
-        ProspectBuilder withId(long id) {
+        public ProspectBuilder withId(long id) {
             this.prospectId = id;
             return this;
         }

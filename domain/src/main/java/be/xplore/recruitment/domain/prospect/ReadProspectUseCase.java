@@ -37,4 +37,17 @@ public class ReadProspectUseCase implements ReadProspect {
         }
         response.accept(new ProspectResponseModel(repository.findProspectById(request.prospectId)));
     }
+
+    @Override
+    public void readProspectByParam(ReadProspectRequest request, Consumer<List<ProspectResponseModel>> response) {
+        if(isEmptyRequest(request)) {
+            readAllProspects(response);
+        } else {
+
+        }
+    }
+
+    private boolean isEmptyRequest(ReadProspectRequest request) {
+        return request.firstName == null && request.lastName == null && request.phone == null && request.email == null;
+    }
 }
