@@ -2,6 +2,7 @@ package be.xplore.recruitment.domain.prospect;
 
 import be.xplore.recruitment.domain.exception.NotFoundException;
 
+import javax.inject.Named;
 import java.util.function.Consumer;
 
 import static be.xplore.recruitment.domain.prospect.Prospect.builder;
@@ -12,6 +13,7 @@ import static be.xplore.recruitment.domain.util.Validator.isValidPhone;
  * @author Lander
  * @since 27/07/2017
  */
+@Named
 public class UpdateProspectUseCase implements UpdateProspect {
 
     private final ProspectRepository repository;

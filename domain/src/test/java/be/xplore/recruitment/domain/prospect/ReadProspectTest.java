@@ -17,13 +17,14 @@ import static org.junit.Assert.assertEquals;
 @RunWith(MockitoJUnitRunner.class)
 public class ReadProspectTest {
 
+
     private MockProspectRepo repository = new MockProspectRepo();
 
 
     @Test
     public void testReadAllProspects() {
         List<Prospect> prospects = repository.findAll();
-        assertEquals(prospects, asList(repository.mockProspects));
+        assertEquals(prospects,repository.mockProspects);
     }
 
     @Test

@@ -1,5 +1,7 @@
 package be.xplore.recruitment.web.prospect;
 
+import be.xplore.recruitment.domain.prospect.Prospect;
+import be.xplore.recruitment.domain.prospect.ProspectResponseModel;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.boot.jackson.JsonComponent;
@@ -19,6 +21,22 @@ class JsonProspect implements Serializable {
 
     @JsonCreator
     public JsonProspect() {
+    }
+
+    private JsonProspect(JsonProspectBuilder builder) {
+        this.firstName = builder.firstName;
+        this.lastName = builder.lastName;
+        this.email = builder.email;
+        this.phone = builder.phone;
+    }
+
+    static JsonProspect asJsonProspect(ProspectResponseModel responseModel) {
+        JsonProspect jsonProspect = new JsonProspect();
+        jsonProspect.setFirstName(responseModel.getFirstName());
+        jsonProspect.setLastName(responseModel.getLastName());
+        jsonProspect.setPhone(responseModel.getPhone());
+        jsonProspect.setEmail(responseModel.getEmail());
+        return jsonProspect;
     }
 
     @JsonProperty
@@ -69,5 +87,32 @@ class JsonProspect implements Serializable {
                 ", email='" + email + '\'' +
                 ", phone='" + phone + '\'' +
                 '}';
+    }
+
+    public static class JsonProspectBuilder {
+        private String firstName;
+        private String lastName;
+        private String email;
+        private String phone;
+
+        public JsonProspectBuilder(String firstName, String lastName) {
+            this.firstName = firstName;
+            this.lastName = lastName;
+        }
+
+        public JsonProspect build() {
+            return new JsonProspect(this);
+        }
+
+        public JsonProspectBuilder withEmail(String email) {
+            this.email = email;
+            return this;
+        }
+
+        public JsonProspectBuilder withPhone(String phone) {
+            this.phone = phone;
+            return this;
+        }
+
     }
 }

@@ -4,6 +4,10 @@ import be.xplore.recruitment.domain.exception.InvalidEmailException;
 import be.xplore.recruitment.domain.exception.InvalidPhoneException;
 import be.xplore.recruitment.domain.prospect.CreateProspect;
 import be.xplore.recruitment.domain.prospect.CreateProspectRequest;
+import be.xplore.recruitment.domain.prospect.DeleteProspect;
+import be.xplore.recruitment.domain.prospect.ReadProspect;
+import be.xplore.recruitment.domain.prospect.ReadProspectRequest;
+import be.xplore.recruitment.domain.prospect.UpdateProspect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +30,16 @@ public class ProspectController {
     @Autowired
     private CreateProspect createProspect;
 
+    @Autowired
+    private ReadProspect readProspect;
+
+    @Autowired
+    private UpdateProspect updateProspect;
+
+    @Autowired
+    private DeleteProspect deleteProspect;
+
+
 
     @RequestMapping(method = RequestMethod.POST, value = "/prospect")
     public ResponseEntity<JsonProspect> addProspect(@RequestBody JsonProspect input) {
@@ -46,7 +60,11 @@ public class ProspectController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/prospect/{prospectId}")
     public ResponseEntity<JsonProspect> getProspectById(@PathVariable long prospectId) {
-        return new ResponseEntity<>(HttpStatus.OK);
+        ReadProspectRequest request = new ReadProspectRequest();
+        request.prospectId = prospectId;
+        JsonProspectPresenter presenter = new JsonProspectPresenter();
+        readProspect.readProspectById(request, presenter);
+        return presenter.getResponseEntity();
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/prospect")

@@ -53,10 +53,10 @@ public class ProspectRepoJpa implements ProspectRepository {
     }
 
     @Override
-    public Prospect findProspectById(long id) {
+    public Prospect findProspectById(long prospectId) {
         List<JpaProspect> list = entityManager
                 .createNamedQuery(JpaProspect.QUERY_FIND_BY_ID)
-                .setParameter("id", id).getResultList();
+                .setParameter("prospectId", prospectId).getResultList();
         if (list.isEmpty()) {
             return null;
         }
@@ -74,7 +74,7 @@ public class ProspectRepoJpa implements ProspectRepository {
     @Override
     public Prospect updateProspect(Prospect prospect) {
         JpaProspect zoekProspect = (JpaProspect) entityManager.createNamedQuery(JpaProspect.QUERY_FIND_BY_ID)
-                .setParameter("id", prospect.getProspectId()).getSingleResult();
+                .setParameter("prospectId", prospect.getProspectId()).getSingleResult();
         zoekProspect.setEmail(prospect.getEmail());
         zoekProspect.setPhone(prospect.getPhone());
         zoekProspect.setLastName(prospect.getLastName());

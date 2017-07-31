@@ -2,6 +2,7 @@ package be.xplore.recruitment.domain.prospect;
 
 import be.xplore.recruitment.domain.exception.NotFoundException;
 
+import javax.inject.Named;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -10,6 +11,7 @@ import java.util.function.Consumer;
  * @author Stijn Schack
  * @since 7/26/2017
  */
+@Named
 public class ReadProspectUseCase implements ReadProspect {
 
     private final ProspectRepository repository;
