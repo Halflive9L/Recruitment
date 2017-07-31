@@ -70,31 +70,38 @@ class MockApplicantRepo implements ApplicantRepository {
     }
 
     private String firstName(Applicant applicant, int i) {
-        return isNullOrEmpty(applicant.getFirstName()) ? mockApplicants.get(i).getFirstName() : applicant.getFirstName();
+        return isNullOrEmpty(applicant.getFirstName()) ?
+                mockApplicants.get(i).getFirstName() : applicant.getFirstName();
     }
 
     private String lastName(Applicant applicant, int i) {
-        return isNullOrEmpty(applicant.getLastName()) ? mockApplicants.get(i).getLastName() : applicant.getLastName();
+        return isNullOrEmpty(applicant.getLastName()) ?
+                mockApplicants.get(i).getLastName() : applicant.getLastName();
     }
 
     private String address(Applicant applicant, int i) {
-        return isNullOrEmpty(applicant.getAddress()) ? mockApplicants.get(i).getAddress() : applicant.getAddress();
+        return isNullOrEmpty(applicant.getAddress()) ?
+                mockApplicants.get(i).getAddress() : applicant.getAddress();
     }
 
     private String email(Applicant applicant, int i) {
-        return isNullOrEmpty(applicant.getEmail()) ? mockApplicants.get(i).getEmail() : applicant.getEmail();
+        return isNullOrEmpty(applicant.getEmail()) ?
+                mockApplicants.get(i).getEmail() : applicant.getEmail();
     }
 
     private String phone(Applicant applicant, int i) {
-        return isNullOrEmpty(applicant.getPhone()) ? mockApplicants.get(i).getPhone() : applicant.getPhone();
+        return isNullOrEmpty(applicant.getPhone()) ?
+                mockApplicants.get(i).getPhone() : applicant.getPhone();
     }
 
     private String education(Applicant applicant, int i) {
-        return isNullOrEmpty(applicant.getEducation()) ? mockApplicants.get(i).getEducation() : applicant.getEducation();
+        return isNullOrEmpty(applicant.getEducation()) ?
+                mockApplicants.get(i).getEducation() : applicant.getEducation();
     }
 
     private Date dateOfBirth(Applicant applicant, int i) {
-        return applicant.getDateOfBirth() == null ? mockApplicants.get(i).getDateOfBirth() : applicant.getDateOfBirth();
+        return applicant.getDateOfBirth() == null ?
+                mockApplicants.get(i).getDateOfBirth() : applicant.getDateOfBirth();
     }
 
     @Override
