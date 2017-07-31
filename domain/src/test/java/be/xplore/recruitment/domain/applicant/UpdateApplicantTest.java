@@ -7,6 +7,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.Calendar;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
@@ -16,7 +17,7 @@ import static org.junit.Assert.assertEquals;
  */
 public class UpdateApplicantTest {
     private UpdateApplicant useCase;
-    private Applicant[] mockApplicants;
+    private List<Applicant> mockApplicants;
 
 
     @Before
@@ -30,7 +31,7 @@ public class UpdateApplicantTest {
     public void testUpdateApplicant() {
         useCase.updateApplicant(getRequestFromApplicant(getValidApplicant()), applicant -> {
         });
-        assertEquals(getExpectedApplicant(), mockApplicants[0]);
+        assertEquals(getExpectedApplicant(), mockApplicants.get(0));
     }
 
     @Test(expected = InvalidPhoneException.class)
