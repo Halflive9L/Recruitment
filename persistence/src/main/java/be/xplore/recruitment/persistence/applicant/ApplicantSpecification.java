@@ -1,60 +1,78 @@
 package be.xplore.recruitment.persistence.applicant;
 
-import be.xplore.recruitment.domain.applicant.Applicant;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.domain.Specifications;
+import org.springframework.util.StringUtils;
 
-import java.sql.Date;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.time.LocalDate;
 
 /**
  * Created by Lander on 20/07/2017.
  */
 public class ApplicantSpecification {
-    public static Specification<Applicant> hasFirstName(String firstName) {
-        return (root, query, cb) -> cb.equal(cb.lower(root.get("firstName")), (firstName).toLowerCase());
+    private JpaApplicant applicant;
+
+    public ApplicantSpecification(JpaApplicant applicant) {
+        this.applicant = applicant;
     }
 
-    public static Specification<Applicant> hasLastName(String lastName) {
-        return (root, query, cb) -> cb.equal(cb.lower(root.get("lastName")), (lastName).toLowerCase());
+    Specification<JpaApplicant> getFullSpecification() {
+        return Specifications.where(hasFirstName())
+                .and(hasLastName())
+                .and(hasEmail())
+                .and(hasPhone())
+                .and(hasEducation())
+                .and(hasAddress())
+                .and(hasDateOfBirth());
     }
 
-    public static Specification<Applicant> hasEmail(String email) {
-        return (root, query, cb) -> cb.equal(cb.lower(root.get("email")), email.toLowerCase());
+    private Specification<JpaApplicant> hasFirstName() {
+        return isStringNullOrEmpty(applicant.getFirstName()) ? null :
+                (root, query, cb) -> cb.equal(cb.lower(root.get("firstName")),
+                        (applicant.getFirstName()).toLowerCase());
     }
 
-    public static Specification<Applicant> hasPhone(String phone) {
-        return (root, query, cb) -> cb.equal(cb.lower(root.get("phone")), phone.toLowerCase());
+    private Specification<JpaApplicant> hasLastName() {
+        return isStringNullOrEmpty(applicant.getLastName()) ? null :
+                (root, query, cb) -> cb.equal(cb.lower(root.get("lastName")),
+                        (applicant.getLastName()).toLowerCase());
     }
 
-    public static Specification<Applicant> hasEducation(String education) {
-        return (root, query, cb) -> cb.equal(cb.lower(root.get("education")), education.toLowerCase());
+    private Specification<JpaApplicant> hasEmail() {
+        return isStringNullOrEmpty(applicant.getEmail()) ? null :
+                (root, query, cb) -> cb.equal(cb.lower(root.get("email")),
+                        applicant.getEmail().toLowerCase());
     }
 
-    public static Specification<Applicant> hasAdress(String address) {
-        return (root, query, cb) -> cb.equal(cb.lower(root.get("address")), address.toLowerCase());
+    private Specification<JpaApplicant> hasPhone() {
+        return isStringNullOrEmpty(applicant.getPhone()) ? null :
+                (root, query, cb) -> cb.equal(cb.lower(root.get("phone")),
+                        applicant.getPhone().toLowerCase());
     }
 
-    public static Specification<Applicant> hasDateOfBirth(String dateOfBirth) {
-        return (root, query, cb) -> {
-            SimpleDateFormat formatter = new SimpleDateFormat("YYYY-MM-DD");
-            java.util.Date date = null;
-            try {
-                date = formatter.parse(dateOfBirth);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(date);
-            cal.add(Calendar.DATE, 1);
-            Date lowDate = (Date) cal.getTime();
-            cal.setTime(date);
-            cal.add(Calendar.DATE, -1);
-            Date highDate = (Date) cal.getTime();
-            return cb.between(root.get("dateOfBirth"), lowDate, highDate);
-        };
+    private Specification<JpaApplicant> hasEducation() {
+        return isStringNullOrEmpty(applicant.getEducation()) ? null :
+                (root, query, cb) -> cb.equal(cb.lower(root.get("education")),
+                        applicant.getEducation().toLowerCase());
     }
 
+    private Specification<JpaApplicant> hasAddress() {
+        return isStringNullOrEmpty(applicant.getAddress()) ? null :
+                (root, query, cb) -> cb.equal(cb.lower(root.get("address")),
+                        applicant.getAddress().toLowerCase());
+    }
+
+    private Specification<JpaApplicant> hasDateOfBirth() {
+        return applicant.getDateOfBirth() == null ? null :
+                (root, query, cb) -> {
+                    LocalDate lowDate = LocalDate.from(applicant.getDateOfBirth());
+                    LocalDate highDate = LocalDate.from(applicant.getDateOfBirth());
+                    return cb.between(root.get("dateOfBirth"), lowDate, highDate);
+                };
+    }
+
+    private boolean isStringNullOrEmpty(String s) {
+        return !StringUtils.hasText(s);
+    }
 
 }

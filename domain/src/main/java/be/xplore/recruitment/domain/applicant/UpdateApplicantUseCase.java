@@ -3,6 +3,7 @@ package be.xplore.recruitment.domain.applicant;
 import be.xplore.recruitment.domain.exception.InvalidDateException;
 import be.xplore.recruitment.domain.exception.InvalidEmailException;
 import be.xplore.recruitment.domain.exception.InvalidPhoneException;
+import be.xplore.recruitment.domain.exception.NotFoundException;
 
 import javax.inject.Named;
 import java.util.ArrayList;
@@ -11,29 +12,30 @@ import java.util.function.Consumer;
 
 /**
  * @author Stijn Schack
- * @since 7/26/2017
+ * @since 7/28/2017
  */
 @Named
-class CreateApplicantUseCase implements CreateApplicant {
+public class UpdateApplicantUseCase implements UpdateApplicant {
     private final ApplicantRepository repository;
 
-    CreateApplicantUseCase(ApplicantRepository repository) {
+    public UpdateApplicantUseCase(ApplicantRepository repository) {
         this.repository = repository;
     }
 
     @Override
-    public void createApplicant(CreateApplicantRequest request, Consumer<List<ApplicantResponseModel>> response)
-            throws InvalidEmailException, InvalidPhoneException, InvalidDateException {
+    public void updateApplicant(UpdateApplicantRequest request, Consumer<List<ApplicantResponseModel>> response)
+            throws InvalidEmailException, InvalidPhoneException, InvalidDateException, NotFoundException {
         Applicant applicant = createApplicantFromRequest(request);
         applicant.validateApplicant();
-        repository.createApplicant(applicant);
+        repository.updateApplicant(applicant);
         List<ApplicantResponseModel> responseModel = new ArrayList<>(1);
         responseModel.add(new ApplicantResponseModel(applicant));
         response.accept(responseModel);
     }
 
-    private Applicant createApplicantFromRequest(CreateApplicantRequest request) {
+    private Applicant createApplicantFromRequest(UpdateApplicantRequest request) {
         return Applicant.builder()
+                .withId(request.getApplicantId())
                 .withFirstName(request.firstName)
                 .withLastName(request.lastName)
                 .withAddress(request.address)

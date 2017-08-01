@@ -1,3 +1,5 @@
+defaultTasks 'build'
+
 subprojects {
     apply plugin: 'java'
     apply plugin: 'checkstyle'
@@ -13,5 +15,11 @@ subprojects {
     dependencies {
         testCompile 'junit:junit:4.12'
         testCompile group: 'org.mockito', name: 'mockito-all', version: '1.8.4'
+    }
+
+    test {
+        testLogging {
+            events "passed", "skipped", "failed", "standardOut", "standardError"
+        }
     }
 }

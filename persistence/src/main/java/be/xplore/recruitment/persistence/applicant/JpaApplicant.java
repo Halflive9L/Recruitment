@@ -1,5 +1,7 @@
 package be.xplore.recruitment.persistence.applicant;
 
+import be.xplore.recruitment.domain.applicant.Applicant;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,24 +10,27 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import java.util.Date;
+import java.time.LocalDate;
 
 /**
  * Created by Lander on 26/07/2017.
  */
 
+@SuppressWarnings("JpaDataSourceORMInspection")
 @Entity
 @Table(name = "Applicant")
 @NamedQueries({
         @NamedQuery(name = JpaApplicant.QUERY_FIND_BY_ID,
-                query = "SELECT a from JpaApplicant a where a.applicantId = :applicantId")})
-//,
-//@NamedQuery(name = JpaApplicant.QUERY_FIND_ALL, query = "SELECT a from JpaApplicant a")})
+                query = "SELECT a from JpaApplicant a where a.applicantId = :applicantId"),
+        @NamedQuery(name = JpaApplicant.QUERY_FIND_ALL, query = "SELECT a from JpaApplicant a"),
+        @NamedQuery(name = JpaApplicant.QUERY_DELETE,
+                query = "DELETE FROM JpaApplicant a WHERE a.applicantId = :applicantId"),})
 
 public class JpaApplicant {
 
     static final String QUERY_FIND_BY_ID = "Applicant.findApplicantById";
-    //static final String QUERY_FIND_ALL = "Applicant.findAll";
+    static final String QUERY_FIND_ALL = "Applicant.findAll";
+    static final String QUERY_DELETE = "Applicant.deleteApplicant";
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -39,7 +44,7 @@ public class JpaApplicant {
     private String lastName;
 
     @Column
-    private Date dateOfBirth;
+    private LocalDate dateOfBirth;
 
     @Column
     private String address;
@@ -61,6 +66,22 @@ public class JpaApplicant {
         this.education = applicant.education;
         this.email = applicant.email;
         this.phone = applicant.phone;
+    }
+
+    public JpaApplicant() {
+    }
+
+    Applicant toApplicant() {
+        return Applicant.builder()
+                .withId(this.getApplicantId())
+                .withFirstName(this.getFirstName())
+                .withLastName(this.getLastName())
+                .withAddress(this.getAddress())
+                .withEducation(this.getEducation())
+                .withDateOfBirth(this.getDateOfBirth())
+                .withEmail(this.getEmail())
+                .withPhone(this.getPhone())
+                .build();
     }
 
     public long getApplicantId() {
@@ -87,11 +108,11 @@ public class JpaApplicant {
         this.lastName = lastName;
     }
 
-    public Date getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(Date dateOfBirth) {
+    public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
