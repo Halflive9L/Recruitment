@@ -2,7 +2,6 @@ defaultTasks 'build'
 
 subprojects {
     apply plugin: 'java'
-    apply plugin: 'checkstyle'
     apply plugin: 'eclipse'
 
     version = '0.0.1-SNAPSHOT'
@@ -17,3 +16,17 @@ subprojects {
         testCompile group: 'org.mockito', name: 'mockito-all', version: '1.8.4'
     }
 }
+
+allprojects {
+    apply plugin: 'checkstyle'
+
+    repositories {
+        mavenCentral()
+    }
+
+    checkstyle {
+        configFile = rootProject.file('config/checkstyle/checkstyle.xml')
+        toolVersion = '8.1'
+    }
+}
+
