@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html  lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Prospects</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+    <script src="scripts/prospects.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/Prospects.css">
+</head>
+<body>
+<div ng-app="prospect" ng-controller="ProspectController">
+    <table>
+
+        <tbody>
+        <tr>
+            <th>ID</th>
+            <th>firstName</th>
+            <th>lastName</th>
+            <th>email</th>
+            <th>phone</th>
+        </tr>
+        <tr ng-repeat="prospect in prospects">
+            <td>{{prospect.prospectId}}</td>
+            <td>{{prospect.firstName}}</td>
+            <td>{{prospect.lastName}}</td>
+            <td>{{prospect.email}}</td>
+            <td>{{prospect.phone}}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

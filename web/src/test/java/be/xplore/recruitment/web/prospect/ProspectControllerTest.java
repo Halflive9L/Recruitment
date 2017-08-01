@@ -2,7 +2,6 @@ package be.xplore.recruitment.web.prospect;
 
 import be.xplore.recruitment.domain.prospect.CreateProspect;
 import be.xplore.recruitment.domain.prospect.CreateProspectRequest;
-import be.xplore.recruitment.domain.prospect.CreateProspectResponse;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
@@ -10,6 +9,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
+
+import java.util.function.Consumer;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.isA;
@@ -31,7 +32,7 @@ public class ProspectControllerTest {
     public void addProspectTest() {
         ArgumentCaptor<CreateProspectRequest> captor = ArgumentCaptor.forClass(CreateProspectRequest.class);
         assertEquals(controller.addProspect(new JsonProspect()).getStatusCodeValue(), HttpStatus.CREATED.value());
-        verify(createProspect).createProspect(captor.capture(), isA(CreateProspectResponse.class));
+        verify(createProspect).createProspect(captor.capture(), isA(Consumer.class));
         System.out.println(captor.getValue());
     }
 }
