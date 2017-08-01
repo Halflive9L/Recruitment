@@ -2,6 +2,8 @@ package be.xplore.recruitment.persistence.prospect;
 
 import be.xplore.recruitment.domain.prospect.Prospect;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.domain.Specifications;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -13,19 +15,48 @@ import javax.persistence.criteria.Root;
  * @since 7/20/2017
  */
 public class ProspectSpecification {
-    public static Specification<Prospect> hasFirstName(String firstName) {
-        return (root, query, cb) -> cb.equal(cb.lower(root.get("firstName")), (firstName).toLowerCase());
+
+
+        private JpaProspect prospect;
+
+        public ProspectSpecification(JpaProspect prospect) {
+            this.prospect = prospect;
+        }
+
+        Specification<JpaProspect> getFullSpecification() {
+            return Specifications.where(hasFirstName())
+                    .and(hasLastName())
+                    .and(hasEmail())
+                    .and(hasPhone());
+        }
+
+
+    private Specification<JpaProspect> hasFirstName() {
+        return isStringNullOrEmpty(prospect.getFirstName()) ? null :
+                (root, query, cb) -> cb.equal(cb.lower(root.get("firstName")),
+                        (prospect.getFirstName()).toLowerCase());
     }
 
-    public static Specification<Prospect> hasLastName(String lastName) {
-        return (root, query, cb) -> cb.equal(cb.lower(root.get("lastName")), (lastName).toLowerCase());
+    private Specification<JpaProspect> hasLastName() {
+        return isStringNullOrEmpty(prospect.getLastName()) ? null :
+                (root, query, cb) -> cb.equal(cb.lower(root.get("lastName")),
+                        (prospect.getLastName()).toLowerCase());
     }
 
-    public static Specification<Prospect> hasEmail(String email) {
-        return (root, query, cb) -> cb.equal(cb.lower(root.get("email")), email.toLowerCase());
+    private Specification<JpaProspect> hasEmail() {
+        return isStringNullOrEmpty(prospect.getEmail()) ? null :
+                (root, query, cb) -> cb.equal(cb.lower(root.get("email")),
+                        (prospect.getEmail()).toLowerCase());
     }
 
-    public static Specification<Prospect> hasPhone(String phone) {
-        return (root, query, cb) -> cb.equal(cb.lower(root.get("phone")), phone.toLowerCase());
+    private Specification<JpaProspect> hasPhone() {
+        return isStringNullOrEmpty(prospect.getPhone()) ? null :
+                (root, query, cb) -> cb.equal(cb.lower(root.get("phone")),
+                        (prospect.getPhone().toLowerCase()));
     }
+
+    private boolean isStringNullOrEmpty(String s) {
+        return !StringUtils.hasText(s);
+    }
+
 }

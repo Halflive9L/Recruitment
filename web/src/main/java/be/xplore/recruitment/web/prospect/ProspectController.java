@@ -75,10 +75,18 @@ public class ProspectController {
     public ResponseEntity<List<JsonProspect>> getProspectByParam(@ModelAttribute JsonProspect query) {
         System.out.println("query = " + query);
         ReadProspectRequest request = new ReadProspectRequest();
-        JsonProspectPresenter prospectPresenter = new JsonProspectPresenter();
+        //JsonProspectPresenter prospectPresenter = new JsonProspectPresenter();
         JsonProspectToReadProspectRequest(query, request);
-        readProspect.readAllProspects(prospectPresenter);
-        return prospectPresenter.getResponseEntity();
+        /*readProspect.readAllProspects(prospectPresenter);
+        return prospectPresenter.getResponseEntity();*/
+        JsonProspectPresenter presenter = new JsonProspectPresenter();
+        if (query.isEmpty()) {
+            readProspect.readAllProspects(presenter);
+        } else {
+            readProspect.readProspectByParam(request, presenter);
+        }
+        return presenter.getResponseEntity();
+
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/prospect/{prospectId}")

@@ -1,5 +1,7 @@
 package be.xplore.recruitment.persistence.prospect;
 
+import be.xplore.recruitment.domain.prospect.Prospect;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -55,6 +57,15 @@ public class JpaProspect {
         this.email = jpaProspect.email;
         this.phone = jpaProspect.phone;
     }
+
+    Prospect toProspect() {
+        return Prospect.builder(this.getFirstName(), this.getLastName())
+                .withId(this.getProspectId())
+                .withEmail(this.getEmail())
+                .withPhone(this.getPhone())
+                .build();
+    }
+
 
     long getProspectId() {
         return prospectId;

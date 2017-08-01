@@ -10,4 +10,12 @@ public class ReadProspectRequest {
     public String lastName;
     public String phone;
     public String email;
+
+    Prospect toProspect(){
+        return Prospect.builder(firstName, lastName)
+                .withEmail(email)
+                .withPhone(phone)
+                .build();
+    }
+
 }

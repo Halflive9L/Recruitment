@@ -1,11 +1,9 @@
 package be.xplore.recruitment.web.prospect;
 
-import be.xplore.recruitment.domain.prospect.Prospect;
 import be.xplore.recruitment.domain.prospect.ProspectResponseModel;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.boot.jackson.JsonComponent;
-import org.springframework.http.ResponseEntity;
 
 import java.io.Serializable;
 
@@ -101,6 +99,13 @@ class JsonProspect implements Serializable {
                 ", email='" + email + '\'' +
                 ", phone='" + phone + '\'' +
                 '}';
+    }
+
+    public boolean isEmpty() {
+        return firstName == null
+                && lastName == null
+                && email == null
+                && phone == null;
     }
 
 

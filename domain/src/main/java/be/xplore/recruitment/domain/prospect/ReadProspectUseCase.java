@@ -4,6 +4,7 @@ import be.xplore.recruitment.domain.exception.NotFoundException;
 
 import javax.inject.Named;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -44,8 +45,21 @@ public class ReadProspectUseCase implements ReadProspect {
     @Override
     public void readProspectByParam(ReadProspectRequest request, Consumer<List<ProspectResponseModel>> response)
         throws NotFoundException {
-
+        List<Prospect> prospects = repository.findProspectByParam(request.toProspect());
+        if(prospects.isEmpty()) {
+            throw new NotFoundException();
+        }
+        List<ProspectResponseModel> responseModelList = getResponseListFromProspectList(prospects);
+        response.accept(responseModelList);
     }
+
+    private List<ProspectResponseModel> getResponseListFromProspectList(List<Prospect> prospects) {
+        List<ProspectResponseModel> responseList = new LinkedList<>();
+        prospects.forEach(applicant -> responseList.add(new ProspectResponseModel(applicant)));
+        return responseList;
+    }
+
+
 
     private boolean isEmptyRequest(ReadProspectRequest request) {
         return request.firstName == null && request.lastName == null && request.phone == null && request.email == null;
