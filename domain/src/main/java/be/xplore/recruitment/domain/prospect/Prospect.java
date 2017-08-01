@@ -27,8 +27,8 @@ public class Prospect {
         this.phone = builder.phone;
     }
 
-    public static ProspectBuilder builder(String firstName, String lastName) {
-        return new ProspectBuilder(firstName, lastName);
+    public static ProspectBuilder builder() {
+        return new ProspectBuilder();
     }
 
     void validateProspect() throws InvalidEmailException, InvalidPhoneException {
@@ -131,13 +131,18 @@ public class Prospect {
         private String email;
         private String phone;
 
-        public ProspectBuilder(String firstName, String lastName) {
-            this.firstName = firstName;
-            this.lastName = lastName;
-        }
-
         public Prospect build() {
             return new Prospect(this);
+        }
+
+        public ProspectBuilder withFirstName(String firstName){
+            this.firstName = firstName;
+            return this;
+        }
+
+        public ProspectBuilder withLastName(String lastName){
+            this.lastName = lastName;
+            return this;
         }
 
         public ProspectBuilder withId(long id) {

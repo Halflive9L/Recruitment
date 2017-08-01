@@ -12,7 +12,9 @@ public class ReadProspectRequest {
     public String email;
 
     Prospect toProspect(){
-        return Prospect.builder(firstName, lastName)
+        return Prospect.builder()
+                .withFirstName(firstName)
+                .withLastName(lastName)
                 .withEmail(email)
                 .withPhone(phone)
                 .build();

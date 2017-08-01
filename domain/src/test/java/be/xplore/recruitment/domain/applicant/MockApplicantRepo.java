@@ -5,6 +5,7 @@ import be.xplore.recruitment.domain.exception.NotFoundException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static be.xplore.recruitment.domain.util.Validator.isNullOrEmpty;
 
@@ -43,10 +44,10 @@ class MockApplicantRepo implements ApplicantRepository {
     }
 
     @Override
-    public Applicant findApplicantById(long id) throws NotFoundException {
+    public Optional<Applicant> findApplicantById(long id) throws NotFoundException {
         for (Applicant mockApplicant : mockApplicants) {
             if (mockApplicant.getApplicantId() == id) {
-                return mockApplicant;
+                return Optional.ofNullable(mockApplicant);
             }
         }
         throw new NotFoundException();
@@ -67,7 +68,7 @@ class MockApplicantRepo implements ApplicantRepository {
     }
 
     @Override
-    public void updateApplicant(Applicant applicant) {
+    public Optional<Applicant> updateApplicant(Applicant applicant) {
         for (int i = 0; i < mockApplicants.size(); i++) {
             if (mockApplicants.get(i).getApplicantId() == applicant.getApplicantId()) {
                 mockApplicants.set(i, Applicant.builder()
@@ -79,7 +80,7 @@ class MockApplicantRepo implements ApplicantRepository {
                         .withEducation(education(applicant, i))
                         .withAddress(address(applicant, i))
                         .withDateOfBirth(dateOfBirth(applicant, i)).build());
-                return;
+                return null;
             }
         }
         throw new NotFoundException();
@@ -121,13 +122,13 @@ class MockApplicantRepo implements ApplicantRepository {
     }
 
     @Override
-    public Applicant deleteApplicant(long id) {
+    public Optional<Applicant> deleteApplicant(long id) {
         Applicant deletedApplicant;
         for (int i = 0; i < mockApplicants.size(); i++) {
             if (mockApplicants.get(i).getApplicantId() == id) {
                 deletedApplicant = mockApplicants.get(i);
                 mockApplicants.remove(i);
-                return deletedApplicant;
+                return Optional.ofNullable(deletedApplicant);
             }
         }
         throw new NotFoundException();

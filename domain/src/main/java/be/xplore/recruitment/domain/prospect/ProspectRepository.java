@@ -1,6 +1,7 @@
 package be.xplore.recruitment.domain.prospect;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Stijn Schack
@@ -11,11 +12,11 @@ public interface ProspectRepository {
 
     List<Prospect> findAll();
 
-    Prospect findProspectById(long id);
+    Optional<Prospect> findProspectById(long id);
 
-    List<Prospect> findProspectByParam(Prospect prospect);
+    List<Prospect> findByParameters(Prospect prospect);
 
-    void deleteProspect(long id);
+    Optional<Prospect> deleteProspect(long id);
 
-    Prospect updateProspect(Prospect prospect);
+    Optional<Prospect> updateProspect(Prospect prospect);
 }
