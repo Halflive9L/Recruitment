@@ -1,6 +1,8 @@
 package be.xplore.recruitment.web.prospect;
 
+import be.xplore.recruitment.domain.prospect.ProspectResponseModel;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.boot.jackson.JsonComponent;
 
@@ -12,6 +14,7 @@ import java.io.Serializable;
  */
 @JsonComponent
 class JsonProspect implements Serializable {
+    private long prospectId;
     private String firstName;
     private String lastName;
     private String email;
@@ -19,6 +22,34 @@ class JsonProspect implements Serializable {
 
     @JsonCreator
     public JsonProspect() {
+    }
+
+    private JsonProspect(JsonProspectBuilder builder) {
+        this.prospectId = builder.prospectId;
+        this.firstName = builder.firstName;
+        this.lastName = builder.lastName;
+        this.email = builder.email;
+        this.phone = builder.phone;
+    }
+
+    static JsonProspect asJsonProspect(ProspectResponseModel responseModel) {
+        JsonProspect jsonProspect = new JsonProspect();
+        jsonProspect.setProspectId(responseModel.getProspectId());
+        jsonProspect.setFirstName(responseModel.getFirstName());
+        jsonProspect.setLastName(responseModel.getLastName());
+        jsonProspect.setPhone(responseModel.getPhone());
+        jsonProspect.setEmail(responseModel.getEmail());
+        return jsonProspect;
+    }
+
+    @JsonProperty
+    public long getProspectId() {
+        return prospectId;
+    }
+
+    @JsonProperty
+    public void setProspectId(long prospectId) {
+        this.prospectId = prospectId;
     }
 
     @JsonProperty
@@ -69,5 +100,55 @@ class JsonProspect implements Serializable {
                 ", email='" + email + '\'' +
                 ", phone='" + phone + '\'' +
                 '}';
+    }
+
+    @JsonIgnore
+    boolean isEmpty() {
+        return firstName == null
+                && lastName == null
+                && email == null
+                && phone == null;
+    }
+
+
+    public static class JsonProspectBuilder {
+        private String firstName;
+        private String lastName;
+        private String email;
+        private String phone;
+        private long prospectId;
+
+        public JsonProspectBuilder() {
+        }
+
+        public JsonProspect build() {
+            return new JsonProspect(this);
+        }
+
+        public JsonProspectBuilder withFirstName(String firstName) {
+            this.firstName = firstName;
+            return this;
+        }
+
+        public JsonProspectBuilder withLastName(String lastName) {
+            this.lastName = lastName;
+            return this;
+        }
+
+        public JsonProspectBuilder withEmail(String email) {
+            this.email = email;
+            return this;
+        }
+
+        public JsonProspectBuilder withPhone(String phone) {
+            this.phone = phone;
+            return this;
+        }
+
+        public JsonProspectBuilder withId(long prospectId) {
+            this.prospectId = prospectId;
+            return this;
+        }
+
     }
 }

@@ -6,5 +6,10 @@ package be.xplore.recruitment.domain.prospect;
  */
 
 public class CreateProspectRequest {
-    public Prospect prospect;
+    public long prospectId;
+    public String firstName;
+    public String lastName;
+    public String email;
+    public String phone;
+
 }

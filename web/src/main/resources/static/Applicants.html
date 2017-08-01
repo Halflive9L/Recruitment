@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html  lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Applicants</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+    <script src="scripts/applicants.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/Prospects.css">
+</head>
+<body>
+<div ng-app="applicant" ng-controller="ApplicantController">
+    <table>
+
+        <tbody>
+        <tr>
+            <th>ID</th>
+            <th>firstName</th>
+            <th>lastName</th>
+            <th>email</th>
+            <th>phone</th>
+            <th>Date of Birth</th>
+            <th>Education</th>
+        </tr>
+        <tr ng-repeat="applicant in applicants">
+            <td>{{applicant.prospectId}}</td>
+            <td>{{applicant.firstName}}</td>
+            <td>{{applicant.lastName}}</td>
+            <td>{{applicant.email}}</td>
+            <td>{{applicant.phone}}</td>
+            <td>{{applicant.dateOfBirth}}</td>
+            <td>{{applicant.education}}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
