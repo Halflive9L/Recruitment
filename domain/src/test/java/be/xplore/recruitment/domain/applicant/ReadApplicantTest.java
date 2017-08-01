@@ -53,7 +53,8 @@ public class ReadApplicantTest {
         useCase.readApplicantById(request, applicantResponseModel -> {
         });
     }
-/*
+
+    /*
     @Test
     public void testReadApplicantsByParam() {
         ReadApplicantRequest request = getRequestFromApplicant(Applicant.builder().withFirstName("leeroy").build());
@@ -63,7 +64,8 @@ public class ReadApplicantTest {
         });
         assertEquals(applicantResponse.get(0), mockApplicants.get(1));
     }
-*/
+    */
+
     @Ignore
     private ReadApplicantRequest getRequestFromApplicant(Applicant applicant) {
         ReadApplicantRequest request = new ReadApplicantRequest();
