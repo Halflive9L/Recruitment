@@ -15,6 +15,8 @@ public interface ApplicantRepository {
 
     Applicant findApplicantById(long id) throws NotFoundException;
 
+    List<Applicant> findByParameters(Applicant applicant) throws NotFoundException;
+
     void updateApplicant(Applicant applicant) throws NotFoundException;
 
     Applicant deleteApplicant(long id) throws NotFoundException;
