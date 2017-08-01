@@ -23,7 +23,7 @@ public class DeleteApplicantUseCase implements DeleteApplicant {
     @Override
     public void deleteApplicant(DeleteApplicantRequest request, Consumer<List<ApplicantResponseModel>> response)
             throws NotFoundException {
-        Applicant applicant = repository.deleteApplicant(request.id);
+        Applicant applicant = repository.deleteApplicant(request.id).orElseThrow(NotFoundException::new);
         List<ApplicantResponseModel> responseModel = new ArrayList<>(1);
         responseModel.add(new ApplicantResponseModel(applicant));
         response.accept(responseModel);

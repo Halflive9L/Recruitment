@@ -1,8 +1,7 @@
 package be.xplore.recruitment.domain.applicant;
 
-import be.xplore.recruitment.domain.exception.NotFoundException;
-
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Stijn Schack
@@ -13,11 +12,11 @@ public interface ApplicantRepository {
 
     List<Applicant> findAll();
 
-    Applicant findApplicantById(long id) throws NotFoundException;
+    Optional<Applicant> findApplicantById(long id);
 
-    List<Applicant> findByParameters(Applicant applicant) throws NotFoundException;
+    List<Applicant> findByParameters(Applicant applicant);
 
-    void updateApplicant(Applicant applicant) throws NotFoundException;
+    Optional<Applicant> updateApplicant(Applicant applicant);
 
-    Applicant deleteApplicant(long id) throws NotFoundException;
+    Optional<Applicant> deleteApplicant(long id);
 }

@@ -48,7 +48,7 @@ public class ReadApplicantUseCase implements ReadApplicant {
     @Override
     public void readApplicantById(ReadApplicantRequest request, Consumer<List<ApplicantResponseModel>> consumer)
             throws NotFoundException {
-        Applicant applicant = repository.findApplicantById(request.applicantId);
+        Applicant applicant = repository.findApplicantById(request.applicantId).orElseThrow(NotFoundException::new);
         List<ApplicantResponseModel> responseModel = new ArrayList<>(1);
         responseModel.add(new ApplicantResponseModel(applicant));
         consumer.accept(responseModel);

@@ -27,9 +27,9 @@ public class UpdateApplicantUseCase implements UpdateApplicant {
             throws InvalidEmailException, InvalidPhoneException, InvalidDateException, NotFoundException {
         Applicant applicant = createApplicantFromRequest(request);
         applicant.validateApplicant();
-        repository.updateApplicant(applicant);
+        Applicant responseApplicant = repository.updateApplicant(applicant).orElseThrow(NotFoundException::new);
         List<ApplicantResponseModel> responseModel = new ArrayList<>(1);
-        responseModel.add(new ApplicantResponseModel(applicant));
+        responseModel.add(new ApplicantResponseModel(responseApplicant));
         response.accept(responseModel);
     }
 
