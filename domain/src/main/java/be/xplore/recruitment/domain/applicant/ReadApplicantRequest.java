@@ -2,6 +2,8 @@ package be.xplore.recruitment.domain.applicant;
 
 import java.util.Date;
 
+import static be.xplore.recruitment.domain.applicant.Applicant.builder;
+
 /**
  * @author Stijn Schack
  * @since 7/27/2017
@@ -15,4 +17,16 @@ public class ReadApplicantRequest {
     public String education;
     public String email;
     public String phone;
+
+    Applicant toApplicant(){
+        return builder()
+                .withFirstName(firstName)
+                .withLastName(lastName)
+                .withDateOfBirth(dateOfBirth)
+                .withAddress(address)
+                .withEducation(education)
+                .withEmail(email)
+                .withPhone(phone)
+                .build();
+    }
 }

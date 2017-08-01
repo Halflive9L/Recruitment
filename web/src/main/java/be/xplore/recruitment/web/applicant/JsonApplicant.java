@@ -2,8 +2,10 @@ package be.xplore.recruitment.web.applicant;
 
 import be.xplore.recruitment.domain.applicant.ApplicantResponseModel;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.boot.jackson.JsonComponent;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -16,6 +18,7 @@ public class JsonApplicant {
     private long applicantId;
     private String firstName;
     private String lastName;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date dateOfBirth;
     private String address;
     private String education;
@@ -45,7 +48,7 @@ public class JsonApplicant {
     }
 
     @JsonProperty
-    void setApplicantId(long applicantId) {
+    public void setApplicantId(long applicantId) {
         this.applicantId = applicantId;
     }
 
@@ -55,7 +58,7 @@ public class JsonApplicant {
     }
 
     @JsonProperty
-    void setFirstName(String firstName) {
+    public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
@@ -65,17 +68,19 @@ public class JsonApplicant {
     }
 
     @JsonProperty
-    void setLastName(String lastName) {
+    public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
     @JsonProperty
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     public Date getDateOfBirth() {
         return dateOfBirth;
     }
 
     @JsonProperty
-    void setDateOfBirth(Date dateOfBirth) {
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    public void setDateOfBirth(Date dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
@@ -85,7 +90,7 @@ public class JsonApplicant {
     }
 
     @JsonProperty
-    void setAddress(String address) {
+    public void setAddress(String address) {
         this.address = address;
     }
 
@@ -95,7 +100,7 @@ public class JsonApplicant {
     }
 
     @JsonProperty
-    void setEducation(String education) {
+    public void setEducation(String education) {
         this.education = education;
     }
 
@@ -105,7 +110,7 @@ public class JsonApplicant {
     }
 
     @JsonProperty
-    void setEmail(String email) {
+    public void setEmail(String email) {
         this.email = email;
     }
 
@@ -115,7 +120,7 @@ public class JsonApplicant {
     }
 
     @JsonProperty
-    void setPhone(String phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 

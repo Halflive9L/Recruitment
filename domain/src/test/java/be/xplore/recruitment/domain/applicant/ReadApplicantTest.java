@@ -50,9 +50,20 @@ public class ReadApplicantTest {
     @Test(expected = NotFoundException.class)
     public void testReadApplicantById_IdDoesNotExist() {
         ReadApplicantRequest request = getRequestFromApplicant(Applicant.builder().withId(500).build());
-        useCase.readApplicantById(request, applicantResponseModel -> {});
+        useCase.readApplicantById(request, applicantResponseModel -> {
+        });
     }
-
+/*
+    @Test
+    public void testReadApplicantsByParam() {
+        ReadApplicantRequest request = getRequestFromApplicant(Applicant.builder().withFirstName("leeroy").build());
+        List<Applicant> applicantResponse = new ArrayList<>();
+        useCase.readApplicantById(request, response -> {
+            applicantResponse.addAll(getApplicantListFromResponseModelList(response));
+        });
+        assertEquals(applicantResponse.get(0), mockApplicants.get(1));
+    }
+*/
     @Ignore
     private ReadApplicantRequest getRequestFromApplicant(Applicant applicant) {
         ReadApplicantRequest request = new ReadApplicantRequest();

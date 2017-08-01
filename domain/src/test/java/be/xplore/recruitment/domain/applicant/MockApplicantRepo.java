@@ -48,11 +48,25 @@ class MockApplicantRepo implements ApplicantRepository {
     @Override
     public Applicant findApplicantById(long id) throws NotFoundException {
         for (Applicant mockApplicant : mockApplicants) {
-            if (mockApplicant.getApplicantId() == id){
+            if (mockApplicant.getApplicantId() == id) {
                 return mockApplicant;
             }
         }
         throw new NotFoundException();
+    }
+
+    @Override
+    public List<Applicant> findByParameters(Applicant applicant) throws NotFoundException {
+        List<Applicant> matches = new ArrayList<>();
+        for (Applicant mockApplicant : mockApplicants) {
+            boolean isMatch = true;
+            if (!isNullOrEmpty(applicant.getFirstName()) &&
+                    applicant.getFirstName().equalsIgnoreCase(mockApplicant.getFirstName())) {
+                isMatch = false;
+                continue;
+            }
+        }
+        return matches;
     }
 
     @Override

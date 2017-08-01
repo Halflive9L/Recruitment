@@ -24,15 +24,25 @@ public class ReadApplicantUseCase implements ReadApplicant {
     @Override
     public void readAllApplicants(Consumer<List<ApplicantResponseModel>> response) {
         List<Applicant> applicants = repository.findAll();
-        List<ApplicantResponseModel> responseList = new LinkedList<>();
-        applicants.forEach(applicant -> responseList.add(new ApplicantResponseModel(applicant)));
+        List<ApplicantResponseModel> responseList = getResponseListFromApplicantList(applicants);
         response.accept(responseList);
     }
 
     @Override
     public void readApplicantsByParam(ReadApplicantRequest request, Consumer<List<ApplicantResponseModel>> response)
             throws NotFoundException {
+        List<Applicant> applicants = repository.findByParameters(request.toApplicant());
+        if (applicants.isEmpty()){
+            throw new NotFoundException();
+        }
+        List<ApplicantResponseModel> responseList = getResponseListFromApplicantList(applicants);
+        response.accept(responseList);
+    }
 
+    private List<ApplicantResponseModel> getResponseListFromApplicantList(List<Applicant> applicants) {
+        List<ApplicantResponseModel> responseList = new LinkedList<>();
+        applicants.forEach(applicant -> responseList.add(new ApplicantResponseModel(applicant)));
+        return responseList;
     }
 
     @Override

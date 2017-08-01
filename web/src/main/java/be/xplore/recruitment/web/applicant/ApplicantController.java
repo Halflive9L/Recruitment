@@ -68,9 +68,10 @@ public class ApplicantController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/applicant")
-    public ResponseEntity<List<JsonApplicant>> getApplicantByParam(@ModelAttribute JsonApplicant applicant) {
+    public ResponseEntity<List<JsonApplicant>> getApplicantByParam(@ModelAttribute JsonApplicant jsonApplicant) {
+        System.out.println(jsonApplicant);
         try {
-            return presentApplicantsByParam(applicant);
+            return presentApplicantsByParam(jsonApplicant);
         } catch (NotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -82,8 +83,7 @@ public class ApplicantController {
         if (applicant.isEmpty()) {
             readApplicant.readAllApplicants(presenter);
         } else {
-            readApplicant.readApplicantsByParam(getReadApplicantRequestFromJsonApplicant(applicant), applicants -> {
-            });
+            readApplicant.readApplicantsByParam(getReadApplicantRequestFromJsonApplicant(applicant), presenter);
         }
         return presenter.getResponseEntity();
     }
