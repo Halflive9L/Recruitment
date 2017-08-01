@@ -5,7 +5,7 @@ var getAllApplicants = angular.module('applicant', [])
     .controller('ApplicantController', function($scope, $http) {
         $http.get('http://localhost:9090/applicant').
         then(function(response) {
-            $scope.prospects = response.data;
+            $scope.applicants = response.data;
         });
     });
 

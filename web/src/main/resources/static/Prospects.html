@@ -5,26 +5,29 @@
     <title>Prospects</title>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
     <script src="scripts/prospects.js"></script>
-    <link rel="stylesheet" type="text/css" href="css/Prospects.css">
-</head>
-<body>
-<div ng-app="prospect" ng-controller="ProspectController">
-    <table>
 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+</head>
+<body class="container">
+<div ng-app="prospect" ng-controller="ProspectController">
+    <table class="table table-striped table-hover table-bordered">
         <tbody>
         <tr>
-            <th>ID</th>
-            <th>firstName</th>
-            <th>lastName</th>
-            <th>email</th>
-            <th>phone</th>
+            <th class="text-center">ID</th>
+            <th class="text-center">firstName</th>
+            <th class="text-center">lastName</th>
+            <th class="text-center">email</th>
+            <th class="text-center">phone</th>
         </tr>
         <tr ng-repeat="prospect in prospects">
-            <td>{{prospect.prospectId}}</td>
-            <td>{{prospect.firstName}}</td>
-            <td>{{prospect.lastName}}</td>
-            <td>{{prospect.email}}</td>
-            <td>{{prospect.phone}}</td>
+            <td class="text-center">{{prospect.prospectId}}</td>
+            <td class="text-center">{{prospect.firstName}}</td>
+            <td class="text-center">{{prospect.lastName}}</td>
+            <td class="text-center">{{prospect.email}}</td>
+            <td class="text-center">{{prospect.phone}}</td>
         </tr>
         </tbody>
     </table>

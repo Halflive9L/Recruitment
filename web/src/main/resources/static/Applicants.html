@@ -1,34 +1,39 @@
 <!DOCTYPE html>
-<html  lang="en">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Applicants</title>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
     <script src="scripts/applicants.js"></script>
-    <link rel="stylesheet" type="text/css" href="css/Prospects.css">
-</head>
-<body>
-<div ng-app="applicant" ng-controller="ApplicantController">
-    <table>
 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+</head>
+<body class="container">
+<div ng-app="applicant" ng-controller="ApplicantController">
+    <table class="table table-striped table-hover table-bordered">
         <tbody>
         <tr>
-            <th>ID</th>
-            <th>firstName</th>
-            <th>lastName</th>
-            <th>email</th>
-            <th>phone</th>
-            <th>Date of Birth</th>
-            <th>Education</th>
+            <th class="text-center">ID</th>
+            <th class="text-center">FirstName</th>
+            <th class="text-center">LastName</th>
+            <th class="text-center">Email</th>
+            <th class="text-center">Phone</th>
+            <th class="text-center">Date of Birth</th>
+            <th class="text-center">Education</th>
+            <th class="text-center">Address</th>
         </tr>
         <tr ng-repeat="applicant in applicants">
-            <td>{{applicant.prospectId}}</td>
-            <td>{{applicant.firstName}}</td>
-            <td>{{applicant.lastName}}</td>
-            <td>{{applicant.email}}</td>
-            <td>{{applicant.phone}}</td>
-            <td>{{applicant.dateOfBirth}}</td>
-            <td>{{applicant.education}}</td>
+            <td class="text-center">{{applicant.applicantId}}</td>
+            <td class="text-center">{{applicant.firstName}}</td>
+            <td class="text-center">{{applicant.lastName}}</td>
+            <td class="text-center">{{applicant.email}}</td>
+            <td class="text-center">{{applicant.phone}}</td>
+            <td class="text-center">{{applicant.dateOfBirth}}</td>
+            <td class="text-center">{{applicant.education}}</td>
+            <td class="text-center">{{applicant.address}}</td>
         </tr>
         </tbody>
     </table>
