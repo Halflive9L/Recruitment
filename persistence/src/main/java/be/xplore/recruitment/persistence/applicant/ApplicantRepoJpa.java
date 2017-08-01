@@ -3,7 +3,6 @@ package be.xplore.recruitment.persistence.applicant;
 
 import be.xplore.recruitment.domain.applicant.Applicant;
 import be.xplore.recruitment.domain.applicant.ApplicantRepository;
-import be.xplore.recruitment.domain.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
@@ -112,9 +111,6 @@ public class ApplicantRepoJpa implements ApplicantRepository {
     public Optional<Applicant> deleteApplicant(long applicantId) {
         List applicantList = entityManager.createNamedQuery(JpaApplicant.QUERY_FIND_BY_ID)
                 .setParameter("applicantId", applicantId).getResultList();
-        if (applicantList.isEmpty()) {
-            throw new NotFoundException();
-        }
         entityManager.createNamedQuery(JpaApplicant.QUERY_DELETE).setParameter("applicantId", applicantId)
                 .executeUpdate();
         return Optional.ofNullable(((JpaApplicant) applicantList.get(0)).toApplicant());
@@ -131,5 +127,4 @@ public class ApplicantRepoJpa implements ApplicantRepository {
         jpaApplicant.setEducation(applicant.getEducation());
         return jpaApplicant;
     }
-
 }
