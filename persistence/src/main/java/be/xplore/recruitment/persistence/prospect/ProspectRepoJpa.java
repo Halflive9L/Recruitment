@@ -31,31 +31,17 @@ public class ProspectRepoJpa implements ProspectRepository {
     @Autowired
     private EntityManager entityManager;
 
-    // public void setEntityManager(EntityManager entityManager) {
-    //    this.entityManager = entityManager;
-    // }
-
     @Override
     public void createProspect(Prospect prospect) {
-        JpaProspect jpaProspectDatabaseInput = new JpaProspect();
-        jpaProspectDatabaseInput.setFirstName(prospect.getFirstName());
-        jpaProspectDatabaseInput.setLastName(prospect.getLastName());
-        jpaProspectDatabaseInput.setEmail(prospect.getEmail());
-        jpaProspectDatabaseInput.setPhone(prospect.getPhone());
-        System.out.println(prospect);
-        /*try {
-            copyProperties(jpaProspectDatabaseInput, prospect);
-        } catch (ReflectiveOperationException e) {
-            System.out.println("Kopieren mislukt!");
-        }*/
-        entityManager.persist(jpaProspectDatabaseInput);
+        JpaProspect jpaProspect = prospectToJpaProspect(prospect);
+        entityManager.persist(jpaProspect);
     }
 
     @Override
     public List<Prospect> findAll() {
         List<JpaProspect> list = entityManager.createNamedQuery(QUERY_FIND_ALL)
                 .getResultList();
-        List<Prospect> result = list.stream().map(this::toProspect).collect(Collectors.toList());
+        List<Prospect> result = list.stream().map(JpaProspect::toProspect).collect(Collectors.toList());
         return result;
     }
 
@@ -70,7 +56,7 @@ public class ProspectRepoJpa implements ProspectRepository {
 
         JpaProspect jpaProspect = list.get(0);
 
-        return toProspect(jpaProspect);
+        return jpaProspect.toProspect();
     }
 
     @Override
@@ -111,12 +97,10 @@ public class ProspectRepoJpa implements ProspectRepository {
     }
 
 
-
     @Override
     public void deleteProspect(long prospectId) {
         entityManager.createNamedQuery(JpaProspect.QUERY_DELETE)
-        .setParameter("prospectId", prospectId).executeUpdate();
-        //entityManager.remove(findProspectById(id));
+                .setParameter("prospectId", prospectId).executeUpdate();
     }
 
     @Override
@@ -128,17 +112,11 @@ public class ProspectRepoJpa implements ProspectRepository {
         zoekProspect.setLastName(prospect.getLastName());
         zoekProspect.setFirstName(prospect.getFirstName());
         entityManager.persist(zoekProspect);
-        return toProspect(zoekProspect);
-    }
-
-    private Prospect toProspect(JpaProspect jpaProspect) {
-        return new Prospect.ProspectBuilder(jpaProspect.getFirstName(), jpaProspect.getLastName())
-                .withEmail(jpaProspect.getEmail())
-                .withPhone(jpaProspect.getPhone()).withId(jpaProspect.getProspectId()).build();
+        return zoekProspect.toProspect();
     }
 
     private JpaProspect prospectToJpaProspect(Prospect prospect) {
-        JpaProspect jpaProspect= new JpaProspect();
+        JpaProspect jpaProspect = new JpaProspect();
         jpaProspect.setFirstName(prospect.getFirstName());
         jpaProspect.setLastName(prospect.getLastName());
         jpaProspect.setEmail(prospect.getEmail());
