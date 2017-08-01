@@ -103,7 +103,8 @@ public class ProspectController {
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/prospect/{prospectId}")
-    public ResponseEntity<List<JsonProspect>> updateProspect(@PathVariable long prospectId, @RequestBody JsonProspect query) {
+    public ResponseEntity<List<JsonProspect>> updateProspect(@PathVariable long prospectId,
+                                                             @RequestBody JsonProspect query) {
         UpdateProspectRequest request = new UpdateProspectRequest();
         JsonProspectPresenter presenter = new JsonProspectPresenter();
         JsonProspectToUpdateProspectRequest(query, request);
@@ -127,7 +128,8 @@ public class ProspectController {
         request.phone = query.getPhone();
     }
 
-    private void JsonProspectToUpdateProspectRequest(@ModelAttribute JsonProspect query, UpdateProspectRequest request) {
+    private void JsonProspectToUpdateProspectRequest(@ModelAttribute JsonProspect query,
+                                                     UpdateProspectRequest request) {
         request.firstName = query.getFirstName();
         request.lastName = query.getLastName();
         request.email = query.getEmail();
