@@ -1,5 +1,7 @@
 package be.xplore.recruitment.domain.prospect;
 
+import be.xplore.recruitment.domain.exception.InvalidEmailException;
+import be.xplore.recruitment.domain.exception.InvalidPhoneException;
 import be.xplore.recruitment.domain.exception.NotFoundException;
 
 import javax.inject.Named;
@@ -21,7 +23,8 @@ public class DeleteProspectUseCase implements DeleteProspect {
     }
 
     @Override
-    public void deleteProspect(DeleteProspectRequest request, Consumer<List<ProspectResponseModel>> response) {
+    public void deleteProspect(DeleteProspectRequest request, Consumer<List<ProspectResponseModel>> response)
+            throws InvalidEmailException, InvalidPhoneException, NotFoundException {
         List<ProspectResponseModel> prospectResponseModels = new ArrayList<>();
         Prospect prospect = repository.findProspectById(request.prospectId);
         prospectResponseModels.add(new ProspectResponseModel(prospect));

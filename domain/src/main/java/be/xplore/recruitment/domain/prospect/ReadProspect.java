@@ -1,5 +1,7 @@
 package be.xplore.recruitment.domain.prospect;
 
+import be.xplore.recruitment.domain.exception.NotFoundException;
+
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -11,7 +13,9 @@ public interface ReadProspect {
 
     void readAllProspects(Consumer<List<ProspectResponseModel>> response);
 
-    void readProspectById(ReadProspectRequest request, Consumer<List<ProspectResponseModel>> response);
+    void readProspectById(ReadProspectRequest request, Consumer<List<ProspectResponseModel>> response)
+            throws NotFoundException;
 
-    void readProspectByParam(ReadProspectRequest request, Consumer<List<ProspectResponseModel>> response);
+    void readProspectByParam(ReadProspectRequest request, Consumer<List<ProspectResponseModel>> response)
+            throws NotFoundException;
 }

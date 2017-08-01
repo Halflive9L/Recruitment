@@ -1,5 +1,7 @@
 package be.xplore.recruitment.domain.prospect;
 
+import be.xplore.recruitment.domain.exception.InvalidEmailException;
+import be.xplore.recruitment.domain.exception.InvalidPhoneException;
 import be.xplore.recruitment.domain.exception.NotFoundException;
 
 import javax.inject.Named;
@@ -25,7 +27,8 @@ public class UpdateProspectUseCase implements UpdateProspect {
     }
 
     @Override
-    public void updateProspect(UpdateProspectRequest request, Consumer<List<ProspectResponseModel>> response) {
+    public void updateProspect(UpdateProspectRequest request, Consumer<List<ProspectResponseModel>> response)
+        throws NotFoundException, InvalidEmailException, InvalidPhoneException {
         if (repository.findProspectById(request.prospectId) == null) {
             throw new NotFoundException();
         }

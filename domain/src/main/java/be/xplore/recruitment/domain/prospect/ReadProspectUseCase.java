@@ -31,7 +31,8 @@ public class ReadProspectUseCase implements ReadProspect {
     }
 
     @Override
-    public void readProspectById(ReadProspectRequest request, Consumer<List<ProspectResponseModel>> response) {
+    public void readProspectById(ReadProspectRequest request, Consumer<List<ProspectResponseModel>> response)
+        throws NotFoundException {
         if (repository.findProspectById(request.prospectId) == null) {
             throw new NotFoundException();
         }
@@ -41,12 +42,9 @@ public class ReadProspectUseCase implements ReadProspect {
     }
 
     @Override
-    public void readProspectByParam(ReadProspectRequest request, Consumer<List<ProspectResponseModel>> response) {
-        if(isEmptyRequest(request)) {
-            readAllProspects(response);
-        } else {
+    public void readProspectByParam(ReadProspectRequest request, Consumer<List<ProspectResponseModel>> response)
+        throws NotFoundException {
 
-        }
     }
 
     private boolean isEmptyRequest(ReadProspectRequest request) {
