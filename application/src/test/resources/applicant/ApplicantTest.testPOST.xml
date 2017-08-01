@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <dataset>
-    <applicant applicant_id="1" first_name="jos" last_name="vermeulen" date_Of_Birth="1990-01-01" address="antwerpen"
-               education="none" email="jos.vermeulen@example.com" phone="0356854598"/>
+    <applicant applicant_id="1" first_name="jos" last_name="vermeulen" date_Of_Birth="1990-01-01"
+               address="antwerpen"
+               education="none" email="jos.vermeulen@example.com" phone="+32356854598"/>
 </dataset>

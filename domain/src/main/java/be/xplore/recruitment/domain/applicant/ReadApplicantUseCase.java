@@ -1,25 +1,56 @@
 package be.xplore.recruitment.domain.applicant;
 
+import be.xplore.recruitment.domain.exception.NotFoundException;
+
+import javax.inject.Named;
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * @author Stijn Schack
  * @since 7/26/2017
  */
+@Named
 public class ReadApplicantUseCase implements ReadApplicant {
     private final ApplicantRepository repository;
 
-    public ReadApplicantUseCase(ApplicantRepository repository) {
+    ReadApplicantUseCase(ApplicantRepository repository) {
         this.repository = repository;
     }
 
+
     @Override
-    public List<Applicant> readAllApplicants() {
-        return repository.findAll();
+    public void readAllApplicants(Consumer<List<ApplicantResponseModel>> response) {
+        List<Applicant> applicants = repository.findAll();
+        List<ApplicantResponseModel> responseList = getResponseListFromApplicantList(applicants);
+        response.accept(responseList);
     }
 
     @Override
-    public Applicant readApplicantById(long id) {
-        return repository.findApplicantById(id);
+    public void readApplicantsByParam(ReadApplicantRequest request, Consumer<List<ApplicantResponseModel>> response)
+            throws NotFoundException {
+        List<Applicant> applicants = repository.findByParameters(request.toApplicant());
+        if (applicants.isEmpty()) {
+            throw new NotFoundException();
+        }
+        List<ApplicantResponseModel> responseList = getResponseListFromApplicantList(applicants);
+        response.accept(responseList);
+    }
+
+    private List<ApplicantResponseModel> getResponseListFromApplicantList(List<Applicant> applicants) {
+        List<ApplicantResponseModel> responseList = new LinkedList<>();
+        applicants.forEach(applicant -> responseList.add(new ApplicantResponseModel(applicant)));
+        return responseList;
+    }
+
+    @Override
+    public void readApplicantById(ReadApplicantRequest request, Consumer<List<ApplicantResponseModel>> consumer)
+            throws NotFoundException {
+        Applicant applicant = repository.findApplicantById(request.applicantId);
+        List<ApplicantResponseModel> responseModel = new ArrayList<>(1);
+        responseModel.add(new ApplicantResponseModel(applicant));
+        consumer.accept(responseModel);
     }
 }

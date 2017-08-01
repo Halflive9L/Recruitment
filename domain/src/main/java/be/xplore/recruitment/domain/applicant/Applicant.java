@@ -5,7 +5,7 @@ import be.xplore.recruitment.domain.exception.InvalidDateException;
 import be.xplore.recruitment.domain.exception.InvalidEmailException;
 import be.xplore.recruitment.domain.exception.InvalidPhoneException;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import static be.xplore.recruitment.domain.util.Validator.isNullOrEmpty;
 import static be.xplore.recruitment.domain.util.Validator.isValidDate;
@@ -20,7 +20,7 @@ public class Applicant {
     private long applicantId;
     private String firstName;
     private String lastName;
-    private Date dateOfBirth;
+    private LocalDate dateOfBirth;
     private String address;
     private String education;
     private String email;
@@ -37,8 +37,22 @@ public class Applicant {
         this.phone = builder.phone;
     }
 
-    public static ApplicantBuilder builder(String firstName, String lastName) {
-        return new ApplicantBuilder(firstName, lastName);
+    public static ApplicantBuilder builder() {
+        return new ApplicantBuilder();
+    }
+
+    @Override
+    public String toString() {
+        return "Applicant{" +
+                "applicantId=" + applicantId +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", dateOfBirth=" + dateOfBirth +
+                ", address='" + address + '\'' +
+                ", education='" + education + '\'' +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                '}';
     }
 
     void validateApplicant() {
@@ -77,11 +91,11 @@ public class Applicant {
         this.lastName = lastName;
     }
 
-    public Date getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(Date dateOfBirth) {
+    public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
@@ -117,19 +131,72 @@ public class Applicant {
         this.phone = phone;
     }
 
-    static class ApplicantBuilder {
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        Applicant applicant = (Applicant) o;
+
+        if (applicantId != applicant.applicantId) {
+            return false;
+        }
+        if (firstName != null ? !firstName.equals(applicant.firstName) : applicant.firstName != null) {
+            return false;
+        }
+        if (lastName != null ? !lastName.equals(applicant.lastName) : applicant.lastName != null) {
+            return false;
+        }
+        if (dateOfBirth != null ? !dateOfBirth.equals(applicant.dateOfBirth) : applicant.dateOfBirth != null) {
+            return false;
+        }
+        if (address != null ? !address.equals(applicant.address) : applicant.address != null) {
+            return false;
+        }
+        if (education != null ? !education.equals(applicant.education) : applicant.education != null) {
+            return false;
+        }
+        if (email != null ? !email.equals(applicant.email) : applicant.email != null) {
+            return false;
+        }
+        return phone != null ? phone.equals(applicant.phone) : applicant.phone == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (int) (applicantId ^ (applicantId >>> 32));
+        result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
+        result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
+        result = 31 * result + (dateOfBirth != null ? dateOfBirth.hashCode() : 0);
+        result = 31 * result + (address != null ? address.hashCode() : 0);
+        result = 31 * result + (education != null ? education.hashCode() : 0);
+        result = 31 * result + (email != null ? email.hashCode() : 0);
+        result = 31 * result + (phone != null ? phone.hashCode() : 0);
+        return result;
+    }
+
+    public static class ApplicantBuilder {
         private long applicantId;
         private String firstName;
         private String lastName;
-        private Date dateOfBirth;
+        private LocalDate dateOfBirth;
         private String address;
         private String education;
         private String email;
         private String phone;
 
-        public ApplicantBuilder(String firstName, String lastName) {
+        public ApplicantBuilder withFirstName(String firstName) {
             this.firstName = firstName;
+            return this;
+        }
+
+        public ApplicantBuilder withLastName(String lastName) {
             this.lastName = lastName;
+            return this;
         }
 
         public ApplicantBuilder withId(long id) {
@@ -137,27 +204,27 @@ public class Applicant {
             return this;
         }
 
-        public ApplicantBuilder setDateOfBirth(Date dateOfBirth) {
+        public ApplicantBuilder withDateOfBirth(LocalDate dateOfBirth) {
             this.dateOfBirth = dateOfBirth;
             return this;
         }
 
-        public ApplicantBuilder setAddress(String address) {
+        public ApplicantBuilder withAddress(String address) {
             this.address = address;
             return this;
         }
 
-        public ApplicantBuilder setEducation(String education) {
+        public ApplicantBuilder withEducation(String education) {
             this.education = education;
             return this;
         }
 
-        public ApplicantBuilder setEmail(String email) {
+        public ApplicantBuilder withEmail(String email) {
             this.email = email;
             return this;
         }
 
-        public ApplicantBuilder setPhone(String phone) {
+        public ApplicantBuilder withPhone(String phone) {
             this.phone = phone;
             return this;
         }

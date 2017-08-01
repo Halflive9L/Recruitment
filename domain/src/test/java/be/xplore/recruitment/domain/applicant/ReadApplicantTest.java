@@ -1,93 +1,105 @@
 package be.xplore.recruitment.domain.applicant;
 
-import org.hamcrest.CoreMatchers;
+import be.xplore.recruitment.domain.exception.NotFoundException;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.Calendar;
+import java.util.ArrayList;
 import java.util.List;
 
-import static java.util.Arrays.asList;
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 
 /**
  * @author Stijn Schack
  * @since 7/26/2017
  */
-@RunWith(MockitoJUnitRunner.class)
 public class ReadApplicantTest {
-    private Applicant[] applicants = {
-            Applicant.builder("john", "smith")
-                    .withId(1)
-                    .setDateOfBirth(new Calendar.Builder().setDate(1996, 10, 3).build().getTime())
-                    .setAddress("Antwerp")
-                    .setEducation("College")
-                    .setEmail("john.smith@example.com")
-                    .setPhone("+32424963258").build(),
-            Applicant.builder("leeroy", "jenkins")
-                    .withId(2)
-                    .setDateOfBirth(new Calendar.Builder().setDate(1986, 3, 10).build().getTime())
-                    .setAddress("Kontich")
-                    .setEducation("University")
-                    .setEmail("leeroy@jenkins.com")
-                    .setPhone("+32 420 00 1337").build()
-    };
-    private final ApplicantRepository repository = new ApplicantRepository() {
-
-        @Override
-        public void createApplicant(Applicant applicant) {
-        }
-
-        @Override
-        public List<Applicant> findAll() {
-            return asList(applicants);
-        }
-
-        @Override
-        public Applicant findApplicantById(long id) {
-            for (Applicant p : applicants) {
-                if (p.getApplicantId() == id) {
-                    return p;
-                }
-            }
-            return null;
-        }
-    };
-
     private ReadApplicant useCase;
+
+    private List<Applicant> mockApplicants;
 
     @Before
     public void initUseCase() {
+        MockApplicantRepo repository = new MockApplicantRepo();
+        mockApplicants = repository.mockApplicants;
         useCase = new ReadApplicantUseCase(repository);
     }
 
     @Test
     public void testReadAllApplicants() {
-        List<Applicant> allApplicants = useCase.readAllApplicants();
-        allApplicants.forEach(System.out::println);
-        assertThat(allApplicants, CoreMatchers.equalTo(asList(applicants)));
+        List<Applicant> applicantResponse = new ArrayList<>();
+        useCase.readAllApplicants(response -> {
+            applicantResponse.addAll(getApplicantListFromResponseModelList(response));
+        });
+        assertThat(mockApplicants, is(applicantResponse));
     }
 
     @Test
     public void testReadApplicantById() {
-        Applicant result = useCase.readApplicantById(1);
-        Applicant expected = applicants[0];
-        assertEquals(result.getFirstName(), expected.getFirstName());
-        assertEquals(result.getLastName(), expected.getLastName());
-        assertEquals(result.getAddress(), expected.getAddress());
-        assertEquals(result.getEmail(), expected.getEmail());
-        assertEquals(result.getPhone(), expected.getPhone());
-        assertEquals(result.getDateOfBirth(), expected.getDateOfBirth());
-        assertEquals(result.getEducation(), expected.getEducation());
+        ReadApplicantRequest request = getRequestFromApplicant(Applicant.builder().withId(1).build());
+        final Applicant[] responseApplicant = new Applicant[1];
+        useCase.readApplicantById(request, applicantResponseModel -> {
+            responseApplicant[0] = getApplicantFromApplicantResponseModel(applicantResponseModel.get(0));
+        });
+        assertEquals(responseApplicant[0], mockApplicants.get(0));
     }
 
-    @Test
+    @Test(expected = NotFoundException.class)
     public void testReadApplicantById_IdDoesNotExist() {
-        Applicant result = useCase.readApplicantById(100);
-        assertNull(result);
+        ReadApplicantRequest request = getRequestFromApplicant(Applicant.builder().withId(500).build());
+        useCase.readApplicantById(request, applicantResponseModel -> {
+        });
+    }
+
+    /*
+        @Test
+        public void testReadApplicantsByParam() {
+            ReadApplicantRequest request = getRequestFromApplicant(Applicant.builder().withFirstName("leeroy").build());
+            List<Applicant> applicantResponse = new ArrayList<>();
+            useCase.readApplicantById(request, response -> {
+                applicantResponse.addAll(getApplicantListFromResponseModelList(response));
+            });
+            assertEquals(applicantResponse.get(0), mockApplicants.get(1));
+        }
+    */
+    @Ignore
+    private ReadApplicantRequest getRequestFromApplicant(Applicant applicant) {
+        ReadApplicantRequest request = new ReadApplicantRequest();
+        request.applicantId = applicant.getApplicantId();
+        request.address = applicant.getAddress();
+        request.dateOfBirth = applicant.getDateOfBirth();
+        request.education = applicant.getEducation();
+        request.firstName = applicant.getFirstName();
+        request.lastName = applicant.getLastName();
+        request.email = applicant.getEmail();
+        request.phone = applicant.getPhone();
+        return request;
+    }
+
+    @Ignore
+    private List<Applicant> getApplicantListFromResponseModelList(List<ApplicantResponseModel> responseModels) {
+        List<Applicant> applicants = new ArrayList<>();
+        for (ApplicantResponseModel responseModel : responseModels) {
+            applicants.add(getApplicantFromApplicantResponseModel(responseModel));
+        }
+
+        return applicants;
+    }
+
+    @Ignore
+    private Applicant getApplicantFromApplicantResponseModel(ApplicantResponseModel responseModel) {
+        return Applicant.builder()
+                .withId(responseModel.getApplicantId())
+                .withFirstName(responseModel.getFirstName())
+                .withLastName(responseModel.getLastName())
+                .withAddress(responseModel.getAddress())
+                .withEducation(responseModel.getEducation())
+                .withEmail(responseModel.getEmail())
+                .withDateOfBirth(responseModel.getDateOfBirth())
+                .withPhone(responseModel.getPhone())
+                .build();
     }
 }
