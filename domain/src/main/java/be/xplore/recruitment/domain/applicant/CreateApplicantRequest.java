@@ -1,6 +1,7 @@
 package be.xplore.recruitment.domain.applicant;
 
-import java.util.Date;
+
+import java.time.LocalDate;
 
 /**
  * @author Stijn Schack
@@ -9,7 +10,7 @@ import java.util.Date;
 public class CreateApplicantRequest {
     public String firstName;
     public String lastName;
-    public Date dateOfBirth;
+    public LocalDate dateOfBirth;
     public String address;
     public String education;
     public String email;

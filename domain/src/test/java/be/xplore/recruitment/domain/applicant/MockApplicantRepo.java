@@ -2,9 +2,8 @@ package be.xplore.recruitment.domain.applicant;
 
 import be.xplore.recruitment.domain.exception.NotFoundException;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import static be.xplore.recruitment.domain.util.Validator.isNullOrEmpty;
@@ -19,16 +18,14 @@ class MockApplicantRepo implements ApplicantRepository {
     MockApplicantRepo() {
         mockApplicants.add(Applicant.builder()
                 .withFirstName("John").withLastName("Smith").withId(1)
-                .withDateOfBirth(new Calendar.Builder().setDate(1996, 10, 3).build()
-                        .getTime())
+                .withDateOfBirth(LocalDate.of(1996, 10, 3))
                 .withAddress("Antwerp")
                 .withEducation("College")
                 .withEmail("john.smith@example.com")
                 .withPhone("+32424963258").build());
         mockApplicants.add(Applicant.builder()
                 .withFirstName("Leeroy").withLastName("Jenkins").withId(2)
-                .withDateOfBirth(new Calendar.Builder().setDate(1986, 3, 10).build()
-                        .getTime())
+                .withDateOfBirth(LocalDate.of(1996, 10, 3))
                 .withAddress("Kontich")
                 .withEducation("University")
                 .withEmail("leeroy@jenkins.com")
@@ -118,7 +115,7 @@ class MockApplicantRepo implements ApplicantRepository {
                 mockApplicants.get(i).getEducation() : applicant.getEducation();
     }
 
-    private Date dateOfBirth(Applicant applicant, int i) {
+    private LocalDate dateOfBirth(Applicant applicant, int i) {
         return applicant.getDateOfBirth() == null ?
                 mockApplicants.get(i).getDateOfBirth() : applicant.getDateOfBirth();
     }

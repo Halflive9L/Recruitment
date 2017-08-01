@@ -1,7 +1,6 @@
 package be.xplore.recruitment.domain.util;
 
-import java.util.Calendar;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -34,8 +33,8 @@ public class Validator {
         return s == null || s.isEmpty();
     }
 
-    public static boolean isValidDate(Date date) {
-        Date after = new Calendar.Builder().setDate(1900, 1, 1).build().getTime();
-        return date.after(after);
+    public static boolean isValidDate(LocalDate date) {
+        return date.isBefore(LocalDate.now())
+                && date.isAfter(LocalDate.of(1900, 1, 1));
     }
 }

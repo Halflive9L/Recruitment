@@ -32,7 +32,7 @@ public class ReadApplicantUseCase implements ReadApplicant {
     public void readApplicantsByParam(ReadApplicantRequest request, Consumer<List<ApplicantResponseModel>> response)
             throws NotFoundException {
         List<Applicant> applicants = repository.findByParameters(request.toApplicant());
-        if (applicants.isEmpty()){
+        if (applicants.isEmpty()) {
             throw new NotFoundException();
         }
         List<ApplicantResponseModel> responseList = getResponseListFromApplicantList(applicants);

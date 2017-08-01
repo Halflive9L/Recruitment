@@ -5,7 +5,7 @@ import be.xplore.recruitment.domain.exception.InvalidDateException;
 import be.xplore.recruitment.domain.exception.InvalidEmailException;
 import be.xplore.recruitment.domain.exception.InvalidPhoneException;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import static be.xplore.recruitment.domain.util.Validator.isNullOrEmpty;
 import static be.xplore.recruitment.domain.util.Validator.isValidDate;
@@ -20,7 +20,7 @@ public class Applicant {
     private long applicantId;
     private String firstName;
     private String lastName;
-    private Date dateOfBirth;
+    private LocalDate dateOfBirth;
     private String address;
     private String education;
     private String email;
@@ -91,11 +91,11 @@ public class Applicant {
         this.lastName = lastName;
     }
 
-    public Date getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(Date dateOfBirth) {
+    public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
@@ -183,7 +183,7 @@ public class Applicant {
         private long applicantId;
         private String firstName;
         private String lastName;
-        private Date dateOfBirth;
+        private LocalDate dateOfBirth;
         private String address;
         private String education;
         private String email;
@@ -204,7 +204,7 @@ public class Applicant {
             return this;
         }
 
-        public ApplicantBuilder withDateOfBirth(Date dateOfBirth) {
+        public ApplicantBuilder withDateOfBirth(LocalDate dateOfBirth) {
             this.dateOfBirth = dateOfBirth;
             return this;
         }

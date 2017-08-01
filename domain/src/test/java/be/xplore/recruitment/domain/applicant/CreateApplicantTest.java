@@ -9,7 +9,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.Calendar;
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -76,7 +76,7 @@ public class CreateApplicantTest {
     @Test(expected = InvalidDateException.class)
     public void testCreateApplicantWithInvalidDate() {
         CreateApplicantRequest request = getRequestFromApplicant(Applicant.builder()
-                .withDateOfBirth(new Calendar.Builder().setDate(1899, 12, 31).build().getTime())
+                .withDateOfBirth(LocalDate.of(1899, 12, 31))
                 .build());
         useCase.createApplicant(request, id -> {
         });
@@ -85,7 +85,7 @@ public class CreateApplicantTest {
     @Test
     public void testCreateApplicantWithValidDate() {
         CreateApplicantRequest request = getRequestFromApplicant(Applicant.builder()
-                .withDateOfBirth(new Calendar.Builder().setDate(1993, 4, 4).build().getTime())
+                .withDateOfBirth(LocalDate.of(1993, 4, 4))
                 .build());
         useCase.createApplicant(request, id -> {
         });

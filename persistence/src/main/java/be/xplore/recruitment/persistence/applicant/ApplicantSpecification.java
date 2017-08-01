@@ -4,8 +4,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.util.StringUtils;
 
-import java.util.Calendar;
-import java.util.Date;
+import java.time.LocalDate;
 
 /**
  * Created by Lander on 20/07/2017.
@@ -66,13 +65,8 @@ public class ApplicantSpecification {
     private Specification<JpaApplicant> hasDateOfBirth() {
         return applicant.getDateOfBirth() == null ? null :
                 (root, query, cb) -> {
-                    Calendar cal = Calendar.getInstance();
-                    cal.setTime(applicant.getDateOfBirth());
-                    cal.add(Calendar.DATE, 1);
-                    Date lowDate = cal.getTime();
-                    cal.setTime(applicant.getDateOfBirth());
-                    cal.add(Calendar.DATE, -1);
-                    Date highDate = cal.getTime();
+                    LocalDate lowDate = LocalDate.from(applicant.getDateOfBirth());
+                    LocalDate highDate = LocalDate.from(applicant.getDateOfBirth());
                     return cb.between(root.get("dateOfBirth"), lowDate, highDate);
                 };
     }

@@ -1,6 +1,6 @@
 package be.xplore.recruitment.domain.applicant;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import static be.xplore.recruitment.domain.applicant.Applicant.builder;
 
@@ -12,13 +12,13 @@ public class ReadApplicantRequest {
     public long applicantId;
     public String firstName;
     public String lastName;
-    public Date dateOfBirth;
+    public LocalDate dateOfBirth;
     public String address;
     public String education;
     public String email;
     public String phone;
 
-    Applicant toApplicant(){
+    Applicant toApplicant() {
         return builder()
                 .withFirstName(firstName)
                 .withLastName(lastName)

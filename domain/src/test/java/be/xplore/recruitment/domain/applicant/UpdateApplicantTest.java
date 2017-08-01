@@ -6,7 +6,7 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import java.util.Calendar;
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -79,7 +79,7 @@ public class UpdateApplicantTest {
     private Applicant getExpectedApplicant() {
         return Applicant.builder()
                 .withFirstName("John").withLastName("Smith").withId(1)
-                .withDateOfBirth(new Calendar.Builder().setDate(1996, 10, 3).build().getTime())
+                .withDateOfBirth(LocalDate.of(1996, 10, 3))
                 .withAddress("Mortsel")
                 .withEducation("College")
                 .withEmail("john.smith@example.com")

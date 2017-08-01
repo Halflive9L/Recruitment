@@ -1,6 +1,7 @@
 package be.xplore.recruitment.domain.applicant;
 
-import java.util.Date;
+
+import java.time.LocalDate;
 
 /**
  * @author Stijn Schack
@@ -10,7 +11,7 @@ public class ApplicantResponseModel {
     private long applicantId;
     private String firstName;
     private String lastName;
-    private Date dateOfBirth;
+    private LocalDate dateOfBirth;
     private String address;
     private String education;
     private String email;
@@ -66,11 +67,11 @@ public class ApplicantResponseModel {
         this.lastName = lastName;
     }
 
-    public Date getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(Date dateOfBirth) {
+    public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 

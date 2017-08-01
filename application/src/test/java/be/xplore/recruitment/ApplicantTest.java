@@ -12,6 +12,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
@@ -74,19 +75,21 @@ public class ApplicantTest extends TestBase {
                 restTemplate.exchange("/applicant", HttpMethod.GET, null, typeReference).getBody();
         assertThat(applicants).hasSize(3);
     }
-/*
+
     @Test
     @DatabaseSetup(value = "/applicant/ApplicantTest.testGetByParam.xml")
     public void testGetByParam() {
-        ParameterizedTypeReference<List<Applicant>> typeReference = new ParameterizedTypeReference<List<Applicant>>() {
-        };
-        List<Applicant> prospects =
-                restTemplate.exchange("/applicant?firstName=stijn", HttpMethod.GET, null, typeReference).getBody();
-        assertThat(prospects).hasSize(2);
-        assertThat(prospects.get(0).getFirstName()).isEqualTo(prospects.get(1).getFirstName())
+        ParameterizedTypeReference<List<JsonApplicant>> typeReference =
+                new ParameterizedTypeReference<List<JsonApplicant>>() {
+                };
+        List<JsonApplicant> applicants =
+                restTemplate.exchange("/applicant?firstName=stijn", HttpMethod.GET,
+                        null, typeReference).getBody();
+        assertThat(applicants).hasSize(2);
+        assertThat(applicants.get(0).getFirstName()).isEqualTo(applicants.get(1).getFirstName())
                 .isEqualToIgnoringCase("stijn");
-    }*/
-/*
+    }
+
     @Test
     @DatabaseSetup(value = "/applicant/ApplicantTest.testUpdateApplicant.setup.xml")
     @ExpectedDatabase(value = "/applicant/ApplicantTest.testUpdateApplicant.expected.xml",
@@ -97,7 +100,7 @@ public class ApplicantTest extends TestBase {
                 "\"lastName\":\"tuyteleers\"," +
                 "\"dateOfBirth\":\"1996-01-01\"," +
                 "\"email\":\"lander.tuyteleers@example.com\"," +
-                "\"phone\":\"0458621475\"," +
+                "\"phone\":\"+32458621475\"," +
                 "\"address\":\"Kontich\", " +
                 "\"education\":\"college\"" +
                 "}";
@@ -108,5 +111,5 @@ public class ApplicantTest extends TestBase {
         restTemplate.put("/applicant/3", httpEntity, ResponseEntity.class);
 
     }
-    */
+
 }
