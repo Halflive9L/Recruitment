@@ -7,10 +7,10 @@ stages:
 variables:
   GRADLE_OPTS: "-Dorg.gradle.daemon=false"
 
-#cache:
-#  paths:
-#    - .cache/gradle/caches
-#    - .cache/gradle/wrapper
+cache:
+  paths:
+    - .cache/gradle/caches
+    - .cache/gradle/wrapper
 
 build:
   allow_failure: false
