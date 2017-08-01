@@ -35,7 +35,6 @@ public class UpdateProspectUseCase implements UpdateProspect {
         List<ProspectResponseModel> prospectResponseModels = new ArrayList<>();
         checkEmail(request);
         checkPhone(request);
-
         Prospect prospect = builder(request.firstName, request.lastName)
                 .withId(request.prospectId).withEmail(request.email)
                 .withPhone(request.phone).build();
@@ -45,7 +44,7 @@ public class UpdateProspectUseCase implements UpdateProspect {
     }
 
     private void checkPhone(UpdateProspectRequest request) {
-        if (request.email == null || !isValidPhone(request.phone)) {
+        if (request.phone == null || !isValidPhone(request.phone)) {
             request.phone = repository.findProspectById(request.prospectId).getPhone();
         }
     }

@@ -10,4 +10,15 @@ public class UpdateProspectRequest {
     public String lastName;
     public String email;
     public String phone;
+
+    @Override
+    public String toString() {
+        return "UpdateProspectRequest{" +
+                "prospectId=" + prospectId +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                '}';
+    }
 }

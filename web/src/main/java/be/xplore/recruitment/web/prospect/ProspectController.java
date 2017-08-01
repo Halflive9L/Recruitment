@@ -103,10 +103,12 @@ public class ProspectController {
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/prospect/{prospectId}")
-    public ResponseEntity<List<JsonProspect>> updateProspect(@PathVariable long prospectId) {
+    public ResponseEntity<List<JsonProspect>> updateProspect(@PathVariable long prospectId, @RequestBody JsonProspect query) {
         UpdateProspectRequest request = new UpdateProspectRequest();
         JsonProspectPresenter presenter = new JsonProspectPresenter();
+        JsonProspectToUpdateProspectRequest(query, request);
         request.prospectId = prospectId;
+        System.out.println("Request = " + request);
         try {
             updateProspect.updateProspect(request, presenter);
         } catch (NotFoundException e) {
@@ -119,6 +121,13 @@ public class ProspectController {
     }
 
     private void JsonProspectToReadProspectRequest(@ModelAttribute JsonProspect query, ReadProspectRequest request) {
+        request.firstName = query.getFirstName();
+        request.lastName = query.getLastName();
+        request.email = query.getEmail();
+        request.phone = query.getPhone();
+    }
+
+    private void JsonProspectToUpdateProspectRequest(@ModelAttribute JsonProspect query, UpdateProspectRequest request) {
         request.firstName = query.getFirstName();
         request.lastName = query.getLastName();
         request.email = query.getEmail();

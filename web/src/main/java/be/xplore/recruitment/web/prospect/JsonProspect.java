@@ -2,6 +2,7 @@ package be.xplore.recruitment.web.prospect;
 
 import be.xplore.recruitment.domain.prospect.ProspectResponseModel;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.boot.jackson.JsonComponent;
 
@@ -101,7 +102,8 @@ class JsonProspect implements Serializable {
                 '}';
     }
 
-    public boolean isEmpty() {
+    @JsonIgnore
+    boolean isEmpty() {
         return firstName == null
                 && lastName == null
                 && email == null
@@ -116,13 +118,21 @@ class JsonProspect implements Serializable {
         private String phone;
         private long prospectId;
 
-        public JsonProspectBuilder(String firstName, String lastName) {
-            this.firstName = firstName;
-            this.lastName = lastName;
+        public JsonProspectBuilder() {
         }
 
         public JsonProspect build() {
             return new JsonProspect(this);
+        }
+
+        public JsonProspectBuilder withFirstName(String firstName) {
+            this.firstName = firstName;
+            return this;
+        }
+
+        public JsonProspectBuilder withLastName(String lastName) {
+            this.lastName = lastName;
+            return this;
         }
 
         public JsonProspectBuilder withEmail(String email) {
