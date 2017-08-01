@@ -16,6 +16,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static be.xplore.recruitment.persistence.applicant.JpaApplicant.QUERY_FIND_ALL;
@@ -28,8 +29,12 @@ import static be.xplore.recruitment.persistence.applicant.JpaApplicant.QUERY_FIN
 @Transactional
 public class ApplicantRepoJpa implements ApplicantRepository {
 
+    private final EntityManager entityManager;
+
     @Autowired
-    private EntityManager entityManager;
+    public ApplicantRepoJpa(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
 
     @Override
     public void createApplicant(Applicant applicant) {
@@ -48,19 +53,16 @@ public class ApplicantRepoJpa implements ApplicantRepository {
     }
 
     @Override
-    public Applicant findApplicantById(long applicantId) throws NotFoundException {
+    public Optional<Applicant> findApplicantById(long applicantId) {
         List list = entityManager
                 .createNamedQuery(JpaApplicant.QUERY_FIND_BY_ID)
                 .setParameter("applicantId", applicantId).getResultList();
-        if (list.isEmpty()) {
-            throw new NotFoundException();
-        }
         JpaApplicant jpaApplicant = (JpaApplicant) list.get(0);
-        return jpaApplicant.toApplicant();
+        return Optional.ofNullable(jpaApplicant.toApplicant());
     }
 
     @Override
-    public List<Applicant> findByParameters(Applicant applicant) throws NotFoundException {
+    public List<Applicant> findByParameters(Applicant applicant) {
         JpaApplicant jpaApplicant = applicantToJpaApplicant(applicant);
         CriteriaQuery<JpaApplicant> query = getJpaApplicantCriteriaQuery(jpaApplicant);
         List<JpaApplicant> results = entityManager.createQuery(query).getResultList();
@@ -96,14 +98,20 @@ public class ApplicantRepoJpa implements ApplicantRepository {
     }
 
     @Override
-    public void updateApplicant(Applicant applicant) throws NotFoundException {
+    public Optional<Applicant> updateApplicant(Applicant applicant) {
         JpaApplicant jpaApplicant = applicantToJpaApplicant(applicant);
         jpaApplicant.setApplicantId(applicant.getApplicantId());
-        entityManager.merge(jpaApplicant);
+        Applicant applicantToReturn;
+        try {
+            applicantToReturn = entityManager.merge(jpaApplicant).toApplicant();
+        } catch (IllegalArgumentException e) {
+            applicantToReturn = null;
+        }
+        return Optional.ofNullable(applicantToReturn);
     }
 
     @Override
-    public Applicant deleteApplicant(long applicantId) throws NotFoundException {
+    public Optional<Applicant> deleteApplicant(long applicantId) {
         List applicantList = entityManager.createNamedQuery(JpaApplicant.QUERY_FIND_BY_ID)
                 .setParameter("applicantId", applicantId).getResultList();
         if (applicantList.isEmpty()) {
@@ -111,7 +119,7 @@ public class ApplicantRepoJpa implements ApplicantRepository {
         }
         entityManager.createNamedQuery(JpaApplicant.QUERY_DELETE).setParameter("applicantId", applicantId)
                 .executeUpdate();
-        return ((JpaApplicant) applicantList.get(0)).toApplicant();
+        return Optional.ofNullable(((JpaApplicant) applicantList.get(0)).toApplicant());
     }
 
     private JpaApplicant applicantToJpaApplicant(Applicant applicant) {
