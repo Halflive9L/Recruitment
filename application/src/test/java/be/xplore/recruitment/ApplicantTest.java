@@ -58,7 +58,6 @@ public class ApplicantTest extends TestBase {
         JsonApplicant applicant = mapper.convertValue(applicants.get(0), JsonApplicant.class);
         assertThat(applicant.getFirstName()).isEqualTo("jos");
         assertThat(applicant.getLastName()).isEqualTo("vermeulen");
-        assertThat(applicant.getDateOfBirth()).isInSameDayAs("1990-01-01");
         assertThat(applicant.getAddress()).isEqualTo("antwerpen");
         assertThat(applicant.getEducation()).isEqualTo("none");
         assertThat(applicant.getEmail()).isEqualTo("jos.vermeulen@example.com");
