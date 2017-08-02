@@ -28,7 +28,6 @@ public class ApplicantTest extends TestBase {
         assertThat(restTemplate).isNotNull();
     }
 
-    @Override
     public JSONObject getJsonTestObject() {
         JSONObject jsonTestObject = new JSONObject();
         jsonTestObject.put("firstName", "jos");
