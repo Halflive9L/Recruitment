@@ -2,6 +2,8 @@ package be.xplore.recruitment.web.applicant;
 
 import be.xplore.recruitment.domain.applicant.CreateFile;
 import be.xplore.recruitment.domain.applicant.CreateFileRequest;
+import be.xplore.recruitment.domain.applicant.GetAllFilesForApplicantRequest;
+import be.xplore.recruitment.domain.applicant.ReadFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * @author Stijn Schack
@@ -21,20 +24,29 @@ import java.io.IOException;
 public class FileController {
 
     private final CreateFile createFile;
+    private final ReadFile readFile;
 
     @Autowired
-    public FileController(CreateFile createFile) {
+    public FileController(CreateFile createFile, ReadFile readFile) {
         this.createFile = createFile;
+        this.readFile = readFile;
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/api/applicant/{applicantId}",
             consumes = "multipart/form-data")
     public ResponseEntity<JsonFile> uploadFile(@PathVariable long applicantId, @RequestParam("file") MultipartFile file)
             throws IOException {
-        System.out.println(applicantId);
         CreateFileRequest request = new CreateFileRequest(applicantId, file.getInputStream());
         CreateFilePresenter presenter = new CreateFilePresenter();
         createFile.createFile(request, presenter);
+        return presenter.getResponseEntity();
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/api/applicant/{applicantId}/files")
+    public ResponseEntity<List<JsonFile>> getAllFilesForApplicant(@PathVariable long applicantId) {
+        GetAllFilesForApplicantRequest request = new GetAllFilesForApplicantRequest(applicantId);
+        GetAllFilesForApplicantPresenter presenter = new GetAllFilesForApplicantPresenter();
+        readFile.readAllFilesForApplicant(request, presenter);
         return presenter.getResponseEntity();
     }
 }
