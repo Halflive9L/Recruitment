@@ -80,10 +80,10 @@ class MockApplicantRepo implements ApplicantRepository {
                         .withEducation(education(applicant, i))
                         .withAddress(address(applicant, i))
                         .withDateOfBirth(dateOfBirth(applicant, i)).build());
-                return null;
+                return Optional.of(mockApplicants.get(i));
             }
         }
-        throw new NotFoundException();
+        return Optional.empty();
     }
 
     private String firstName(Applicant applicant, int i) {
