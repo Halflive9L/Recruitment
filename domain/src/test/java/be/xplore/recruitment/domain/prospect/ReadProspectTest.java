@@ -6,8 +6,8 @@ import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.List;
+import java.util.Optional;
 
-import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -29,12 +29,12 @@ public class ReadProspectTest {
 
     @Test
     public void testReadProspectById() {
-        Prospect prospect = repository.findProspectById(1);
-        assertEquals(prospect, repository.mockProspects.get(0));
+        Optional<Prospect> prospect = repository.findProspectById(1);
+        assertEquals(prospect.get(), repository.mockProspects.get(0));
     }
 
     @Test(expected = NotFoundException.class)
     public void testReadProspectById_IdDoesNotExist() {
-        Prospect prospect = repository.findProspectById(45465);
+        Optional<Prospect> prospect = repository.findProspectById(45465);
     }
 }

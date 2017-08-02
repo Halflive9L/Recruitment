@@ -9,10 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-import static be.xplore.recruitment.domain.prospect.Prospect.builder;
-import static be.xplore.recruitment.domain.util.Validator.isValidEmail;
-import static be.xplore.recruitment.domain.util.Validator.isValidPhone;
-
 /**
  * @author Lander
  * @since 27/07/2017
@@ -28,30 +24,21 @@ public class UpdateProspectUseCase implements UpdateProspect {
 
     @Override
     public void updateProspect(UpdateProspectRequest request, Consumer<List<ProspectResponseModel>> response)
-        throws NotFoundException, InvalidEmailException, InvalidPhoneException {
-        if (repository.findProspectById(request.prospectId) == null) {
-            throw new NotFoundException();
-        }
-        List<ProspectResponseModel> prospectResponseModels = new ArrayList<>();
-        checkEmail(request);
-        checkPhone(request);
-        Prospect prospect = builder(request.firstName, request.lastName)
-                .withId(request.prospectId).withEmail(request.email)
-                .withPhone(request.phone).build();
-        prospectResponseModels.add(new ProspectResponseModel(prospect));
-        repository.updateProspect(prospect);
-        response.accept(prospectResponseModels);
+            throws InvalidEmailException, InvalidPhoneException, NotFoundException {
+        Prospect prospect = createProspectFromRequest(request);
+        prospect.validateProspect();
+        Prospect responseProspect = repository.updateProspect(prospect).orElseThrow(NotFoundException::new);
+        List<ProspectResponseModel> responseModel = new ArrayList<>(1);
+        responseModel.add(new ProspectResponseModel(responseProspect));
+        response.accept(responseModel);
     }
 
-    private void checkPhone(UpdateProspectRequest request) {
-        if (request.phone == null || !isValidPhone(request.phone)) {
-            request.phone = repository.findProspectById(request.prospectId).getPhone();
-        }
-    }
-
-    private void checkEmail(UpdateProspectRequest request) {
-        if (request.email == null || !isValidEmail(request.email)) {
-            request.email = repository.findProspectById(request.prospectId).getEmail();
-        }
+    private Prospect createProspectFromRequest(UpdateProspectRequest request) {
+        return Prospect.builder()
+                .withFirstName(request.firstName)
+                .withLastName(request.lastName)
+                .withEmail(request.email)
+                .withPhone(request.phone)
+                .build();
     }
 }

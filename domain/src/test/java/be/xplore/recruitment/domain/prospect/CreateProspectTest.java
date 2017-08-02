@@ -5,6 +5,7 @@ import be.xplore.recruitment.domain.exception.InvalidEmailException;
 import be.xplore.recruitment.domain.exception.InvalidPhoneException;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -33,7 +34,8 @@ public class CreateProspectTest {
         CreateProspectRequest request = new CreateProspectRequest();
         request.firstName = "John";
         request.lastName = "Smith";
-        repository.createProspect(Prospect.builder(request.firstName, request.lastName).build());
+        repository.createProspect(Prospect.builder().withFirstName(request.firstName).withLastName(request.lastName)
+                .build());
         useCase.createProspect(request, prospects -> {
             for (ProspectResponseModel p: prospects
                  ) {
@@ -43,7 +45,7 @@ public class CreateProspectTest {
         });
         Assert.assertEquals(repository.mockProspects.size(), 3);
         Assert.assertEquals(repository.mockProspects.get(2),
-               Prospect.builder(request.firstName, request.lastName).build());
+               Prospect.builder().withFirstName(request.firstName).withLastName(request.lastName).build());
     }
 
     @Test(expected = InvalidEmailException.class)
@@ -63,31 +65,15 @@ public class CreateProspectTest {
         });
         Assert.assertEquals(repository.mockProspects.size(), 2);
         Assert.assertEquals(repository.mockProspects.get(2),
-                Prospect.builder(request.firstName, request.lastName).build());
+                Prospect.builder().withFirstName(request.firstName).withLastName(request.lastName).build());
     }
 
     @Test
     public void testCreateProspectWithValidEmail() {
-        CreateProspectRequest request = new CreateProspectRequest();
-        // request.prospect = new Prospect.ProspectBuilder("John", "Smith")
-        //       .withEmail("test@example.com").build();
-        request.firstName = "John";
-        request.lastName = "Smith";
-        request.email = "test@example.com";
-        repository.createProspect(Prospect.builder(request.firstName, request.lastName)
-        .withEmail(request.email).build());
-        useCase.createProspect(request, prospects -> {
-            for (ProspectResponseModel p : prospects
-                    ) {
-                Assert.assertEquals(request.firstName, p.getFirstName());
-                Assert.assertEquals(request.lastName, p.getLastName());
-                Assert.assertEquals(request.email, p.getEmail());
-            }
+        CreateProspectRequest request = getRequestFromProspect(Prospect.builder()
+                .withEmail("test.name@example.com").build());
+        useCase.createProspect(request, id -> {
         });
-        Assert.assertEquals(3, repository.mockProspects.size());
-        Assert.assertEquals(repository.mockProspects.get(2),
-                Prospect.builder(request.firstName, request.lastName)
-                        .withEmail(request.email).build());
     }
 
     @Test(expected = InvalidPhoneException.class)
@@ -106,7 +92,7 @@ public class CreateProspectTest {
         });
         Assert.assertEquals(2, repository.mockProspects.size());
         Assert.assertEquals(repository.mockProspects.get(2),
-                Prospect.builder(request.firstName, request.lastName).build());
+                Prospect.builder().withFirstName(request.firstName).withLastName(request.lastName).build());
     }
 
     @Test
@@ -115,7 +101,7 @@ public class CreateProspectTest {
         request.firstName = "John";
         request.lastName = "Smith";
         request.phone = "+3248657569";
-        repository.createProspect(Prospect.builder(request.firstName, request.lastName)
+        repository.createProspect(Prospect.builder().withFirstName(request.firstName).withLastName(request.lastName)
                 .withPhone(request.phone).build());
         useCase.createProspect(request, prospects -> {
             for (ProspectResponseModel p : prospects
@@ -127,7 +113,16 @@ public class CreateProspectTest {
         });
         Assert.assertEquals(repository.mockProspects.size(), 3);
         Assert.assertEquals(repository.mockProspects.get(2),
-                Prospect.builder(request.firstName, request.lastName)
+                Prospect.builder().withFirstName(request.firstName).withLastName(request.lastName)
                         .withPhone(request.phone).build());
+    }
+    @Ignore
+    private CreateProspectRequest getRequestFromProspect(Prospect prospect) {
+        CreateProspectRequest request = new CreateProspectRequest();
+        request.firstName = prospect.getFirstName();
+        request.lastName = prospect.getLastName();
+        request.email = prospect.getEmail();
+        request.phone = prospect.getPhone();
+        return request;
     }
 }

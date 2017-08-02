@@ -42,19 +42,19 @@ public class ApplicantController {
     @Autowired
     private DeleteApplicant deleteApplicant;
 
-    @RequestMapping(method = RequestMethod.POST, value = "/applicant")
+    @RequestMapping(method = RequestMethod.POST, value = "/api/applicant")
     public ResponseEntity<List<JsonApplicant>> addApplicant(@RequestBody JsonApplicant input) {
         CreateApplicantRequest request = getCreateRequestFromJsonApplicant(input);
         JsonApplicantResponseModelPresenter presenter = new JsonApplicantResponseModelPresenter();
         try {
             createApplicant.createApplicant(request, presenter);
         } catch (InvalidEmailException | InvalidPhoneException | InvalidDateException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         }
         return presenter.getResponseEntity();
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/applicant/{applicantId}")
+    @RequestMapping(method = RequestMethod.GET, value = "/api/applicant/{applicantId}")
     public ResponseEntity<List<JsonApplicant>> getApplicantById(@PathVariable long applicantId) {
         ReadApplicantRequest request = new ReadApplicantRequest();
         request.applicantId = applicantId;
@@ -67,7 +67,7 @@ public class ApplicantController {
         return presenter.getResponseEntity();
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/applicant")
+    @RequestMapping(method = RequestMethod.GET, value = "/api/applicant")
     public ResponseEntity<List<JsonApplicant>> getApplicantByParam(@ModelAttribute JsonApplicant jsonApplicant) {
         System.out.println(jsonApplicant);
         try {
@@ -88,7 +88,7 @@ public class ApplicantController {
         return presenter.getResponseEntity();
     }
 
-    @RequestMapping(method = RequestMethod.DELETE, value = "/applicant/{applicantId}")
+    @RequestMapping(method = RequestMethod.DELETE, value = "/api/applicant/{applicantId}")
     public ResponseEntity<List<JsonApplicant>> deleteApplicant(@PathVariable long applicantId) {
         DeleteApplicantRequest request = new DeleteApplicantRequest(applicantId);
         JsonApplicantResponseModelPresenter presenter = new JsonApplicantResponseModelPresenter();
@@ -100,7 +100,7 @@ public class ApplicantController {
         return presenter.getResponseEntity();
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "/applicant/{applicantId}")
+    @RequestMapping(method = RequestMethod.PUT, value = "/api/applicant/{applicantId}")
     public ResponseEntity<List<JsonApplicant>> updateApplicant(@PathVariable long applicantId,
                                                                @RequestBody JsonApplicant applicant) {
         UpdateApplicantRequest request = getUpdateApplicantRequestFromJsonApplicant(applicantId, applicant);
@@ -110,7 +110,7 @@ public class ApplicantController {
         } catch (NotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (InvalidDateException | InvalidEmailException | InvalidPhoneException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         }
         return presenter.getResponseEntity();
     }
