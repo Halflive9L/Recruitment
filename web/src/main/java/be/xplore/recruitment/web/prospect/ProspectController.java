@@ -45,55 +45,56 @@ public class ProspectController {
     private DeleteProspect deleteProspect;
 
 
-    @RequestMapping(method = RequestMethod.POST, value = "/prospect")
-    public ResponseEntity<JsonProspect> addProspect(@RequestBody JsonProspect input) {
+    @RequestMapping(method = RequestMethod.POST, value = "/api/prospect")
+    public ResponseEntity<List<JsonProspect>> addProspect(@RequestBody JsonProspect input) {
         CreateProspectRequest request = new CreateProspectRequest();
-        request.firstName = input.getFirstName();
-        request.lastName = input.getLastName();
-        request.email = input.getEmail();
-        request.phone = input.getPhone();
+        JsonProspectPresenter presenter = new JsonProspectPresenter();
         try {
-            createProspect.createProspect(request, prospectId -> {
-            });
+            createProspect.createProspect(request, presenter);
         } catch (InvalidEmailException | InvalidPhoneException e) {
             return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         }
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return presenter.getResponseEntity();
     }
 
 
-    @RequestMapping(method = RequestMethod.GET, value = "/prospect/{prospectId}")
+    @RequestMapping(method = RequestMethod.GET, value = "/api/prospect/{prospectId}")
     public ResponseEntity<List<JsonProspect>> getProspectById(@PathVariable long prospectId) {
         ReadProspectRequest request = new ReadProspectRequest();
-        request.prospectId = prospectId;
         JsonProspectPresenter presenter = new JsonProspectPresenter();
-        readProspect.readProspectById(request, presenter);
-        return presenter.getResponseEntity();
-    }
-
-    @RequestMapping(method = RequestMethod.GET, value = "/prospect")
-    public ResponseEntity<List<JsonProspect>> getProspectByParam(@ModelAttribute JsonProspect query) {
-        System.out.println("query = " + query);
-        ReadProspectRequest request = new ReadProspectRequest();
-        //JsonProspectPresenter prospectPresenter = new JsonProspectPresenter();
-        JsonProspectToReadProspectRequest(query, request);
-        /*readProspect.readAllProspects(prospectPresenter);
-        return prospectPresenter.getResponseEntity();*/
-        JsonProspectPresenter presenter = new JsonProspectPresenter();
-        if (query.isEmpty()) {
-            readProspect.readAllProspects(presenter);
-        } else {
-            readProspect.readProspectByParam(request, presenter);
+        try {
+            readProspect.readProspectById(request, presenter);
+        } catch (NotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return presenter.getResponseEntity();
-
     }
 
-    @RequestMapping(method = RequestMethod.DELETE, value = "/prospect/{prospectId}")
-    public ResponseEntity<List<JsonProspect>> deleteProspect(@PathVariable long prospectId) {
-        DeleteProspectRequest request = new DeleteProspectRequest();
+    @RequestMapping(method = RequestMethod.GET, value = "/api/prospect")
+    public ResponseEntity<List<JsonProspect>> getProspectByParam(@ModelAttribute JsonProspect jsonProspect) {
+        System.out.println(jsonProspect);
+        try {
+            return presentProspectsByParam(jsonProspect);
+        } catch (NotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    private ResponseEntity<List<JsonProspect>> presentProspectsByParam(JsonProspect prospect)
+            throws NotFoundException {
         JsonProspectPresenter presenter = new JsonProspectPresenter();
-        request.prospectId = prospectId;
+        if (prospect.isEmpty()) {
+            readProspect.readAllProspects(presenter);
+        } else {
+            readProspect.readProspectsByParam(getReadProspectRequestFromJsonProspect(prospect), presenter);
+        }
+        return presenter.getResponseEntity();
+    }
+
+    @RequestMapping(method = RequestMethod.DELETE, value = "/api/prospect/{prospectId}")
+    public ResponseEntity<List<JsonProspect>> deleteProspect(@PathVariable long prospectId) {
+        DeleteProspectRequest request = new DeleteProspectRequest(prospectId);
+        JsonProspectPresenter presenter = new JsonProspectPresenter();
         try {
             deleteProspect.deleteProspect(request, presenter);
         } catch (NotFoundException e) {
@@ -102,33 +103,34 @@ public class ProspectController {
         return presenter.getResponseEntity();
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "/prospect/{prospectId}")
+    @RequestMapping(method = RequestMethod.PUT, value = "/api/prospect/{prospectId}")
     public ResponseEntity<List<JsonProspect>> updateProspect(@PathVariable long prospectId,
                                                              @RequestBody JsonProspect query) {
         UpdateProspectRequest request = new UpdateProspectRequest();
         JsonProspectPresenter presenter = new JsonProspectPresenter();
         JsonProspectToUpdateProspectRequest(query, request);
         request.prospectId = prospectId;
-        System.out.println("Request = " + request);
         try {
             updateProspect.updateProspect(request, presenter);
         } catch (NotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }  catch (InvalidEmailException | InvalidPhoneException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } catch (InvalidEmailException | InvalidPhoneException e) {
+            return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         }
 
         return presenter.getResponseEntity();
     }
 
-    private void JsonProspectToReadProspectRequest(@ModelAttribute JsonProspect query, ReadProspectRequest request) {
-        request.firstName = query.getFirstName();
-        request.lastName = query.getLastName();
-        request.email = query.getEmail();
-        request.phone = query.getPhone();
+    private ReadProspectRequest getReadProspectRequestFromJsonProspect(JsonProspect prospect) {
+        ReadProspectRequest request = new ReadProspectRequest();
+        request.firstName = prospect.getFirstName();
+        request.lastName = prospect.getLastName();
+        request.email = prospect.getEmail();
+        request.phone = prospect.getPhone();
+        return request;
     }
 
-    private void JsonProspectToUpdateProspectRequest(@ModelAttribute JsonProspect query,
+    private void JsonProspectToUpdateProspectRequest(JsonProspect query,
                                                      UpdateProspectRequest request) {
         request.firstName = query.getFirstName();
         request.lastName = query.getLastName();

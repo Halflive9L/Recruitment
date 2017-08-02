@@ -48,13 +48,13 @@ public class ApplicantTest extends TestBase {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<String> httpEntity = new HttpEntity<>(getJsonTestObject().toJSONString(), headers);
-        restTemplate.postForEntity("/applicant", httpEntity, List.class);
+        restTemplate.postForEntity("/api/applicant", httpEntity, List.class);
     }
 
     @Test
     @DatabaseSetup("/applicant/ApplicantTest.testGetById.xml")
     public void testGetById() {
-        List applicants = restTemplate.getForEntity("/applicant/1", List.class).getBody();
+        List applicants = restTemplate.getForEntity("/api/applicant/1", List.class).getBody();
         ObjectMapper mapper = new ObjectMapper();
         JsonApplicant applicant = mapper.convertValue(applicants.get(0), JsonApplicant.class);
         assertThat(applicant.getFirstName()).isEqualTo("jos");
@@ -72,7 +72,7 @@ public class ApplicantTest extends TestBase {
                 new ParameterizedTypeReference<List<JsonApplicant>>() {
                 };
         List<JsonApplicant> applicants =
-                restTemplate.exchange("/applicant", HttpMethod.GET, null, typeReference).getBody();
+                restTemplate.exchange("/api/applicant", HttpMethod.GET, null, typeReference).getBody();
         assertThat(applicants).hasSize(3);
     }
 
@@ -83,7 +83,7 @@ public class ApplicantTest extends TestBase {
                 new ParameterizedTypeReference<List<JsonApplicant>>() {
                 };
         List<JsonApplicant> applicants =
-                restTemplate.exchange("/applicant?firstName=stijn", HttpMethod.GET,
+                restTemplate.exchange("/api/applicant?firstName=stijn", HttpMethod.GET,
                         null, typeReference).getBody();
         assertThat(applicants).hasSize(2);
         assertThat(applicants.get(0).getFirstName()).isEqualTo(applicants.get(1).getFirstName())
@@ -108,7 +108,7 @@ public class ApplicantTest extends TestBase {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<String> httpEntity = new HttpEntity<>(jsonBody, headers);
-        restTemplate.put("/applicant/3", httpEntity, ResponseEntity.class);
+        restTemplate.put("/api/applicant/3", httpEntity, ResponseEntity.class);
 
     }
 

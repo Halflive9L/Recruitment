@@ -29,7 +29,7 @@ public class ReadProspectUseCase implements ReadProspect {
     }
 
     @Override
-    public void readProspectByParam(ReadProspectRequest request, Consumer<List<ProspectResponseModel>> response)
+    public void readProspectsByParam(ReadProspectRequest request, Consumer<List<ProspectResponseModel>> response)
             throws NotFoundException {
         List<Prospect> prospects = repository.findByParameters(request.toProspect());
         if (prospects.isEmpty()) {
