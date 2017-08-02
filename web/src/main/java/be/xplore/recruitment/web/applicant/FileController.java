@@ -2,9 +2,11 @@ package be.xplore.recruitment.web.applicant;
 
 import be.xplore.recruitment.domain.applicant.CreateFile;
 import be.xplore.recruitment.domain.applicant.CreateFileRequest;
+import be.xplore.recruitment.domain.applicant.DownloadFileRequest;
 import be.xplore.recruitment.domain.applicant.GetAllFilesForApplicantRequest;
 import be.xplore.recruitment.domain.applicant.ReadFile;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,9 +34,10 @@ public class FileController {
         this.readFile = readFile;
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/api/applicant/{applicantId}",
+    @RequestMapping(method = RequestMethod.POST, value = "/api/applicant/{applicantId}/file",
             consumes = "multipart/form-data")
-    public ResponseEntity<JsonFile> uploadFile(@PathVariable long applicantId, @RequestParam("file") MultipartFile file)
+    public ResponseEntity<JsonFile> uploadFile(@PathVariable long applicantId,
+                                               @RequestParam("file") MultipartFile file)
             throws IOException {
         CreateFileRequest request = new CreateFileRequest(applicantId, file.getInputStream());
         CreateFilePresenter presenter = new CreateFilePresenter();
@@ -42,11 +45,23 @@ public class FileController {
         return presenter.getResponseEntity();
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/api/applicant/{applicantId}/files")
+    @RequestMapping(method = RequestMethod.GET, value = "/api/applicant/{applicantId}/file")
     public ResponseEntity<List<JsonFile>> getAllFilesForApplicant(@PathVariable long applicantId) {
         GetAllFilesForApplicantRequest request = new GetAllFilesForApplicantRequest(applicantId);
         GetAllFilesForApplicantPresenter presenter = new GetAllFilesForApplicantPresenter();
         readFile.readAllFilesForApplicant(request, presenter);
+        return presenter.getResponseEntity();
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/api/applicant/{applicantId}/download")
+    public ResponseEntity<ByteArrayResource> downloadFile(@PathVariable("applicantId") long applicantId,
+                                                          @RequestParam("file") String fileName) throws IOException {
+
+        DownloadFileRequest request = new DownloadFileRequest(applicantId, fileName);
+        DownloadFilePresenter presenter = new DownloadFilePresenter();
+
+        readFile.downloadFile(request, presenter);
+
         return presenter.getResponseEntity();
     }
 }

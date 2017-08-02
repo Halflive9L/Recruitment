@@ -14,4 +14,6 @@ public interface FileRepository {
     File createFile(long applicantId, InputStream input) throws IOException;
 
     Optional<List<File>> readAllFiles(long applicantId);
+
+    Optional<InputStream> downloadFile(long applicantId, String fileName) throws IOException;
 }

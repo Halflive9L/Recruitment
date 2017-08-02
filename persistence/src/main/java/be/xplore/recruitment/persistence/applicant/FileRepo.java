@@ -8,6 +8,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -43,7 +45,7 @@ public class FileRepo implements FileRepository {
 
     @Override
     public Optional<List<File>> readAllFiles(long applicantId) {
-        if (!dirs.containsKey(applicantId)) {
+        if (!doesDirExist(applicantId)) {
             return Optional.empty();
         }
         File dir = dirs.get(applicantId);
@@ -52,5 +54,24 @@ public class FileRepo implements FileRepository {
             return Optional.empty();
         }
         return Optional.of(asList(filesArray));
+    }
+
+    @Override
+    public Optional<InputStream> downloadFile(long applicantId, String fileName) throws IOException {
+        if (!doesDirExist(applicantId)) {
+            return Optional.empty();
+        }
+        InputStream inputStream = Files.newInputStream(getPathFromApplicantIdAndFileName(applicantId, fileName));
+        System.out.println(inputStream.available());
+        return Optional.of(inputStream);
+    }
+
+    private boolean doesDirExist(long applicantId) {
+        return dirs.containsKey(applicantId);
+    }
+
+    private Path getPathFromApplicantIdAndFileName(long applicantId, String fileName) {
+        System.out.println(dirs.get(applicantId).getPath() + fileName);
+        return Paths.get(dirs.get(applicantId).getPath() + File.separator + fileName);
     }
 }
