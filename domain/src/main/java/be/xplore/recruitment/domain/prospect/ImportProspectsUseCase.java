@@ -1,8 +1,10 @@
 package be.xplore.recruitment.domain.prospect;
 
+import be.xplore.recruitment.domain.exception.ImportException;
 import be.xplore.recruitment.domain.exception.InvalidEmailException;
 import be.xplore.recruitment.domain.exception.InvalidPhoneException;
 import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
 import javax.inject.Named;
@@ -23,32 +25,43 @@ public class ImportProspectsUseCase implements ImportProspects {
 
     @Override
     public void importProspects(ImportProspectsRequest request, Consumer<ImportProspectsResponseModel> consumer) {
-        try {
-            List<ImportProspectsFailure> failures = new ArrayList<>();
-            List<ProspectResponseModel> successes = new ArrayList<>();
-            Reader reader = new InputStreamReader(request.getStream());
-            for (CSVRecord record : CSVFormat.DEFAULT.parse(reader)) {
+        List<ImportProspectsFailure> failures = new ArrayList<>();
+        List<ProspectResponseModel> successes = new ArrayList<>();
+        CSVParser parsed;
+        ImportProspectsResponseModel response;
+        try (Reader reader = new InputStreamReader(request.getStream())) {
+            parsed = CSVFormat.DEFAULT.parse(reader);
+            for (CSVRecord record : parsed) {
                 processRecord(successes, failures, record);
             }
-            ImportProspectsResponseModel response = new ImportProspectsResponseModel(failures, successes);
+            response = new ImportProspectsResponseModel(failures, successes);
             consumer.accept(response);
-        } catch (IOException ex) {
-            // TODO: afhandelen, eigen ex throwne
-            System.out.println(ex);
+        }
+        catch (IOException ex) {
+            throw new ImportException();
         }
     }
 
-    private void processRecord(List<ProspectResponseModel> successes, List<ImportProspectsFailure> failures, CSVRecord record) {
-        CreateProspectRequest request = createRequest(record);
+    private void processRecord(List<ProspectResponseModel> success, List<ImportProspectsFailure> fails, CSVRecord rec) {
+        CreateProspectRequest request = createRequest(rec);
         try {
             createProspect.createProspect(request, resp -> {
-                successes.add(resp);
+                success.add(resp);
             });
         } catch (InvalidEmailException ex) {
-            failures.add(new ImportProspectsFailure("Invalid e-mail", record.toString()));
+            fails.add(new ImportProspectsFailure("Invalid e-mail", formatRecord(rec)));
         } catch (InvalidPhoneException ex) {
-            failures.add(new ImportProspectsFailure("Invalid phone number", record.toString()));
+            fails.add(new ImportProspectsFailure("Invalid phone number", formatRecord(rec)));
         }
+    }
+
+    private String formatRecord(CSVRecord record) {
+        StringBuilder sb = new StringBuilder();
+        record.forEach(col -> {
+            sb.append(col);
+            sb.append(",");
+        });
+        return sb.toString();
     }
 
     private CreateProspectRequest createRequest(CSVRecord record) {

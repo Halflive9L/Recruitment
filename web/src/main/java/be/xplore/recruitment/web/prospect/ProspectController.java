@@ -7,6 +7,8 @@ import be.xplore.recruitment.domain.prospect.CreateProspect;
 import be.xplore.recruitment.domain.prospect.CreateProspectRequest;
 import be.xplore.recruitment.domain.prospect.DeleteProspect;
 import be.xplore.recruitment.domain.prospect.DeleteProspectRequest;
+import be.xplore.recruitment.domain.prospect.ImportProspects;
+import be.xplore.recruitment.domain.prospect.ImportProspectsRequest;
 import be.xplore.recruitment.domain.prospect.ReadProspect;
 import be.xplore.recruitment.domain.prospect.ReadProspectRequest;
 import be.xplore.recruitment.domain.prospect.UpdateProspect;
@@ -23,14 +25,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
-
 
 /**
  * @author Stijn Schack
  * @since 7/18/2017
  */
-
 @RestController
 public class ProspectController {
 
@@ -46,6 +47,8 @@ public class ProspectController {
     @Autowired
     private DeleteProspect deleteProspect;
 
+    @Autowired
+    private ImportProspects importProspects;
 
     @RequestMapping(method = RequestMethod.POST, value = "/api/prospect")
     public ResponseEntity<JsonProspect> addProspect(@RequestBody JsonProspect input) {
@@ -117,7 +120,7 @@ public class ProspectController {
 
     @RequestMapping(method = RequestMethod.PUT, value = "/api/prospect/{prospectId}")
     public ResponseEntity<JsonProspect> updateProspect(@PathVariable long prospectId,
-                                                             @RequestBody JsonProspect query) {
+                                                       @RequestBody JsonProspect query) {
         UpdateProspectRequest request = new UpdateProspectRequest();
         JsonProspectResponseModelPresenter presenter = new JsonProspectResponseModelPresenter();
         JsonProspectToUpdateProspectRequest(query, request);
@@ -132,9 +135,16 @@ public class ProspectController {
         return presenter.getResponseEntity();
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/importprospects")
-    public ResponseEntity<?> importProspects(@RequestParam("file") MultipartFile uploaded) {
-        return new ResponseEntity<Object>(HttpStatus.OK);
+    @RequestMapping(method = RequestMethod.POST, value = "/api/importprospects")
+    public ResponseEntity<JsonImportResult> importProspects(@RequestParam("file") MultipartFile uploaded) {
+        JsonProspectImportResponseModelPresenter presenter = new JsonProspectImportResponseModelPresenter();
+        try {
+            ImportProspectsRequest request = new ImportProspectsRequest(uploaded.getInputStream());
+            importProspects.importProspects(request, presenter);
+            return presenter.getResponseEntity();
+        } catch (IOException ex) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     private ReadProspectRequest getReadProspectRequestFromJsonProspect(JsonProspect prospect) {
