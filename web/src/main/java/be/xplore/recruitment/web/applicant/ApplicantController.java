@@ -15,6 +15,7 @@ import be.xplore.recruitment.domain.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,6 +29,8 @@ import java.util.List;
  * @author Stijn Schack
  * @since 7/20/2017
  */
+
+@CrossOrigin
 @RestController
 public class ApplicantController {
     @Autowired
