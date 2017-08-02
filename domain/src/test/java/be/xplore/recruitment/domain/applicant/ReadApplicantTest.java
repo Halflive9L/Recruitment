@@ -42,7 +42,7 @@ public class ReadApplicantTest {
         ReadApplicantRequest request = getRequestFromApplicant(Applicant.builder().withId(1).build());
         final Applicant[] responseApplicant = new Applicant[1];
         useCase.readApplicantById(request, applicantResponseModel -> {
-            responseApplicant[0] = getApplicantFromApplicantResponseModel(applicantResponseModel.get(0));
+            responseApplicant[0] = getApplicantFromApplicantResponseModel(applicantResponseModel);
         });
         assertEquals(responseApplicant[0], mockApplicants.get(0));
     }

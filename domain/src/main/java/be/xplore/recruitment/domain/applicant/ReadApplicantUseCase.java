@@ -3,7 +3,6 @@ package be.xplore.recruitment.domain.applicant;
 import be.xplore.recruitment.domain.exception.NotFoundException;
 
 import javax.inject.Named;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -46,11 +45,9 @@ public class ReadApplicantUseCase implements ReadApplicant {
     }
 
     @Override
-    public void readApplicantById(ReadApplicantRequest request, Consumer<List<ApplicantResponseModel>> consumer)
+    public void readApplicantById(ReadApplicantRequest request, Consumer<ApplicantResponseModel> consumer)
             throws NotFoundException {
         Applicant applicant = repository.findApplicantById(request.applicantId).orElseThrow(NotFoundException::new);
-        List<ApplicantResponseModel> responseModel = new ArrayList<>(1);
-        responseModel.add(new ApplicantResponseModel(applicant));
-        consumer.accept(responseModel);
+        consumer.accept(new ApplicantResponseModel(applicant));
     }
 }

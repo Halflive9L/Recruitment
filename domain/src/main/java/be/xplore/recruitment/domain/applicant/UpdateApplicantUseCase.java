@@ -6,8 +6,6 @@ import be.xplore.recruitment.domain.exception.InvalidPhoneException;
 import be.xplore.recruitment.domain.exception.NotFoundException;
 
 import javax.inject.Named;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.function.Consumer;
 
 /**
@@ -23,14 +21,12 @@ public class UpdateApplicantUseCase implements UpdateApplicant {
     }
 
     @Override
-    public void updateApplicant(UpdateApplicantRequest request, Consumer<List<ApplicantResponseModel>> response)
+    public void updateApplicant(UpdateApplicantRequest request, Consumer<ApplicantResponseModel> response)
             throws InvalidEmailException, InvalidPhoneException, InvalidDateException, NotFoundException {
         Applicant applicant = createApplicantFromRequest(request);
         applicant.validateApplicant();
         Applicant responseApplicant = repository.updateApplicant(applicant).orElseThrow(NotFoundException::new);
-        List<ApplicantResponseModel> responseModel = new ArrayList<>(1);
-        responseModel.add(new ApplicantResponseModel(responseApplicant));
-        response.accept(responseModel);
+        response.accept(new ApplicantResponseModel(responseApplicant));
     }
 
     private Applicant createApplicantFromRequest(UpdateApplicantRequest request) {

@@ -1,6 +1,5 @@
 package be.xplore.recruitment.domain.applicant;
 
-import java.util.List;
 import java.util.function.Consumer;
 
 /**
@@ -8,5 +7,5 @@ import java.util.function.Consumer;
  * @since 7/28/2017
  */
 public interface UpdateApplicant {
-    void updateApplicant(UpdateApplicantRequest request, Consumer<List<ApplicantResponseModel>> response);
+    void updateApplicant(UpdateApplicantRequest request, Consumer<ApplicantResponseModel> response);
 }
