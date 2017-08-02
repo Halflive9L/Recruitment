@@ -50,6 +50,8 @@ public class ImportProspectsTest {
         importProspects.importProspects(req, result -> {
             assertThat(result.getProspects().size(), is(0));
             assertThat(result.getFailed().size(), is(2));
+            assertThat(result.getFailed().get(0).getReason(), is("Invalid phone number"));
+            assertThat(result.getFailed().get(1).getReason(), is("Invalid e-mail"));
         });
     }
 

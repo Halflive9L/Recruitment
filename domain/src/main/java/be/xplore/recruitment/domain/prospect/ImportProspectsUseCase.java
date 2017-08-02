@@ -24,7 +24,7 @@ public class ImportProspectsUseCase implements ImportProspects {
     @Override
     public void importProspects(ImportProspectsRequest request, Consumer<ImportProspectsResponseModel> consumer) {
         try {
-            List<String> failures = new ArrayList<>();
+            List<ImportProspectsFailure> failures = new ArrayList<>();
             List<ProspectResponseModel> successes = new ArrayList<>();
             Reader reader = new InputStreamReader(request.getStream());
             for (CSVRecord record : CSVFormat.DEFAULT.parse(reader)) {
@@ -38,15 +38,16 @@ public class ImportProspectsUseCase implements ImportProspects {
         }
     }
 
-    private void processRecord(List<ProspectResponseModel> successes, List<String> failures, CSVRecord record) {
+    private void processRecord(List<ProspectResponseModel> successes, List<ImportProspectsFailure> failures, CSVRecord record) {
         CreateProspectRequest request = createRequest(record);
-
         try {
             createProspect.createProspect(request, resp -> {
-                successes.add(resp.get(0));
+                successes.add(resp);
             });
-        } catch (InvalidEmailException | InvalidPhoneException ex) {
-            failures.add(record.toString());
+        } catch (InvalidEmailException ex) {
+            failures.add(new ImportProspectsFailure("Invalid e-mail", record.toString()));
+        } catch (InvalidPhoneException ex) {
+            failures.add(new ImportProspectsFailure("Invalid phone number", record.toString()));
         }
     }
 
