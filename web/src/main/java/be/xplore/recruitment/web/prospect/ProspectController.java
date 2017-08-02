@@ -14,12 +14,8 @@ import be.xplore.recruitment.domain.prospect.UpdateProspectRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -130,6 +126,11 @@ public class ProspectController {
         return presenter.getResponseEntity();
     }
 
+    @RequestMapping(method = RequestMethod.POST, value = "/importprospects")
+    public ResponseEntity<?> importProspects(@RequestParam("file") MultipartFile uploaded) {
+        return new ResponseEntity<Object>(HttpStatus.OK);
+    }
+
     private ReadProspectRequest getReadProspectRequestFromJsonProspect(JsonProspect prospect) {
         ReadProspectRequest request = new ReadProspectRequest();
         request.firstName = prospect.getFirstName();
@@ -137,6 +138,13 @@ public class ProspectController {
         request.email = prospect.getEmail();
         request.phone = prospect.getPhone();
         return request;
+    }
+
+    private void JsonProspectToReadProspectRequest(@ModelAttribute JsonProspect query, ReadProspectRequest request) {
+        request.firstName = query.getFirstName();
+        request.lastName = query.getLastName();
+        request.email = query.getEmail();
+        request.phone = query.getPhone();
     }
 
     private void JsonProspectToUpdateProspectRequest(JsonProspect query,
