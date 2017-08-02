@@ -37,15 +37,10 @@ public class CreateProspectTest {
         repository.createProspect(Prospect.builder().withFirstName(request.firstName).withLastName(request.lastName)
                 .build());
         useCase.createProspect(request, prospects -> {
-            for (ProspectResponseModel p: prospects
-                 ) {
-                Assert.assertEquals(request.firstName, p.getFirstName());
-                Assert.assertEquals(request.lastName, p.getLastName());
-            }
         });
         Assert.assertEquals(repository.mockProspects.size(), 3);
         Assert.assertEquals(repository.mockProspects.get(2),
-               Prospect.builder().withFirstName(request.firstName).withLastName(request.lastName).build());
+                Prospect.builder().withFirstName(request.firstName).withLastName(request.lastName).build());
     }
 
     @Test(expected = InvalidEmailException.class)
@@ -55,13 +50,6 @@ public class CreateProspectTest {
         request.lastName = "Smith";
         request.email = "a";
         useCase.createProspect(request, prospects -> {
-            for (ProspectResponseModel p : prospects
-                 ) {
-                Assert.assertEquals(request.firstName, p.getFirstName());
-                Assert.assertEquals(request.lastName, p.getLastName());
-                Assert.assertNotEquals(request.email, p.getEmail());
-            }
-
         });
         Assert.assertEquals(repository.mockProspects.size(), 2);
         Assert.assertEquals(repository.mockProspects.get(2),
@@ -83,12 +71,6 @@ public class CreateProspectTest {
         request.lastName = "Smith";
         request.phone = "a";
         useCase.createProspect(request, prospects -> {
-            for (ProspectResponseModel p : prospects
-                    ) {
-                Assert.assertEquals(request.firstName, p.getFirstName());
-                Assert.assertEquals(request.lastName, p.getLastName());
-                Assert.assertNotEquals(request.phone, p.getPhone());
-            }
         });
         Assert.assertEquals(2, repository.mockProspects.size());
         Assert.assertEquals(repository.mockProspects.get(2),
@@ -104,18 +86,13 @@ public class CreateProspectTest {
         repository.createProspect(Prospect.builder().withFirstName(request.firstName).withLastName(request.lastName)
                 .withPhone(request.phone).build());
         useCase.createProspect(request, prospects -> {
-            for (ProspectResponseModel p : prospects
-                    ) {
-                Assert.assertEquals(request.firstName, p.getFirstName());
-                Assert.assertEquals(request.lastName, p.getLastName());
-                Assert.assertEquals(request.phone, p.getPhone());
-            }
         });
         Assert.assertEquals(repository.mockProspects.size(), 3);
         Assert.assertEquals(repository.mockProspects.get(2),
                 Prospect.builder().withFirstName(request.firstName).withLastName(request.lastName)
                         .withPhone(request.phone).build());
     }
+
     @Ignore
     private CreateProspectRequest getRequestFromProspect(Prospect prospect) {
         CreateProspectRequest request = new CreateProspectRequest();

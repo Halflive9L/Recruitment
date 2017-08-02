@@ -5,8 +5,6 @@ import be.xplore.recruitment.domain.exception.InvalidPhoneException;
 import be.xplore.recruitment.domain.exception.NotFoundException;
 
 import javax.inject.Named;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.function.Consumer;
 
 /**
@@ -23,14 +21,12 @@ public class UpdateProspectUseCase implements UpdateProspect {
     }
 
     @Override
-    public void updateProspect(UpdateProspectRequest request, Consumer<List<ProspectResponseModel>> response)
+    public void updateProspect(UpdateProspectRequest request, Consumer<ProspectResponseModel> response)
             throws InvalidEmailException, InvalidPhoneException, NotFoundException {
         Prospect prospect = createProspectFromRequest(request);
         prospect.validateProspect();
         Prospect responseProspect = repository.updateProspect(prospect).orElseThrow(NotFoundException::new);
-        List<ProspectResponseModel> responseModel = new ArrayList<>(1);
-        responseModel.add(new ProspectResponseModel(responseProspect));
-        response.accept(responseModel);
+        response.accept(new ProspectResponseModel(responseProspect));
     }
 
     private Prospect createProspectFromRequest(UpdateProspectRequest request) {

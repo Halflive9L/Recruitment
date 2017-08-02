@@ -46,9 +46,9 @@ public class ProspectController {
 
 
     @RequestMapping(method = RequestMethod.POST, value = "/api/prospect")
-    public ResponseEntity<List<JsonProspect>> addProspect(@RequestBody JsonProspect input) {
-        CreateProspectRequest request = new CreateProspectRequest();
-        JsonProspectPresenter presenter = new JsonProspectPresenter();
+    public ResponseEntity<JsonProspect> addProspect(@RequestBody JsonProspect input) {
+        CreateProspectRequest request = jsonProspectToCreateProspectRequest(input);
+        JsonProspectResponseModelPresenter presenter = new JsonProspectResponseModelPresenter();
         try {
             createProspect.createProspect(request, presenter);
         } catch (InvalidEmailException | InvalidPhoneException e) {
@@ -57,11 +57,21 @@ public class ProspectController {
         return presenter.getResponseEntity();
     }
 
+    private CreateProspectRequest jsonProspectToCreateProspectRequest(JsonProspect prospect) {
+        CreateProspectRequest request = new CreateProspectRequest();
+        request.firstName = prospect.getFirstName();
+        request.lastName = prospect.getLastName();
+        request.email = prospect.getEmail();
+        request.phone = prospect.getPhone();
+        return request;
+    }
+
 
     @RequestMapping(method = RequestMethod.GET, value = "/api/prospect/{prospectId}")
-    public ResponseEntity<List<JsonProspect>> getProspectById(@PathVariable long prospectId) {
+    public ResponseEntity<JsonProspect> getProspectById(@PathVariable long prospectId) {
         ReadProspectRequest request = new ReadProspectRequest();
-        JsonProspectPresenter presenter = new JsonProspectPresenter();
+        request.prospectId = prospectId;
+        JsonProspectResponseModelPresenter presenter = new JsonProspectResponseModelPresenter();
         try {
             readProspect.readProspectById(request, presenter);
         } catch (NotFoundException e) {
@@ -82,7 +92,7 @@ public class ProspectController {
 
     private ResponseEntity<List<JsonProspect>> presentProspectsByParam(JsonProspect prospect)
             throws NotFoundException {
-        JsonProspectPresenter presenter = new JsonProspectPresenter();
+        JsonProspectResponseModelListPresenter presenter = new JsonProspectResponseModelListPresenter();
         if (prospect.isEmpty()) {
             readProspect.readAllProspects(presenter);
         } else {
@@ -92,9 +102,9 @@ public class ProspectController {
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/api/prospect/{prospectId}")
-    public ResponseEntity<List<JsonProspect>> deleteProspect(@PathVariable long prospectId) {
+    public ResponseEntity<JsonProspect> deleteProspect(@PathVariable long prospectId) {
         DeleteProspectRequest request = new DeleteProspectRequest(prospectId);
-        JsonProspectPresenter presenter = new JsonProspectPresenter();
+        JsonProspectResponseModelPresenter presenter = new JsonProspectResponseModelPresenter();
         try {
             deleteProspect.deleteProspect(request, presenter);
         } catch (NotFoundException e) {
@@ -104,10 +114,10 @@ public class ProspectController {
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/api/prospect/{prospectId}")
-    public ResponseEntity<List<JsonProspect>> updateProspect(@PathVariable long prospectId,
+    public ResponseEntity<JsonProspect> updateProspect(@PathVariable long prospectId,
                                                              @RequestBody JsonProspect query) {
         UpdateProspectRequest request = new UpdateProspectRequest();
-        JsonProspectPresenter presenter = new JsonProspectPresenter();
+        JsonProspectResponseModelPresenter presenter = new JsonProspectResponseModelPresenter();
         JsonProspectToUpdateProspectRequest(query, request);
         request.prospectId = prospectId;
         try {
@@ -117,7 +127,6 @@ public class ProspectController {
         } catch (InvalidEmailException | InvalidPhoneException e) {
             return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         }
-
         return presenter.getResponseEntity();
     }
 

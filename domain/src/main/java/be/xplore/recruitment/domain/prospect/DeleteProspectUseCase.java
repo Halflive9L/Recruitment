@@ -3,8 +3,6 @@ package be.xplore.recruitment.domain.prospect;
 import be.xplore.recruitment.domain.exception.NotFoundException;
 
 import javax.inject.Named;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.function.Consumer;
 
 /**
@@ -21,11 +19,9 @@ public class DeleteProspectUseCase implements DeleteProspect {
     }
 
     @Override
-    public void deleteProspect(DeleteProspectRequest request, Consumer<List<ProspectResponseModel>> response)
+    public void deleteProspect(DeleteProspectRequest request, Consumer<ProspectResponseModel> response)
             throws NotFoundException {
         Prospect prospect = repository.deleteProspect(request.prospectId).orElseThrow(NotFoundException::new);
-        List<ProspectResponseModel> responseModel = new ArrayList<>(1);
-        responseModel.add(new ProspectResponseModel(prospect));
-        response.accept(responseModel);
+        response.accept(new ProspectResponseModel(prospect));
     }
 }
