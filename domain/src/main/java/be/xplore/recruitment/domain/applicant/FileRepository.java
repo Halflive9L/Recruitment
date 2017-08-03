@@ -11,9 +11,9 @@ import java.util.Optional;
  * @since 8/2/2017
  */
 public interface FileRepository {
-    File createFile(long applicantId, InputStream input) throws IOException;
+    File createFile(long applicantId, InputStream input, String extension) throws IOException;
 
     Optional<List<File>> readAllFiles(long applicantId);
 
-    Optional<InputStream> downloadFile(long applicantId, String fileName) throws IOException;
+    Optional<File> downloadFile(long applicantId, String fileName) throws IOException;
 }

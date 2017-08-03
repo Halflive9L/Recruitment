@@ -18,8 +18,8 @@ class CreateFileUseCase implements CreateFile{
     }
 
     @Override
-    public void createFile(CreateFileRequest request, Consumer<FileResponseModel> response) throws IOException {
-        File file = repository.createFile(request.getApplicantId(), request.getInput());
-        response.accept(new FileResponseModel(file.getName()));
+    public void createFile(CreateFileRequest request, Consumer<UploadFileResponseModel> response) throws IOException {
+        File file = repository.createFile(request.getApplicantId(), request.getInput(), request.getExtension());
+        response.accept(new UploadFileResponseModel(file.getName()));
     }
 }

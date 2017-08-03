@@ -8,7 +8,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
@@ -26,18 +25,17 @@ public class FileRepo implements FileRepository {
     private Map<Long, File> dirs = new TreeMap<>();
 
     @Override
-    public File createFile(long applicantId, InputStream input) throws IOException {
+    public File createFile(long applicantId, InputStream input, String extension) throws IOException {
         if (!dirs.containsKey(applicantId)) {
             File dir = Files.createTempDirectory("applicant-" + applicantId + "-").toFile();
             dirs.put(applicantId, dir);
         }
-        File file = File.createTempFile("applicant-" + applicantId + "-", ".pdf", dirs.get(applicantId));
+        File file = File.createTempFile("applicant-" + applicantId + "-", extension, dirs.get(applicantId));
         FileOutputStream output = new FileOutputStream(file);
         byte[] buffer = new byte[1024];
         int bytesRead;
         while ((bytesRead = input.read(buffer)) != -1) {
             output.write(buffer, 0, bytesRead);
-            System.out.println(bytesRead);
         }
         input.close();
         output.close();
@@ -58,20 +56,20 @@ public class FileRepo implements FileRepository {
     }
 
     @Override
-    public Optional<InputStream> downloadFile(long applicantId, String fileName) throws IOException {
+    public Optional<File> downloadFile(long applicantId, String fileName) throws IOException {
         if (!doesDirExist(applicantId)) {
             return Optional.empty();
         }
-        InputStream inputStream = Files.newInputStream(getPathFromApplicantIdAndFileName(applicantId, fileName));
-        return Optional.of(inputStream);
+        File file = getFileFromApplicantIdAndFileName(applicantId, fileName);
+        System.out.println(file.getAbsolutePath());
+        return Optional.of(file);
     }
 
     private boolean doesDirExist(long applicantId) {
         return dirs.containsKey(applicantId);
     }
 
-    private Path getPathFromApplicantIdAndFileName(long applicantId, String fileName) {
-        System.out.println(dirs.get(applicantId).getPath() + fileName);
-        return Paths.get(dirs.get(applicantId).getPath() + File.separator + fileName);
+    private File getFileFromApplicantIdAndFileName(long applicantId, String fileName) {
+        return Paths.get(dirs.get(applicantId).getPath() + File.separator + fileName).toFile();
     }
 }

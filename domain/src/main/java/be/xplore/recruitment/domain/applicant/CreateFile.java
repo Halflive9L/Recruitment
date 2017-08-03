@@ -8,5 +8,5 @@ import java.util.function.Consumer;
  * @since 8/2/2017
  */
 public interface CreateFile {
-    void createFile(CreateFileRequest request, Consumer<FileResponseModel> response) throws IOException;
+    void createFile(CreateFileRequest request, Consumer<UploadFileResponseModel> response) throws IOException;
 }

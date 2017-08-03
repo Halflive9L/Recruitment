@@ -28,8 +28,11 @@ public class CreateFileTest {
 
     @Test(expected = NullPointerException.class)
     public void testCreateFile() throws IOException {
-        CreateFileRequest request = new CreateFileRequest(1,
-                getClass().getResourceAsStream("testPdf.pdf"));
+        CreateFileRequest request = new CreateFileRequest();
+        request.setApplicantId(1);
+        request.setExtension(".pdf");
+        request.setInput(getClass().getResourceAsStream("testPdf.pdf"));
+        request.setContentType("application/pdf");
         assertNotNull(request.getInput());
         useCase.createFile(request, fileResponseModel -> {
 

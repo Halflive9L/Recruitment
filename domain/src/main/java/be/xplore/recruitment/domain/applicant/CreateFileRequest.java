@@ -9,17 +9,38 @@ import java.io.InputStream;
 public class CreateFileRequest {
     private long applicantId;
     private InputStream input;
+    private String contentType;
+    private String extension;
 
-    public CreateFileRequest(long applicantId, InputStream input) {
+    public void setExtension(String extension) {
+        this.extension = extension;
+    }
+
+    public String getExtension() {
+        return extension;
+    }
+
+    public void setApplicantId(long applicantId) {
         this.applicantId = applicantId;
-        this.input = input;
     }
 
     public long getApplicantId() {
         return applicantId;
     }
 
+    public void setInput(InputStream input) {
+        this.input = input;
+    }
+
     InputStream getInput() {
         return input;
+    }
+
+    public void setContentType(String contentType) {
+        this.contentType = contentType;
+    }
+
+    public String getContentType() {
+        return contentType;
     }
 }

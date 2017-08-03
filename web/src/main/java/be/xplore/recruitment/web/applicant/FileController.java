@@ -7,7 +7,6 @@ import be.xplore.recruitment.domain.applicant.GetAllFilesForApplicantRequest;
 import be.xplore.recruitment.domain.applicant.ReadFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,12 +39,33 @@ public class FileController {
     public ResponseEntity<JsonFile> uploadFile(@PathVariable long applicantId,
                                                @RequestParam("file") MultipartFile file)
             throws IOException {
-        CreateFileRequest request = new CreateFileRequest(applicantId, file.getInputStream());
+        CreateFileRequest request = getCreateFileRequest(applicantId, file);
+        System.out.println(file.getContentType());
         System.out.println(file.getOriginalFilename());
         System.out.println(file.getSize());
         CreateFilePresenter presenter = new CreateFilePresenter();
         createFile.createFile(request, presenter);
         return presenter.getResponseEntity();
+    }
+
+    private CreateFileRequest getCreateFileRequest(long applicantId, MultipartFile file) throws IOException {
+        CreateFileRequest request = new CreateFileRequest();
+        request.setInput(file.getInputStream());
+        request.setApplicantId(applicantId);
+        request.setContentType(file.getContentType());
+        System.out.println("file name: " + file.getOriginalFilename());
+        request.setExtension(getExtension(file.getOriginalFilename()));
+        return request;
+    }
+
+    private String getExtension(String fileName) {
+        String ext = "";
+        int i = fileName.lastIndexOf('.');
+        if (i > 0) {
+            ext = fileName.substring(i);
+        }
+        System.out.println("file ext: " + ext);
+        return ext;
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/api/applicant/{applicantId}/files")
@@ -56,8 +76,7 @@ public class FileController {
         return presenter.getResponseEntity();
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/api/applicant/{applicantId}/download",
-            produces = MediaType.APPLICATION_PDF_VALUE)
+    @RequestMapping(method = RequestMethod.GET, value = "/api/applicant/{applicantId}/download")
     public ResponseEntity<ByteArrayResource> downloadFile(@PathVariable("applicantId") long applicantId,
                                                           @RequestParam("file") String fileName) throws IOException {
         DownloadFileRequest request = new DownloadFileRequest(applicantId, fileName);
