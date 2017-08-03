@@ -1,6 +1,6 @@
-package be.xplore.recruitment.web.applicant;
+package be.xplore.recruitment.web.applicant.file;
 
-import be.xplore.recruitment.domain.applicant.GetFileResponseModel;
+import be.xplore.recruitment.domain.applicant.file.GetFileResponseModel;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

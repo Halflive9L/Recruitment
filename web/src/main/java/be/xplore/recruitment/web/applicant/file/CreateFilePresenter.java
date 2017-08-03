@@ -1,6 +1,6 @@
-package be.xplore.recruitment.web.applicant;
+package be.xplore.recruitment.web.applicant.file;
 
-import be.xplore.recruitment.domain.applicant.UploadFileResponseModel;
+import be.xplore.recruitment.domain.applicant.file.UploadFileResponseModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 

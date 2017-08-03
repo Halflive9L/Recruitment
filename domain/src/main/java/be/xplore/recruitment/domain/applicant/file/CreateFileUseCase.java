@@ -1,4 +1,4 @@
-package be.xplore.recruitment.domain.applicant;
+package be.xplore.recruitment.domain.applicant.file;
 
 import javax.inject.Named;
 import java.io.File;

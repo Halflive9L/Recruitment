@@ -1,6 +1,6 @@
-package be.xplore.recruitment.persistence.applicant;
+package be.xplore.recruitment.persistence.applicant.file;
 
-import be.xplore.recruitment.domain.applicant.FileRepository;
+import be.xplore.recruitment.domain.applicant.file.FileRepository;
 import org.springframework.stereotype.Component;
 
 import java.io.File;

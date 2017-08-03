@@ -1,10 +1,10 @@
-package be.xplore.recruitment.web.applicant;
+package be.xplore.recruitment.web.applicant.file;
 
-import be.xplore.recruitment.domain.applicant.CreateFile;
-import be.xplore.recruitment.domain.applicant.CreateFileRequest;
-import be.xplore.recruitment.domain.applicant.DownloadFileRequest;
-import be.xplore.recruitment.domain.applicant.GetAllFilesForApplicantRequest;
-import be.xplore.recruitment.domain.applicant.ReadFile;
+import be.xplore.recruitment.domain.applicant.file.CreateFile;
+import be.xplore.recruitment.domain.applicant.file.CreateFileRequest;
+import be.xplore.recruitment.domain.applicant.file.DownloadFileRequest;
+import be.xplore.recruitment.domain.applicant.file.GetAllFilesForApplicantRequest;
+import be.xplore.recruitment.domain.applicant.file.ReadFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.ResponseEntity;

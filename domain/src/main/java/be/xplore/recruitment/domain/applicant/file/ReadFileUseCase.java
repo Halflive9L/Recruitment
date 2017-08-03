@@ -1,4 +1,4 @@
-package be.xplore.recruitment.domain.applicant;
+package be.xplore.recruitment.domain.applicant.file;
 
 import be.xplore.recruitment.domain.exception.NotFoundException;
 
