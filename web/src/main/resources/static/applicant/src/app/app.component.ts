@@ -25,13 +25,20 @@ export   class   AppComponent  {
   addApplicant(form: FormGroup) : void {
     let body = JSON.stringify(form.value);
     this._applicant.createApplicant(body)
-      .subscribe(iapplicant => this.iapplicant = iapplicant);
+      .subscribe(iapplicant => {
+        iapplicant[0].applicantId = this.iapplicants.length+1;
+        this.iapplicants.push(iapplicant[0])
+      });
   }
 
   addProspect(form: FormGroup) : void {
     let body = JSON.stringify(form.value);
     this._prospects.createProspect(body)
-      .subscribe(iprospect => this.iprospect = iprospect);
+      .subscribe(iprospect => {
+        iprospect[0].prospectId = this.iprospects.length+1;
+        this.iprospects.push(iprospect[0])
+      });
+    console.log(this.iprospects);
   };
 
   ngOnInit() : void {
