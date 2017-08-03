@@ -1,49 +1,93 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <h1>Applicants</h1>
 <div class="applicantFormulier">
-  <form #myForm1="ngForm" (ngSubmit)="addApplicant(myForm1.form)">
+  <form [formGroup]="applicantForm">    <!-- #myForm1="ngForm" (ngSubmit)="addApplicant(myForm1.form)"> -->
     <div class="form-group center-block">
       <label for="InputFirstName">First name</label>
       <input type="text" class="form-control" id="InputFirstName" placeholder="First name"
-             name="firstName" [ngModel]="''">
+             formControlName="firstName" required minlength="3" maxlength="50">
+      <div *ngIf="applicantForm.controls.firstName.errors &&
+       (applicantForm.controls.firstName.dirty || applicantForm.controls.firstName.touched)"
+           class="alert alert-danger">
+        <div *ngIf="applicantForm.controls.firstName.errors.required">
+          First name is required!
+        </div>
+        <div *ngIf="applicantForm.controls.firstName.errors.minlength">
+          Minimum length is 3 characters!
+        </div>
+        <div *ngIf="applicantForm.controls.firstName.errors.maxlength">
+          Maximum length is 50 characters!
+        </div>
+      </div>
     </div>
+
     <div class="form-group center-block">
       <label for="InputLastName">Last Name</label>
       <input type="text" class="form-control" id="InputLastName" placeholder="Last name"
-             name="lastName" [ngModel]="''">
+             formControlName="lastName" required maxlength="50" minlength="3">
+    </div>
+    <div *ngIf="applicantForm.controls.lastName.errors &&
+     (applicantForm.controls.lastName.dirty || applicantForm.controls.lastName.touched)"
+         class="alert alert-danger">
+      <div *ngIf="applicantForm.controls.lastName.errors.required">
+        Last name is required!
+      </div>
+      <div *ngIf="applicantForm.controls.lastName.errors.minlength">
+        Minimum length is 3 characters!
+      </div>
+      <div *ngIf="applicantForm.controls.lastName.errors.maxlength">
+        Maximum length is 50 characters!
+      </div>
     </div>
     <div class="form-group center-block">
       <label for="InputEmail">Email address</label>
       <input type="email" class="form-control" id="InputEmail" placeholder="Email"
-             name="email" [ngModel]="''">
+             formControlName="email">
+    </div>
+    <div *ngIf="applicantForm.controls.email.errors &&
+     (applicantForm.controls.email.dirty || applicantForm.controls.email.touched)"
+         class="alert alert-danger">
+      <div>
+        Invalid email!
+      </div>
     </div>
     <div class="form-group center-block">
       <label for="InputPhone">Phone number</label>
       <input type="text" class="form-control" id="InputPhone" placeholder="Phone number"
-             name="phone" [ngModel]="''">
+             formControlName="phone">
     </div>
+
+    <div *ngIf="applicantForm.controls.phone.errors &&
+     (applicantForm.controls.phone.dirty || applicantForm.controls.phone.touched)"
+         class="alert alert-danger">
+      <div>
+        Invalid phone number!
+      </div>
+    </div>
+
     <div class="form-group center-block">
       <label for="InputDateOfBirth">Date of birth</label>
       <input type="date" data-date-format="YYYY/MM/dd" class="form-control datepicker" id="InputDateOfBirth"
              placeholder="Date of birth"
-             name="dateOfBirth" [ngModel]="''">
+             formControlName="dateOfBirth">
     </div>
     <div class=" form-group center-block">
       <label id="EducationLabel" for="InputEducation">Education</label>
       <input type="text" class="form-control" id="InputEducation" placeholder="Education"
-             name="education" [ngModel]="''">
+             formControlName="education">
     </div>
+
     <div class="form-group center-block">
       <label for="InputAddress">Address</label>
       <input type="text" class="form-control" id="InputAddress" placeholder="Address"
-             name="address" [ngModel]="''">
+             formControlName="address">
     </div>
     <div class="form-group center-block">
       <label for="InputCV">CV toevoegen</label>
       <input type="file" id="InputCV">
       <!--          <p class="help-block">Example block-level help text here.</p> -->
     </div>
-    <button type="submit" value="submit" [disabled]="myForm1.invalid" class="btn btn-default btn-lg center-block">Submit</button>
+    <button type="submit" value="submit" [disabled]="!applicantForm.valid" onclick="console.log('hello');" class="btn btn-default btn-lg center-block">Submit</button>
   </form>
 </div>
 
@@ -69,7 +113,9 @@
       <td class="text-center">{{applicant.dateOfBirth}}</td>
       <td class="text-center">{{applicant.education}}</td>
       <td class="text-center">{{applicant.address}}</td>
-      <td class="text-center"><button class="btn btn-sm btn-info">Edit</button></td>
+      <td class="text-center">
+        <button class="btn btn-sm btn-info">Edit</button>
+      </td>
     </tr>
     </tbody>
   </table>
@@ -99,7 +145,9 @@
       <input type="text" class="form-control" id="InputPhoneProspect" placeholder="Phone number"
              name="phone" [ngModel]="''">
     </div>
-    <button type="submit" value="submit" [disabled]="myForm2.invalid" class="btn btn-default btn-lg center-block">Submit</button>
+    <button type="submit" value="submit" [disabled]="myForm2.invalid" class="btn btn-default btn-lg center-block">
+      Submit
+    </button>
   </form>
 </div>
 
@@ -119,7 +167,9 @@
       <td class="text-center">{{prospect.lastName}}</td>
       <td class="text-center">{{prospect.email}}</td>
       <td class="text-center">{{prospect.phone}}</td>
-      <td class="text-center"><button class="btn btn-sm btn-info">Edit</button></td>
+      <td class="text-center">
+        <button class="btn btn-sm btn-info">Edit</button>
+      </td>
     </tr>
     </tbody>
   </table>
