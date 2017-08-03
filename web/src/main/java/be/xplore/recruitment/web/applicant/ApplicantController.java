@@ -47,6 +47,7 @@ public class ApplicantController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/applicant")
     public ResponseEntity<List<JsonApplicant>> addApplicant(@RequestBody JsonApplicant input) {
+        System.out.println("Input:" + input);
         CreateApplicantRequest request = getCreateRequestFromJsonApplicant(input);
         JsonApplicantResponseModelPresenter presenter = new JsonApplicantResponseModelPresenter();
         try {
