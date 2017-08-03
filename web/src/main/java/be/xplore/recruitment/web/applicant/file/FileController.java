@@ -3,7 +3,7 @@ package be.xplore.recruitment.web.applicant.file;
 import be.xplore.recruitment.domain.applicant.file.CreateFile;
 import be.xplore.recruitment.domain.applicant.file.CreateFileRequest;
 import be.xplore.recruitment.domain.applicant.file.DownloadFileRequest;
-import be.xplore.recruitment.domain.applicant.file.GetAllFilesForApplicantRequest;
+import be.xplore.recruitment.domain.applicant.file.ReadAllFilesForApplicantRequest;
 import be.xplore.recruitment.domain.applicant.file.ReadFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
@@ -69,7 +69,7 @@ public class FileController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/api/applicant/{applicantId}/files")
     public ResponseEntity<List<JsonFile>> getAllFilesForApplicant(@PathVariable long applicantId) {
-        GetAllFilesForApplicantRequest request = new GetAllFilesForApplicantRequest(applicantId);
+        ReadAllFilesForApplicantRequest request = new ReadAllFilesForApplicantRequest(applicantId);
         GetAllFilesForApplicantPresenter presenter = new GetAllFilesForApplicantPresenter();
         readFile.readAllFilesForApplicant(request, presenter);
         return presenter.getResponseEntity();

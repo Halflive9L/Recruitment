@@ -23,7 +23,7 @@ public class ReadFileUseCase implements ReadFile {
     }
 
     @Override
-    public void readAllFilesForApplicant(GetAllFilesForApplicantRequest request,
+    public void readAllFilesForApplicant(ReadAllFilesForApplicantRequest request,
                                          Consumer<List<File>> response) throws NotFoundException {
         List<File> files = repository.readAllFiles(request.getApplicantId()).orElseThrow(NotFoundException::new);
         response.accept(files);
@@ -32,7 +32,8 @@ public class ReadFileUseCase implements ReadFile {
     @Override
     public void downloadFile(DownloadFileRequest request, Consumer<GetFileResponseModel> response) throws IOException {
         File file = repository.downloadFile(request.getApplicantId(), request.getFileName())
-                .orElseThrow(NotFoundException::new);
+                .orElseThrow(() -> new NotFoundException("File with name: " + request.getFileName()
+                        + " does not exist."));
         String contentType = Files.probeContentType(file.toPath());
         System.out.println(contentType);
         response.accept(new GetFileResponseModel(file, contentType));

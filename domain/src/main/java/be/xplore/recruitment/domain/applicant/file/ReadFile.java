@@ -12,7 +12,7 @@ import java.util.function.Consumer;
  * @since 8/2/2017
  */
 public interface ReadFile {
-    void readAllFilesForApplicant(GetAllFilesForApplicantRequest request, Consumer<List<File>> response)
+    void readAllFilesForApplicant(ReadAllFilesForApplicantRequest request, Consumer<List<File>> response)
             throws NotFoundException;
 
     void downloadFile(DownloadFileRequest request, Consumer<GetFileResponseModel> response) throws IOException;

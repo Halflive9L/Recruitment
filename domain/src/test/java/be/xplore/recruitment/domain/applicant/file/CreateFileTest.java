@@ -1,5 +1,6 @@
 package be.xplore.recruitment.domain.applicant.file;
 
+import be.xplore.recruitment.domain.applicant.ApplicantRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,10 +21,12 @@ public class CreateFileTest {
 
     @Mock
     private FileRepository repository;
+    @Mock
+    private ApplicantRepository applicantRepository;
 
     @Before
     public void initUseCase() {
-        useCase = new CreateFileUseCase(repository);
+        useCase = new CreateFileUseCase(repository, applicantRepository);
     }
 
     @Test(expected = NullPointerException.class)

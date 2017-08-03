@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -51,11 +52,17 @@ public class ApplicantRepoJpa implements ApplicantRepository {
 
     @Override
     public Optional<Applicant> findApplicantById(long applicantId) {
-        List list = entityManager
-                .createNamedQuery(JpaApplicant.QUERY_FIND_BY_ID)
-                .setParameter("applicantId", applicantId).getResultList();
-        JpaApplicant jpaApplicant = (JpaApplicant) list.get(0);
-        return Optional.ofNullable(jpaApplicant.toApplicant());
+        Applicant applicant;
+        try {
+            JpaApplicant jpaApplicant = (JpaApplicant) entityManager
+                    .createNamedQuery(JpaApplicant.QUERY_FIND_BY_ID)
+                    .setParameter("applicantId", applicantId).getSingleResult();
+            applicant = jpaApplicant.toApplicant();
+        } catch (NoResultException e) {
+            applicant = null;
+        }
+        System.out.println(applicant);
+        return Optional.ofNullable(applicant);
     }
 
     @Override

@@ -4,10 +4,10 @@ package be.xplore.recruitment.domain.applicant.file;
  * @author Stijn Schack
  * @since 8/2/2017
  */
-public class GetAllFilesForApplicantRequest {
+public class ReadAllFilesForApplicantRequest {
     private long applicantId;
 
-    public GetAllFilesForApplicantRequest(long applicantId) {
+    public ReadAllFilesForApplicantRequest(long applicantId) {
         this.applicantId = applicantId;
     }
 
