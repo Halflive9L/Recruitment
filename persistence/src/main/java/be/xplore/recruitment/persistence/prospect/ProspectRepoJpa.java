@@ -42,12 +42,7 @@ public class ProspectRepoJpa implements ProspectRepository {
         jpaProspectDatabaseInput.setLastName(prospect.getLastName());
         jpaProspectDatabaseInput.setEmail(prospect.getEmail());
         jpaProspectDatabaseInput.setPhone(prospect.getPhone());
-        System.out.println(prospect);
-        /*try {
-            copyProperties(jpaProspectDatabaseInput, prospect);
-        } catch (ReflectiveOperationException e) {
-            System.out.println("Kopieren mislukt!");
-        }*/
+        System.out.println("RepoProspect = " + prospect);
         entityManager.persist(jpaProspectDatabaseInput);
     }
 

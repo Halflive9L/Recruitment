@@ -28,6 +28,7 @@ public class CreateProspectUseCase implements CreateProspect {
         List<ProspectResponseModel> prospectResponseModels = new ArrayList<>();
         Prospect prospect = createProspectFromRequest(request);
         prospect.validateProspect();
+        System.out.println(" Prospect = " +prospect);
         prospectResponseModels.add(new ProspectResponseModel(prospect));
         repository.createProspect(prospect);
         response.accept(prospectResponseModels);
