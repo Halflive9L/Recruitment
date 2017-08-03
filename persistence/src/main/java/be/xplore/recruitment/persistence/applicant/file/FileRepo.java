@@ -61,7 +61,7 @@ public class FileRepo implements FileRepository {
             return Optional.empty();
         }
         File file = getFileFromApplicantIdAndFileName(applicantId, fileName);
-        System.out.println(file.getAbsolutePath());
+
         return Optional.of(file);
     }
 

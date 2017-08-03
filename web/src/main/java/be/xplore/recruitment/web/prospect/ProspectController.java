@@ -82,7 +82,7 @@ public class ProspectController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/api/prospect")
     public ResponseEntity<List<JsonProspect>> getProspectByParam(@ModelAttribute JsonProspect jsonProspect) {
-        System.out.println(jsonProspect);
+
         try {
             return presentProspectsByParam(jsonProspect);
         } catch (NotFoundException e) {

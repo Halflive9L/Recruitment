@@ -61,7 +61,7 @@ public class ApplicantRepoJpa implements ApplicantRepository {
         } catch (NoResultException e) {
             applicant = null;
         }
-        System.out.println(applicant);
+
         return Optional.ofNullable(applicant);
     }
 
@@ -83,7 +83,7 @@ public class ApplicantRepoJpa implements ApplicantRepository {
         CriteriaQuery<JpaApplicant> query = getCriteriaBuilder().createQuery(JpaApplicant.class);
         Specification<JpaApplicant> spec = new ApplicantSpecification(jpaApplicant).getFullSpecification();
         Root<JpaApplicant> root = applySpecification(spec, query);
-        System.out.println("root" + root);
+
         query.select(root);
         return query;
     }

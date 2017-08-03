@@ -40,9 +40,9 @@ public class FileController {
                                                @RequestParam("file") MultipartFile file)
             throws IOException {
         CreateFileRequest request = getCreateFileRequest(applicantId, file);
-        System.out.println(file.getContentType());
-        System.out.println(file.getOriginalFilename());
-        System.out.println(file.getSize());
+
+
+
         CreateFilePresenter presenter = new CreateFilePresenter();
         createFile.createFile(request, presenter);
         return presenter.getResponseEntity();
@@ -52,7 +52,7 @@ public class FileController {
         CreateFileRequest request = new CreateFileRequest();
         request.setInput(file.getInputStream());
         request.setApplicantId(applicantId);
-        System.out.println("file name: " + file.getOriginalFilename());
+
         request.setExtension(getExtension(file.getOriginalFilename()));
         return request;
     }
@@ -63,7 +63,7 @@ public class FileController {
         if (i > 0) {
             ext = fileName.substring(i);
         }
-        System.out.println("file ext: " + ext);
+
         return ext;
     }
 

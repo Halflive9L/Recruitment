@@ -77,7 +77,7 @@ public class ProspectRepoJpa implements ProspectRepository {
         CriteriaQuery<JpaProspect> query = getCriteriaBuilder().createQuery(JpaProspect.class);
         Specification<JpaProspect> spec = new ProspectSpecification(jpaProspect).getFullSpecification();
         Root<JpaProspect> root = applySpecification(spec, query);
-        System.out.println("root" + root);
+
         query.select(root);
         return query;
     }

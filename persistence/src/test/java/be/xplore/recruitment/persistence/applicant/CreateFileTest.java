@@ -25,9 +25,9 @@ public class CreateFileTest {
     @Test
     public void testCreateFile() throws IOException {
         InputStream input = getClass().getResourceAsStream("testPdf.pdf");
-        System.out.println(input.available());
+
         File file = repo.createFile(1, input, ".pdf");
-        System.out.println(file.getAbsolutePath());
+
         assertTrue(file.exists());
         assertTrue(file.length() == 7945);
     }

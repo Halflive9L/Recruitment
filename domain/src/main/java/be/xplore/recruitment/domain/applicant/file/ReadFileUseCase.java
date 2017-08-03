@@ -35,7 +35,7 @@ public class ReadFileUseCase implements ReadFile {
                 .orElseThrow(() -> new NotFoundException("File with name: " + request.getFileName()
                         + " does not exist."));
         String contentType = Files.probeContentType(file.toPath());
-        System.out.println(contentType);
+
         response.accept(new GetFileResponseModel(file, contentType));
     }
 }
