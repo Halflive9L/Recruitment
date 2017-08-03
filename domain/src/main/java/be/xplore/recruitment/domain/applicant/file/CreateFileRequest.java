@@ -11,27 +11,27 @@ public class CreateFileRequest {
     private InputStream input;
     private String extension;
 
-    public void setExtension(String extension) {
-        this.extension = extension;
-    }
-
     String getExtension() {
         return extension;
     }
 
-    public void setApplicantId(long applicantId) {
-        this.applicantId = applicantId;
+    public void setExtension(String extension) {
+        this.extension = extension;
     }
 
     public long getApplicantId() {
         return applicantId;
     }
 
-    public void setInput(InputStream input) {
-        this.input = input;
+    public void setApplicantId(long applicantId) {
+        this.applicantId = applicantId;
     }
 
     InputStream getInput() {
         return input;
+    }
+
+    public void setInput(InputStream input) {
+        this.input = input;
     }
 }

@@ -115,7 +115,7 @@ public class ProspectController {
 
     @RequestMapping(method = RequestMethod.PUT, value = "/api/prospect/{prospectId}")
     public ResponseEntity<JsonProspect> updateProspect(@PathVariable long prospectId,
-                                                             @RequestBody JsonProspect query) {
+                                                       @RequestBody JsonProspect query) {
         UpdateProspectRequest request = new UpdateProspectRequest();
         JsonProspectResponseModelPresenter presenter = new JsonProspectResponseModelPresenter();
         JsonProspectToUpdateProspectRequest(query, request);

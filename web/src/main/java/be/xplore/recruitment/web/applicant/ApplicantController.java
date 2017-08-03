@@ -101,7 +101,7 @@ public class ApplicantController {
 
     @RequestMapping(method = RequestMethod.PUT, value = "/api/applicant/{applicantId}")
     public ResponseEntity<JsonApplicant> updateApplicant(@PathVariable long applicantId,
-                                                               @RequestBody JsonApplicant applicant) {
+                                                         @RequestBody JsonApplicant applicant) {
         UpdateApplicantRequest request = getUpdateApplicantRequestFromJsonApplicant(applicantId, applicant);
         JsonApplicantResponseModelPresenter presenter = new JsonApplicantResponseModelPresenter();
         try {

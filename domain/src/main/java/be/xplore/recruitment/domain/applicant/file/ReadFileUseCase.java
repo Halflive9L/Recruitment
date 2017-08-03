@@ -28,7 +28,8 @@ public class ReadFileUseCase implements ReadFile {
     }
 
     @Override
-    public void downloadFile(DownloadFileRequest request, Consumer<DownloadFileResponseModel> response) throws IOException {
+    public void downloadFile(DownloadFileRequest request, Consumer<DownloadFileResponseModel> response)
+            throws IOException {
         StreamWithInfo stream = repository.downloadFile(request.getApplicantId(), request.getFileName())
                 .orElseThrow(() -> new NotFoundException("File with name: " + request.getFileName()
                         + " does not exist."));

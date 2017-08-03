@@ -11,7 +11,7 @@ public class ReadProspectRequest {
     public String phone;
     public String email;
 
-    Prospect toProspect(){
+    Prospect toProspect() {
         return Prospect.builder()
                 .withFirstName(firstName)
                 .withLastName(lastName)
