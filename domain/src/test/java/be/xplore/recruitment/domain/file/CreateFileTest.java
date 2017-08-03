@@ -1,4 +1,4 @@
-package be.xplore.recruitment.domain.applicant.file;
+package be.xplore.recruitment.domain.file;
 
 import be.xplore.recruitment.domain.applicant.ApplicantRepository;
 import org.junit.Before;

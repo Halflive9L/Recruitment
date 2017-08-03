@@ -1,4 +1,4 @@
-package be.xplore.recruitment.web.applicant.file;
+package be.xplore.recruitment.web.file;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;

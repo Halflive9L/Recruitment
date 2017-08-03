@@ -1,6 +1,6 @@
-package be.xplore.recruitment.web.applicant.file;
+package be.xplore.recruitment.web.file;
 
-import be.xplore.recruitment.domain.applicant.file.DownloadFileResponseModel;
+import be.xplore.recruitment.domain.file.DownloadFileResponseModel;
 
 import java.io.IOException;
 import java.io.InputStream;

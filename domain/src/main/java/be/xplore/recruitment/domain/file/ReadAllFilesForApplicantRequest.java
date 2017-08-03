@@ -1,4 +1,4 @@
-package be.xplore.recruitment.domain.applicant.file;
+package be.xplore.recruitment.domain.file;
 
 /**
  * @author Stijn Schack

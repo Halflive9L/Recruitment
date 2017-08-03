@@ -1,4 +1,4 @@
-package be.xplore.recruitment.domain.applicant.file;
+package be.xplore.recruitment.domain.file;
 
 import java.io.IOException;
 import java.util.function.Consumer;

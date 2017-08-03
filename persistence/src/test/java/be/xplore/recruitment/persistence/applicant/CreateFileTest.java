@@ -1,6 +1,6 @@
 package be.xplore.recruitment.persistence.applicant;
 
-import be.xplore.recruitment.persistence.applicant.file.FileRepo;
+import be.xplore.recruitment.persistence.file.FileRepo;
 import org.junit.Before;
 import org.junit.Test;
 

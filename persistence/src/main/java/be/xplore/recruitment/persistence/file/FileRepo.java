@@ -1,7 +1,7 @@
-package be.xplore.recruitment.persistence.applicant.file;
+package be.xplore.recruitment.persistence.file;
 
-import be.xplore.recruitment.domain.applicant.file.FileRepository;
-import be.xplore.recruitment.domain.applicant.file.StreamWithInfo;
+import be.xplore.recruitment.domain.file.FileRepository;
+import be.xplore.recruitment.domain.file.StreamWithInfo;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
