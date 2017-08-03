@@ -28,6 +28,10 @@ class DownloadFilePresenter implements Consumer<InputStream> {
             return;
         }
         responseEntity = new ResponseEntity<>(body, HttpStatus.OK);
+        //responseEntity.getHeaders().setContentType(MediaType.APPLICATION_PDF);
+        //List<HttpMessageConverter<?>> messageConverters = new ArrayList<>();
+        //messageConverters.add(new ResourceHttpMessageConverter());
+        //responseEntity.
     }
 
 

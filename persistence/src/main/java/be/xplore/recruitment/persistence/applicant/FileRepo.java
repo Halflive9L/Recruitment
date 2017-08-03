@@ -37,6 +37,7 @@ public class FileRepo implements FileRepository {
         int bytesRead;
         while ((bytesRead = input.read(buffer)) != -1) {
             output.write(buffer, 0, bytesRead);
+            System.out.println(bytesRead);
         }
         input.close();
         output.close();
@@ -62,7 +63,6 @@ public class FileRepo implements FileRepository {
             return Optional.empty();
         }
         InputStream inputStream = Files.newInputStream(getPathFromApplicantIdAndFileName(applicantId, fileName));
-        System.out.println(inputStream.available());
         return Optional.of(inputStream);
     }
 

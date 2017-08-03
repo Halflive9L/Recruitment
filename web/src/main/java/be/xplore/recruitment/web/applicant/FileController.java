@@ -7,6 +7,7 @@ import be.xplore.recruitment.domain.applicant.GetAllFilesForApplicantRequest;
 import be.xplore.recruitment.domain.applicant.ReadFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,12 +41,14 @@ public class FileController {
                                                @RequestParam("file") MultipartFile file)
             throws IOException {
         CreateFileRequest request = new CreateFileRequest(applicantId, file.getInputStream());
+        System.out.println(file.getOriginalFilename());
+        System.out.println(file.getSize());
         CreateFilePresenter presenter = new CreateFilePresenter();
         createFile.createFile(request, presenter);
         return presenter.getResponseEntity();
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/api/applicant/{applicantId}/file")
+    @RequestMapping(method = RequestMethod.GET, value = "/api/applicant/{applicantId}/files")
     public ResponseEntity<List<JsonFile>> getAllFilesForApplicant(@PathVariable long applicantId) {
         GetAllFilesForApplicantRequest request = new GetAllFilesForApplicantRequest(applicantId);
         GetAllFilesForApplicantPresenter presenter = new GetAllFilesForApplicantPresenter();
@@ -53,10 +56,10 @@ public class FileController {
         return presenter.getResponseEntity();
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/api/applicant/{applicantId}/download")
+    @RequestMapping(method = RequestMethod.GET, value = "/api/applicant/{applicantId}/download",
+            produces = MediaType.APPLICATION_PDF_VALUE)
     public ResponseEntity<ByteArrayResource> downloadFile(@PathVariable("applicantId") long applicantId,
                                                           @RequestParam("file") String fileName) throws IOException {
-
         DownloadFileRequest request = new DownloadFileRequest(applicantId, fileName);
         DownloadFilePresenter presenter = new DownloadFilePresenter();
 
