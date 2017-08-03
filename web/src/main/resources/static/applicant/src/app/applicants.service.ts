@@ -13,17 +13,15 @@ export class ApplicantsService {
   private _applicantUrl='http://localhost:9090/applicant';
   constructor(private _http: Http){}
 
-  getapplicants(): Observable<IApplicant[]> {
+  getApplicants(): Observable<IApplicant[]> {
     return this._http.get(this._applicantUrl)
-      .map((response: Response) => <IApplicant[]> response.json())
-      .do(data => console.log(JSON.stringify(data)));
+      .map((response: Response) => <IApplicant[]> response.json());
   }
 
   createApplicant(body: string) {
     let headers = new Headers({ 'content-type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
-    console.log(body);
-    return this._http.post(this._applicantUrl, JSON.parse(body), options ).map((res: Response) => res.json());
+    return this._http.post(this._applicantUrl, body, options ).map((res: Response) => res.json());
   }
 
 

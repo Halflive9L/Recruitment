@@ -14,6 +14,7 @@ import be.xplore.recruitment.domain.prospect.UpdateProspectRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,7 +29,7 @@ import java.util.List;
  * @author Stijn Schack
  * @since 7/18/2017
  */
-
+@CrossOrigin
 @RestController
 public class ProspectController {
 
@@ -46,19 +47,20 @@ public class ProspectController {
 
 
     @RequestMapping(method = RequestMethod.POST, value = "/prospect")
-    public ResponseEntity<JsonProspect> addProspect(@RequestBody JsonProspect input) {
+    public ResponseEntity<List<JsonProspect>> addProspect(@RequestBody JsonProspect input) {
+        System.out.println("input: " + input);
         CreateProspectRequest request = new CreateProspectRequest();
+        JsonProspectPresenter presenter = new JsonProspectPresenter();
         request.firstName = input.getFirstName();
         request.lastName = input.getLastName();
         request.email = input.getEmail();
         request.phone = input.getPhone();
         try {
-            createProspect.createProspect(request, prospectId -> {
-            });
+            createProspect.createProspect(request, presenter);
         } catch (InvalidEmailException | InvalidPhoneException e) {
             return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         }
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return presenter.getResponseEntity();
     }
 
 
