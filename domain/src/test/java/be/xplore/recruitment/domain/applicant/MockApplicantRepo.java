@@ -33,8 +33,9 @@ class MockApplicantRepo implements ApplicantRepository {
     }
 
     @Override
-    public void createApplicant(Applicant a) {
+    public Applicant createApplicant(Applicant a) {
         mockApplicants.add(a);
+        return a;
     }
 
     @Override

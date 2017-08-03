@@ -36,7 +36,7 @@ public class ProspectRepoJpa implements ProspectRepository {
     // }
 
     @Override
-    public void createProspect(Prospect prospect) {
+    public Prospect createProspect(Prospect prospect) {
         JpaProspect jpaProspectDatabaseInput = new JpaProspect();
         jpaProspectDatabaseInput.setFirstName(prospect.getFirstName());
         jpaProspectDatabaseInput.setLastName(prospect.getLastName());
@@ -44,6 +44,7 @@ public class ProspectRepoJpa implements ProspectRepository {
         jpaProspectDatabaseInput.setPhone(prospect.getPhone());
         System.out.println("RepoProspect = " + prospect);
         entityManager.persist(jpaProspectDatabaseInput);
+        return jpaProspectDatabaseInput.toProspect();
     }
 
     @Override

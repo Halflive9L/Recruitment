@@ -9,7 +9,7 @@ import java.util.List;
  * @since 7/20/2017
  */
 public interface ApplicantRepository {
-    void createApplicant(Applicant applicant);
+    Applicant createApplicant(Applicant applicant);
 
     List<Applicant> findAll();
 

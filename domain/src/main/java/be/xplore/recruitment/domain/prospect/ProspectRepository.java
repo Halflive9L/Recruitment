@@ -7,7 +7,7 @@ import java.util.List;
  * @since 7/25/2017
  */
 public interface ProspectRepository {
-    void createProspect(Prospect prospect);
+    Prospect createProspect(Prospect prospect);
 
     List<Prospect> findAll();
 

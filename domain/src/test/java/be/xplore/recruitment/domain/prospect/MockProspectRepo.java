@@ -30,8 +30,9 @@ class MockProspectRepo implements ProspectRepository {
     }
 
     @Override
-    public void createProspect(Prospect a) {
+    public Prospect createProspect(Prospect a) {
         mockProspects.add(a);
+        return a;
     }
 
     @Override
