@@ -4,6 +4,7 @@ import be.xplore.recruitment.domain.applicant.GetFileResponseModel;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -26,7 +27,7 @@ class DownloadFilePresenter implements Consumer<GetFileResponseModel> {
     public void accept(GetFileResponseModel responseModel) {
         ByteArrayResource body;
         MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
-        headers.add(HttpHeaders.CONTENT_TYPE, responseModel.getContentType());
+        headers.add(HttpHeaders.CONTENT_TYPE, getContentTypeFromResponseModel(responseModel.getContentType()));
 
         try (InputStream inputStream = new FileInputStream(responseModel.getFile())) {
             body = new ByteArrayResource(copyToByteArray(inputStream));
@@ -40,5 +41,12 @@ class DownloadFilePresenter implements Consumer<GetFileResponseModel> {
 
     public ResponseEntity<ByteArrayResource> getResponseEntity() {
         return responseEntity;
+    }
+
+    private String getContentTypeFromResponseModel(String responseContentType) {
+        if (responseContentType != null) {
+            return responseContentType;
+        }
+        return MediaType.APPLICATION_OCTET_STREAM_VALUE;
     }
 }
