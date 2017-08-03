@@ -5,7 +5,7 @@
     <div class="form-group center-block">
       <label for="InputFirstName">First name</label>
       <input type="text" class="form-control" id="InputFirstName" placeholder="First name"
-             formControlName="firstName" required minlength="3" maxlength="50">
+             formControlName="firstName" required minlength="2" maxlength="50">
       <div *ngIf="applicantForm.controls.firstName.errors &&
        (applicantForm.controls.firstName.dirty || applicantForm.controls.firstName.touched)"
            class="alert alert-danger">
@@ -13,7 +13,7 @@
           First name is required!
         </div>
         <div *ngIf="applicantForm.controls.firstName.errors.minlength">
-          Minimum length is 3 characters!
+          Minimum length is 2 characters!
         </div>
         <div *ngIf="applicantForm.controls.firstName.errors.maxlength">
           Maximum length is 50 characters!
@@ -24,7 +24,7 @@
     <div class="form-group center-block">
       <label for="InputLastName">Last Name</label>
       <input type="text" class="form-control" id="InputLastName" placeholder="Last name"
-             formControlName="lastName" required maxlength="50" minlength="3">
+             formControlName="lastName" required maxlength="50" minlength="2">
     </div>
     <div *ngIf="applicantForm.controls.lastName.errors &&
      (applicantForm.controls.lastName.dirty || applicantForm.controls.lastName.touched)"
@@ -33,7 +33,7 @@
         Last name is required!
       </div>
       <div *ngIf="applicantForm.controls.lastName.errors.minlength">
-        Minimum length is 3 characters!
+        Minimum length is 2 characters!
       </div>
       <div *ngIf="applicantForm.controls.lastName.errors.maxlength">
         Maximum length is 50 characters!
