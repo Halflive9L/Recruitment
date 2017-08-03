@@ -13,7 +13,7 @@ import java.util.Optional;
 public interface FileRepository {
     File createFile(long applicantId, InputStream input, String extension) throws IOException;
 
-    Optional<List<File>> readAllFiles(long applicantId);
+    Optional<List<String>> readAllFiles(long applicantId);
 
-    Optional<File> downloadFile(long applicantId, String fileName) throws IOException;
+    Optional<StreamWithInfo> downloadFile(long applicantId, String fileName) throws IOException;
 }

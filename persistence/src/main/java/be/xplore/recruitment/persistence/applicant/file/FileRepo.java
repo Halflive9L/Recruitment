@@ -1,9 +1,11 @@
 package be.xplore.recruitment.persistence.applicant.file;
 
 import be.xplore.recruitment.domain.applicant.file.FileRepository;
+import be.xplore.recruitment.domain.applicant.file.StreamWithInfo;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,19 +33,22 @@ public class FileRepo implements FileRepository {
             dirs.put(applicantId, dir);
         }
         File file = File.createTempFile("applicant-" + applicantId + "-", extension, dirs.get(applicantId));
-        FileOutputStream output = new FileOutputStream(file);
-        byte[] buffer = new byte[1024];
-        int bytesRead;
-        while ((bytesRead = input.read(buffer)) != -1) {
-            output.write(buffer, 0, bytesRead);
+        try (FileOutputStream output = new FileOutputStream(file)) {
+            byte[] buffer = new byte[1024];
+            int bytesRead;
+            while ((bytesRead = input.read(buffer)) != -1) {
+                output.write(buffer, 0, bytesRead);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            input.close();
         }
-        input.close();
-        output.close();
         return file;
     }
 
     @Override
-    public Optional<List<File>> readAllFiles(long applicantId) {
+    public Optional<List<String>> readAllFiles(long applicantId) {
         if (!doesDirExist(applicantId)) {
             return Optional.empty();
         }
@@ -52,17 +57,21 @@ public class FileRepo implements FileRepository {
         if (filesArray == null) {
             return Optional.empty();
         }
-        return Optional.of(asList(filesArray));
+        String[] fileNames = new String[filesArray.length];
+        for (int i = 0; i < filesArray.length; i++) {
+            fileNames[i] = filesArray[i].getName();
+        }
+        return Optional.of(asList(fileNames));
     }
 
     @Override
-    public Optional<File> downloadFile(long applicantId, String fileName) throws IOException {
+    public Optional<StreamWithInfo> downloadFile(long applicantId, String fileName) throws IOException {
         if (!doesDirExist(applicantId)) {
             return Optional.empty();
         }
         File file = getFileFromApplicantIdAndFileName(applicantId, fileName);
 
-        return Optional.of(file);
+        return Optional.of(new StreamWithInfo(new FileInputStream(file), file.getName()));
     }
 
     private boolean doesDirExist(long applicantId) {

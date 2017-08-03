@@ -2,7 +2,6 @@ package be.xplore.recruitment.domain.applicant.file;
 
 import be.xplore.recruitment.domain.exception.NotFoundException;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.function.Consumer;
@@ -12,8 +11,8 @@ import java.util.function.Consumer;
  * @since 8/2/2017
  */
 public interface ReadFile {
-    void readAllFilesForApplicant(ReadAllFilesForApplicantRequest request, Consumer<List<File>> response)
+    void readAllFilesForApplicant(ReadAllFilesForApplicantRequest request, Consumer<List<String>> response)
             throws NotFoundException;
 
-    void downloadFile(DownloadFileRequest request, Consumer<GetFileResponseModel> response) throws IOException;
+    void downloadFile(DownloadFileRequest request, Consumer<DownloadFileResponseModel> response) throws IOException;
 }

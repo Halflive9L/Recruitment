@@ -3,9 +3,7 @@ package be.xplore.recruitment.domain.applicant.file;
 import be.xplore.recruitment.domain.exception.NotFoundException;
 
 import javax.inject.Named;
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -24,18 +22,17 @@ public class ReadFileUseCase implements ReadFile {
 
     @Override
     public void readAllFilesForApplicant(ReadAllFilesForApplicantRequest request,
-                                         Consumer<List<File>> response) throws NotFoundException {
-        List<File> files = repository.readAllFiles(request.getApplicantId()).orElseThrow(NotFoundException::new);
+                                         Consumer<List<String>> response) throws NotFoundException {
+        List<String> files = repository.readAllFiles(request.getApplicantId()).orElseThrow(NotFoundException::new);
         response.accept(files);
     }
 
     @Override
-    public void downloadFile(DownloadFileRequest request, Consumer<GetFileResponseModel> response) throws IOException {
-        File file = repository.downloadFile(request.getApplicantId(), request.getFileName())
+    public void downloadFile(DownloadFileRequest request, Consumer<DownloadFileResponseModel> response) throws IOException {
+        StreamWithInfo stream = repository.downloadFile(request.getApplicantId(), request.getFileName())
                 .orElseThrow(() -> new NotFoundException("File with name: " + request.getFileName()
                         + " does not exist."));
-        String contentType = Files.probeContentType(file.toPath());
-
-        response.accept(new GetFileResponseModel(file, contentType));
+        response.accept(new DownloadFileResponseModel(stream.getInputStream(),
+                stream.getFileName(), request.getResponseStream()));
     }
 }

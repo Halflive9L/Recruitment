@@ -1,5 +1,7 @@
 package be.xplore.recruitment.domain.applicant.file;
 
+import java.io.OutputStream;
+
 /**
  * @author Stijn Schack
  * @since 8/2/2017
@@ -7,10 +9,12 @@ package be.xplore.recruitment.domain.applicant.file;
 public class DownloadFileRequest {
     private long applicantId;
     private String fileName;
+    private OutputStream responseStream;
 
-    public DownloadFileRequest(long applicantId, String fileName) {
+    public DownloadFileRequest(long applicantId, String fileName, OutputStream responseStream) {
         this.applicantId = applicantId;
         this.fileName = fileName;
+        this.responseStream = responseStream;
     }
 
     long getApplicantId() {
@@ -19,5 +23,9 @@ public class DownloadFileRequest {
 
     String getFileName() {
         return fileName;
+    }
+
+    public OutputStream getResponseStream() {
+        return responseStream;
     }
 }

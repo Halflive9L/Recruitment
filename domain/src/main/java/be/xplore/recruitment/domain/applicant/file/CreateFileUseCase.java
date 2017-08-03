@@ -14,8 +14,8 @@ import java.util.function.Consumer;
  */
 @Named
 class CreateFileUseCase implements CreateFile {
-    private FileRepository fileRepository;
-    private ApplicantRepository applicantRepository;
+    private final FileRepository fileRepository;
+    private final ApplicantRepository applicantRepository;
 
     public CreateFileUseCase(FileRepository fileRepository, ApplicantRepository applicantRepository) {
         this.fileRepository = fileRepository;
@@ -25,14 +25,16 @@ class CreateFileUseCase implements CreateFile {
     @Override
     public void createFile(CreateFileRequest request, Consumer<UploadFileResponseModel> response)
             throws IOException, NotFoundException {
-        throwExceptionIfApplicantDoesNotExist(request.getApplicantId());
+        throwExceptionIfApplicantDoesNotExist(request);
         File file = fileRepository.createFile(request.getApplicantId(), request.getInput(), request.getExtension());
+        request.getInput().close();
         response.accept(new UploadFileResponseModel(file.getName()));
     }
 
-    private void throwExceptionIfApplicantDoesNotExist(long applicantId) throws NotFoundException {
-        if (!applicantRepository.findApplicantById(applicantId).isPresent()) {
-            throw new NotFoundException("Applicant with id: '" + applicantId + "' does not exist.");
+    private void throwExceptionIfApplicantDoesNotExist(CreateFileRequest request) throws NotFoundException,
+            IOException {
+        if (!applicantRepository.findApplicantById(request.getApplicantId()).isPresent()) {
+            throw new NotFoundException("Applicant with id: '" + request.getApplicantId() + "' does not exist.");
         }
     }
 }

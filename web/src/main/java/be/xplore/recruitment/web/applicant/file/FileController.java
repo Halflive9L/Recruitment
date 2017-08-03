@@ -6,7 +6,7 @@ import be.xplore.recruitment.domain.applicant.file.DownloadFileRequest;
 import be.xplore.recruitment.domain.applicant.file.ReadAllFilesForApplicantRequest;
 import be.xplore.recruitment.domain.applicant.file.ReadFile;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
@@ -40,9 +41,6 @@ public class FileController {
                                                @RequestParam("file") MultipartFile file)
             throws IOException {
         CreateFileRequest request = getCreateFileRequest(applicantId, file);
-
-
-
         CreateFilePresenter presenter = new CreateFilePresenter();
         createFile.createFile(request, presenter);
         return presenter.getResponseEntity();
@@ -75,14 +73,18 @@ public class FileController {
         return presenter.getResponseEntity();
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/api/applicant/{applicantId}/download")
-    public ResponseEntity<ByteArrayResource> downloadFile(@PathVariable("applicantId") long applicantId,
-                                                          @RequestParam("file") String fileName) throws IOException {
-        DownloadFileRequest request = new DownloadFileRequest(applicantId, fileName);
+    @RequestMapping(method = RequestMethod.GET, value = "/api/applicant/{applicantId}/{fileName:.+}")
+    public void downloadFile(@PathVariable("applicantId") long applicantId,
+                             @PathVariable("fileName") String fileName,
+                             HttpServletResponse response)
+            throws IOException {
+        System.out.println(fileName);
+        DownloadFileRequest request = new DownloadFileRequest(applicantId, fileName, response.getOutputStream());
         DownloadFilePresenter presenter = new DownloadFilePresenter();
-
         readFile.downloadFile(request, presenter);
+        response.setHeader(HttpHeaders.CONTENT_DISPOSITION,
+                "attachment; filename=" + presenter.getFileName().replace(" ", "_"));
 
-        return presenter.getResponseEntity();
+        response.flushBuffer();
     }
 }

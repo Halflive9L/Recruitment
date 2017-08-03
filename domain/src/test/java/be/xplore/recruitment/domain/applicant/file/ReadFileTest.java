@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 /**
@@ -31,7 +32,8 @@ public class ReadFileTest {
 
     @Test(expected = NullPointerException.class)
     public void testDownloadFile() throws IOException {
-        DownloadFileRequest request = new DownloadFileRequest(1, "testPdf.pdf");
+        DownloadFileRequest request = new DownloadFileRequest(1, "testPdf.pdf",
+                new FileOutputStream("testFile.pdf"));
         useCase.downloadFile(request, responseModel -> {
         });
     }
