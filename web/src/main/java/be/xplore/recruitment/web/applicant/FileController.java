@@ -52,7 +52,6 @@ public class FileController {
         CreateFileRequest request = new CreateFileRequest();
         request.setInput(file.getInputStream());
         request.setApplicantId(applicantId);
-        request.setContentType(file.getContentType());
         System.out.println("file name: " + file.getOriginalFilename());
         request.setExtension(getExtension(file.getOriginalFilename()));
         return request;

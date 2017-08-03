@@ -9,14 +9,13 @@ import java.io.InputStream;
 public class CreateFileRequest {
     private long applicantId;
     private InputStream input;
-    private String contentType;
     private String extension;
 
     public void setExtension(String extension) {
         this.extension = extension;
     }
 
-    public String getExtension() {
+    String getExtension() {
         return extension;
     }
 
@@ -34,13 +33,5 @@ public class CreateFileRequest {
 
     InputStream getInput() {
         return input;
-    }
-
-    public void setContentType(String contentType) {
-        this.contentType = contentType;
-    }
-
-    public String getContentType() {
-        return contentType;
     }
 }

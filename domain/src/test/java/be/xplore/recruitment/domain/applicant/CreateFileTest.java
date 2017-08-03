@@ -32,7 +32,6 @@ public class CreateFileTest {
         request.setApplicantId(1);
         request.setExtension(".pdf");
         request.setInput(getClass().getResourceAsStream("testPdf.pdf"));
-        request.setContentType("application/pdf");
         assertNotNull(request.getInput());
         useCase.createFile(request, fileResponseModel -> {
 
