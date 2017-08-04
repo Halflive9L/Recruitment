@@ -20,7 +20,6 @@ export   class   AppComponent  {
   iapplicant: IApplicant;
   iprospects: IProspect[];
   iprospect: IProspect;
-  idcounter: number;
   currentId: number;
   applicantForm:  FormGroup;
   prospectForm: FormGroup;
@@ -88,12 +87,7 @@ export   class   AppComponent  {
       .subscribe(iapplicants => this.iapplicants = iapplicants);
     this._prospects.getProspects()
       .subscribe(iprospects => this.iprospects = iprospects);
-    this.idcounter = 1;
   };
-
-  addToIdCounter() {
-    this.idcounter++;
-  }
 
   getId($event) {
     if(isNaN($event.target.id)) {
