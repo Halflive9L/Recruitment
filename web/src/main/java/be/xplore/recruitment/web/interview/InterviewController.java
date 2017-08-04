@@ -1,5 +1,7 @@
 package be.xplore.recruitment.web.interview;
 
+import be.xplore.recruitment.domain.interview.CancelInterview;
+import be.xplore.recruitment.domain.interview.CancelInterviewRequest;
 import be.xplore.recruitment.domain.interview.ReadInterview;
 import be.xplore.recruitment.domain.interview.ReadInterviewRequest;
 import be.xplore.recruitment.domain.interview.ScheduleInterview;
@@ -21,6 +23,9 @@ public class InterviewController {
     @Autowired
     private ReadInterview readInterview;
 
+    @Autowired
+    private CancelInterview cancelInterview;
+
     public InterviewController() {
     }
 
@@ -41,6 +46,13 @@ public class InterviewController {
     public ResponseEntity<JsonInterview> readInterviewById(@PathVariable long interviewId) {
         JsonInterviewResponseModelPresenter presenter = new JsonInterviewResponseModelPresenter();
         readInterview.readInterview(new ReadInterviewRequest(interviewId), presenter);
+        return presenter.getResponseEntity();
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/cancel/{interviewId}")
+    public ResponseEntity<JsonInterview> cancelInterviewById(@PathVariable long interviewId) {
+        JsonInterviewResponseModelPresenter presenter = new JsonInterviewResponseModelPresenter();
+        cancelInterview.cancelInterview(new CancelInterviewRequest(interviewId), presenter);
         return presenter.getResponseEntity();
     }
 }

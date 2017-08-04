@@ -12,6 +12,7 @@ public class Interview {
     private LocalDateTime scheduledTime;
     private Applicant applicant;
     private List<Interviewer> interviewers;
+    private boolean cancelled;
 
     public Interview() {
     }
@@ -56,16 +57,25 @@ public class Interview {
         this.interviewers = interviewers;
     }
 
+    public boolean isCancelled() {
+        return cancelled;
+    }
+
+    public void setCancelled(boolean cancelled) {
+        this.cancelled = cancelled;
+    }
+
     public static InterviewBuilder builder() {
         return new InterviewBuilder();
     }
 
-    public static final class InterviewBuilder {
+        public static final class InterviewBuilder {
         private long interviewId;
         private LocalDateTime createdTime;
         private LocalDateTime scheduledTime;
         private Applicant applicant;
         private List<Interviewer> interviewers;
+        private boolean cancelled;
 
         private InterviewBuilder() {
         }
@@ -99,13 +109,19 @@ public class Interview {
             return this;
         }
 
+        public InterviewBuilder withCancelled(boolean cancelled) {
+            this.cancelled = cancelled;
+            return this;
+        }
+
         public Interview build() {
             Interview interview = new Interview();
-            interview.interviewId = this.interviewId;
-            interview.interviewers = this.interviewers;
-            interview.scheduledTime = this.scheduledTime;
-            interview.applicant = this.applicant;
-            interview.createdTime = this.createdTime;
+            interview.setInterviewId(interviewId);
+            interview.setCreatedTime(createdTime);
+            interview.setScheduledTime(scheduledTime);
+            interview.setApplicant(applicant);
+            interview.setInterviewers(interviewers);
+            interview.setCancelled(cancelled);
             return interview;
         }
     }

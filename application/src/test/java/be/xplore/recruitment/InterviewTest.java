@@ -57,6 +57,20 @@ public class InterviewTest extends TestBase {
         assertThat(interview.getInterviewerIds()).contains(1L, 3L);
     }
 
+    @Test
+    @DatabaseSetup(value = "/interview/InterviewTest.testDataWithInterviews.xml")
+    @Ignore
+    public void testCancelInterview() {
+        JSONObject object = createInterviewObject(0, 1, Arrays.asList(1, 2));
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<String> httpEntity = new HttpEntity<>(object.toJSONString(), headers);
+        JsonInterview result = restTemplate
+                .postForEntity("/api/interview/cancel/1", httpEntity, JsonInterview.class)
+                .getBody();
+        assertThat(result.isCancelled()).isTrue();
+    }
+
     private JSONObject createInterviewObject(long interviewId, long applicantId, List<Integer> interviewerIds) {
         JSONObject obj = new JSONObject();
         obj.put("interviewId", Long.toString(interviewId));

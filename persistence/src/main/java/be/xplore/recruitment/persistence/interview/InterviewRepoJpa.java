@@ -69,6 +69,18 @@ public class InterviewRepoJpa implements InterviewRepository {
 
     @Override
     public Optional<Interview> updateInterviewer(Interview interview) {
-        return null;
+        JpaInterview jpaInterview = entityManager.find(JpaInterview.class, interview.getInterviewId());
+        if (jpaInterview == null) {
+            return Optional.empty();
+        }
+        jpaInterview.setCreatedTime(interview.getCreatedTime());
+        jpaInterview.setInterviewers(interview.getInterviewers().stream()
+            .map(i -> entityManager.find(JpaInterviewer.class, i.getInterviewerId()))
+            .collect(Collectors.toList()));
+        jpaInterview.setApplicant(entityManager.find(JpaApplicant.class, interview.getApplicant().getApplicantId()));
+        jpaInterview.setScheduledTime(interview.getScheduledTime());
+        jpaInterview.setCancelled(interview.isCancelled());
+        entityManager.persist(jpaInterview);
+        return Optional.of(jpaInterview.toInterview());
     }
 }
