@@ -1,5 +1,8 @@
 package be.xplore.recruitment.domain.applicant;
 
+import be.xplore.recruitment.domain.exception.NotFoundException;
+
+import java.io.InputStream;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,4 +22,7 @@ public interface ApplicantRepository {
     Optional<Applicant> updateApplicant(Applicant applicant);
 
     Optional<Applicant> deleteApplicant(long id);
+
+    Optional<String> addAttachment(long applicantId, String fileName, InputStream in)
+            throws NotFoundException;
 }

@@ -1,6 +1,7 @@
 package be.xplore.recruitment.persistence.applicant;
 
 import be.xplore.recruitment.domain.applicant.Applicant;
+import be.xplore.recruitment.persistence.file.JpaAttachment;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,8 +10,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.time.LocalDate;
+import java.util.Set;
 
 /**
  * Created by Lander on 26/07/2017.
@@ -57,6 +60,9 @@ public class JpaApplicant {
 
     @Column
     private String phone;
+
+    @OneToMany(mappedBy = "applicant")
+    private Set<JpaAttachment> files;
 
     public JpaApplicant(JpaApplicant applicant) {
         this.firstName = applicant.firstName;

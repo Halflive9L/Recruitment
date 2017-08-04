@@ -3,6 +3,9 @@ package be.xplore.recruitment.persistence.applicant;
 
 import be.xplore.recruitment.domain.applicant.Applicant;
 import be.xplore.recruitment.domain.applicant.ApplicantRepository;
+import be.xplore.recruitment.domain.exception.NotFoundException;
+import be.xplore.recruitment.persistence.file.FileManager;
+import be.xplore.recruitment.persistence.file.JpaAttachment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
@@ -14,6 +17,8 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -30,10 +35,12 @@ import static be.xplore.recruitment.persistence.applicant.JpaApplicant.QUERY_FIN
 public class ApplicantRepoJpa implements ApplicantRepository {
 
     private final EntityManager entityManager;
+    private final FileManager fileManager;
 
     @Autowired
-    public ApplicantRepoJpa(EntityManager entityManager) {
+    public ApplicantRepoJpa(EntityManager entityManager, FileManager fileManager) {
         this.entityManager = entityManager;
+        this.fileManager = fileManager;
     }
 
     @Override
@@ -123,8 +130,36 @@ public class ApplicantRepoJpa implements ApplicantRepository {
         return Optional.ofNullable(((JpaApplicant) applicantList.get(0)).toApplicant());
     }
 
+    @Override
+    public Optional<String> addAttachment(long applicantId, String fileName, InputStream input)
+            throws NotFoundException {
+        Optional<Applicant> applicant = findApplicantById(applicantId);
+        if (!applicant.isPresent()) {
+            throw new NotFoundException("Applicant with ID: " + applicantId + " does not exist.");
+        }
+        Optional<String> createdFileName = Optional.ofNullable(tryCreateAttachment(input, fileName));
+        createdFileName.ifPresent(s -> registerAttachment(applicant.get(), s));
+        return createdFileName;
+    }
+
+    private String tryCreateAttachment(InputStream input, String fileName) {
+        try {
+            return fileManager.createFile(input, "applicant", fileName);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private void registerAttachment(Applicant applicant, String fileName) {
+        JpaApplicant jpaApplicant = applicantToJpaApplicant(applicant);
+        JpaAttachment attachment = new JpaAttachment(jpaApplicant, fileName);
+        entityManager.persist(attachment);
+    }
+
     private JpaApplicant applicantToJpaApplicant(Applicant applicant) {
         JpaApplicant jpaApplicant = new JpaApplicant();
+        jpaApplicant.setApplicantId(applicant.getApplicantId());
         jpaApplicant.setFirstName(applicant.getFirstName());
         jpaApplicant.setLastName(applicant.getLastName());
         jpaApplicant.setEmail(applicant.getEmail());
@@ -134,4 +169,5 @@ public class ApplicantRepoJpa implements ApplicantRepository {
         jpaApplicant.setEducation(applicant.getEducation());
         return jpaApplicant;
     }
+
 }

@@ -1,38 +1,32 @@
 package be.xplore.recruitment.persistence.file;
 
-import be.xplore.recruitment.domain.file.FileRepository;
-import be.xplore.recruitment.domain.file.StreamWithInfo;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.TreeMap;
-
-import static java.util.Arrays.asList;
 
 /**
  * @author Stijn Schack
  * @since 8/2/2017
  */
 @Component
-public class FileRepo implements FileRepository {
-    private Map<Long, File> dirs = new TreeMap<>();
+public class FileManager {
 
-    @Override
-    public File createFile(long applicantId, InputStream input, String extension) throws IOException {
-        if (!dirs.containsKey(applicantId)) {
-            File dir = Files.createTempDirectory("applicant-" + applicantId + "-").toFile();
-            dirs.put(applicantId, dir);
-        }
-        File file = File.createTempFile("applicant-" + applicantId + "-", extension, dirs.get(applicantId));
+    public String createFile(InputStream input, String ownerType, String extension) throws IOException {
+        File file = createFileInFileSystem(ownerType, extension);
+        JpaAttachment jpaAttachment = new JpaAttachment();
+        jpaAttachment.setFileName(file.getName());
+        writeFileToDisk(input, file);
+        return file.getName();
+    }
+
+    private File createFileInFileSystem(String fileName, String extension) throws IOException {
+        return File.createTempFile(fileName, extension);
+    }
+
+    private void writeFileToDisk(InputStream input, File file) throws IOException {
         try (FileOutputStream output = new FileOutputStream(file)) {
             byte[] buffer = new byte[1024];
             int bytesRead;
@@ -44,15 +38,11 @@ public class FileRepo implements FileRepository {
         } finally {
             input.close();
         }
-        return file;
     }
-
-    @Override
+    /*
     public Optional<List<String>> readAllFiles(long applicantId) {
-        if (!doesDirExist(applicantId)) {
-            return Optional.empty();
-        }
-        File dir = dirs.get(applicantId);
+
+        File dir = new File("");
         File[] filesArray = dir.listFiles();
         if (filesArray == null) {
             return Optional.empty();
@@ -64,21 +54,14 @@ public class FileRepo implements FileRepository {
         return Optional.of(asList(fileNames));
     }
 
-    @Override
     public Optional<StreamWithInfo> downloadFile(long applicantId, String fileName) throws IOException {
-        if (!doesDirExist(applicantId)) {
-            return Optional.empty();
-        }
         File file = getFileFromApplicantIdAndFileName(applicantId, fileName);
 
         return Optional.of(new StreamWithInfo(new FileInputStream(file), file.getName()));
     }
 
-    private boolean doesDirExist(long applicantId) {
-        return dirs.containsKey(applicantId);
-    }
-
     private File getFileFromApplicantIdAndFileName(long applicantId, String fileName) {
-        return Paths.get(dirs.get(applicantId).getPath() + File.separator + fileName).toFile();
+        return Paths.get(new File("").getPath() + File.separator + fileName).toFile();
     }
+    */
 }

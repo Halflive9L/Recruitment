@@ -2,6 +2,8 @@ package be.xplore.recruitment.domain.applicant;
 
 import be.xplore.recruitment.domain.exception.NotFoundException;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +17,7 @@ import static be.xplore.recruitment.domain.util.Validator.isNullOrEmpty;
  */
 class MockApplicantRepo implements ApplicantRepository {
     List<Applicant> mockApplicants = new ArrayList<>();
+    List<String> mockAttachments = new ArrayList<>();
 
     MockApplicantRepo() {
         mockApplicants.add(Applicant.builder()
@@ -132,5 +135,17 @@ class MockApplicantRepo implements ApplicantRepository {
             }
         }
         throw new NotFoundException();
+    }
+
+    @Override
+    public Optional<String> addAttachment(long applicantId, String fileName, InputStream in)
+            throws NotFoundException {
+        mockAttachments.add(fileName);
+        try {
+            in.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return Optional.of(fileName);
     }
 }

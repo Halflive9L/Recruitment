@@ -1,22 +1,22 @@
-package be.xplore.recruitment.domain.file;
+package be.xplore.recruitment.domain.applicant.attachment;
 
 import java.io.InputStream;
 
 /**
  * @author Stijn Schack
- * @since 8/2/2017
+ * @since 8/4/2017
  */
-public class CreateFileRequest {
+public class AddApplicantAttachmentRequest {
     private long applicantId;
     private InputStream input;
-    private String extension;
+    private String attachmentName;
 
-    String getExtension() {
-        return extension;
+    String getAttachmentName() {
+        return attachmentName;
     }
 
-    public void setExtension(String extension) {
-        this.extension = extension;
+    public void setAttachmentName(String attachmentName) {
+        this.attachmentName = attachmentName;
     }
 
     public long getApplicantId() {
