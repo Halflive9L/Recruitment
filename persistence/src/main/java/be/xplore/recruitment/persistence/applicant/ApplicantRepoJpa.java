@@ -176,6 +176,9 @@ public class ApplicantRepoJpa implements ApplicantRepository {
         return jpaApplicant.getAttachments();
     }
 
+    /**
+     * Bad Code!
+     * Needs Rewrite*/
     @Override
     public InputStream downloadAttachment(long applicantId, String attachmentName)
             throws CouldNotDownloadAttachmentException {
