@@ -28,16 +28,16 @@ public class FileController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/api/applicant/{applicantId}/{fileName:.+}")
-    public void downloadFile(@PathVariable("applicantId") long applicantId,
+    public void downloadAttachment(@PathVariable("applicantId") long applicantId,
                              @PathVariable("fileName") String fileName,
                              HttpServletResponse response)
             throws IOException {
         System.out.println(fileName);
         DownloadFileRequest request = new DownloadFileRequest(applicantId, fileName, response.getOutputStream());
         DownloadFilePresenter presenter = new DownloadFilePresenter();
-        readFile.downloadFile(request, presenter);
+        readFile.downloadAttachment(request, presenter);
         response.setHeader(HttpHeaders.CONTENT_DISPOSITION,
-                "attachment; filename=" + presenter.getFileName().replace(" ", "_"));
+                "attachment; filename=" + presenter.getAttachmentName().replace(" ", "_"));
 
         response.flushBuffer();
     }*/

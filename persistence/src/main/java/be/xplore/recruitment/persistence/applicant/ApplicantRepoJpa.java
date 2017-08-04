@@ -3,6 +3,7 @@ package be.xplore.recruitment.persistence.applicant;
 
 import be.xplore.recruitment.domain.applicant.Applicant;
 import be.xplore.recruitment.domain.applicant.ApplicantRepository;
+import be.xplore.recruitment.domain.exception.CouldNotDownloadAttachmentException;
 import be.xplore.recruitment.domain.exception.NotFoundException;
 import be.xplore.recruitment.persistence.file.FileManager;
 import be.xplore.recruitment.persistence.file.JpaAttachment;
@@ -164,11 +165,43 @@ public class ApplicantRepoJpa implements ApplicantRepository {
 
     @Override
     public List<String> findAllAttachmentsForApplicant(long applicantId) {
-        JpaApplicant jpaApplicant = findJpaApplicantById(applicantId);
-        Set<JpaAttachment> attachments = jpaApplicant.getAttachments();
+        Set<JpaAttachment> attachments = getAttachmentSetFromApplicantId(applicantId);
         List<String> attachmentNames = new ArrayList<>(attachments.size());
         attachments.forEach(jpaAttachment -> attachmentNames.add(jpaAttachment.getFileName()));
         return attachmentNames;
+    }
+
+    private Set<JpaAttachment> getAttachmentSetFromApplicantId(long applicantId) {
+        JpaApplicant jpaApplicant = findJpaApplicantById(applicantId);
+        return jpaApplicant.getAttachments();
+    }
+
+    @Override
+    public InputStream downloadAttachment(long applicantId, String attachmentName)
+            throws CouldNotDownloadAttachmentException {
+        System.out.println("name" + attachmentName);
+        Set<JpaAttachment> attachments = getAttachmentSetFromApplicantId(applicantId);
+        long attachmentId = 0;
+        for (JpaAttachment attachment : attachments) {
+            if (attachment.getFileName().equals(attachmentName)) {
+                attachmentId = attachment.getAttachmentId();
+                break;
+            }
+        }
+        if (attachmentId == 0) {
+            throw new NotFoundException();
+        }
+
+        JpaAttachment jpaAttachment = (JpaAttachment) entityManager.createNamedQuery(JpaAttachment.QUERY_FIND_BY_ID)
+                .setParameter("attachmentId", attachmentId)
+                .getSingleResult();
+        InputStream attachmentStream;
+        try {
+            attachmentStream = fileManager.downloadAttachment(jpaAttachment.getFileName());
+        } catch (IOException e) {
+            throw new CouldNotDownloadAttachmentException();
+        }
+        return attachmentStream;
     }
 
     private JpaApplicant applicantToJpaApplicant(Applicant applicant) {

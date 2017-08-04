@@ -10,7 +10,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+
+import static be.xplore.recruitment.persistence.file.JpaAttachment.QUERY_FIND_BY_ID;
 
 /**
  * @author Stijn Schack
@@ -18,11 +22,17 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "file")
+@NamedQueries({
+        @NamedQuery(name = QUERY_FIND_BY_ID, query =
+                "SELECT a FROM JpaAttachment a WHERE a.attachmentId = :attachmentId")
+})
 public class JpaAttachment {
+    public static final String QUERY_FIND_BY_ID = "Attachment.findById";
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column
-    private long fileId;
+    private long attachmentId;
 
     @Column
     private String fileName;
@@ -41,12 +51,12 @@ public class JpaAttachment {
         this.fileName = fileName;
     }
 
-    long getFileId() {
-        return fileId;
+    public long getAttachmentId() {
+        return attachmentId;
     }
 
-    void setFileId(long fileId) {
-        this.fileId = fileId;
+    void setAttachmentId(long attachmentId) {
+        this.attachmentId = attachmentId;
     }
 
     public String getFileName() {

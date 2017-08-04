@@ -3,6 +3,8 @@ package be.xplore.recruitment.domain.applicant.attachment;
 import be.xplore.recruitment.domain.applicant.ApplicantRepository;
 
 import javax.inject.Named;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -31,5 +33,21 @@ public class ReadApplicantAttachmentUseCase implements ReadApplicantAttachment {
         List<ApplicantAttachmentResponseModel> responseModel = new ArrayList<>();
         attachments.forEach(s -> responseModel.add(new ApplicantAttachmentResponseModel(s)));
         return responseModel;
+    }
+
+    @Override
+    public void downloadAttachment(DownloadAttachmentRequest request,
+                                   Consumer<DownloadAttachmentResponseModel> response) {
+        InputStream inputStream = repository.downloadAttachment(request.getApplicantId(), request.getAttachmentName());
+        DownloadAttachmentResponseModel responseModel = getDownloadAttachmentResponseModel(
+                request.getAttachmentName(),
+                inputStream, request.getOutputStream());
+        response.accept(responseModel);
+    }
+
+    private DownloadAttachmentResponseModel getDownloadAttachmentResponseModel(String attachmentName,
+                                                                               InputStream inputStream,
+                                                                               OutputStream outputStream) {
+        return new DownloadAttachmentResponseModel(attachmentName, inputStream, outputStream);
     }
 }

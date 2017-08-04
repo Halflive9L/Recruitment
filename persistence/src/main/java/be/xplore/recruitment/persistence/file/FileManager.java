@@ -3,6 +3,7 @@ package be.xplore.recruitment.persistence.file;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -39,29 +40,13 @@ public class FileManager {
             input.close();
         }
     }
-    /*
-    public Optional<List<String>> readAllFiles(long applicantId) {
 
-        File dir = new File("");
-        File[] filesArray = dir.listFiles();
-        if (filesArray == null) {
-            return Optional.empty();
-        }
-        String[] fileNames = new String[filesArray.length];
-        for (int i = 0; i < filesArray.length; i++) {
-            fileNames[i] = filesArray[i].getName();
-        }
-        return Optional.of(asList(fileNames));
+    public InputStream downloadAttachment(String attachmentName) throws IOException {
+        return new FileInputStream(getFileFromAttachmentName(attachmentName));
     }
 
-    public Optional<StreamWithInfo> downloadFile(long applicantId, String fileName) throws IOException {
-        File file = getFileFromApplicantIdAndFileName(applicantId, fileName);
-
-        return Optional.of(new StreamWithInfo(new FileInputStream(file), file.getName()));
+    private File getFileFromAttachmentName(String fileName) {
+        String tempPath = System.getProperty("java.io.tmpdir");
+        return new File(tempPath + File.separator + fileName);
     }
-
-    private File getFileFromApplicantIdAndFileName(long applicantId, String fileName) {
-        return Paths.get(new File("").getPath() + File.separator + fileName).toFile();
-    }
-    */
 }

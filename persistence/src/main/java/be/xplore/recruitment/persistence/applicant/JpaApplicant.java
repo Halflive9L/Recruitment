@@ -27,7 +27,7 @@ import java.util.Set;
                 query = "SELECT a from JpaApplicant a where a.applicantId = :applicantId"),
         @NamedQuery(name = JpaApplicant.QUERY_FIND_ALL, query = "SELECT a from JpaApplicant a"),
         @NamedQuery(name = JpaApplicant.QUERY_DELETE,
-                query = "DELETE FROM JpaApplicant a WHERE a.applicantId = :applicantId"),})
+                query = "DELETE FROM JpaApplicant a WHERE a.applicantId = :applicantId")})
 
 public class JpaApplicant {
 

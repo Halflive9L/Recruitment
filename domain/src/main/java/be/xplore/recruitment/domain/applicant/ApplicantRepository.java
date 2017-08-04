@@ -1,5 +1,6 @@
 package be.xplore.recruitment.domain.applicant;
 
+import be.xplore.recruitment.domain.exception.CouldNotDownloadAttachmentException;
 import be.xplore.recruitment.domain.exception.NotFoundException;
 
 import java.io.InputStream;
@@ -27,4 +28,6 @@ public interface ApplicantRepository {
             throws NotFoundException;
 
     List<String> findAllAttachmentsForApplicant(long applicantId);
+
+    InputStream downloadAttachment(long applicantId, String fileName) throws CouldNotDownloadAttachmentException;
 }
