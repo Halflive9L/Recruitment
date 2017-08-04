@@ -1,7 +1,7 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <h1>Applicants</h1>
 <div class="applicantFormulier">
-  <form [formGroup]="applicantForm">    <!-- #myForm1="ngForm" (ngSubmit)="addApplicant(myForm1.form)"> -->
+  <form [formGroup]="applicantForm" (ngSubmit)="addApplicant(applicantForm)">    <!-- #myForm1="ngForm" (ngSubmit)="addApplicant(myForm1.form)"> -->
     <div class="form-group center-block">
       <label for="InputFirstName">First name</label>
       <input type="text" class="form-control" id="InputFirstName" placeholder="First name"
@@ -87,7 +87,7 @@
       <input type="file" id="InputCV">
       <!--          <p class="help-block">Example block-level help text here.</p> -->
     </div>
-    <button type="submit" value="submit" [disabled]="!applicantForm.valid" onclick="console.log('hello');" class="btn btn-default btn-lg center-block">Submit</button>
+    <button type="submit" value="submit" [disabled]="applicantForm.invalid" class="btn btn-default btn-lg center-block">Submit</button>
   </form>
 </div>
 
@@ -124,28 +124,69 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <h1>Prospects</h1>
 <div class="prospectFormulier">
-  <form #myForm2="ngForm" (ngSubmit)="addProspect(myForm2.form)">
+  <form [formGroup]="prospectForm" (ngSubmit)="addProspect(prospectForm)">
     <div class="form-group center-block">
       <label for="InputFirstNameProspect">First name</label>
       <input type="text" class="form-control" id="InputFirstNameProspect" placeholder="First name"
-             name="firstName" [ngModel]="''">
+             formControlName="firstName">
+    </div>
+    <div *ngIf="prospectForm.controls.firstName.errors &&
+     (prospectForm.controls.firstName.dirty || prospectForm.controls.firstName.touched)"
+         class="alert alert-danger">
+      <div *ngIf="prospectForm.controls.firstName.errors.required">
+        Last name is required!
+      </div>
+      <div *ngIf="prospectForm.controls.firstName.errors.minlength">
+        Minimum length is 2 characters!
+      </div>
+      <div *ngIf="prospectForm.controls.firstName.errors.maxlength">
+        Maximum length is 50 characters!
+      </div>
     </div>
     <div class="form-group center-block">
       <label for="InputLastNameProspect">Last Name</label>
       <input type="text" class="form-control" id="InputLastNameProspect" placeholder="Last name"
-             name="lastName" [ngModel]="''">
+             formControlName="lastName">
+    </div>
+    <div *ngIf="prospectForm.controls.lastName.errors &&
+     (prospectForm.controls.lastName.dirty || prospectForm.controls.lastName.touched)"
+         class="alert alert-danger">
+      <div *ngIf="prospectForm.controls.lastName.errors.required">
+        Last name is required!
+      </div>
+      <div *ngIf="prospectForm.controls.lastName.errors.minlength">
+        Minimum length is 2 characters!
+      </div>
+      <div *ngIf="prospectForm.controls.lastName.errors.maxlength">
+        Maximum length is 50 characters!
+      </div>
     </div>
     <div class="form-group center-block">
       <label for="InputEmailProspect">Email address</label>
       <input type="email" class="form-control" id="InputEmailProspect" placeholder="Email"
-             name="email" [ngModel]="''">
+             formControlName="email">
+    </div>
+    <div *ngIf="prospectForm.controls.email.errors &&
+     (prospectForm.controls.email.dirty || prospectForm.controls.email.touched)"
+         class="alert alert-danger">
+      <div>
+        Invalid email!
+      </div>
     </div>
     <div class="form-group center-block">
       <label for="InputPhoneProspect">Phone number</label>
       <input type="text" class="form-control" id="InputPhoneProspect" placeholder="Phone number"
-             name="phone" [ngModel]="''">
+             formControlName="phone">
     </div>
-    <button type="submit" value="submit" [disabled]="myForm2.invalid" class="btn btn-default btn-lg center-block">
+    <div *ngIf="prospectForm.controls.phone.errors &&
+     (prospectForm.controls.phone.dirty || prospectForm.controls.phone.touched)"
+         class="alert alert-danger">
+      <div>
+        Invalid email!
+      </div>
+    </div>
+
+    <button type="submit" value="submit" [disabled]="prospectForm.invalid" class="btn btn-default btn-lg center-block">
       Submit
     </button>
   </form>

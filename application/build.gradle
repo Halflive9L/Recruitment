@@ -23,3 +23,13 @@ dependencies {
     testCompile('com.github.springtestdbunit:spring-test-dbunit:1.3.0')
     testCompile('org.dbunit:dbunit:2.5.3')
 }
+
+project(':web') {
+    sourceSets {
+        main {
+            resources {
+                exclude 'static/**'
+            }
+        }
+    }
+}
