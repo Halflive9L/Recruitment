@@ -1,7 +1,7 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <h1>Applicants</h1>
 <div class="applicantFormulier">
-  <form [formGroup]="applicantForm" (ngSubmit)="addApplicant(applicantForm)">    <!-- #myForm1="ngForm" (ngSubmit)="addApplicant(myForm1.form)"> -->
+  <form [formGroup]="applicantForm" (ngSubmit)="addApplicant(applicantForm)">
     <div class="form-group center-block">
       <label for="InputFirstName">First name</label>
       <input type="text" class="form-control" id="InputFirstName" placeholder="First name"
@@ -87,7 +87,9 @@
       <input type="file" id="InputCV">
       <!--          <p class="help-block">Example block-level help text here.</p> -->
     </div>
-    <button type="submit" value="submit" [disabled]="applicantForm.invalid" class="btn btn-default btn-lg center-block">Submit</button>
+    <button type="submit" value="submit" [disabled]="!applicantForm.valid" class="btn btn-default btn-lg center-block">
+      Submit
+    </button>
   </form>
 </div>
 
@@ -114,11 +116,152 @@
       <td class="text-center">{{applicant.education}}</td>
       <td class="text-center">{{applicant.address}}</td>
       <td class="text-center">
-        <button class="btn btn-sm btn-info">Edit</button>
+        <button [attr.id]="applicant?.applicantId" (click)="getId($event)" class="btn btn-sm btn-info"
+                data-toggle="modal" data-target="#applicantModal">Edit
+        </button>
+        <button [attr.id]="applicant?.applicantId" class="btn btn-sm btn-danger" (click)="getId($event)"
+        data-toggle="modal" data-target="#deleteModal">Delete</button>
       </td>
     </tr>
     </tbody>
   </table>
+</div>
+
+<!-- Modal -->
+<div id="applicantModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">{{readApplicantById(currentId-1)?.firstName}}
+          {{readApplicantById(currentId-1)?.lastName}}</h4>
+        <p>Applicant number: {{readApplicantById(currentId-1)?.applicantId}}</p>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="updateApplicantForm">
+          <div class="form-group center-block">
+            <label for="InputFirstNameModal">First name</label>
+            <input type="text" value="{{readApplicantById(currentId-1)?.firstName}}" class="form-control"
+                   id="InputFirstNameModal" placeholder="First name"
+                   formControlName="firstName" required minlength="2" maxlength="50"
+                   [ngModel]="readApplicantById(currentId-1)?.firstName">
+            <div *ngIf="updateApplicantForm.controls.firstName.errors &&
+       (updateApplicantForm.controls.firstName.dirty || updateApplicantForm.controls.firstName.touched)"
+                 class="alert alert-danger">
+              <div *ngIf="updateApplicantForm.controls.firstName.errors.required">
+                First name is required!
+              </div>
+              <div *ngIf="updateApplicantForm.controls.firstName.errors.minlength">
+                Minimum length is 2 characters!
+              </div>
+              <div *ngIf="updateApplicantForm.controls.firstName.errors.maxlength">
+                Maximum length is 50 characters!
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group center-block">
+            <label for="InputLastNameModal">Last Name</label>
+            <input type="text" value="{{readApplicantById(currentId-1)?.lastName}}" class="form-control"
+                   id="InputLastNameModal" placeholder="Last name"
+                   formControlName="lastName" required maxlength="50" minlength="2"
+                   [ngModel]="readApplicantById(currentId-1)?.lastName">
+          </div>
+          <div *ngIf="updateApplicantForm.controls.lastName.errors &&
+     (updateApplicantForm.controls.lastName.dirty || updateApplicantForm.controls.lastName.touched)"
+               class="alert alert-danger">
+            <div *ngIf="updateApplicantForm.controls.lastName.errors.required">
+              Last name is required!
+            </div>
+            <div *ngIf="updateApplicantForm.controls.lastName.errors.minlength">
+              Minimum length is 2 characters!
+            </div>
+            <div *ngIf="updateApplicantForm.controls.lastName.errors.maxlength">
+              Maximum length is 50 characters!
+            </div>
+          </div>
+          <div class="form-group center-block">
+            <label for="InputEmailModal">Email address</label>
+            <input type="email" value="{{readApplicantById(currentId-1)?.email}}" class="form-control"
+                   id="InputEmailModal" placeholder="Email"
+                   formControlName="email" [ngModel]="readApplicantById(currentId-1)?.email">
+          </div>
+          <div *ngIf="updateApplicantForm.controls.email.errors &&
+     (updateApplicantForm.controls.email.dirty || updateApplicantForm.controls.email.touched)"
+               class="alert alert-danger">
+            <div>
+              Invalid email!
+            </div>
+          </div>
+          <div class="form-group center-block">
+            <label for="InputPhoneModal">Phone number</label>
+            <input type="text" value="{{readApplicantById(currentId-1)?.phone}}" class="form-control"
+                   id="InputPhoneModal" placeholder="Phone number"
+                   formControlName="phone" [ngModel]="readApplicantById(currentId-1)?.phone">
+          </div>
+
+          <div *ngIf="updateApplicantForm.controls.phone.errors &&
+     (updateApplicantForm.controls.phone.dirty || updateApplicantForm.controls.phone.touched)"
+               class="alert alert-danger">
+            <div>
+              Invalid phone number!
+            </div>
+          </div>
+
+          <div class="form-group center-block">
+            <label for="InputDateOfBirthModal">Date of birth</label>
+            <input type="date" value="{{readApplicantById(currentId-1)?.dateOfBirth}}" data-date-format="YYYY/MM/dd"
+                   class="form-control datepicker" id="InputDateOfBirthModal"
+                   placeholder="Date of birth"
+                   formControlName="dateOfBirth" [ngModel]="readApplicantById(currentId-1)?.dateOfBirth">
+          </div>
+          <div class=" form-group center-block">
+            <label id="EducationLabelModal" for="InputEducation">Education</label>
+            <input type="text" value="{{readApplicantById(currentId-1)?.education}}" class="form-control"
+                   id="InputEducationModal" placeholder="Education"
+                   formControlName="education" [ngModel]="readApplicantById(currentId-1)?.education">
+          </div>
+
+          <div class="form-group center-block">
+            <label for="InputAddressModal">Address</label>
+            <input type="text" value="{{readApplicantById(currentId-1)?.address}}" class="form-control"
+                   id="InputAddressModal" placeholder="Address"
+                   formControlName="address" [ngModel]="readApplicantById(currentId-1)?.address">
+          </div>
+          <div class="form-group center-block">
+            <label for="InputCVModal">CV toevoegen</label>
+            <input type="file" id="InputCVModal">
+            <!--          <p class="help-block">Example block-level help text here.</p> -->
+          </div>
+          <button type="button" (click)="updateApplicant(updateApplicantForm)" value="submit"
+                  [disabled]="!updateApplicantForm.valid"
+                  class="btn btn-default btn-lg center-block" data-dismiss="modal">Submit
+          </button>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Modal -->
+<div id="deleteModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-body text-center">
+        <p class="text-center">Are you sure you want to delete this applicant? </p>
+        <p class="text-center">{{readApplicantById(currentId-1)?.firstName}}  {{readApplicantById(currentId-1)?.lastName}}</p>
+        <button class="btn btn-danger btn-lg" (click)="deleteApplicant(currentId)" data-dismiss="modal">Yes</button>
+        <button class="btn btn-success btn-lg" data-dismiss="modal">No </button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!--The content below is only a placeholder and can be replaced.-->
@@ -186,7 +329,7 @@
       </div>
     </div>
 
-    <button type="submit" value="submit" [disabled]="prospectForm.invalid" class="btn btn-default btn-lg center-block">
+    <button type="submit" value="submit" [disabled]="!prospectForm.valid" class="btn btn-default btn-lg center-block">
       Submit
     </button>
   </form>
@@ -209,10 +352,125 @@
       <td class="text-center">{{prospect.email}}</td>
       <td class="text-center">{{prospect.phone}}</td>
       <td class="text-center">
-        <button class="btn btn-sm btn-info">Edit</button>
+        <button [attr.id]="prospect?.prospectId" (click)="getId($event)" class="btn btn-sm btn-info"
+                data-toggle="modal" data-target="#prospectModal">Edit
+        </button>
+        <button [attr.id]="prospect?.prospectId" class="btn btn-sm btn-danger" (click)="getId($event)"
+                data-toggle="modal" data-target="#deleteProspectModal">Delete</button>
       </td>
     </tr>
     </tbody>
   </table>
 </div>
 
+
+<!-- Modal -->
+<div id="prospectModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">{{readProspectById(currentId-1)?.firstName}}
+          {{readProspectById(currentId-1)?.lastName}}</h4>
+        <p>Applicant number: {{readProspectById(currentId-1)?.prospectId}}</p>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="updateProspectForm">
+          <div class="form-group center-block">
+            <label for="InputFirstNameProspectModal">First name</label>
+            <input type="text" value="{{readProspectById(currentId-1)?.firstName}}" class="form-control"
+                   id="InputFirstNameProspectModal" placeholder="First name"
+                   formControlName="firstName" required minlength="2" maxlength="50"
+                   [ngModel]="readProspectById(currentId-1)?.firstName">
+            <div *ngIf="updateProspectForm.controls.firstName.errors &&
+       (updateProspectForm.controls.firstName.dirty || updateProspectForm.controls.firstName.touched)"
+                 class="alert alert-danger">
+              <div *ngIf="updateProspectForm.controls.firstName.errors.required">
+                First name is required!
+              </div>
+              <div *ngIf="updateProspectForm.controls.firstName.errors.minlength">
+                Minimum length is 2 characters!
+              </div>
+              <div *ngIf="updateProspectForm.controls.firstName.errors.maxlength">
+                Maximum length is 50 characters!
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group center-block">
+            <label for="InputLastNameProspectModal">Last Name</label>
+            <input type="text" value="{{readProspectById(currentId-1)?.lastName}}" class="form-control"
+                   id="InputLastNameProspectModal" placeholder="Last name"
+                   formControlName="lastName" required maxlength="50" minlength="2"
+                   [ngModel]="readProspectById(currentId-1)?.lastName">
+          </div>
+          <div *ngIf="updateProspectForm.controls.lastName.errors &&
+     (updateProspectForm.controls.lastName.dirty || updateProspectForm.controls.lastName.touched)"
+               class="alert alert-danger">
+            <div *ngIf="updateProspectForm.controls.lastName.errors.required">
+              Last name is required!
+            </div>
+            <div *ngIf="updateProspectForm.controls.lastName.errors.minlength">
+              Minimum length is 2 characters!
+            </div>
+            <div *ngIf="updateProspectForm.controls.lastName.errors.maxlength">
+              Maximum length is 50 characters!
+            </div>
+          </div>
+          <div class="form-group center-block">
+            <label for="InputEmailProspectModal">Email address</label>
+            <input type="email" value="{{readProspectById(currentId-1)?.email}}" class="form-control"
+                   id="InputEmailProspectModal" placeholder="Email"
+                   formControlName="email" [ngModel]="readProspectById(currentId-1)?.email">
+          </div>
+          <div *ngIf="updateProspectForm.controls.email.errors &&
+     (updateProspectForm.controls.email.dirty || updateProspectForm.controls.email.touched)"
+               class="alert alert-danger">
+            <div>
+              Invalid email!
+            </div>
+          </div>
+          <div class="form-group center-block">
+            <label for="InputPhoneProspectModal">Phone number</label>
+            <input type="text" value="{{readProspectById(currentId-1)?.phone}}" class="form-control"
+                   id="InputPhoneProspectModal" placeholder="Phone number"
+                   formControlName="phone" [ngModel]="readProspectById(currentId-1)?.phone">
+          </div>
+
+          <div *ngIf="updateProspectForm.controls.phone.errors &&
+     (updateProspectForm.controls.phone.dirty || updateProspectForm.controls.phone.touched)"
+               class="alert alert-danger">
+            <div>
+              Invalid phone number!
+            </div>
+          </div>
+          <button type="button" (click)="updateProspect(updateProspectForm)" value="submit"
+                  [disabled]="!updateProspectForm.valid"
+                  class="btn btn-default btn-lg center-block" data-dismiss="modal">Submit
+          </button>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Modal -->
+<div id="deleteProspectModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-body text-center">
+        <p class="text-center">Are you sure you want to delete this prospect? </p>
+        <p class="text-center">{{readProspectById(currentId-1)?.firstName}}  {{readProspectById(currentId-1)?.lastName}}</p>
+        <button class="btn btn-danger btn-lg" (click)="deleteProspect(currentId)" data-dismiss="modal">Yes</button>
+        <button class="btn btn-success btn-lg" data-dismiss="modal">No </button>
+      </div>
+    </div>
+  </div>
+</div>

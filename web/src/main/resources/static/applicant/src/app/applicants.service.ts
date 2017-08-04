@@ -24,5 +24,16 @@ export class ApplicantsService {
     return this._http.post(this._applicantUrl, body, options ).map((res: Response) => res.json());
   }
 
+  updateApplicant(body: string, id:number) {
+    let headers = new Headers({ 'content-type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+    return this._http.put(this._applicantUrl+"/"+id, body,options).map((res: Response) => res.json());
+  }
+
+  deleteApplicant(id:number) {
+    let headers = new Headers({ 'content-type': 'application/json'});
+    let options = new RequestOptions ({ headers: headers });
+    return this._http.delete(this._applicantUrl+"/"+id,options).map((res: Response) => res.json());
+  }
 
 }

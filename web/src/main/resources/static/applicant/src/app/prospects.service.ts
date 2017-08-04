@@ -26,4 +26,15 @@ export class ProspectsService {
   }
 
 
+  updateProspect(body: string, id: number) {
+      let headers = new Headers({ 'content-type': 'application/json' });
+      let options = new RequestOptions({ headers: headers });
+      return this._http.put(this._prospectUrl+"/"+id, body,options).map((res: Response) => res.json());
+    }
+
+    deleteProspect(id:number) {
+    let headers = new Headers({ 'content-type': 'application/json' });
+    let options = new RequestOptions({ headers: headers});
+    return this._http.delete(this._prospectUrl+"/"+id, options).map((res: Response) => res.json());
+    }
 }
