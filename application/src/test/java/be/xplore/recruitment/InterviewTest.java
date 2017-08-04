@@ -6,8 +6,10 @@ import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 
 import java.time.LocalDateTime;
@@ -43,6 +45,23 @@ public class InterviewTest extends TestBase {
         assertThat(result.getInterviewId()).isEqualTo(1);
         assertThat(result.getApplicantId()).isEqualTo(1);
         assertThat(result.getInterviewerIds()).contains(1L, 2L);
+    }
+
+    @Test
+    @Ignore
+    @DatabaseSetup(value = "/interview/InterviewTest.testDataWithInterviews.xml")
+    public void testReadAllInterviews() {
+        ParameterizedTypeReference<List<JsonInterview>> typeRef =
+                new ParameterizedTypeReference<List<JsonInterview>>() {};
+        List<JsonInterview> result = restTemplate
+                .exchange("/api/interview/all", HttpMethod.GET, null,  typeRef)
+                .getBody();
+        assertThat(result).hasSize(3);
+        assertThat(result.get(0).getApplicantId()).isEqualTo(1);
+        assertThat(result.get(0).getInterviewerIds()).contains(1L, 3L);
+        assertThat(result.get(1).getApplicantId()).isEqualTo(2);
+        assertThat(result.get(1).getInterviewerIds()).contains(2L);
+        assertThat(result.get(2).getApplicantId()).isEqualTo(1);
     }
 
     @Test

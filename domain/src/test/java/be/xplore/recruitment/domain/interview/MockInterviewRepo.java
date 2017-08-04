@@ -26,7 +26,7 @@ public class MockInterviewRepo implements InterviewRepository {
 
     @Override
     public List<Interview> findAll() {
-        return null;
+        return new ArrayList<>(data);
     }
 
     @Override
