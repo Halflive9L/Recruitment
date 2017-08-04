@@ -10,6 +10,7 @@ public class InterviewResponseModel {
     private LocalDateTime scheduledTime;
     private long applicantId;
     private List<Long> interviewerIds;
+    private boolean cancelled;
 
     public InterviewResponseModel() {
     }
@@ -54,6 +55,14 @@ public class InterviewResponseModel {
         this.interviewerIds = interviewerIds;
     }
 
+    public boolean isCancelled() {
+        return cancelled;
+    }
+
+    public void setCancelled(boolean cancelled) {
+        this.cancelled = cancelled;
+    }
+
     public static InterviewResponseModel fromInterview(Interview interview) {
         InterviewResponseModel model = new InterviewResponseModel();
         model.setApplicantId(interview.getApplicant().getApplicantId());
@@ -63,6 +72,7 @@ public class InterviewResponseModel {
         model.setInterviewerIds(interview.getInterviewers().stream()
                 .map(i -> i.getInterviewerId())
                 .collect(Collectors.toList()));
+        model.setCancelled(interview.isCancelled());
         return model;
     }
 }

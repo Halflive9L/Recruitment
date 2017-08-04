@@ -18,6 +18,7 @@ public class JsonInterview {
     private LocalDateTime scheduledTime;
     private long applicantId;
     private List<Long> interviewerIds;
+    private boolean cancelled;
 
     @JsonCreator
     public JsonInterview() {
@@ -79,6 +80,16 @@ public class JsonInterview {
         this.interviewerIds = interviewerIds;
     }
 
+    @JsonProperty
+    public boolean isCancelled() {
+        return cancelled;
+    }
+
+    @JsonProperty
+    public void setCancelled(boolean cancelled) {
+        this.cancelled = cancelled;
+    }
+
     public static JsonInterviewBuilder builder() {
         return new JsonInterviewBuilder();
     }
@@ -90,6 +101,7 @@ public class JsonInterview {
                 .withScheduledTime(response.getScheduledTime())
                 .withInterviewerIds(response.getInterviewerIds())
                 .withInterviewId(response.getInterviewId())
+                .withCancelled(response.isCancelled())
                 .build();
     }
 
@@ -99,6 +111,7 @@ public class JsonInterview {
         private LocalDateTime scheduledTime;
         private long applicantId;
         private List<Long> interviewerIds;
+        private boolean cancelled;
 
         private JsonInterviewBuilder() {
         }
@@ -133,6 +146,11 @@ public class JsonInterview {
             return this;
         }
 
+        public JsonInterviewBuilder withCancelled(boolean cancelled) {
+            this.cancelled = cancelled;
+            return this;
+        }
+
         public JsonInterview build() {
             JsonInterview jsonInterview = new JsonInterview();
             jsonInterview.setInterviewId(interviewId);
@@ -140,6 +158,7 @@ public class JsonInterview {
             jsonInterview.setScheduledTime(scheduledTime);
             jsonInterview.setApplicantId(applicantId);
             jsonInterview.setInterviewerIds(interviewerIds);
+            jsonInterview.setCancelled(cancelled);
             return jsonInterview;
         }
     }
