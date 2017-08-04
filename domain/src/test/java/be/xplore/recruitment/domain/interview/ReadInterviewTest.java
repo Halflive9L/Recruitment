@@ -38,6 +38,18 @@ public class ReadInterviewTest {
                                         .withInterviewerId(3)
                                         .build()
                         ))
+                        .build(),
+                 Interview.builder()
+                        .withApplicant(Applicant.builder()
+                                .withId(2)
+                                .withFirstName("sqf")
+                                .build())
+                        .withInterviewId(2)
+                        .withInterviewers(Arrays.asList(
+                                Interviewer.builder()
+                                        .withInterviewerId(2)
+                                        .build()
+                        ))
                         .build()
         ));
         useCase = new ReadInterviewUseCase(mockInterviewRepo);
@@ -55,6 +67,13 @@ public class ReadInterviewTest {
     @Test(expected = NotFoundException.class)
     public void readNonExistent() {
         useCase.readInterview(new ReadInterviewRequest(99999), response -> {
+        });
+    }
+
+    @Test
+    public void readAll() {
+        useCase.readAll(response -> {
+            assertThat(response.size(), is(2));
         });
     }
 }

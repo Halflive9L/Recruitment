@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/interview")
 public class InterviewController {
@@ -34,6 +36,13 @@ public class InterviewController {
                 .withInterviewerIds(body.getInterviewerIds())
                 .build();
         scheduleInterview.scheduleInterview(request, presenter);
+        return presenter.getResponseEntity();
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/all")
+    public ResponseEntity<List<JsonInterview>> readAll() {
+        JsonInterviewResponseModelListPresenter presenter = new JsonInterviewResponseModelListPresenter();
+        readInterview.readAll(presenter);
         return presenter.getResponseEntity();
     }
 

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
@@ -47,9 +48,13 @@ public class InterviewRepoJpa implements InterviewRepository {
         return jpaInterview.toInterview();
     }
 
+    private static final String FIND_ALL_QUERY = "SELECT i FROM JpaInterview i";
     @Override
     public List<Interview> findAll() {
-        return null;
+        List<JpaInterview> interviews = entityManager.createQuery(FIND_ALL_QUERY, JpaInterview.class).getResultList();
+        return interviews.stream()
+                .map(i -> i.toInterview())
+                .collect(Collectors.toList());
     }
 
     @Override
