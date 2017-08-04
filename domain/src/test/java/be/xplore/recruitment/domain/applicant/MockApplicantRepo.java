@@ -1,5 +1,6 @@
 package be.xplore.recruitment.domain.applicant;
 
+import be.xplore.recruitment.domain.exception.CouldNotDownloadAttachmentException;
 import be.xplore.recruitment.domain.exception.NotFoundException;
 
 import java.io.IOException;
@@ -147,5 +148,16 @@ class MockApplicantRepo implements ApplicantRepository {
             e.printStackTrace();
         }
         return Optional.of(fileName);
+    }
+
+    @Override
+    public List<String> findAllAttachmentsForApplicant(long applicantId) {
+        return null;
+    }
+
+    @Override
+    public InputStream downloadAttachment(long applicantId, String fileName)
+            throws CouldNotDownloadAttachmentException {
+        return null;
     }
 }
