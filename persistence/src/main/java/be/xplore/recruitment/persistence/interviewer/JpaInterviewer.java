@@ -15,7 +15,7 @@ import javax.persistence.Table;
 public class JpaInterviewer {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column
+    @Column(name = "interviewer_id")
     private long interviewerId;
 
     @Column

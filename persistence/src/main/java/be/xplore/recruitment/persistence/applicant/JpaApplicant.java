@@ -71,7 +71,7 @@ public class JpaApplicant {
     public JpaApplicant() {
     }
 
-    Applicant toApplicant() {
+    public Applicant toApplicant() {
         return Applicant.builder()
                 .withId(this.getApplicantId())
                 .withFirstName(this.getFirstName())
