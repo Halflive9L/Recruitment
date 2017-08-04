@@ -41,6 +41,17 @@ public class MockInterviewRepo implements InterviewRepository {
 
     @Override
     public Optional<Interview> updateInterviewer(Interview interview) {
-        return null;
+        return data.stream()
+                .filter(i -> i.getInterviewId() == interview.getInterviewId())
+                .findFirst()
+                .map(i -> {
+                    i.setCancelled(interview.isCancelled());
+                    i.setInterviewId(interview.getInterviewId());
+                    i.setApplicant(interview.getApplicant());
+                    i.setInterviewers(interview.getInterviewers());
+                    i.setCreatedTime(interview.getCreatedTime());
+                    i.setScheduledTime(interview.getScheduledTime());
+                    return i;
+                });
     }
 }

@@ -45,6 +45,9 @@ public class JpaInterview {
             inverseJoinColumns = @JoinColumn(name = "interviewer_id", referencedColumnName = "interviewer_id"))
     private List<JpaInterviewer> interviewers;
 
+    @Column
+    private boolean cancelled;
+
     public JpaInterview() {
     }
 
@@ -88,6 +91,14 @@ public class JpaInterview {
         this.interviewers = interviewers;
     }
 
+    public boolean isCancelled() {
+        return cancelled;
+    }
+
+    public void setCancelled(boolean cancelled) {
+        this.cancelled = cancelled;
+    }
+
     public Interview toInterview() {
         return Interview.builder()
                 .withApplicant(getApplicant().toApplicant())
@@ -97,6 +108,7 @@ public class JpaInterview {
                 .withInterviewers(getInterviewers().stream()
                         .map(JpaInterviewer::toInterviewer)
                         .collect(Collectors.toList()))
+                .withCancelled(isCancelled())
                 .build();
     }
 
