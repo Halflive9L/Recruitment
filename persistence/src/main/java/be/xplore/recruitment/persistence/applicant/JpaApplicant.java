@@ -62,7 +62,7 @@ public class JpaApplicant {
     private String phone;
 
     @OneToMany(mappedBy = "applicant")
-    private Set<JpaAttachment> files;
+    private Set<JpaAttachment> attachments;
 
     public JpaApplicant(JpaApplicant applicant) {
         this.firstName = applicant.firstName;
@@ -154,4 +154,7 @@ public class JpaApplicant {
         this.phone = phone;
     }
 
+    public Set<JpaAttachment> getAttachments() {
+        return attachments;
+    }
 }

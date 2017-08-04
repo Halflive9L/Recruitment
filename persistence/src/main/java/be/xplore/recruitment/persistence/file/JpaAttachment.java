@@ -28,7 +28,7 @@ public class JpaAttachment {
     private String fileName;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinTable(name = "APPLICANT_FILE")
+    @JoinTable(name = "APPLICANT_ATTACHMENT")
     private JpaApplicant applicant;
 
 
@@ -49,7 +49,7 @@ public class JpaAttachment {
         this.fileId = fileId;
     }
 
-    String getFileName() {
+    public String getFileName() {
         return fileName;
     }
 

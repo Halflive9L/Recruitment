@@ -25,4 +25,6 @@ public interface ApplicantRepository {
 
     Optional<String> addAttachment(long applicantId, String fileName, InputStream in)
             throws NotFoundException;
+
+    List<String> findAllAttachmentsForApplicant(long applicantId);
 }

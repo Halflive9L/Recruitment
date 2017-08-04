@@ -21,10 +21,10 @@ public class AddApplicantAttachmentUseCase implements AddApplicantAttachment {
 
     @Override
     public void addAttachment(AddApplicantAttachmentRequest request,
-                              Consumer<AddApplicantAttachmentResponseModel> response)
+                              Consumer<ApplicantAttachmentResponseModel> response)
             throws NotFoundException, CouldNotAddAttachmentException {
         String createdAttachment = tryAddAttachment(request);
-        response.accept(new AddApplicantAttachmentResponseModel(createdAttachment));
+        response.accept(new ApplicantAttachmentResponseModel(createdAttachment));
     }
 
     private String tryAddAttachment(AddApplicantAttachmentRequest request) {
