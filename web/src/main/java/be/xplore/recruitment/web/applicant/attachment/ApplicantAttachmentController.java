@@ -8,7 +8,6 @@ import be.xplore.recruitment.domain.applicant.attachment.ReadApplicantAttachment
 import be.xplore.recruitment.domain.attachment.Attachment;
 import be.xplore.recruitment.domain.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -78,10 +77,8 @@ public class ApplicantAttachmentController {
             throws IOException {
         DownloadAttachmentRequest request =
                 new DownloadAttachmentRequest(attachmentId, response.getOutputStream());
-        DownloadAttachmentPresenter presenter = new DownloadAttachmentPresenter();
+        DownloadAttachmentPresenter presenter = new DownloadAttachmentPresenter(response);
         readApplicantAttachment.downloadAttachment(request, presenter);
-        response.setHeader(HttpHeaders.CONTENT_DISPOSITION,
-                "attachment; filename=" + presenter.getFileName().replace(" ", "_"));
         response.flushBuffer();
     }
 }
