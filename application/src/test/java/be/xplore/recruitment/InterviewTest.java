@@ -55,7 +55,7 @@ public class InterviewTest extends TestBase {
                 new ParameterizedTypeReference<List<JsonInterview>>() {
                 };
         List<JsonInterview> result = restTemplate
-                .exchange("/api/interview/all", HttpMethod.GET, null, typeRef)
+                .exchange("/api/interview/", HttpMethod.GET, null, typeRef)
                 .getBody();
         assertThat(result).hasSize(3);
         assertThat(result.get(0).getApplicantId()).isEqualTo(1);
