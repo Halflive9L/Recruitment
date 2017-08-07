@@ -65,7 +65,7 @@ public class ProspectController {
     }
 
 
-    @RequestMapping(method = RequestMethod.GET, value = prospectUrl+"{prospectId}")
+    @RequestMapping(method = RequestMethod.GET, value = prospectUrl+"/{prospectId}")
     public ResponseEntity<List<JsonProspect>> getProspectById(@PathVariable long prospectId) {
         ReadProspectRequest request = new ReadProspectRequest();
         request.prospectId = prospectId;
@@ -92,7 +92,7 @@ public class ProspectController {
 
     }
 
-    @RequestMapping(method = RequestMethod.DELETE, value = prospectUrl+"{prospectId}")
+    @RequestMapping(method = RequestMethod.DELETE, value = prospectUrl+"/{prospectId}")
     public ResponseEntity<List<JsonProspect>> deleteProspect(@PathVariable long prospectId) {
         DeleteProspectRequest request = new DeleteProspectRequest();
         JsonProspectPresenter presenter = new JsonProspectPresenter();
@@ -105,7 +105,7 @@ public class ProspectController {
         return presenter.getResponseEntity();
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = prospectUrl+"{prospectId}")
+    @RequestMapping(method = RequestMethod.PUT, value = prospectUrl+"/{prospectId}")
     public ResponseEntity<List<JsonProspect>> updateProspect(@PathVariable long prospectId,
                                                              @RequestBody JsonProspect query) {
         UpdateProspectRequest request = new UpdateProspectRequest();
