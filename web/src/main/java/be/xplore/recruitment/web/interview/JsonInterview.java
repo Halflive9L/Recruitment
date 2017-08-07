@@ -19,6 +19,7 @@ public class JsonInterview {
     private long applicantId;
     private List<Long> interviewerIds;
     private boolean cancelled;
+    private boolean preInterviewReminderSent;
 
     @JsonCreator
     public JsonInterview() {
@@ -90,6 +91,16 @@ public class JsonInterview {
         this.cancelled = cancelled;
     }
 
+    @JsonProperty
+    public boolean isPreInterviewReminderSent() {
+        return preInterviewReminderSent;
+    }
+
+    @JsonProperty
+    public void setPreInterviewReminderSent(boolean preInterviewReminderSent) {
+        this.preInterviewReminderSent = preInterviewReminderSent;
+    }
+
     public static JsonInterviewBuilder builder() {
         return new JsonInterviewBuilder();
     }
@@ -102,6 +113,7 @@ public class JsonInterview {
                 .withInterviewerIds(response.getInterviewerIds())
                 .withInterviewId(response.getInterviewId())
                 .withCancelled(response.isCancelled())
+                .withPreInterviewReminderSent(response.isPreInterviewReminderSent())
                 .build();
     }
 
@@ -112,6 +124,7 @@ public class JsonInterview {
         private long applicantId;
         private List<Long> interviewerIds;
         private boolean cancelled;
+        private boolean preInterviewReminderSent;
 
         private JsonInterviewBuilder() {
         }
@@ -151,6 +164,11 @@ public class JsonInterview {
             return this;
         }
 
+        public JsonInterviewBuilder withPreInterviewReminderSent(boolean sent) {
+            this.preInterviewReminderSent = sent;
+            return this;
+        }
+
         public JsonInterview build() {
             JsonInterview jsonInterview = new JsonInterview();
             jsonInterview.setInterviewId(interviewId);
@@ -159,6 +177,7 @@ public class JsonInterview {
             jsonInterview.setApplicantId(applicantId);
             jsonInterview.setInterviewerIds(interviewerIds);
             jsonInterview.setCancelled(cancelled);
+            jsonInterview.setPreInterviewReminderSent(preInterviewReminderSent);
             return jsonInterview;
         }
     }

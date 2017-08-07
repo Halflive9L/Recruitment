@@ -1,8 +1,10 @@
 package be.xplore.recruitment.domain.interview;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class MockInterviewRepo implements InterviewRepository {
     private List<Interview> data;
@@ -53,5 +55,14 @@ public class MockInterviewRepo implements InterviewRepository {
                     i.setScheduledTime(interview.getScheduledTime());
                     return i;
                 });
+    }
+
+    @Override
+    public List<Interview> findInterviewsToRemind() {
+        final LocalDateTime cutoff = LocalDateTime.now().plusDays(1L);
+        return data.stream()
+                .filter(i -> !i.isPreInterviewReminderSent())
+                .filter(i -> cutoff.isAfter(i.getScheduledTime()))
+                .collect(Collectors.toList());
     }
 }

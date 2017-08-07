@@ -48,6 +48,9 @@ public class JpaInterview {
     @Column
     private boolean cancelled;
 
+    @Column
+    private boolean preInterviewReminderSent;
+
     public JpaInterview() {
     }
 
@@ -99,6 +102,14 @@ public class JpaInterview {
         this.cancelled = cancelled;
     }
 
+    public boolean isPreInterviewReminderSent() {
+        return preInterviewReminderSent;
+    }
+
+    public void setPreInterviewReminderSent(boolean preInterviewReminderSent) {
+        this.preInterviewReminderSent = preInterviewReminderSent;
+    }
+
     public Interview toInterview() {
         return Interview.builder()
                 .withApplicant(getApplicant().toApplicant())
@@ -109,6 +120,7 @@ public class JpaInterview {
                         .map(JpaInterviewer::toInterviewer)
                         .collect(Collectors.toList()))
                 .withCancelled(isCancelled())
+                .withPreInterviewReminderSent(isPreInterviewReminderSent())
                 .build();
     }
 

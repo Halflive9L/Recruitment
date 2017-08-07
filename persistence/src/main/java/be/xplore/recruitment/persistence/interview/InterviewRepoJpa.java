@@ -13,6 +13,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -44,6 +45,7 @@ public class InterviewRepoJpa implements InterviewRepository {
         jpaInterview.setScheduledTime(interview.getScheduledTime());
         jpaInterview.setApplicant(jpaApplicant);
         jpaInterview.setInterviewers(interviewers);
+        jpaInterview.setPreInterviewReminderSent(interview.isPreInterviewReminderSent());
         entityManager.persist(jpaInterview);
         return jpaInterview.toInterview();
     }
@@ -85,7 +87,21 @@ public class InterviewRepoJpa implements InterviewRepository {
         jpaInterview.setApplicant(entityManager.find(JpaApplicant.class, interview.getApplicant().getApplicantId()));
         jpaInterview.setScheduledTime(interview.getScheduledTime());
         jpaInterview.setCancelled(interview.isCancelled());
+        jpaInterview.setPreInterviewReminderSent(interview.isPreInterviewReminderSent());
         entityManager.persist(jpaInterview);
         return Optional.of(jpaInterview.toInterview());
+    }
+
+    private static final String FIND_REMIND_INTERVIEWS_QUERY =
+            "SELECT JpaInterview i WHERE i.preInterviewReminderSent = false AND i.scheduledTime < :reminderCutoff";
+
+    @Override
+    public List<Interview> findInterviewsToRemind() {
+        TypedQuery<JpaInterview> query = entityManager.createQuery(FIND_REMIND_INTERVIEWS_QUERY, JpaInterview.class);
+        LocalDateTime cutoff = LocalDateTime.now().minusDays(1);
+        query.setParameter("reminderCutoff", cutoff);
+        return query.getResultList().stream()
+            .map(JpaInterview::toInterview)
+            .collect(Collectors.toList());
     }
 }

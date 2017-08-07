@@ -13,4 +13,6 @@ public interface InterviewRepository {
     Optional<Interview> deleteInterviewer(long id);
 
     Optional<Interview> updateInterviewer(Interview interview);
+
+    List<Interview> findInterviewsToRemind();
 }

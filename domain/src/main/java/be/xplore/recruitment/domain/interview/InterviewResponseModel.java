@@ -11,6 +11,7 @@ public class InterviewResponseModel {
     private long applicantId;
     private List<Long> interviewerIds;
     private boolean cancelled;
+    private boolean preInterviewReminderSent;
 
     public InterviewResponseModel() {
     }
@@ -63,6 +64,14 @@ public class InterviewResponseModel {
         this.cancelled = cancelled;
     }
 
+    public boolean isPreInterviewReminderSent() {
+        return preInterviewReminderSent;
+    }
+
+    public void setPreInterviewReminderSent(boolean preInterviewReminderSent) {
+        this.preInterviewReminderSent = preInterviewReminderSent;
+    }
+
     public static InterviewResponseModel fromInterview(Interview interview) {
         InterviewResponseModel model = new InterviewResponseModel();
         model.setApplicantId(interview.getApplicant().getApplicantId());
@@ -73,6 +82,7 @@ public class InterviewResponseModel {
                 .map(i -> i.getInterviewerId())
                 .collect(Collectors.toList()));
         model.setCancelled(interview.isCancelled());
+        model.setPreInterviewReminderSent(interview.isPreInterviewReminderSent());
         return model;
     }
 }

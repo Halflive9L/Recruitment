@@ -13,6 +13,7 @@ public class Interview {
     private Applicant applicant;
     private List<Interviewer> interviewers;
     private boolean cancelled;
+    private boolean preInterviewReminderSent;
 
     public Interview() {
     }
@@ -65,6 +66,14 @@ public class Interview {
         this.cancelled = cancelled;
     }
 
+    public boolean isPreInterviewReminderSent() {
+        return preInterviewReminderSent;
+    }
+
+    public void setPreInterviewReminderSent(boolean preInterviewReminderSent) {
+        this.preInterviewReminderSent = preInterviewReminderSent;
+    }
+
     public static InterviewBuilder builder() {
         return new InterviewBuilder();
     }
@@ -76,6 +85,7 @@ public class Interview {
         private Applicant applicant;
         private List<Interviewer> interviewers;
         private boolean cancelled;
+        private boolean preInterviewReminderSent;
 
         private InterviewBuilder() {
         }
@@ -114,6 +124,11 @@ public class Interview {
             return this;
         }
 
+        public InterviewBuilder withPreInterviewReminderSent(boolean sent) {
+            this.preInterviewReminderSent = sent;
+            return this;
+        }
+
         public Interview build() {
             Interview interview = new Interview();
             interview.setInterviewId(interviewId);
@@ -122,6 +137,7 @@ public class Interview {
             interview.setApplicant(applicant);
             interview.setInterviewers(interviewers);
             interview.setCancelled(cancelled);
+            interview.setPreInterviewReminderSent(preInterviewReminderSent);
             return interview;
         }
     }
