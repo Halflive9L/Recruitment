@@ -1,6 +1,7 @@
 package be.xplore.recruitment.persistence.applicant;
 
 import be.xplore.recruitment.domain.applicant.Applicant;
+import be.xplore.recruitment.persistence.attachment.JpaAttachment;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,8 +10,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.time.LocalDate;
+import java.util.Set;
 
 /**
  * Created by Lander on 26/07/2017.
@@ -24,7 +27,7 @@ import java.time.LocalDate;
                 query = "SELECT a from JpaApplicant a where a.applicantId = :applicantId"),
         @NamedQuery(name = JpaApplicant.QUERY_FIND_ALL, query = "SELECT a from JpaApplicant a"),
         @NamedQuery(name = JpaApplicant.QUERY_DELETE,
-                query = "DELETE FROM JpaApplicant a WHERE a.applicantId = :applicantId"),})
+                query = "DELETE FROM JpaApplicant a WHERE a.applicantId = :applicantId")})
 
 public class JpaApplicant {
 
@@ -57,6 +60,9 @@ public class JpaApplicant {
 
     @Column
     private String phone;
+
+    @OneToMany(mappedBy = "applicant")
+    private Set<JpaAttachment> attachments;
 
     public JpaApplicant(JpaApplicant applicant) {
         this.firstName = applicant.firstName;
@@ -148,4 +154,7 @@ public class JpaApplicant {
         this.phone = phone;
     }
 
+    public Set<JpaAttachment> getAttachments() {
+        return attachments;
+    }
 }

@@ -1,7 +1,10 @@
 package be.xplore.recruitment.domain.applicant;
 
+import be.xplore.recruitment.domain.attachment.Attachment;
+import be.xplore.recruitment.domain.exception.CouldNotDownloadAttachmentException;
 import be.xplore.recruitment.domain.exception.NotFoundException;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +18,7 @@ import static be.xplore.recruitment.domain.util.Validator.isNullOrEmpty;
  */
 public class MockApplicantRepo implements ApplicantRepository {
     List<Applicant> mockApplicants = new ArrayList<>();
+    List<Attachment> mockAttachments = new ArrayList<>(1);
 
     public MockApplicantRepo() {
         mockApplicants.add(Applicant.builder()
@@ -31,6 +35,8 @@ public class MockApplicantRepo implements ApplicantRepository {
                 .withEducation("University")
                 .withEmail("leeroy@jenkins.com")
                 .withPhone("+32 420 00 1337").build());
+        mockAttachments.add(new Attachment(1, "test.pdf"));
+        mockAttachments.add(new Attachment(2, "test.doc"));
     }
 
     @Override
@@ -45,24 +51,22 @@ public class MockApplicantRepo implements ApplicantRepository {
     }
 
     @Override
-    public Optional<Applicant> findApplicantById(long id) throws NotFoundException {
+    public Optional<Applicant> findApplicantById(long id) {
         for (Applicant mockApplicant : mockApplicants) {
             if (mockApplicant.getApplicantId() == id) {
-                return Optional.ofNullable(mockApplicant);
+                return Optional.of(mockApplicant);
             }
         }
-        throw new NotFoundException();
+        return Optional.empty();
     }
 
     @Override
-    public List<Applicant> findByParameters(Applicant applicant) throws NotFoundException {
+    public List<Applicant> findByParameters(Applicant applicant) {
         List<Applicant> matches = new ArrayList<>();
         for (Applicant mockApplicant : mockApplicants) {
-            boolean isMatch = true;
             if (!isNullOrEmpty(applicant.getFirstName()) &&
                     applicant.getFirstName().equalsIgnoreCase(mockApplicant.getFirstName())) {
-                isMatch = false;
-                continue;
+                matches.add(mockApplicant);
             }
         }
         return matches;
@@ -132,6 +136,42 @@ public class MockApplicantRepo implements ApplicantRepository {
                 return Optional.ofNullable(deletedApplicant);
             }
         }
-        throw new NotFoundException();
+        return Optional.empty();
     }
+
+    @Override
+    public Optional<Attachment> addAttachment(long applicantId, Attachment attachment) {
+        if (applicantId == 500){
+            throw new NotFoundException();
+        }
+        if (mockAttachments.size() > 1) {
+            attachment.setAttachmentId(mockAttachments.get(mockAttachments.size() - 1).getAttachmentId() + 1);
+        } else {
+            attachment.setAttachmentId(1);
+        }
+        mockAttachments.add(attachment);
+        try {
+            attachment.getInputStream().close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return Optional.of(attachment);
+    }
+
+    @Override
+    public List<Attachment> findAllAttachmentsForApplicant(long applicantId) {
+        return mockAttachments;
+    }
+
+    @Override
+    public Optional<Attachment> downloadAttachment(long attachmentId) throws CouldNotDownloadAttachmentException {
+        Attachment attachment = null;
+        for (Attachment a : mockAttachments) {
+            if (a.getAttachmentId() == attachmentId) {
+                attachment = a;
+            }
+        }
+        return Optional.ofNullable(attachment);
+    }
+
 }

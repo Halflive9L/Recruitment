@@ -3,19 +3,27 @@ package be.xplore.recruitment.persistence.applicant;
 
 import be.xplore.recruitment.domain.applicant.Applicant;
 import be.xplore.recruitment.domain.applicant.ApplicantRepository;
+import be.xplore.recruitment.domain.attachment.Attachment;
+import be.xplore.recruitment.domain.exception.CouldNotDownloadAttachmentException;
+import be.xplore.recruitment.domain.exception.NotFoundException;
+import be.xplore.recruitment.persistence.attachment.FileManager;
+import be.xplore.recruitment.persistence.attachment.JpaAttachment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static be.xplore.recruitment.persistence.applicant.JpaApplicant.QUERY_FIND_ALL;
@@ -29,10 +37,12 @@ import static be.xplore.recruitment.persistence.applicant.JpaApplicant.QUERY_FIN
 public class ApplicantRepoJpa implements ApplicantRepository {
 
     private final EntityManager entityManager;
+    private final FileManager fileManager;
 
     @Autowired
-    public ApplicantRepoJpa(EntityManager entityManager) {
+    public ApplicantRepoJpa(EntityManager entityManager, FileManager fileManager) {
         this.entityManager = entityManager;
+        this.fileManager = fileManager;
     }
 
     @Override
@@ -52,11 +62,20 @@ public class ApplicantRepoJpa implements ApplicantRepository {
 
     @Override
     public Optional<Applicant> findApplicantById(long applicantId) {
-        List list = entityManager
+        Applicant applicant;
+        try {
+            applicant = findJpaApplicantById(applicantId).toApplicant();
+        } catch (NoResultException e) {
+            applicant = null;
+        }
+
+        return Optional.ofNullable(applicant);
+    }
+
+    private JpaApplicant findJpaApplicantById(long applicantId) throws NoResultException {
+        return (JpaApplicant) entityManager
                 .createNamedQuery(JpaApplicant.QUERY_FIND_BY_ID)
-                .setParameter("applicantId", applicantId).getResultList();
-        JpaApplicant jpaApplicant = (JpaApplicant) list.get(0);
-        return Optional.ofNullable(jpaApplicant.toApplicant());
+                .setParameter("applicantId", applicantId).getSingleResult();
     }
 
     @Override
@@ -77,7 +96,7 @@ public class ApplicantRepoJpa implements ApplicantRepository {
         CriteriaQuery<JpaApplicant> query = getCriteriaBuilder().createQuery(JpaApplicant.class);
         Specification<JpaApplicant> spec = new ApplicantSpecification(jpaApplicant).getFullSpecification();
         Root<JpaApplicant> root = applySpecification(spec, query);
-        System.out.println("root" + root);
+
         query.select(root);
         return query;
     }
@@ -117,8 +136,71 @@ public class ApplicantRepoJpa implements ApplicantRepository {
         return Optional.ofNullable(((JpaApplicant) applicantList.get(0)).toApplicant());
     }
 
+    @Override
+    public Optional<Attachment> addAttachment(long applicantId, Attachment attachment)
+            throws NotFoundException {
+        JpaApplicant applicant;
+        try {
+            applicant = findJpaApplicantById(applicantId);
+        } catch (NoResultException e) {
+            throw new NotFoundException("Applicant with ID: " + applicantId + " does not exist.");
+        }
+        Optional<Attachment> createdAttachment = Optional.ofNullable(tryCreateAttachment(attachment));
+        createdAttachment.ifPresent(a -> registerAttachment(applicant, a.getAttachmentName()));
+        return createdAttachment;
+    }
+
+    private Attachment tryCreateAttachment(Attachment attachment) {
+        try {
+            attachment.setAttachmentName(fileManager.createFile(attachment.getInputStream(),
+                    "applicant", attachment.getAttachmentName()));
+            return attachment;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private void registerAttachment(JpaApplicant applicant, String fileName) {
+        JpaAttachment attachment = new JpaAttachment(applicant, fileName);
+        entityManager.persist(attachment);
+    }
+
+    @Override
+    public List<Attachment> findAllAttachmentsForApplicant(long applicantId) {
+        Set<JpaAttachment> jpaAttachments = getAttachmentSetFromApplicantId(applicantId);
+        List<Attachment> attachments = new ArrayList<>(jpaAttachments.size());
+        jpaAttachments.forEach(jpaAttachment -> attachments.add(jpaAttachment.toAttachment()));
+        return attachments;
+    }
+
+    private Set<JpaAttachment> getAttachmentSetFromApplicantId(long applicantId) {
+        JpaApplicant jpaApplicant = findJpaApplicantById(applicantId);
+        return jpaApplicant.getAttachments();
+    }
+
+    @Override
+    public Optional<Attachment> downloadAttachment(long attachmentId)
+            throws CouldNotDownloadAttachmentException {
+        Attachment attachment = entityManager.find(JpaAttachment.class, attachmentId).toAttachment();
+        if (attachment != null) {
+            trySetInputStream(attachment);
+        }
+
+        return Optional.ofNullable(attachment);
+    }
+
+    private void trySetInputStream(Attachment attachment) throws CouldNotDownloadAttachmentException {
+        try {
+            attachment.setInputStream(fileManager.downloadAttachment(attachment.getAttachmentName()));
+        } catch (IOException e) {
+            throw new CouldNotDownloadAttachmentException(e);
+        }
+    }
+
     private JpaApplicant applicantToJpaApplicant(Applicant applicant) {
         JpaApplicant jpaApplicant = new JpaApplicant();
+        jpaApplicant.setApplicantId(applicant.getApplicantId());
         jpaApplicant.setFirstName(applicant.getFirstName());
         jpaApplicant.setLastName(applicant.getLastName());
         jpaApplicant.setEmail(applicant.getEmail());
@@ -128,4 +210,5 @@ public class ApplicantRepoJpa implements ApplicantRepository {
         jpaApplicant.setEducation(applicant.getEducation());
         return jpaApplicant;
     }
+
 }

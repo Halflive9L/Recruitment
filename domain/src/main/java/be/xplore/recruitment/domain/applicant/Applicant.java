@@ -6,6 +6,8 @@ import be.xplore.recruitment.domain.exception.InvalidEmailException;
 import be.xplore.recruitment.domain.exception.InvalidPhoneException;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import static be.xplore.recruitment.domain.util.Validator.isNullOrEmpty;
 import static be.xplore.recruitment.domain.util.Validator.isValidDate;
@@ -26,6 +28,8 @@ public class Applicant {
     private String email;
     private String phone;
 
+    private List<String> files;
+
     private Applicant(ApplicantBuilder builder) {
         this.applicantId = builder.applicantId;
         this.firstName = builder.firstName;
@@ -35,6 +39,7 @@ public class Applicant {
         this.education = builder.education;
         this.email = builder.email;
         this.phone = builder.phone;
+        this.files = new ArrayList<>();
     }
 
     public static ApplicantBuilder builder() {
@@ -129,6 +134,10 @@ public class Applicant {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public List<String> getFiles() {
+        return files;
     }
 
     @Override

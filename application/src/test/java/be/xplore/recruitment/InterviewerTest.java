@@ -17,7 +17,6 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class InterviewerTest extends TestBase {
-    @Override
     protected JSONObject getJsonTestObject() {
         return null;
     }

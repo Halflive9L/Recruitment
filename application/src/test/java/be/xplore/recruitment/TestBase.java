@@ -2,7 +2,6 @@ package be.xplore.recruitment;
 
 import com.github.springtestdbunit.TransactionDbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DbUnitConfiguration;
-import net.minidev.json.JSONObject;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,8 +24,5 @@ public abstract class TestBase {
 
     @Autowired
     protected TestRestTemplate restTemplate;
-
-
-    protected abstract JSONObject getJsonTestObject();
 
 }
