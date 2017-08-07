@@ -1,10 +1,14 @@
 package be.xplore.recruitment.persistence.interview;
 
 import be.xplore.recruitment.domain.applicant.ApplicantRepository;
+import be.xplore.recruitment.domain.attachment.Attachment;
+import be.xplore.recruitment.domain.exception.NotFoundException;
 import be.xplore.recruitment.domain.interview.Interview;
 import be.xplore.recruitment.domain.interview.InterviewRepository;
 import be.xplore.recruitment.domain.interviewer.Interviewer;
 import be.xplore.recruitment.persistence.applicant.JpaApplicant;
+import be.xplore.recruitment.persistence.attachment.FileManager;
+import be.xplore.recruitment.persistence.attachment.JpaAttachment;
 import be.xplore.recruitment.persistence.interviewer.JpaInterviewer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -12,6 +16,7 @@ import org.springframework.stereotype.Component;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -23,11 +28,14 @@ public class InterviewRepoJpa implements InterviewRepository {
     private static final String FIND_ALL_QUERY = "SELECT i FROM JpaInterview i";
     private ApplicantRepository applicantRepository;
     private EntityManager entityManager;
+    private FileManager fileManager;
 
     @Autowired
-    public InterviewRepoJpa(EntityManager entityManager, ApplicantRepository applicantRepository) {
+    public InterviewRepoJpa(EntityManager entityManager, ApplicantRepository applicantRepository,
+                            FileManager fileManager) {
         this.entityManager = entityManager;
         this.applicantRepository = applicantRepository;
+        this.fileManager = fileManager;
     }
 
     @Override
@@ -85,5 +93,34 @@ public class InterviewRepoJpa implements InterviewRepository {
         jpaInterview.setCancelled(interview.isCancelled());
         entityManager.persist(jpaInterview);
         return Optional.of(jpaInterview.toInterview());
+    }
+
+    @Override
+    public Optional<Attachment> addAttachment(long interviewId, Attachment attachment)
+            throws NotFoundException {
+        JpaInterview interview = entityManager.find(JpaInterview.class, interviewId);
+        if (interview == null) {
+            throw new NotFoundException("Interview with ID: " + interviewId + " does not exist.");
+        }
+
+        Optional<Attachment> createdAttachment = Optional.ofNullable(tryCreateAttachment(attachment));
+        createdAttachment.ifPresent(a -> registerAttachment(interview, a.getAttachmentName()));
+        return createdAttachment;
+    }
+
+    private Attachment tryCreateAttachment(Attachment attachment) {
+        try {
+            attachment.setAttachmentName(fileManager.createFile(attachment.getInputStream(),
+                    "interview", attachment.getAttachmentName()));
+            return attachment;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private void registerAttachment(JpaInterview interview, String fileName) {
+        JpaAttachment attachment = new JpaAttachment(interview, fileName);
+        entityManager.persist(attachment);
     }
 }
