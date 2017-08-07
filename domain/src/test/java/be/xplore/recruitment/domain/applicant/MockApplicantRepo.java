@@ -5,6 +5,7 @@ import be.xplore.recruitment.domain.exception.NotFoundException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static be.xplore.recruitment.domain.util.Validator.isNullOrEmpty;
 
@@ -12,10 +13,10 @@ import static be.xplore.recruitment.domain.util.Validator.isNullOrEmpty;
  * @author Stijn Schack
  * @since 7/27/2017
  */
-class MockApplicantRepo implements ApplicantRepository {
+public class MockApplicantRepo implements ApplicantRepository {
     List<Applicant> mockApplicants = new ArrayList<>();
 
-    MockApplicantRepo() {
+    public MockApplicantRepo() {
         mockApplicants.add(Applicant.builder()
                 .withFirstName("John").withLastName("Smith").withId(1)
                 .withDateOfBirth(LocalDate.of(1996, 10, 3))
@@ -44,10 +45,10 @@ class MockApplicantRepo implements ApplicantRepository {
     }
 
     @Override
-    public Applicant findApplicantById(long id) throws NotFoundException {
+    public Optional<Applicant> findApplicantById(long id) throws NotFoundException {
         for (Applicant mockApplicant : mockApplicants) {
             if (mockApplicant.getApplicantId() == id) {
-                return mockApplicant;
+                return Optional.ofNullable(mockApplicant);
             }
         }
         throw new NotFoundException();
@@ -68,7 +69,7 @@ class MockApplicantRepo implements ApplicantRepository {
     }
 
     @Override
-    public void updateApplicant(Applicant applicant) {
+    public Optional<Applicant> updateApplicant(Applicant applicant) {
         for (int i = 0; i < mockApplicants.size(); i++) {
             if (mockApplicants.get(i).getApplicantId() == applicant.getApplicantId()) {
                 mockApplicants.set(i, Applicant.builder()
@@ -80,10 +81,10 @@ class MockApplicantRepo implements ApplicantRepository {
                         .withEducation(education(applicant, i))
                         .withAddress(address(applicant, i))
                         .withDateOfBirth(dateOfBirth(applicant, i)).build());
-                return;
+                return Optional.of(mockApplicants.get(i));
             }
         }
-        throw new NotFoundException();
+        return Optional.empty();
     }
 
     private String firstName(Applicant applicant, int i) {
@@ -122,13 +123,13 @@ class MockApplicantRepo implements ApplicantRepository {
     }
 
     @Override
-    public Applicant deleteApplicant(long id) {
+    public Optional<Applicant> deleteApplicant(long id) {
         Applicant deletedApplicant;
         for (int i = 0; i < mockApplicants.size(); i++) {
             if (mockApplicants.get(i).getApplicantId() == id) {
                 deletedApplicant = mockApplicants.get(i);
                 mockApplicants.remove(i);
-                return deletedApplicant;
+                return Optional.ofNullable(deletedApplicant);
             }
         }
         throw new NotFoundException();

@@ -12,7 +12,7 @@ import java.util.function.Consumer;
  * @author Lander
  * @since 28/07/2017
  */
-public class JsonProspectPresenter implements Consumer<List<ProspectResponseModel>> {
+public class JsonProspectResponseModelListPresenter implements Consumer<List<ProspectResponseModel>> {
     private ResponseEntity<List<JsonProspect>> responseEntity;
 
     @Override

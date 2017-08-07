@@ -19,7 +19,9 @@ public class UpdateProspectTest {
 
     @Test
     public void testUpdateProspect() {
-        Prospect prospect = builder("leeroy", "jenkins")
+        Prospect prospect = builder()
+                .withFirstName("leeroy")
+                .withLastName("jenkins")
                 .withEmail("leeroy@jenkins.com")
                 .withPhone("+325435435435")
                 .withId(2).build();
@@ -29,7 +31,9 @@ public class UpdateProspectTest {
 
     @Test
     public void testUpdateProspectWithInvalidEmail() {
-        Prospect prospect = builder("leeroy", "jenkins")
+        Prospect prospect = builder()
+                .withFirstName("leeroy")
+                .withLastName("jenkins")
                 .withEmail("a")
                 .withPhone("+325435435435")
                 .withId(2).build();
@@ -39,7 +43,9 @@ public class UpdateProspectTest {
 
     @Test
     public void testUpdateProspectWithInvalidPhone() {
-        Prospect prospect = builder("leeroy", "jenkins")
+        Prospect prospect = builder()
+                .withFirstName("leeroy")
+                .withLastName("jenkins")
                 .withEmail("leeroy@jenkins.com")
                 .withPhone("a")
                 .withId(2).build();
@@ -49,7 +55,9 @@ public class UpdateProspectTest {
 
 
     private Prospect getExpectedProspect() {
-        return builder("leeroy", "jenkins")
+        return builder()
+                .withFirstName("leeroy")
+                .withLastName("jenkins")
                 .withEmail("leeroy@jenkins.com")
                 .withPhone("+325435435435")
                 .withId(2).build();

@@ -13,10 +13,10 @@ public interface ReadProspect {
 
     void readAllProspects(Consumer<List<ProspectResponseModel>> response);
 
-    void readProspectById(ReadProspectRequest request, Consumer<List<ProspectResponseModel>> response)
+    void readProspectById(ReadProspectRequest request, Consumer<ProspectResponseModel> response)
             throws NotFoundException;
 
-    void readProspectByParam(ReadProspectRequest request, Consumer<List<ProspectResponseModel>> response)
+    void readProspectsByParam(ReadProspectRequest request, Consumer<List<ProspectResponseModel>> response)
             throws NotFoundException;
 
 }

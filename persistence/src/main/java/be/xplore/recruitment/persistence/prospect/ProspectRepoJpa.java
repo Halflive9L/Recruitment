@@ -16,6 +16,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static be.xplore.recruitment.persistence.prospect.JpaProspect.QUERY_FIND_ALL;
@@ -28,55 +29,43 @@ import static be.xplore.recruitment.persistence.prospect.JpaProspect.QUERY_FIND_
 @Transactional
 public class ProspectRepoJpa implements ProspectRepository {
 
-    @Autowired
-    private EntityManager entityManager;
+    private final EntityManager entityManager;
 
-    // public void setEntityManager(EntityManager entityManager) {
-    //    this.entityManager = entityManager;
-    // }
+    @Autowired
+    public ProspectRepoJpa(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
 
     @Override
-    public Prospect createProspect(Prospect prospect) {
-        JpaProspect jpaProspectDatabaseInput = new JpaProspect();
-        jpaProspectDatabaseInput.setFirstName(prospect.getFirstName());
-        jpaProspectDatabaseInput.setLastName(prospect.getLastName());
-        jpaProspectDatabaseInput.setEmail(prospect.getEmail());
-        jpaProspectDatabaseInput.setPhone(prospect.getPhone());
-        System.out.println("RepoProspect = " + prospect);
-        entityManager.persist(jpaProspectDatabaseInput);
-        return jpaProspectDatabaseInput.toProspect();
+    public void createProspect(Prospect prospect) {
+        JpaProspect jpaProspect = prospectToJpaProspect(prospect);
+        entityManager.persist(jpaProspect);
     }
 
     @Override
     public List<Prospect> findAll() {
         List<JpaProspect> list = entityManager.createNamedQuery(QUERY_FIND_ALL)
                 .getResultList();
-        List<Prospect> result = list.stream().map(this::toProspect).collect(Collectors.toList());
+        List<Prospect> result = list.stream().map(JpaProspect::toProspect).collect(Collectors.toList());
         return result;
     }
 
     @Override
-    public Prospect findProspectById(long prospectId) {
-        List<JpaProspect> list = entityManager
+    public Optional<Prospect> findProspectById(long prospectId) {
+        List list = entityManager
                 .createNamedQuery(JpaProspect.QUERY_FIND_BY_ID)
                 .setParameter("prospectId", prospectId).getResultList();
-        if (list.isEmpty()) {
-            return null;
-        }
-
-        JpaProspect jpaProspect = list.get(0);
-
-        return toProspect(jpaProspect);
+        JpaProspect jpaProspect = (JpaProspect) list.get(0);
+        return Optional.ofNullable(jpaProspect.toProspect());
     }
 
     @Override
-    public List<Prospect> findProspectByParam(Prospect prospect) throws NotFoundException {
+    public List<Prospect> findByParameters(Prospect prospect) throws NotFoundException {
         JpaProspect jpaProspect = prospectToJpaProspect(prospect);
         CriteriaQuery<JpaProspect> query = getJpaProspectCriteriaQuery(jpaProspect);
         List<JpaProspect> results = entityManager.createQuery(query).getResultList();
         return jpaProspectListToProspectList(results);
     }
-
 
     private List<Prospect> jpaProspectListToProspectList(List<JpaProspect> jpaProspects) {
         List<Prospect> prospects = new ArrayList<>(jpaProspects.size());
@@ -106,41 +95,34 @@ public class ProspectRepoJpa implements ProspectRepository {
         return entityManager.getCriteriaBuilder();
     }
 
-
-
     @Override
-    public void deleteProspect(long prospectId) {
-        entityManager.createNamedQuery(JpaProspect.QUERY_DELETE)
-        .setParameter("prospectId", prospectId).executeUpdate();
-        //entityManager.remove(findProspectById(id));
+    public Optional<Prospect> updateProspect(Prospect prospect) {
+        JpaProspect jpaProspect = prospectToJpaProspect(prospect);
+        jpaProspect.setProspectId(prospect.getProspectId());
+        Prospect prospectToReturn;
+        try {
+            prospectToReturn = entityManager.merge(jpaProspect).toProspect();
+        } catch (IllegalArgumentException e) {
+            prospectToReturn = null;
+        }
+        return Optional.ofNullable(prospectToReturn);
     }
 
     @Override
-    public Prospect updateProspect(Prospect prospect) {
-        JpaProspect zoekProspect = (JpaProspect) entityManager.createNamedQuery(JpaProspect.QUERY_FIND_BY_ID)
-                .setParameter("prospectId", prospect.getProspectId()).getSingleResult();
-        zoekProspect.setEmail(prospect.getEmail());
-        zoekProspect.setPhone(prospect.getPhone());
-        zoekProspect.setLastName(prospect.getLastName());
-        zoekProspect.setFirstName(prospect.getFirstName());
-        entityManager.persist(zoekProspect);
-        return toProspect(zoekProspect);
-    }
-
-    private Prospect toProspect(JpaProspect jpaProspect) {
-        return new Prospect.ProspectBuilder(jpaProspect.getFirstName(), jpaProspect.getLastName())
-                .withEmail(jpaProspect.getEmail())
-                .withPhone(jpaProspect.getPhone()).withId(jpaProspect.getProspectId()).build();
+    public Optional<Prospect> deleteProspect(long prospectId) {
+        List prospectList = entityManager.createNamedQuery(JpaProspect.QUERY_FIND_BY_ID)
+                .setParameter("prospectId", prospectId).getResultList();
+        entityManager.createNamedQuery(JpaProspect.QUERY_DELETE).setParameter("prospectId", prospectId)
+                .executeUpdate();
+        return Optional.ofNullable(((JpaProspect) prospectList.get(0)).toProspect());
     }
 
     private JpaProspect prospectToJpaProspect(Prospect prospect) {
-        JpaProspect jpaProspect= new JpaProspect();
+        JpaProspect jpaProspect = new JpaProspect();
         jpaProspect.setFirstName(prospect.getFirstName());
         jpaProspect.setLastName(prospect.getLastName());
         jpaProspect.setEmail(prospect.getEmail());
         jpaProspect.setPhone(prospect.getPhone());
         return jpaProspect;
     }
-
-
 }

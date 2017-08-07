@@ -8,11 +8,9 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.http.HttpStatus;
 
 import java.util.function.Consumer;
 
-import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.verify;
 
@@ -29,7 +27,7 @@ public class ProspectControllerTest {
     private ProspectController controller = new ProspectController();
 
     @Test
-    public void addProspectTest() {
+    public void testCreateProspect() {
         ArgumentCaptor<CreateProspectRequest> captor = ArgumentCaptor.forClass(CreateProspectRequest.class);
         controller.addProspect(new JsonProspect());
         verify(createProspect).createProspect(captor.capture(), isA(Consumer.class));

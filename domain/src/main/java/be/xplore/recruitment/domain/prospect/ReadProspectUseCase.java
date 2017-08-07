@@ -3,7 +3,6 @@ package be.xplore.recruitment.domain.prospect;
 import be.xplore.recruitment.domain.exception.NotFoundException;
 
 import javax.inject.Named;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -14,54 +13,41 @@ import java.util.function.Consumer;
  */
 @Named
 public class ReadProspectUseCase implements ReadProspect {
-
     private final ProspectRepository repository;
 
-    public ReadProspectUseCase(ProspectRepository repository) {
+    ReadProspectUseCase(ProspectRepository repository) {
         this.repository = repository;
     }
+
 
     @Override
     public void readAllProspects(Consumer<List<ProspectResponseModel>> response) {
         List<Prospect> prospects = repository.findAll();
-        List<ProspectResponseModel> prospectResponseModels = new ArrayList<>();
-        for(Prospect p : prospects) {
-            prospectResponseModels.add(new ProspectResponseModel(p));
-        }
-        response.accept(prospectResponseModels);
+        List<ProspectResponseModel> responseList = getResponseListFromProspectList(prospects);
+        response.accept(responseList);
     }
 
     @Override
-    public void readProspectById(ReadProspectRequest request, Consumer<List<ProspectResponseModel>> response)
-        throws NotFoundException {
-        if (repository.findProspectById(request.prospectId) == null) {
+    public void readProspectsByParam(ReadProspectRequest request, Consumer<List<ProspectResponseModel>> response)
+            throws NotFoundException {
+        List<Prospect> prospects = repository.findByParameters(request.toProspect());
+        if (prospects.isEmpty()) {
             throw new NotFoundException();
         }
-        List<ProspectResponseModel> prospectResponseModels = new ArrayList<>();
-        prospectResponseModels.add(new ProspectResponseModel(repository.findProspectById(request.prospectId)));
-        response.accept(prospectResponseModels);
-    }
-
-    @Override
-    public void readProspectByParam(ReadProspectRequest request, Consumer<List<ProspectResponseModel>> response)
-        throws NotFoundException {
-        List<Prospect> prospects = repository.findProspectByParam(request.toProspect());
-        if(prospects.isEmpty()) {
-            throw new NotFoundException();
-        }
-        List<ProspectResponseModel> responseModelList = getResponseListFromProspectList(prospects);
-        response.accept(responseModelList);
+        List<ProspectResponseModel> responseList = getResponseListFromProspectList(prospects);
+        response.accept(responseList);
     }
 
     private List<ProspectResponseModel> getResponseListFromProspectList(List<Prospect> prospects) {
         List<ProspectResponseModel> responseList = new LinkedList<>();
-        prospects.forEach(applicant -> responseList.add(new ProspectResponseModel(applicant)));
+        prospects.forEach(prospect -> responseList.add(new ProspectResponseModel(prospect)));
         return responseList;
     }
 
-
-
-    private boolean isEmptyRequest(ReadProspectRequest request) {
-        return request.firstName == null && request.lastName == null && request.phone == null && request.email == null;
+    @Override
+    public void readProspectById(ReadProspectRequest request, Consumer<ProspectResponseModel> consumer)
+            throws NotFoundException {
+        Prospect prospect = repository.findProspectById(request.prospectId).orElseThrow(NotFoundException::new);
+        consumer.accept(new ProspectResponseModel(prospect));
     }
 }

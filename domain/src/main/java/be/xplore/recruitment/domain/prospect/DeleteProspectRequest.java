@@ -6,4 +6,8 @@ package be.xplore.recruitment.domain.prospect;
  */
 public class DeleteProspectRequest {
     public long prospectId;
+
+    public DeleteProspectRequest(long prospectId) {
+        this.prospectId = prospectId;
+    }
 }

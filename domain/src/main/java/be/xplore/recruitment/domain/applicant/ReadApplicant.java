@@ -15,6 +15,6 @@ public interface ReadApplicant {
     void readApplicantsByParam(ReadApplicantRequest request, Consumer<List<ApplicantResponseModel>> response)
             throws NotFoundException;
 
-    void readApplicantById(ReadApplicantRequest request, Consumer<List<ApplicantResponseModel>> response)
+    void readApplicantById(ReadApplicantRequest request, Consumer<ApplicantResponseModel> response)
             throws NotFoundException;
 }

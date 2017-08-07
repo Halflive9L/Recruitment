@@ -48,20 +48,19 @@ public class ApplicantController {
     private final String applicantUrl = "/api/v1/applicant";
 
     @RequestMapping(method = RequestMethod.POST, value = applicantUrl)
-    public ResponseEntity<List<JsonApplicant>> addApplicant(@RequestBody JsonApplicant input) {
-        System.out.println("Input:" + input);
+    public ResponseEntity<JsonApplicant> addApplicant(@RequestBody JsonApplicant input) {
         CreateApplicantRequest request = getCreateRequestFromJsonApplicant(input);
         JsonApplicantResponseModelPresenter presenter = new JsonApplicantResponseModelPresenter();
         try {
             createApplicant.createApplicant(request, presenter);
         } catch (InvalidEmailException | InvalidPhoneException | InvalidDateException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         }
         return presenter.getResponseEntity();
     }
 
     @RequestMapping(method = RequestMethod.GET, value = applicantUrl + "/{applicantId}")
-    public ResponseEntity<List<JsonApplicant>> getApplicantById(@PathVariable long applicantId) {
+    public ResponseEntity<JsonApplicant> getApplicantById(@PathVariable long applicantId) {
         ReadApplicantRequest request = new ReadApplicantRequest();
         request.applicantId = applicantId;
         JsonApplicantResponseModelPresenter presenter = new JsonApplicantResponseModelPresenter();
@@ -75,7 +74,6 @@ public class ApplicantController {
 
     @RequestMapping(method = RequestMethod.GET, value = applicantUrl)
     public ResponseEntity<List<JsonApplicant>> getApplicantByParam(@ModelAttribute JsonApplicant jsonApplicant) {
-        System.out.println(jsonApplicant);
         try {
             return presentApplicantsByParam(jsonApplicant);
         } catch (NotFoundException e) {
@@ -85,7 +83,7 @@ public class ApplicantController {
 
     private ResponseEntity<List<JsonApplicant>> presentApplicantsByParam(JsonApplicant applicant)
             throws NotFoundException {
-        JsonApplicantResponseModelPresenter presenter = new JsonApplicantResponseModelPresenter();
+        JsonApplicantResponseModelListPresenter presenter = new JsonApplicantResponseModelListPresenter();
         if (applicant.isEmpty()) {
             readApplicant.readAllApplicants(presenter);
         } else {
@@ -95,7 +93,7 @@ public class ApplicantController {
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = applicantUrl+"/{applicantId}")
-    public ResponseEntity<List<JsonApplicant>> deleteApplicant(@PathVariable long applicantId) {
+    public ResponseEntity<JsonApplicant> deleteApplicant(@PathVariable long applicantId) {
         DeleteApplicantRequest request = new DeleteApplicantRequest(applicantId);
         JsonApplicantResponseModelPresenter presenter = new JsonApplicantResponseModelPresenter();
         try {
@@ -107,7 +105,7 @@ public class ApplicantController {
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = applicantUrl+"/{applicantId}")
-    public ResponseEntity<List<JsonApplicant>> updateApplicant(@PathVariable long applicantId,
+    public ResponseEntity<JsonApplicant> updateApplicant(@PathVariable long applicantId,
                                                                @RequestBody JsonApplicant applicant) {
         UpdateApplicantRequest request = getUpdateApplicantRequestFromJsonApplicant(applicantId, applicant);
         JsonApplicantResponseModelPresenter presenter = new JsonApplicantResponseModelPresenter();
@@ -116,7 +114,7 @@ public class ApplicantController {
         } catch (NotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (InvalidDateException | InvalidEmailException | InvalidPhoneException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         }
         return presenter.getResponseEntity();
     }
