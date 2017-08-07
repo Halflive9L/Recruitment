@@ -178,20 +178,23 @@ public class ApplicantRepoJpa implements ApplicantRepository {
         return jpaApplicant.getAttachments();
     }
 
-    /**
-     * Bad Code!
-     * Needs Rewrite
-     */
     @Override
-    public Attachment downloadAttachment(long attachmentId)
+    public Optional<Attachment> downloadAttachment(long attachmentId)
             throws CouldNotDownloadAttachmentException {
         Attachment attachment = entityManager.find(JpaAttachment.class, attachmentId).toAttachment();
+        if (attachment != null) {
+            trySetInputStream(attachment);
+        }
+
+        return Optional.ofNullable(attachment);
+    }
+
+    private void trySetInputStream(Attachment attachment) throws CouldNotDownloadAttachmentException {
         try {
             attachment.setInputStream(fileManager.downloadAttachment(attachment.getAttachmentName()));
         } catch (IOException e) {
-            throw new CouldNotDownloadAttachmentException();
+            throw new CouldNotDownloadAttachmentException(e);
         }
-        return attachment;
     }
 
     private JpaApplicant applicantToJpaApplicant(Applicant applicant) {

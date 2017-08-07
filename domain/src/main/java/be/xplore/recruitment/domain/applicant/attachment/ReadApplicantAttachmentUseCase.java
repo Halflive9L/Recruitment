@@ -2,6 +2,7 @@ package be.xplore.recruitment.domain.applicant.attachment;
 
 import be.xplore.recruitment.domain.applicant.ApplicantRepository;
 import be.xplore.recruitment.domain.attachment.Attachment;
+import be.xplore.recruitment.domain.exception.NotFoundException;
 
 import javax.inject.Named;
 import java.io.OutputStream;
@@ -37,8 +38,11 @@ public class ReadApplicantAttachmentUseCase implements ReadApplicantAttachment {
 
     @Override
     public void downloadAttachment(DownloadAttachmentRequest request,
-                                   Consumer<DownloadAttachmentResponseModel> response) {
-        Attachment attachment = repository.downloadAttachment(request.getAttachmentId());
+                                   Consumer<DownloadAttachmentResponseModel> response) throws NotFoundException {
+        Attachment attachment = repository.downloadAttachment(request.getAttachmentId()).orElseThrow(() ->
+                new NotFoundException("Attachment with ID: " + request.getAttachmentId() + " does not exist")
+        );
+
         DownloadAttachmentResponseModel responseModel = getDownloadAttachmentResponseModel(attachment,
                 request.getOutputStream());
         response.accept(responseModel);

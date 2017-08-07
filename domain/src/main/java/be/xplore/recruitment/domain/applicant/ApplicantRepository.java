@@ -29,5 +29,5 @@ public interface ApplicantRepository {
 
     List<Attachment> findAllAttachmentsForApplicant(long applicantId);
 
-    Attachment downloadAttachment(long attachmentId) throws CouldNotDownloadAttachmentException;
+    Optional<Attachment> downloadAttachment(long attachmentId) throws CouldNotDownloadAttachmentException;
 }

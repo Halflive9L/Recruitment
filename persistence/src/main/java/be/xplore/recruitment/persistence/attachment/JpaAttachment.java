@@ -28,7 +28,7 @@ import static be.xplore.recruitment.persistence.attachment.JpaAttachment.QUERY_F
                 "SELECT a FROM JpaAttachment a WHERE a.attachmentId = :attachmentId")
 })
 public class JpaAttachment {
-    public static final String QUERY_FIND_BY_ID = "Attachment.findById";
+    static final String QUERY_FIND_BY_ID = "Attachment.findById";
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
