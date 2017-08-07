@@ -1,4 +1,4 @@
-package be.xplore.recruitment.persistence.file;
+package be.xplore.recruitment.persistence.attachment;
 
 import org.springframework.stereotype.Component;
 

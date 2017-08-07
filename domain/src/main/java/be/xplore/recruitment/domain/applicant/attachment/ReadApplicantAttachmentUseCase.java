@@ -1,9 +1,9 @@
 package be.xplore.recruitment.domain.applicant.attachment;
 
 import be.xplore.recruitment.domain.applicant.ApplicantRepository;
+import be.xplore.recruitment.domain.attachment.Attachment;
 
 import javax.inject.Named;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,29 +25,27 @@ public class ReadApplicantAttachmentUseCase implements ReadApplicantAttachment {
     @Override
     public void listAllAttachmentsForApplicant(ListAllAttachmentsForApplicantRequest request,
                                                Consumer<List<ApplicantAttachmentResponseModel>> response) {
-        List<String> attachments = repository.findAllAttachmentsForApplicant(request.getApplicantId());
+        List<Attachment> attachments = repository.findAllAttachmentsForApplicant(request.getApplicantId());
         response.accept(getResponseModelList(attachments));
     }
 
-    private List<ApplicantAttachmentResponseModel> getResponseModelList(List<String> attachments) {
+    private List<ApplicantAttachmentResponseModel> getResponseModelList(List<Attachment> attachments) {
         List<ApplicantAttachmentResponseModel> responseModel = new ArrayList<>();
-        attachments.forEach(s -> responseModel.add(new ApplicantAttachmentResponseModel(s)));
+        attachments.forEach(attachment -> responseModel.add(new ApplicantAttachmentResponseModel(attachment)));
         return responseModel;
     }
 
     @Override
     public void downloadAttachment(DownloadAttachmentRequest request,
                                    Consumer<DownloadAttachmentResponseModel> response) {
-        InputStream inputStream = repository.downloadAttachment(request.getApplicantId(), request.getAttachmentName());
-        DownloadAttachmentResponseModel responseModel = getDownloadAttachmentResponseModel(
-                request.getAttachmentName(),
-                inputStream, request.getOutputStream());
+        Attachment attachment = repository.downloadAttachment(request.getAttachmentId());
+        DownloadAttachmentResponseModel responseModel = getDownloadAttachmentResponseModel(attachment,
+                request.getOutputStream());
         response.accept(responseModel);
     }
 
-    private DownloadAttachmentResponseModel getDownloadAttachmentResponseModel(String attachmentName,
-                                                                               InputStream inputStream,
+    private DownloadAttachmentResponseModel getDownloadAttachmentResponseModel(Attachment attachment,
                                                                                OutputStream outputStream) {
-        return new DownloadAttachmentResponseModel(attachmentName, inputStream, outputStream);
+        return new DownloadAttachmentResponseModel(attachment, outputStream);
     }
 }

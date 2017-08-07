@@ -1,5 +1,6 @@
-package be.xplore.recruitment.persistence.file;
+package be.xplore.recruitment.persistence.attachment;
 
+import be.xplore.recruitment.domain.attachment.Attachment;
 import be.xplore.recruitment.persistence.applicant.JpaApplicant;
 
 import javax.persistence.Column;
@@ -14,14 +15,14 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
-import static be.xplore.recruitment.persistence.file.JpaAttachment.QUERY_FIND_BY_ID;
+import static be.xplore.recruitment.persistence.attachment.JpaAttachment.QUERY_FIND_BY_ID;
 
 /**
  * @author Stijn Schack
  * @since 8/3/2017
  */
 @Entity
-@Table(name = "file")
+@Table(name = "attachment")
 @NamedQueries({
         @NamedQuery(name = QUERY_FIND_BY_ID, query =
                 "SELECT a FROM JpaAttachment a WHERE a.attachmentId = :attachmentId")
@@ -65,5 +66,9 @@ public class JpaAttachment {
 
     public void setFileName(String fileName) {
         this.fileName = fileName;
+    }
+
+    public Attachment toAttachment(){
+        return new Attachment(this.attachmentId, this.fileName);
     }
 }

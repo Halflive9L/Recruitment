@@ -5,6 +5,7 @@ import be.xplore.recruitment.domain.applicant.attachment.AddApplicantAttachmentR
 import be.xplore.recruitment.domain.applicant.attachment.DownloadAttachmentRequest;
 import be.xplore.recruitment.domain.applicant.attachment.ListAllAttachmentsForApplicantRequest;
 import be.xplore.recruitment.domain.applicant.attachment.ReadApplicantAttachment;
+import be.xplore.recruitment.domain.attachment.Attachment;
 import be.xplore.recruitment.domain.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -40,7 +41,7 @@ public class ApplicantAttachmentController {
     @RequestMapping(method = RequestMethod.POST, value = "/api/applicant/{applicantId}/file",
             consumes = "multipart/form-data")
     public ResponseEntity<JsonAttachment> uploadAttachment(@PathVariable long applicantId,
-                                                           @RequestParam("file") MultipartFile file)
+                                                           @RequestParam("attachment") MultipartFile file)
             throws IOException {
         System.out.println(file.getOriginalFilename());
         AddApplicantAttachmentRequest request = getAddAttachmentRequest(applicantId, file);
@@ -55,10 +56,11 @@ public class ApplicantAttachmentController {
 
     private AddApplicantAttachmentRequest getAddAttachmentRequest(long applicantId, MultipartFile file)
             throws IOException {
+        Attachment attachment = new Attachment(0, file.getOriginalFilename());
         AddApplicantAttachmentRequest request = new AddApplicantAttachmentRequest();
-        request.setInput(file.getInputStream());
+        attachment.setInputStream(file.getInputStream());
+        request.setAttachment(attachment);
         request.setApplicantId(applicantId);
-        request.setAttachmentName(file.getOriginalFilename());
         return request;
     }
 
@@ -70,18 +72,16 @@ public class ApplicantAttachmentController {
         return presenter.getResponseEntity();
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/api/applicant/{applicantId}/{fileName:.+}")
-    public void downloadFile(@PathVariable("applicantId") long applicantId,
-                             @PathVariable("fileName") String fileName,
+    @RequestMapping(method = RequestMethod.GET, value = "/api/download/{attachmentId}")
+    public void downloadFile(@PathVariable("attatchmentId") long attachmentId,
                              HttpServletResponse response)
             throws IOException {
-        System.out.println(fileName);
         DownloadAttachmentRequest request =
-                new DownloadAttachmentRequest(applicantId, fileName, response.getOutputStream());
+                new DownloadAttachmentRequest(attachmentId, response.getOutputStream());
         DownloadAttachmentPresenter presenter = new DownloadAttachmentPresenter();
         readApplicantAttachment.downloadAttachment(request, presenter);
         response.setHeader(HttpHeaders.CONTENT_DISPOSITION,
                 "attachment; filename=" + presenter.getFileName().replace(" ", "_"));
-
         response.flushBuffer();
-    }}
+    }
+}

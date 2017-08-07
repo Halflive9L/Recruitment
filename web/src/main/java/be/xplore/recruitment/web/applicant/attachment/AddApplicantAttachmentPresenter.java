@@ -15,12 +15,11 @@ public class AddApplicantAttachmentPresenter implements Consumer<ApplicantAttach
 
     @Override
     public void accept(ApplicantAttachmentResponseModel applicantAttachmentResponseModel) {
-        JsonAttachment responseBody = new JsonAttachment();
-        responseBody.setAttachmentName(applicantAttachmentResponseModel.getAttachmentName());
+        JsonAttachment responseBody = JsonAttachment.asJsonAttachment(applicantAttachmentResponseModel.getAttachment());
         responseEntity = new ResponseEntity<>(responseBody, HttpStatus.CREATED);
     }
 
-    public ResponseEntity<JsonAttachment> getResponseEntity() {
+    ResponseEntity<JsonAttachment> getResponseEntity() {
         return responseEntity;
     }
 }

@@ -1,6 +1,6 @@
 package be.xplore.recruitment.domain.applicant.attachment;
 
-import java.io.InputStream;
+import be.xplore.recruitment.domain.attachment.Attachment;
 
 /**
  * @author Stijn Schack
@@ -8,15 +8,14 @@ import java.io.InputStream;
  */
 public class AddApplicantAttachmentRequest {
     private long applicantId;
-    private InputStream input;
-    private String attachmentName;
+    private Attachment attachment;
 
-    String getAttachmentName() {
-        return attachmentName;
+    public Attachment getAttachment() {
+        return attachment;
     }
 
-    public void setAttachmentName(String attachmentName) {
-        this.attachmentName = attachmentName;
+    public void setAttachment(Attachment attachment) {
+        this.attachment = attachment;
     }
 
     public long getApplicantId() {
@@ -25,13 +24,5 @@ public class AddApplicantAttachmentRequest {
 
     public void setApplicantId(long applicantId) {
         this.applicantId = applicantId;
-    }
-
-    InputStream getInput() {
-        return input;
-    }
-
-    public void setInput(InputStream input) {
-        this.input = input;
     }
 }

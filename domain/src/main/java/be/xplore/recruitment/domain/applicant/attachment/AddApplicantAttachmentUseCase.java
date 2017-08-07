@@ -1,6 +1,7 @@
 package be.xplore.recruitment.domain.applicant.attachment;
 
 import be.xplore.recruitment.domain.applicant.ApplicantRepository;
+import be.xplore.recruitment.domain.attachment.Attachment;
 import be.xplore.recruitment.domain.exception.CouldNotAddAttachmentException;
 import be.xplore.recruitment.domain.exception.NotFoundException;
 
@@ -23,14 +24,12 @@ public class AddApplicantAttachmentUseCase implements AddApplicantAttachment {
     public void addAttachment(AddApplicantAttachmentRequest request,
                               Consumer<ApplicantAttachmentResponseModel> response)
             throws NotFoundException, CouldNotAddAttachmentException {
-        String createdAttachment = tryAddAttachment(request);
-        response.accept(new ApplicantAttachmentResponseModel(createdAttachment));
+        Attachment attachment = tryAddAttachment(request);
+        response.accept(new ApplicantAttachmentResponseModel(attachment));
     }
 
-    private String tryAddAttachment(AddApplicantAttachmentRequest request) {
-        return applicantRepository.addAttachment(request.getApplicantId(),
-                request.getAttachmentName(),
-                request.getInput()).
+    private Attachment tryAddAttachment(AddApplicantAttachmentRequest request) {
+        return applicantRepository.addAttachment(request.getApplicantId(), request.getAttachment()).
                 orElseThrow(CouldNotAddAttachmentException::new);
     }
 }

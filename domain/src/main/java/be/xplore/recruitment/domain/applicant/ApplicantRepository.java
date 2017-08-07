@@ -1,9 +1,9 @@
 package be.xplore.recruitment.domain.applicant;
 
+import be.xplore.recruitment.domain.attachment.Attachment;
 import be.xplore.recruitment.domain.exception.CouldNotDownloadAttachmentException;
 import be.xplore.recruitment.domain.exception.NotFoundException;
 
-import java.io.InputStream;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,10 +24,10 @@ public interface ApplicantRepository {
 
     Optional<Applicant> deleteApplicant(long id);
 
-    Optional<String> addAttachment(long applicantId, String fileName, InputStream in)
+    Optional<Attachment> addAttachment(long applicantId, Attachment attachment)
             throws NotFoundException;
 
-    List<String> findAllAttachmentsForApplicant(long applicantId);
+    List<Attachment> findAllAttachmentsForApplicant(long applicantId);
 
-    InputStream downloadAttachment(long applicantId, String fileName) throws CouldNotDownloadAttachmentException;
+    Attachment downloadAttachment(long attachmentId) throws CouldNotDownloadAttachmentException;
 }

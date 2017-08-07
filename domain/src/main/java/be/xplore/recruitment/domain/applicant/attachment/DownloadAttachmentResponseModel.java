@@ -1,6 +1,7 @@
 package be.xplore.recruitment.domain.applicant.attachment;
 
-import java.io.InputStream;
+import be.xplore.recruitment.domain.attachment.Attachment;
+
 import java.io.OutputStream;
 
 /**
@@ -8,22 +9,16 @@ import java.io.OutputStream;
  * @since 8/4/2017
  */
 public class DownloadAttachmentResponseModel {
-    private String attachmentName;
-    private InputStream inputStream;
+    private Attachment attachment;
     private OutputStream outputStream;
 
-    public DownloadAttachmentResponseModel(String attachmentName, InputStream inputStream, OutputStream outputStream) {
-        this.attachmentName = attachmentName;
-        this.inputStream = inputStream;
+    DownloadAttachmentResponseModel(Attachment attachment, OutputStream outputStream) {
+        this.attachment = attachment;
         this.outputStream = outputStream;
     }
 
-    public String getAttachmentName() {
-        return attachmentName;
-    }
-
-    public InputStream getInputStream() {
-        return inputStream;
+    public Attachment getAttachment() {
+        return attachment;
     }
 
     public OutputStream getOutputStream() {

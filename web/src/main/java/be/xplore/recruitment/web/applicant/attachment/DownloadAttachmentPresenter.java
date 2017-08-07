@@ -1,6 +1,7 @@
 package be.xplore.recruitment.web.applicant.attachment;
 
 import be.xplore.recruitment.domain.applicant.attachment.DownloadAttachmentResponseModel;
+import be.xplore.recruitment.domain.attachment.Attachment;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,8 +19,9 @@ class DownloadAttachmentPresenter implements Consumer<DownloadAttachmentResponse
 
     @Override
     public void accept(DownloadAttachmentResponseModel responseModel) {
-        this.fileName = responseModel.getAttachmentName();
-        try (InputStream in = responseModel.getInputStream(); OutputStream out = responseModel.getOutputStream()) {
+        Attachment attachment = responseModel.getAttachment();
+        this.fileName = attachment.getAttachmentName();
+        try (InputStream in = attachment.getInputStream(); OutputStream out = responseModel.getOutputStream()) {
             copy(in, out);
         } catch (IOException e) {
             e.printStackTrace();

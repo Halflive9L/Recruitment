@@ -8,25 +8,19 @@ import java.io.OutputStream;
  */
 public class DownloadAttachmentRequest {
 
-    private long applicantId;
-    private String fileName;
+    private long attachmentId;
     private OutputStream outputStream;
 
-    public DownloadAttachmentRequest(long applicantId, String fileName, OutputStream outputStream) {
-        this.applicantId = applicantId;
-        this.fileName = fileName;
+    public DownloadAttachmentRequest(long attachmentId, OutputStream outputStream) {
+        this.attachmentId = attachmentId;
         this.outputStream = outputStream;
     }
 
-    public long getApplicantId() {
-        return applicantId;
+    public long getAttachmentId() {
+        return attachmentId;
     }
 
-    public String getAttachmentName() {
-        return fileName;
-    }
-
-    public OutputStream getOutputStream() {
+    OutputStream getOutputStream() {
         return outputStream;
     }
 }

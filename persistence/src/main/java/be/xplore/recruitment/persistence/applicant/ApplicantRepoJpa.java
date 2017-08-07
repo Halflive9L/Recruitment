@@ -3,10 +3,11 @@ package be.xplore.recruitment.persistence.applicant;
 
 import be.xplore.recruitment.domain.applicant.Applicant;
 import be.xplore.recruitment.domain.applicant.ApplicantRepository;
+import be.xplore.recruitment.domain.attachment.Attachment;
 import be.xplore.recruitment.domain.exception.CouldNotDownloadAttachmentException;
 import be.xplore.recruitment.domain.exception.NotFoundException;
-import be.xplore.recruitment.persistence.file.FileManager;
-import be.xplore.recruitment.persistence.file.JpaAttachment;
+import be.xplore.recruitment.persistence.attachment.FileManager;
+import be.xplore.recruitment.persistence.attachment.JpaAttachment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
@@ -19,7 +20,6 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -136,7 +136,7 @@ public class ApplicantRepoJpa implements ApplicantRepository {
     }
 
     @Override
-    public Optional<String> addAttachment(long applicantId, String fileName, InputStream input)
+    public Optional<Attachment> addAttachment(long applicantId, Attachment attachment)
             throws NotFoundException {
         JpaApplicant applicant;
         try {
@@ -144,14 +144,16 @@ public class ApplicantRepoJpa implements ApplicantRepository {
         } catch (NoResultException e) {
             throw new NotFoundException("Applicant with ID: " + applicantId + " does not exist.");
         }
-        Optional<String> createdFileName = Optional.ofNullable(tryCreateAttachment(input, fileName));
-        createdFileName.ifPresent(s -> registerAttachment(applicant, s));
-        return createdFileName;
+        Optional<Attachment> createdAttachment = Optional.ofNullable(tryCreateAttachment(attachment));
+        createdAttachment.ifPresent(a -> registerAttachment(applicant, a.getAttachmentName()));
+        return createdAttachment;
     }
 
-    private String tryCreateAttachment(InputStream input, String fileName) {
+    private Attachment tryCreateAttachment(Attachment attachment) {
         try {
-            return fileManager.createFile(input, "applicant", fileName);
+            attachment.setAttachmentName(fileManager.createFile(attachment.getInputStream(),
+                    "applicant", attachment.getAttachmentName()));
+            return attachment;
         } catch (IOException e) {
             e.printStackTrace();
             return null;
@@ -164,11 +166,11 @@ public class ApplicantRepoJpa implements ApplicantRepository {
     }
 
     @Override
-    public List<String> findAllAttachmentsForApplicant(long applicantId) {
-        Set<JpaAttachment> attachments = getAttachmentSetFromApplicantId(applicantId);
-        List<String> attachmentNames = new ArrayList<>(attachments.size());
-        attachments.forEach(jpaAttachment -> attachmentNames.add(jpaAttachment.getFileName()));
-        return attachmentNames;
+    public List<Attachment> findAllAttachmentsForApplicant(long applicantId) {
+        Set<JpaAttachment> jpaAttachments = getAttachmentSetFromApplicantId(applicantId);
+        List<Attachment> attachments = new ArrayList<>(jpaAttachments.size());
+        jpaAttachments.forEach(jpaAttachment -> attachments.add(jpaAttachment.toAttachment()));
+        return attachments;
     }
 
     private Set<JpaAttachment> getAttachmentSetFromApplicantId(long applicantId) {
@@ -178,33 +180,18 @@ public class ApplicantRepoJpa implements ApplicantRepository {
 
     /**
      * Bad Code!
-     * Needs Rewrite*/
+     * Needs Rewrite
+     */
     @Override
-    public InputStream downloadAttachment(long applicantId, String attachmentName)
+    public Attachment downloadAttachment(long attachmentId)
             throws CouldNotDownloadAttachmentException {
-        System.out.println("name" + attachmentName);
-        Set<JpaAttachment> attachments = getAttachmentSetFromApplicantId(applicantId);
-        long attachmentId = 0;
-        for (JpaAttachment attachment : attachments) {
-            if (attachment.getFileName().equals(attachmentName)) {
-                attachmentId = attachment.getAttachmentId();
-                break;
-            }
-        }
-        if (attachmentId == 0) {
-            throw new NotFoundException();
-        }
-
-        JpaAttachment jpaAttachment = (JpaAttachment) entityManager.createNamedQuery(JpaAttachment.QUERY_FIND_BY_ID)
-                .setParameter("attachmentId", attachmentId)
-                .getSingleResult();
-        InputStream attachmentStream;
+        Attachment attachment = entityManager.find(JpaAttachment.class, attachmentId).toAttachment();
         try {
-            attachmentStream = fileManager.downloadAttachment(jpaAttachment.getFileName());
+            attachment.setInputStream(fileManager.downloadAttachment(attachment.getAttachmentName()));
         } catch (IOException e) {
             throw new CouldNotDownloadAttachmentException();
         }
-        return attachmentStream;
+        return attachment;
     }
 
     private JpaApplicant applicantToJpaApplicant(Applicant applicant) {

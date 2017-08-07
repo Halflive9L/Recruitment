@@ -1,7 +1,7 @@
 package be.xplore.recruitment.persistence.applicant;
 
 import be.xplore.recruitment.domain.applicant.Applicant;
-import be.xplore.recruitment.persistence.file.JpaAttachment;
+import be.xplore.recruitment.persistence.attachment.JpaAttachment;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

@@ -1,17 +1,19 @@
 package be.xplore.recruitment.domain.applicant.attachment;
 
+import be.xplore.recruitment.domain.attachment.Attachment;
+
 /**
  * @author Stijn Schack
  * @since 8/4/2017
  */
 public class ApplicantAttachmentResponseModel {
-    private String attachmentName;
+    private Attachment attachment;
 
-    public ApplicantAttachmentResponseModel(String attachmentName) {
-        this.attachmentName = attachmentName;
+    ApplicantAttachmentResponseModel(Attachment attachment) {
+        this.attachment = this.attachment;
     }
 
-    public String getAttachmentName() {
-        return attachmentName;
+    public Attachment getAttachment() {
+        return attachment;
     }
 }
