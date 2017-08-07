@@ -45,7 +45,9 @@ public class ApplicantController {
     @Autowired
     private DeleteApplicant deleteApplicant;
 
-    @RequestMapping(method = RequestMethod.POST, value = "/applicant")
+    private final String applicantUrl = "/api/v1/applicant";
+
+    @RequestMapping(method = RequestMethod.POST, value = applicantUrl)
     public ResponseEntity<List<JsonApplicant>> addApplicant(@RequestBody JsonApplicant input) {
         System.out.println("Input:" + input);
         CreateApplicantRequest request = getCreateRequestFromJsonApplicant(input);
@@ -58,7 +60,7 @@ public class ApplicantController {
         return presenter.getResponseEntity();
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/applicant/{applicantId}")
+    @RequestMapping(method = RequestMethod.GET, value = applicantUrl + "/{applicantId}")
     public ResponseEntity<List<JsonApplicant>> getApplicantById(@PathVariable long applicantId) {
         ReadApplicantRequest request = new ReadApplicantRequest();
         request.applicantId = applicantId;
@@ -71,7 +73,7 @@ public class ApplicantController {
         return presenter.getResponseEntity();
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/applicant")
+    @RequestMapping(method = RequestMethod.GET, value = applicantUrl)
     public ResponseEntity<List<JsonApplicant>> getApplicantByParam(@ModelAttribute JsonApplicant jsonApplicant) {
         System.out.println(jsonApplicant);
         try {
@@ -92,7 +94,7 @@ public class ApplicantController {
         return presenter.getResponseEntity();
     }
 
-    @RequestMapping(method = RequestMethod.DELETE, value = "/applicant/{applicantId}")
+    @RequestMapping(method = RequestMethod.DELETE, value = applicantUrl+"{applicantId}")
     public ResponseEntity<List<JsonApplicant>> deleteApplicant(@PathVariable long applicantId) {
         DeleteApplicantRequest request = new DeleteApplicantRequest(applicantId);
         JsonApplicantResponseModelPresenter presenter = new JsonApplicantResponseModelPresenter();
@@ -104,7 +106,7 @@ public class ApplicantController {
         return presenter.getResponseEntity();
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "/applicant/{applicantId}")
+    @RequestMapping(method = RequestMethod.PUT, value = applicantUrl+"{applicantId}")
     public ResponseEntity<List<JsonApplicant>> updateApplicant(@PathVariable long applicantId,
                                                                @RequestBody JsonApplicant applicant) {
         UpdateApplicantRequest request = getUpdateApplicantRequestFromJsonApplicant(applicantId, applicant);

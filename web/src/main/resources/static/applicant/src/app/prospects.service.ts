@@ -11,7 +11,7 @@ import { IProspect} from "./prospects";
 @Injectable()
 export class ProspectsService {
 
-  private _prospectUrl='http://localhost:9090/prospect';
+  private _prospectUrl='http://localhost:9090/api/v1/prospect';
   constructor(private _http: Http){}
 
   getProspects(): Observable<IProspect[]> {

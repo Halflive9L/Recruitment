@@ -10,7 +10,7 @@ import { IApplicant} from "./applicants";
 
 @Injectable()
 export class ApplicantsService {
-  private _applicantUrl='http://localhost:9090/applicant';
+  private _applicantUrl='http://localhost:9090/api/v1/applicant';
   constructor(private _http: Http){}
 
   getApplicants(): Observable<IApplicant[]> {

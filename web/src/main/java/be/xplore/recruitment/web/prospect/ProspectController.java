@@ -45,8 +45,9 @@ public class ProspectController {
     @Autowired
     private DeleteProspect deleteProspect;
 
+    private final String prospectUrl = "/api/v1/prospect";
 
-    @RequestMapping(method = RequestMethod.POST, value = "/prospect")
+    @RequestMapping(method = RequestMethod.POST, value = prospectUrl)
     public ResponseEntity<List<JsonProspect>> addProspect(@RequestBody JsonProspect input) {
         System.out.println("input: " + input);
         CreateProspectRequest request = new CreateProspectRequest();
@@ -64,7 +65,7 @@ public class ProspectController {
     }
 
 
-    @RequestMapping(method = RequestMethod.GET, value = "/prospect/{prospectId}")
+    @RequestMapping(method = RequestMethod.GET, value = prospectUrl+"{prospectId}")
     public ResponseEntity<List<JsonProspect>> getProspectById(@PathVariable long prospectId) {
         ReadProspectRequest request = new ReadProspectRequest();
         request.prospectId = prospectId;
@@ -73,7 +74,7 @@ public class ProspectController {
         return presenter.getResponseEntity();
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/prospect")
+    @RequestMapping(method = RequestMethod.GET, value = prospectUrl)
     public ResponseEntity<List<JsonProspect>> getProspectByParam(@ModelAttribute JsonProspect query) {
         System.out.println("query = " + query);
         ReadProspectRequest request = new ReadProspectRequest();
@@ -91,7 +92,7 @@ public class ProspectController {
 
     }
 
-    @RequestMapping(method = RequestMethod.DELETE, value = "/prospect/{prospectId}")
+    @RequestMapping(method = RequestMethod.DELETE, value = prospectUrl+"{prospectId}")
     public ResponseEntity<List<JsonProspect>> deleteProspect(@PathVariable long prospectId) {
         DeleteProspectRequest request = new DeleteProspectRequest();
         JsonProspectPresenter presenter = new JsonProspectPresenter();
@@ -104,7 +105,7 @@ public class ProspectController {
         return presenter.getResponseEntity();
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "/prospect/{prospectId}")
+    @RequestMapping(method = RequestMethod.PUT, value = prospectUrl+"{prospectId}")
     public ResponseEntity<List<JsonProspect>> updateProspect(@PathVariable long prospectId,
                                                              @RequestBody JsonProspect query) {
         UpdateProspectRequest request = new UpdateProspectRequest();
