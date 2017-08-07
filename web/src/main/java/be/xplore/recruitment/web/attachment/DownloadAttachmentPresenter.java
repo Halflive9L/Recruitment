@@ -1,4 +1,4 @@
-package be.xplore.recruitment.web.interview.attachment;
+package be.xplore.recruitment.web.attachment;
 
 import be.xplore.recruitment.domain.attachment.Attachment;
 import be.xplore.recruitment.domain.attachment.DownloadAttachmentResponseModel;

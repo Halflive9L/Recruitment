@@ -1,8 +1,5 @@
 package be.xplore.recruitment.domain.interview.attachment;
 
-import be.xplore.recruitment.domain.attachment.DownloadAttachmentRequest;
-import be.xplore.recruitment.domain.attachment.DownloadAttachmentResponseModel;
-
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -13,6 +10,4 @@ import java.util.function.Consumer;
 public interface ReadInterviewAttachment {
     void listAllAttachmentsForInterview(ListAllAttachmentsForInterviewRequest request,
                                         Consumer<List<InterviewAttachmentResponseModel>> presenter);
-
-    void downloadAttachment(DownloadAttachmentRequest request, Consumer<DownloadAttachmentResponseModel> presenter);
 }

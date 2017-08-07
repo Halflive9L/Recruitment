@@ -25,5 +25,5 @@ public class AddInterviewAttachmentRequest {
     public void setInterviewId(long interviewId) {
         this.interviewId = interviewId;
     }
-    
+
 }

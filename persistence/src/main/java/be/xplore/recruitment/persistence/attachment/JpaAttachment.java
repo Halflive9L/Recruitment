@@ -85,7 +85,7 @@ public class JpaAttachment {
         this.fileName = fileName;
     }
 
-    public Attachment toAttachment(){
+    public Attachment toAttachment() {
         return new Attachment(this.attachmentId, this.fileName);
     }
 

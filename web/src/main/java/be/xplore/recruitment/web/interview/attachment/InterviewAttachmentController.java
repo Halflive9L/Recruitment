@@ -69,16 +69,4 @@ public class InterviewAttachmentController {
         readInterviewAttachment.listAllAttachmentsForInterview(request, presenter);
         return presenter.getResponseEntity();
     }
-    /*
-    @RequestMapping(method = RequestMethod.GET, value = "/api/v1/attachment/{attachmentId}")
-    public void downloadFile(@PathVariable("attachmentId") long attachmentId,
-                             HttpServletResponse response)
-            throws IOException {
-        DownloadAttachmentRequest request =
-                new DownloadAttachmentRequest(attachmentId, response.getOutputStream());
-        DownloadAttachmentPresenter presenter = new DownloadAttachmentPresenter(response);
-        readInterviewAttachment.downloadAttachment(request, presenter);
-        response.flushBuffer();
-    }
-    */
 }

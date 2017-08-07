@@ -19,10 +19,6 @@ public class Attachment {
         this.attachmentName = attachmentName;
     }
 
-    public void setAttachmentId(long attachmentId) {
-        this.attachmentId = attachmentId;
-    }
-
     public String getAttachmentName() {
         return attachmentName;
     }
@@ -35,11 +31,15 @@ public class Attachment {
         return attachmentId;
     }
 
-    public void setInputStream(InputStream inputStream) {
-        this.inputStream = inputStream;
+    public void setAttachmentId(long attachmentId) {
+        this.attachmentId = attachmentId;
     }
 
     public InputStream getInputStream() {
         return inputStream;
+    }
+
+    public void setInputStream(InputStream inputStream) {
+        this.inputStream = inputStream;
     }
 }
