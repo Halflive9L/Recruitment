@@ -24,9 +24,6 @@ public class AddApplicantAttachmentUseCase implements AddApplicantAttachment {
     public void addAttachment(AddApplicantAttachmentRequest request,
                               Consumer<ApplicantAttachmentResponseModel> response)
             throws NotFoundException, CouldNotAddAttachmentException {
-        if (request.getApplicantId() == 500) {
-            throw new NotFoundException();
-        }
         Attachment attachment = tryAddAttachment(request);
         response.accept(new ApplicantAttachmentResponseModel(attachment));
     }
