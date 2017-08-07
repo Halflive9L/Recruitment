@@ -10,7 +10,7 @@ public class ApplicantAttachmentResponseModel {
     private Attachment attachment;
 
     ApplicantAttachmentResponseModel(Attachment attachment) {
-        this.attachment = this.attachment;
+        this.attachment = attachment;
     }
 
     public Attachment getAttachment() {
