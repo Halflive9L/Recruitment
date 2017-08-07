@@ -3,7 +3,7 @@ package be.xplore.recruitment.domain.interview;
 import javax.inject.Named;
 
 @Named
-public class RemindParticipantsUseCase implements  RemindParticipants {
+public class RemindParticipantsUseCase implements RemindParticipants {
     private final InterviewRepository repository;
     private final ReminderSender reminderSender;
 
@@ -12,7 +12,15 @@ public class RemindParticipantsUseCase implements  RemindParticipants {
         this.reminderSender = reminderSender;
     }
 
-    // TODO: formatter...?
+
+    @Override
+    public void checkReminders() {
+        repository.findInterviewsToRemind().forEach(interview -> {
+            sendReminders(interview);
+            flagInterviewReminded(interview);
+        });
+    }
+
     private String getApplicantMessage(Interview interview) {
         return String.format("applicant message");
     }
@@ -24,14 +32,6 @@ public class RemindParticipantsUseCase implements  RemindParticipants {
     private void sendReminders(Interview interview) {
         reminderSender.remindApplicant(interview.getApplicant(), getApplicantMessage(interview));
         interview.getInterviewers().forEach(i -> reminderSender.remindInterviewer(i, getInterviewerMessage(interview)));
-    }
-
-    @Override
-    public void checkReminders() {
-        repository.findInterviewsToRemind().forEach(interview -> {
-            sendReminders(interview);
-            flagInterviewReminded(interview);
-        });
     }
 
     private void flagInterviewReminded(Interview interview) {

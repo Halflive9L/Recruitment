@@ -62,6 +62,7 @@ public class MockInterviewRepo implements InterviewRepository {
         final LocalDateTime cutoff = LocalDateTime.now().plusDays(1L);
         return data.stream()
                 .filter(i -> !i.isPreInterviewReminderSent())
+                .filter(i -> !i.isCancelled())
                 .filter(i -> cutoff.isAfter(i.getScheduledTime()))
                 .collect(Collectors.toList());
     }

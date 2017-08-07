@@ -1,31 +1,26 @@
 package be.xplore.recruitment;
 
+import be.xplore.recruitment.domain.interview.ReminderSender;
 import be.xplore.recruitment.smtpreminder.SMTPConfig;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import be.xplore.recruitment.smtpreminder.SMTPReminderSender;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.scheduling.annotation.EnableScheduling;
 
-@SpringBootApplication
 @Configuration
-@EnableScheduling
-public class RecruitmentApplication {
+public class TestConfiguration {
     @Bean
-    public SMTPConfig config() {
-        return SMTPConfig.builder()
+    public ReminderSender reminderSender() {
+        SMTPConfig config = SMTPConfig.builder()
                 .withEmail("sender@email.mock")
                 .withHost("smtp.email.mock")
                 .withPassword("password")
                 .withPort(123)
-                .withProtocol("smtp")
+                .withProtocol("mock_smtp")
                 .withSsl(false)
                 .withTimeout(3000)
                 .withUser("user")
                 .build();
-    }
-
-    public static void main(String[] args) {
-        SpringApplication.run(RecruitmentApplication.class, args);
+        ReminderSender sender = new SMTPReminderSender(config);
+        return sender;
     }
 }

@@ -92,13 +92,13 @@ public class InterviewRepoJpa implements InterviewRepository {
         return Optional.of(jpaInterview.toInterview());
     }
 
-    private static final String FIND_REMIND_INTERVIEWS_QUERY =
-            "SELECT JpaInterview i WHERE i.preInterviewReminderSent = false AND i.scheduledTime < :reminderCutoff";
+    private static final String FIND_REMIND_INTERVIEWS_QUERY = "SELECT i FROM JpaInterview i WHERE " +
+            "i.preInterviewReminderSent = false AND i.cancelled = false AND :reminderCutoff > i.scheduledTime";
 
     @Override
     public List<Interview> findInterviewsToRemind() {
         TypedQuery<JpaInterview> query = entityManager.createQuery(FIND_REMIND_INTERVIEWS_QUERY, JpaInterview.class);
-        LocalDateTime cutoff = LocalDateTime.now().minusDays(1);
+        LocalDateTime cutoff = LocalDateTime.now().plusDays(1);
         query.setParameter("reminderCutoff", cutoff);
         return query.getResultList().stream()
             .map(JpaInterview::toInterview)
