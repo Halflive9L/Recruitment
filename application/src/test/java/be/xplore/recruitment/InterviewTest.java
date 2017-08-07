@@ -20,7 +20,6 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class InterviewTest extends TestBase {
-    @Override
     protected JSONObject getJsonTestObject() {
         return null;
     }

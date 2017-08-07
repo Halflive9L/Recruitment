@@ -2,6 +2,7 @@ package be.xplore.recruitment.domain.applicant;
 
 import be.xplore.recruitment.domain.attachment.Attachment;
 import be.xplore.recruitment.domain.exception.CouldNotDownloadAttachmentException;
+import be.xplore.recruitment.domain.exception.NotFoundException;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -140,6 +141,9 @@ public class MockApplicantRepo implements ApplicantRepository {
 
     @Override
     public Optional<Attachment> addAttachment(long applicantId, Attachment attachment) {
+        if (applicantId == 500){
+            throw new NotFoundException();
+        }
         if (mockAttachments.size() > 1) {
             attachment.setAttachmentId(mockAttachments.get(mockAttachments.size() - 1).getAttachmentId() + 1);
         } else {
