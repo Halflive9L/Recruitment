@@ -85,7 +85,6 @@
     <div class="form-group center-block">
       <label for="InputCV">CV toevoegen</label>
       <input type="file" id="InputCV">
-      <!--          <p class="help-block">Example block-level help text here.</p> -->
     </div>
     <button type="submit" onClick="document.getElementById('applicantTable').scrollIntoView();" value="submit" [disabled]="!applicantForm.valid" class="btn btn-default btn-lg center-block">
       Submit
@@ -116,10 +115,10 @@
       <td class="text-center">{{applicant.education}}</td>
       <td class="text-center">{{applicant.address}}</td>
       <td class="text-center">
-        <button [attr.id]="applicant?.applicantId" (click)="getId($event)" class="btn btn-sm btn-info"
+        <button [attr.id]="applicant?.applicantId" (click)="getApplicantId($event)" class="btn btn-sm btn-info"
                 data-toggle="modal" data-target="#applicantModal">Edit
         </button>
-        <button [attr.id]="applicant?.applicantId" class="btn btn-sm btn-danger" (click)="getId($event)"
+        <button [attr.id]="applicant?.applicantId" class="btn btn-sm btn-danger" (click)="getApplicantId($event)"
         data-toggle="modal" data-target="#deleteModal">Delete</button>
       </td>
     </tr>
@@ -135,18 +134,18 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">{{readApplicantById(currentId-1)?.firstName}}
-          {{readApplicantById(currentId-1)?.lastName}}</h4>
-        <p>Applicant number: {{readApplicantById(currentId-1)?.applicantId}}</p>
+        <h4 class="modal-title">{{readApplicantById(currentApplicantId-1)?.firstName}}
+          {{readApplicantById(currentApplicantId-1)?.lastName}}</h4>
+        <p>Applicant number: {{readApplicantById(currentApplicantId-1)?.applicantId}}</p>
       </div>
       <div class="modal-body">
         <form [formGroup]="updateApplicantForm">
           <div class="form-group center-block">
             <label for="InputFirstNameModal">First name</label>
-            <input type="text" value="{{readApplicantById(currentId-1)?.firstName}}" class="form-control"
+            <input type="text" value="{{readApplicantById(currentApplicantId-1)?.firstName}}" class="form-control"
                    id="InputFirstNameModal" placeholder="First name"
                    formControlName="firstName" required minlength="2" maxlength="50"
-                   [ngModel]="readApplicantById(currentId-1)?.firstName">
+                   [ngModel]="readApplicantById(currentApplicantId-1)?.firstName">
             <div *ngIf="updateApplicantForm.controls.firstName.errors &&
        (updateApplicantForm.controls.firstName.dirty || updateApplicantForm.controls.firstName.touched)"
                  class="alert alert-danger">
@@ -164,10 +163,10 @@
 
           <div class="form-group center-block">
             <label for="InputLastNameModal">Last Name</label>
-            <input type="text" value="{{readApplicantById(currentId-1)?.lastName}}" class="form-control"
+            <input type="text" value="{{readApplicantById(currentApplicantId-1)?.lastName}}" class="form-control"
                    id="InputLastNameModal" placeholder="Last name"
                    formControlName="lastName" required maxlength="50" minlength="2"
-                   [ngModel]="readApplicantById(currentId-1)?.lastName">
+                   [ngModel]="readApplicantById(currentApplicantId-1)?.lastName">
           </div>
           <div *ngIf="updateApplicantForm.controls.lastName.errors &&
      (updateApplicantForm.controls.lastName.dirty || updateApplicantForm.controls.lastName.touched)"
@@ -184,9 +183,9 @@
           </div>
           <div class="form-group center-block">
             <label for="InputEmailModal">Email address</label>
-            <input type="email" value="{{readApplicantById(currentId-1)?.email}}" class="form-control"
+            <input type="email" value="{{readApplicantById(currentApplicantId-1)?.email}}" class="form-control"
                    id="InputEmailModal" placeholder="Email"
-                   formControlName="email" [ngModel]="readApplicantById(currentId-1)?.email">
+                   formControlName="email" [ngModel]="readApplicantById(currentApplicantId-1)?.email">
           </div>
           <div *ngIf="updateApplicantForm.controls.email.errors &&
      (updateApplicantForm.controls.email.dirty || updateApplicantForm.controls.email.touched)"
@@ -197,9 +196,9 @@
           </div>
           <div class="form-group center-block">
             <label for="InputPhoneModal">Phone number</label>
-            <input type="text" value="{{readApplicantById(currentId-1)?.phone}}" class="form-control"
+            <input type="text" value="{{readApplicantById(currentApplicantId-1)?.phone}}" class="form-control"
                    id="InputPhoneModal" placeholder="Phone number"
-                   formControlName="phone" [ngModel]="readApplicantById(currentId-1)?.phone">
+                   formControlName="phone" [ngModel]="readApplicantById(currentApplicantId-1)?.phone">
           </div>
 
           <div *ngIf="updateApplicantForm.controls.phone.errors &&
@@ -212,23 +211,23 @@
 
           <div class="form-group center-block">
             <label for="InputDateOfBirthModal">Date of birth</label>
-            <input type="date" value="{{readApplicantById(currentId-1)?.dateOfBirth}}" data-date-format="YYYY/MM/dd"
+            <input type="date" value="{{readApplicantById(currentApplicantId-1)?.dateOfBirth}}" data-date-format="YYYY/MM/dd"
                    class="form-control datepicker" id="InputDateOfBirthModal"
                    placeholder="Date of birth"
-                   formControlName="dateOfBirth" [ngModel]="readApplicantById(currentId-1)?.dateOfBirth">
+                   formControlName="dateOfBirth" [ngModel]="readApplicantById(currentApplicantId-1)?.dateOfBirth">
           </div>
           <div class=" form-group center-block">
             <label id="EducationLabelModal" for="InputEducation">Education</label>
-            <input type="text" value="{{readApplicantById(currentId-1)?.education}}" class="form-control"
+            <input type="text" value="{{readApplicantById(currentApplicantId-1)?.education}}" class="form-control"
                    id="InputEducationModal" placeholder="Education"
-                   formControlName="education" [ngModel]="readApplicantById(currentId-1)?.education">
+                   formControlName="education" [ngModel]="readApplicantById(currentApplicantId-1)?.education">
           </div>
 
           <div class="form-group center-block">
             <label for="InputAddressModal">Address</label>
-            <input type="text" value="{{readApplicantById(currentId-1)?.address}}" class="form-control"
+            <input type="text" value="{{readApplicantById(currentApplicantId-1)?.address}}" class="form-control"
                    id="InputAddressModal" placeholder="Address"
-                   formControlName="address" [ngModel]="readApplicantById(currentId-1)?.address">
+                   formControlName="address" [ngModel]="readApplicantById(currentApplicantId-1)?.address">
           </div>
           <div class="form-group center-block">
             <label for="InputCVModal">CV toevoegen</label>
@@ -256,8 +255,8 @@
     <div class="modal-content">
       <div class="modal-body text-center">
         <p class="text-center">Are you sure you want to delete this applicant? </p>
-        <p class="text-center">{{readApplicantById(currentId-1)?.firstName}}  {{readApplicantById(currentId-1)?.lastName}}</p>
-        <button class="btn btn-danger btn-lg" (click)="deleteApplicant(currentId)" data-dismiss="modal">Yes</button>
+        <p class="text-center">{{readApplicantById(currentApplicantId-1)?.firstName}}  {{readApplicantById(currentApplicantId-1)?.lastName}}</p>
+        <button class="btn btn-danger btn-lg" (click)="deleteApplicant(currentApplicantId)" data-dismiss="modal">Yes</button>
         <button class="btn btn-success btn-lg" data-dismiss="modal">No </button>
       </div>
     </div>
@@ -352,10 +351,10 @@
       <td class="text-center">{{prospect.email}}</td>
       <td class="text-center">{{prospect.phone}}</td>
       <td class="text-center">
-        <button [attr.id]="prospect?.prospectId" (click)="getId($event)" class="btn btn-sm btn-info"
+        <button [attr.id]="prospect?.prospectId" (click)="getProspectId($event)" class="btn btn-sm btn-info"
                 data-toggle="modal" data-target="#prospectModal">Edit
         </button>
-        <button [attr.id]="prospect?.prospectId" class="btn btn-sm btn-danger" (click)="getId($event)"
+        <button [attr.id]="prospect?.prospectId" class="btn btn-sm btn-danger" (click)="getProspectId($event)"
                 data-toggle="modal" data-target="#deleteProspectModal">Delete</button>
       </td>
     </tr>
@@ -372,18 +371,18 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">{{readProspectById(currentId-1)?.firstName}}
-          {{readProspectById(currentId-1)?.lastName}}</h4>
-        <p>Applicant number: {{readProspectById(currentId-1)?.prospectId}}</p>
+        <h4 class="modal-title">{{readProspectById(currentProspectId-1)?.firstName}}
+          {{readProspectById(currentProspectId-1)?.lastName}}</h4>
+        <p>Applicant number: {{readProspectById(currentProspectId-1)?.prospectId}}</p>
       </div>
       <div class="modal-body">
         <form [formGroup]="updateProspectForm">
           <div class="form-group center-block">
             <label for="InputFirstNameProspectModal">First name</label>
-            <input type="text" value="{{readProspectById(currentId-1)?.firstName}}" class="form-control"
+            <input type="text" value="{{readProspectById(currentProspectId-1)?.firstName}}" class="form-control"
                    id="InputFirstNameProspectModal" placeholder="First name"
                    formControlName="firstName" required minlength="2" maxlength="50"
-                   [ngModel]="readProspectById(currentId-1)?.firstName">
+                   [ngModel]="readProspectById(currentProspectId-1)?.firstName">
             <div *ngIf="updateProspectForm.controls.firstName.errors &&
        (updateProspectForm.controls.firstName.dirty || updateProspectForm.controls.firstName.touched)"
                  class="alert alert-danger">
@@ -401,10 +400,10 @@
 
           <div class="form-group center-block">
             <label for="InputLastNameProspectModal">Last Name</label>
-            <input type="text" value="{{readProspectById(currentId-1)?.lastName}}" class="form-control"
+            <input type="text" value="{{readProspectById(currentProspectId-1)?.lastName}}" class="form-control"
                    id="InputLastNameProspectModal" placeholder="Last name"
                    formControlName="lastName" required maxlength="50" minlength="2"
-                   [ngModel]="readProspectById(currentId-1)?.lastName">
+                   [ngModel]="readProspectById(currentProspectId-1)?.lastName">
           </div>
           <div *ngIf="updateProspectForm.controls.lastName.errors &&
      (updateProspectForm.controls.lastName.dirty || updateProspectForm.controls.lastName.touched)"
@@ -421,9 +420,9 @@
           </div>
           <div class="form-group center-block">
             <label for="InputEmailProspectModal">Email address</label>
-            <input type="email" value="{{readProspectById(currentId-1)?.email}}" class="form-control"
+            <input type="email" value="{{readProspectById(currentProspectId-1)?.email}}" class="form-control"
                    id="InputEmailProspectModal" placeholder="Email"
-                   formControlName="email" [ngModel]="readProspectById(currentId-1)?.email">
+                   formControlName="email" [ngModel]="readProspectById(currentProspectId-1)?.email">
           </div>
           <div *ngIf="updateProspectForm.controls.email.errors &&
      (updateProspectForm.controls.email.dirty || updateProspectForm.controls.email.touched)"
@@ -434,9 +433,9 @@
           </div>
           <div class="form-group center-block">
             <label for="InputPhoneProspectModal">Phone number</label>
-            <input type="text" value="{{readProspectById(currentId-1)?.phone}}" class="form-control"
+            <input type="text" value="{{readProspectById(currentProspectId-1)?.phone}}" class="form-control"
                    id="InputPhoneProspectModal" placeholder="Phone number"
-                   formControlName="phone" [ngModel]="readProspectById(currentId-1)?.phone">
+                   formControlName="phone" [ngModel]="readProspectById(currentProspectId-1)?.phone">
           </div>
 
           <div *ngIf="updateProspectForm.controls.phone.errors &&
@@ -467,8 +466,8 @@
     <div class="modal-content">
       <div class="modal-body text-center">
         <p class="text-center">Are you sure you want to delete this prospect? </p>
-        <p class="text-center">{{readProspectById(currentId-1)?.firstName}}  {{readProspectById(currentId-1)?.lastName}}</p>
-        <button class="btn btn-danger btn-lg" (click)="deleteProspect(currentId)" data-dismiss="modal">Yes</button>
+        <p class="text-center">{{readProspectById(currentProspectId-1)?.firstName}}  {{readProspectById(currentProspectId-1)?.lastName}}</p>
+        <button class="btn btn-danger btn-lg" (click)="deleteProspect(currentProspectId)" data-dismiss="modal">Yes</button>
         <button class="btn btn-success btn-lg" data-dismiss="modal">No </button>
       </div>
     </div>
