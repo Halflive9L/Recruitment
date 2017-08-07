@@ -51,6 +51,7 @@ public class InterviewRepoJpa implements InterviewRepository {
         jpaInterview.setScheduledTime(interview.getScheduledTime());
         jpaInterview.setApplicant(jpaApplicant);
         jpaInterview.setInterviewers(interviewers);
+        jpaInterview.setLocation(interview.getLocation());
         entityManager.persist(jpaInterview);
         return jpaInterview.toInterview();
     }
@@ -92,6 +93,17 @@ public class InterviewRepoJpa implements InterviewRepository {
         jpaInterview.setScheduledTime(interview.getScheduledTime());
         jpaInterview.setCancelled(interview.isCancelled());
         entityManager.persist(jpaInterview);
+        return Optional.of(jpaInterview.toInterview());
+    }
+
+    @Override
+    public Optional<Interview> updateInterviewLocation(long interviewId, String location) {
+        JpaInterview jpaInterview = entityManager.find(JpaInterview.class, interviewId);
+        if (jpaInterview == null) {
+            return Optional.empty();
+        }
+        jpaInterview.setLocation(location);
+        entityManager.merge(jpaInterview);
         return Optional.of(jpaInterview.toInterview());
     }
 

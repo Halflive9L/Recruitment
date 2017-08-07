@@ -13,6 +13,7 @@ public class Interview {
     private Applicant applicant;
     private List<Interviewer> interviewers;
     private boolean cancelled;
+    private String location;
 
     public Interview() {
     }
@@ -69,6 +70,14 @@ public class Interview {
         this.cancelled = cancelled;
     }
 
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
     @Override
     public String toString() {
         return "Interview{" +
@@ -77,6 +86,8 @@ public class Interview {
                 ", scheduledTime=" + scheduledTime +
                 ", applicant=" + applicant +
                 ", interviewers=" + interviewers +
+                ", cancelled=" + cancelled +
+                ", location='" + location + '\'' +
                 '}';
     }
 
@@ -87,6 +98,7 @@ public class Interview {
         private Applicant applicant;
         private List<Interviewer> interviewers;
         private boolean cancelled;
+        private String location;
 
         private InterviewBuilder() {
         }
@@ -125,6 +137,11 @@ public class Interview {
             return this;
         }
 
+        public InterviewBuilder withLocation(String location) {
+            this.location = location;
+            return this;
+        }
+
         public Interview build() {
             Interview interview = new Interview();
             interview.setInterviewId(interviewId);
@@ -133,6 +150,7 @@ public class Interview {
             interview.setApplicant(applicant);
             interview.setInterviewers(interviewers);
             interview.setCancelled(cancelled);
+            interview.setLocation(location);
             return interview;
         }
     }

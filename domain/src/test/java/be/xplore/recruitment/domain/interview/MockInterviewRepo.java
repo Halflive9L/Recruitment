@@ -58,6 +58,11 @@ public class MockInterviewRepo implements InterviewRepository {
     }
 
     @Override
+    public Optional<Interview> updateInterviewLocation(long interviewId, String location) {
+        return null;
+    }
+
+    @Override
     public Optional<Attachment> addAttachment(long interviewId, Attachment attachment) {
         return null;
     }
