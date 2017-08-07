@@ -4,11 +4,13 @@ public class InterviewerResponseModel {
     private long interviewerId;
     private String firstName;
     private String lastName;
+    private String email;
 
     public InterviewerResponseModel(Interviewer interviewer) {
         this.interviewerId = interviewer.getInterviewerId();
         this.firstName = interviewer.getFirstName();
         this.lastName = interviewer.getLastName();
+        this.email = interviewer.getEmail();
     }
 
     public long getInterviewerId() {
@@ -33,5 +35,13 @@ public class InterviewerResponseModel {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

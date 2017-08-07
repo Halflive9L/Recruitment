@@ -6,6 +6,7 @@ public class Interviewer {
     private long interviewerId;
     private String firstName;
     private String lastName;
+    private String email;
 
     public Interviewer() {
     }
@@ -40,6 +41,14 @@ public class Interviewer {
         this.lastName = lastName;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public static InterviewerBuilder builder() {
         return new InterviewerBuilder();
     }
@@ -48,6 +57,7 @@ public class Interviewer {
         private long interviewerId;
         private String firstName;
         private String lastName;
+        private String email;
 
         private InterviewerBuilder() {
         }
@@ -71,11 +81,17 @@ public class Interviewer {
             return this;
         }
 
+        public InterviewerBuilder withEmail(String email) {
+            this.email = email;
+            return this;
+        }
+
         public Interviewer build() {
             Interviewer interviewer = new Interviewer();
             interviewer.setInterviewerId(interviewerId);
             interviewer.setFirstName(firstName);
             interviewer.setLastName(lastName);
+            interviewer.setEmail(email);
             return interviewer;
         }
     }

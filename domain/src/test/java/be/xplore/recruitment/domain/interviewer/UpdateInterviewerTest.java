@@ -1,4 +1,5 @@
 package be.xplore.recruitment.domain.interviewer;
+
 import be.xplore.recruitment.domain.exception.NotFoundException;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,7 +14,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UpdateInterviewerTest {
-        private MockInterviewerRepo repository;
+    private MockInterviewerRepo repository;
     private UpdateInterviewer useCase;
 
     private List<Interviewer> seed = Arrays.asList(
@@ -29,7 +30,12 @@ public class UpdateInterviewerTest {
 
     @Test
     public void updates() {
-        UpdateInterviewerRequest request = new UpdateInterviewerRequest(1, "Lies", "Achten");
+        UpdateInterviewerRequest request = UpdateInterviewerRequest.builder()
+                .withFirstName("Lies")
+                .withLastName("Achten")
+                .withInterviewerId(1)
+                .withEmail("lies.achten@email.com")
+                .build();
         useCase.updateInterviewer(request, response -> {
             assertThat(response.getFirstName(), is(request.getFirstName()));
             assertThat(response.getLastName(), is(request.getLastName()));
@@ -43,8 +49,14 @@ public class UpdateInterviewerTest {
 
     @Test(expected = NotFoundException.class)
     public void updateNonExistent() {
-        UpdateInterviewerRequest request = new UpdateInterviewerRequest(99999, "Lies", "Achten");
-        useCase.updateInterviewer(request, response -> {});
+        UpdateInterviewerRequest request = UpdateInterviewerRequest.builder()
+                .withFirstName("Lies")
+                .withLastName("Achten")
+                .withInterviewerId(99999)
+                .withEmail("lies.achten@email.com")
+                .build();
+        useCase.updateInterviewer(request, response -> {
+        });
     }
 
     private void assertResponseEquals(Interviewer interviewer, InterviewerResponseModel response) {

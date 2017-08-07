@@ -70,6 +70,7 @@ public class InterviewerRepoJpa implements InterviewerRepository {
         else {
             e.setFirstName(interviewer.getFirstName());
             e.setLastName(interviewer.getLastName());
+            e.setEmail(interviewer.getEmail());
             entityManager.persist(e);
             return Optional.of(e.toInterviewer());
         }

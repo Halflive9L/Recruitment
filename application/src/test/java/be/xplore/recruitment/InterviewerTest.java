@@ -1,5 +1,6 @@
 package be.xplore.recruitment;
 
+import be.xplore.recruitment.domain.interviewer.Interviewer;
 import be.xplore.recruitment.web.interviewer.JsonInterviewer;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.ExpectedDatabase;
@@ -40,9 +41,10 @@ public class InterviewerTest extends TestBase {
     @DatabaseSetup("/interviewer/InterviewerTest.testData.xml")
     public void testGetAll() {
         ParameterizedTypeReference<List<JsonInterviewer>> typeRef =
-                new ParameterizedTypeReference<List<JsonInterviewer>>() {};
+                new ParameterizedTypeReference<List<JsonInterviewer>>() {
+                };
         List<JsonInterviewer> result = restTemplate
-                .exchange("/api/interviewer/all", HttpMethod.GET, null,  typeRef)
+                .exchange("/api/interviewer/all", HttpMethod.GET, null, typeRef)
                 .getBody();
         assertThat(result).hasSize(3);
     }
@@ -52,7 +54,12 @@ public class InterviewerTest extends TestBase {
     @ExpectedDatabase(value = "/interviewer/InterviewerTest.afterCreate.xml",
             assertionMode = DatabaseAssertionMode.NON_STRICT)
     public void testCreate() {
-        JSONObject body = createInterviewerJsonObject(0, "Maarten", "Billiet");
+        JSONObject body = createInterviewerJsonObject(Interviewer.builder()
+                .withInterviewerId(0)
+                .withFirstName("Maarten")
+                .withLastName("Billiet")
+                .withEmail("mb@email.com")
+                .build());
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<String> httpEntity = new HttpEntity<>(body.toJSONString(), headers);
@@ -68,7 +75,12 @@ public class InterviewerTest extends TestBase {
     @ExpectedDatabase(value = "/interviewer/InterviewerTest.afterUpdate.xml",
             assertionMode = DatabaseAssertionMode.NON_STRICT)
     public void testUpdate() {
-    JSONObject body = createInterviewerJsonObject(1, "Maarten", "Billiet");
+        JSONObject body = createInterviewerJsonObject(Interviewer.builder()
+                .withInterviewerId(1)
+                .withFirstName("Maarten")
+                .withLastName("Billiet")
+                .withEmail("mb@email.com")
+                .build());
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<String> httpEntity = new HttpEntity<>(body.toJSONString(), headers);
@@ -89,11 +101,12 @@ public class InterviewerTest extends TestBase {
                 .getBody();
     }
 
-    private JSONObject createInterviewerJsonObject(long id, String firstName, String lastName) {
+    private JSONObject createInterviewerJsonObject(Interviewer interviewer) {
         JSONObject obj = new JSONObject();
-        obj.put("interviewerId", Long.toString(id));
-        obj.put("firstName", firstName);
-        obj.put("lastName", lastName);
+        obj.put("interviewerId", Long.toString(interviewer.getInterviewerId()));
+        obj.put("firstName", interviewer.getFirstName());
+        obj.put("lastName", interviewer.getLastName());
+        obj.put("email", interviewer.getEmail());
         return obj;
     }
 }

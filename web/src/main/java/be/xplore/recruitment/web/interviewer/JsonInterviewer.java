@@ -11,6 +11,7 @@ public class JsonInterviewer {
     private long interviewerId;
     private String firstName;
     private String lastName;
+    private String email;
 
     @JsonCreator
     public JsonInterviewer() {
@@ -46,10 +47,21 @@ public class JsonInterviewer {
         this.lastName = lastName;
     }
 
+    @JsonProperty
+    public String getEmail() {
+        return email;
+    }
+
+    @JsonProperty
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public static JsonInterviewer asJsonInterviewer(InterviewerResponseModel response) {
         return builder()
                 .withFirstName(response.getFirstName())
                 .withLastName(response.getLastName())
+                .withEmail(response.getEmail())
                 .withInterviewerId(response.getInterviewerId())
                 .build();
     }
@@ -58,6 +70,7 @@ public class JsonInterviewer {
         return Interviewer.builder()
                 .withFirstName(getFirstName())
                 .withLastName(getLastName())
+                .withEmail(getEmail())
                 .withInterviewerId(getInterviewerId())
                 .build();
     }
@@ -70,6 +83,7 @@ public class JsonInterviewer {
         private long interviewerId;
         private String firstName;
         private String lastName;
+        private String email;
 
         private JsonInterviewerBuilder() {
         }
@@ -93,10 +107,16 @@ public class JsonInterviewer {
             return this;
         }
 
+        public JsonInterviewerBuilder withEmail(String email) {
+            this.email = email;
+            return this;
+        }
+
         public JsonInterviewer build() {
             JsonInterviewer jsonInterviewer = new JsonInterviewer();
             jsonInterviewer.setInterviewerId(interviewerId);
             jsonInterviewer.setFirstName(firstName);
+            jsonInterviewer.setEmail(email);
             jsonInterviewer.setLastName(lastName);
             return jsonInterviewer;
         }
