@@ -35,9 +35,9 @@ import java.util.List;
  */
 @CrossOrigin
 @RestController
+@RequestMapping("/api/v1/prospect")
 public class ProspectController {
 
-    private final String prospectUrl = "/api/v1/prospect";
     @Autowired
     private CreateProspect createProspect;
     @Autowired
@@ -49,7 +49,7 @@ public class ProspectController {
     @Autowired
     private ImportProspects importProspects;
 
-    @RequestMapping(method = RequestMethod.POST, value = prospectUrl)
+    @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<JsonProspect> addProspect(@RequestBody JsonProspect input) {
         CreateProspectRequest request = jsonProspectToCreateProspectRequest(input);
         JsonProspectResponseModelPresenter presenter = new JsonProspectResponseModelPresenter();
@@ -70,7 +70,7 @@ public class ProspectController {
         return request;
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = prospectUrl + "/{prospectId}")
+    @RequestMapping(method = RequestMethod.GET, value = "/{prospectId}")
     public ResponseEntity<JsonProspect> getProspectById(@PathVariable long prospectId) {
         ReadProspectRequest request = new ReadProspectRequest();
         request.prospectId = prospectId;
@@ -83,7 +83,7 @@ public class ProspectController {
         return presenter.getResponseEntity();
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = prospectUrl)
+    @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<JsonProspect>> getProspectByParam(@ModelAttribute JsonProspect jsonProspect) {
         try {
             return presentProspectsByParam(jsonProspect);
@@ -103,7 +103,7 @@ public class ProspectController {
         return presenter.getResponseEntity();
     }
 
-    @RequestMapping(method = RequestMethod.DELETE, value = prospectUrl + "/{prospectId}")
+    @RequestMapping(method = RequestMethod.DELETE, value = "/{prospectId}")
     public ResponseEntity<JsonProspect> deleteProspect(@PathVariable long prospectId) {
         DeleteProspectRequest request = new DeleteProspectRequest(prospectId);
         JsonProspectResponseModelPresenter presenter = new JsonProspectResponseModelPresenter();
@@ -115,7 +115,7 @@ public class ProspectController {
         return presenter.getResponseEntity();
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = prospectUrl + "/{prospectId}")
+    @RequestMapping(method = RequestMethod.PUT, value = "/{prospectId}")
     public ResponseEntity<JsonProspect> updateProspect(@PathVariable long prospectId,
                                                        @RequestBody JsonProspect query) {
         UpdateProspectRequest request = new UpdateProspectRequest();
@@ -132,7 +132,7 @@ public class ProspectController {
         return presenter.getResponseEntity();
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/api/importprospects")
+    @RequestMapping(method = RequestMethod.POST, value = "/importprospects")
     public ResponseEntity<JsonImportResult> importProspects(@RequestParam("file") MultipartFile uploaded) {
         JsonProspectImportResponseModelPresenter presenter = new JsonProspectImportResponseModelPresenter();
         try {

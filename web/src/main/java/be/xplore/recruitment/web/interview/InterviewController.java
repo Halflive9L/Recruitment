@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/interview")
+@RequestMapping("/api/v1/interview")
 public class InterviewController {
     @Autowired
     private ScheduleInterview scheduleInterview;

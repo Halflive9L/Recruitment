@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/interviewer")
+@RequestMapping("/api/v1/interviewer")
 public class InterviewerController {
     @Autowired
     private CreateInterviewer createInterviewer;
