@@ -44,7 +44,7 @@ public class InterviewController {
         return presenter.getResponseEntity();
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/all")
+    @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<JsonInterview>> readAll() {
         JsonInterviewResponseModelListPresenter presenter = new JsonInterviewResponseModelListPresenter();
         readInterview.readAll(presenter);

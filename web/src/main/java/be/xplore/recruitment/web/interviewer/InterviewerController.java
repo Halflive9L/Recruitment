@@ -36,7 +36,7 @@ public class InterviewerController {
     public InterviewerController() {
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/all")
+    @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<JsonInterviewer>> getAllInterviewers() {
         JsonInterviewerResponseModelListPresenter presenter = new JsonInterviewerResponseModelListPresenter();
         readInterviewer.readAll(presenter);

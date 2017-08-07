@@ -43,7 +43,7 @@ public class InterviewerTest extends TestBase {
                 new ParameterizedTypeReference<List<JsonInterviewer>>() {
                 };
         List<JsonInterviewer> result = restTemplate
-                .exchange("/api/v1/interviewer/all", HttpMethod.GET, null, typeRef)
+                .exchange("/api/v1/interviewer/", HttpMethod.GET, null, typeRef)
                 .getBody();
         assertThat(result).hasSize(3);
     }
