@@ -15,40 +15,53 @@ public class InterviewResponseModel {
     public InterviewResponseModel() {
     }
 
+    public static InterviewResponseModel fromInterview(Interview interview) {
+        InterviewResponseModel model = new InterviewResponseModel();
+        model.setApplicantId(interview.getApplicant().getApplicantId());
+        model.setScheduledTime(interview.getScheduledTime());
+        model.setCreatedTime(interview.getCreatedTime());
+        model.setInterviewId(interview.getInterviewId());
+        model.setInterviewerIds(interview.getInterviewers().stream()
+                .map(i -> i.getInterviewerId())
+                .collect(Collectors.toList()));
+        model.setCancelled(interview.isCancelled());
+        return model;
+    }
+
     public long getInterviewId() {
         return interviewId;
-    }
-
-    public LocalDateTime getCreatedTime() {
-        return createdTime;
-    }
-
-    public LocalDateTime getScheduledTime() {
-        return scheduledTime;
-    }
-
-    public long getApplicantId() {
-        return applicantId;
-    }
-
-    public List<Long> getInterviewerIds() {
-        return interviewerIds;
     }
 
     public void setInterviewId(long interviewId) {
         this.interviewId = interviewId;
     }
 
+    public LocalDateTime getCreatedTime() {
+        return createdTime;
+    }
+
     public void setCreatedTime(LocalDateTime createdTime) {
         this.createdTime = createdTime;
+    }
+
+    public LocalDateTime getScheduledTime() {
+        return scheduledTime;
     }
 
     public void setScheduledTime(LocalDateTime scheduledTime) {
         this.scheduledTime = scheduledTime;
     }
 
+    public long getApplicantId() {
+        return applicantId;
+    }
+
     public void setApplicantId(long applicantId) {
         this.applicantId = applicantId;
+    }
+
+    public List<Long> getInterviewerIds() {
+        return interviewerIds;
     }
 
     public void setInterviewerIds(List<Long> interviewerIds) {
@@ -61,18 +74,5 @@ public class InterviewResponseModel {
 
     public void setCancelled(boolean cancelled) {
         this.cancelled = cancelled;
-    }
-
-    public static InterviewResponseModel fromInterview(Interview interview) {
-        InterviewResponseModel model = new InterviewResponseModel();
-        model.setApplicantId(interview.getApplicant().getApplicantId());
-        model.setScheduledTime(interview.getScheduledTime());
-        model.setCreatedTime(interview.getCreatedTime());
-        model.setInterviewId(interview.getInterviewId());
-        model.setInterviewerIds(interview.getInterviewers().stream()
-                .map(i -> i.getInterviewerId())
-                .collect(Collectors.toList()));
-        model.setCancelled(interview.isCancelled());
-        return model;
     }
 }

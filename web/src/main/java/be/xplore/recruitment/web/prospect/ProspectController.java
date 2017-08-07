@@ -37,21 +37,17 @@ import java.util.List;
 @RestController
 public class ProspectController {
 
+    private final String prospectUrl = "/api/v1/prospect";
     @Autowired
     private CreateProspect createProspect;
-
     @Autowired
     private ReadProspect readProspect;
-
     @Autowired
     private UpdateProspect updateProspect;
-
     @Autowired
     private DeleteProspect deleteProspect;
-
     @Autowired
     private ImportProspects importProspects;
-    private final String prospectUrl = "/api/v1/prospect";
 
     @RequestMapping(method = RequestMethod.POST, value = prospectUrl)
     public ResponseEntity<JsonProspect> addProspect(@RequestBody JsonProspect input) {
@@ -119,9 +115,9 @@ public class ProspectController {
         return presenter.getResponseEntity();
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = prospectUrl+"/{prospectId}")
+    @RequestMapping(method = RequestMethod.PUT, value = prospectUrl + "/{prospectId}")
     public ResponseEntity<JsonProspect> updateProspect(@PathVariable long prospectId,
-                                                             @RequestBody JsonProspect query) {
+                                                       @RequestBody JsonProspect query) {
         UpdateProspectRequest request = new UpdateProspectRequest();
         JsonProspectResponseModelPresenter presenter = new JsonProspectResponseModelPresenter();
         JsonProspectToUpdateProspectRequest(query, request);

@@ -3,8 +3,6 @@ package be.xplore.recruitment.persistence.interview;
 import be.xplore.recruitment.domain.interview.Interview;
 import be.xplore.recruitment.persistence.applicant.JpaApplicant;
 import be.xplore.recruitment.persistence.interviewer.JpaInterviewer;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

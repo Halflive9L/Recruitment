@@ -16,8 +16,7 @@ public class LocalDateTimeDeserializer extends JsonDeserializer<LocalDateTime> {
             String s = p.readValueAs(String.class);
             //LocalDateTime dateTime = LocalDateTime.parse(s, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
             return LocalDateTime.parse(s);
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             System.err.println(ex.toString());
             return null;
         }

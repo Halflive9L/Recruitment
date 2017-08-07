@@ -33,19 +33,15 @@ import java.util.List;
 @CrossOrigin
 @RestController
 public class ApplicantController {
+    private final String applicantUrl = "/api/v1/applicant";
     @Autowired
     private CreateApplicant createApplicant;
-
     @Autowired
     private ReadApplicant readApplicant;
-
     @Autowired
     private UpdateApplicant updateApplicant;
-
     @Autowired
     private DeleteApplicant deleteApplicant;
-
-    private final String applicantUrl = "/api/v1/applicant";
 
     @RequestMapping(method = RequestMethod.POST, value = applicantUrl)
     public ResponseEntity<JsonApplicant> addApplicant(@RequestBody JsonApplicant input) {
@@ -92,7 +88,7 @@ public class ApplicantController {
         return presenter.getResponseEntity();
     }
 
-    @RequestMapping(method = RequestMethod.DELETE, value = applicantUrl+"/{applicantId}")
+    @RequestMapping(method = RequestMethod.DELETE, value = applicantUrl + "/{applicantId}")
     public ResponseEntity<JsonApplicant> deleteApplicant(@PathVariable long applicantId) {
         DeleteApplicantRequest request = new DeleteApplicantRequest(applicantId);
         JsonApplicantResponseModelPresenter presenter = new JsonApplicantResponseModelPresenter();
@@ -104,9 +100,9 @@ public class ApplicantController {
         return presenter.getResponseEntity();
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = applicantUrl+"/{applicantId}")
+    @RequestMapping(method = RequestMethod.PUT, value = applicantUrl + "/{applicantId}")
     public ResponseEntity<JsonApplicant> updateApplicant(@PathVariable long applicantId,
-                                                               @RequestBody JsonApplicant applicant) {
+                                                         @RequestBody JsonApplicant applicant) {
         UpdateApplicantRequest request = getUpdateApplicantRequestFromJsonApplicant(applicantId, applicant);
         JsonApplicantResponseModelPresenter presenter = new JsonApplicantResponseModelPresenter();
         try {

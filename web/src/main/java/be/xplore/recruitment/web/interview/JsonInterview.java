@@ -24,6 +24,21 @@ public class JsonInterview {
     public JsonInterview() {
     }
 
+    public static JsonInterviewBuilder builder() {
+        return new JsonInterviewBuilder();
+    }
+
+    public static JsonInterview asJsonInterview(InterviewResponseModel response) {
+        return JsonInterview.builder()
+                .withApplicantId(response.getApplicantId())
+                .withCreatedTime(response.getCreatedTime())
+                .withScheduledTime(response.getScheduledTime())
+                .withInterviewerIds(response.getInterviewerIds())
+                .withInterviewId(response.getInterviewId())
+                .withCancelled(response.isCancelled())
+                .build();
+    }
+
     @JsonProperty
     public long getInterviewId() {
         return interviewId;
@@ -90,19 +105,15 @@ public class JsonInterview {
         this.cancelled = cancelled;
     }
 
-    public static JsonInterviewBuilder builder() {
-        return new JsonInterviewBuilder();
-    }
-
-    public static JsonInterview asJsonInterview(InterviewResponseModel response) {
-        return JsonInterview.builder()
-                .withApplicantId(response.getApplicantId())
-                .withCreatedTime(response.getCreatedTime())
-                .withScheduledTime(response.getScheduledTime())
-                .withInterviewerIds(response.getInterviewerIds())
-                .withInterviewId(response.getInterviewId())
-                .withCancelled(response.isCancelled())
-                .build();
+    @Override
+    public String toString() {
+        return "JsonInterview{" +
+                "interviewId=" + interviewId +
+                ", createdTime=" + createdTime +
+                ", scheduledTime=" + scheduledTime +
+                ", applicantId=" + applicantId +
+                ", interviewerIds=" + interviewerIds +
+                '}';
     }
 
     public static final class JsonInterviewBuilder {
@@ -161,16 +172,5 @@ public class JsonInterview {
             jsonInterview.setCancelled(cancelled);
             return jsonInterview;
         }
-    }
-
-    @Override
-    public String toString() {
-        return "JsonInterview{" +
-                "interviewId=" + interviewId +
-                ", createdTime=" + createdTime +
-                ", scheduledTime=" + scheduledTime +
-                ", applicantId=" + applicantId +
-                ", interviewerIds=" + interviewerIds +
-                '}';
     }
 }

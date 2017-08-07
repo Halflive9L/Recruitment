@@ -1,7 +1,6 @@
 package be.xplore.recruitment.web.interviewer;
 
 import be.xplore.recruitment.domain.interviewer.InterviewerResponseModel;
-import be.xplore.recruitment.web.applicant.JsonApplicant;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 

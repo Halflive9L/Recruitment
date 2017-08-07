@@ -5,5 +5,6 @@ import java.util.function.Consumer;
 
 public interface ReadInterviewer {
     void readInterviewerById(ReadInterviewerRequest request, Consumer<InterviewerResponseModel> consumer);
+
     void readAll(Consumer<List<InterviewerResponseModel>> consumer);
 }

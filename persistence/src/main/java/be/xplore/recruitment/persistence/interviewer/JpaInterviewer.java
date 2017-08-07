@@ -27,6 +27,14 @@ public class JpaInterviewer {
     public JpaInterviewer() {
     }
 
+    public static JpaInterviewer fromInterviewer(Interviewer interviewer) {
+        JpaInterviewer e = new JpaInterviewer();
+        e.setFirstName(interviewer.getFirstName());
+        e.setLastName(interviewer.getLastName());
+        e.setInterviewerId(interviewer.getInterviewerId());
+        return e;
+    }
+
     public long getInterviewerId() {
         return interviewerId;
     }
@@ -57,13 +65,5 @@ public class JpaInterviewer {
                 .withFirstName(getFirstName())
                 .withLastName(getLastName())
                 .build();
-    }
-
-    public static JpaInterviewer fromInterviewer(Interviewer interviewer) {
-        JpaInterviewer e = new JpaInterviewer();
-        e.setFirstName(interviewer.getFirstName());
-        e.setLastName(interviewer.getLastName());
-        e.setInterviewerId(interviewer.getInterviewerId());
-        return e;
     }
 }

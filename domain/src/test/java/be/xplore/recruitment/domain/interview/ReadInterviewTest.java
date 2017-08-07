@@ -39,7 +39,7 @@ public class ReadInterviewTest {
                                         .build()
                         ))
                         .build(),
-                 Interview.builder()
+                Interview.builder()
                         .withApplicant(Applicant.builder()
                                 .withId(2)
                                 .withFirstName("sqf")

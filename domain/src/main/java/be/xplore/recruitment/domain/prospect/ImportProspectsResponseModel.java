@@ -4,7 +4,7 @@ import java.util.List;
 
 public class ImportProspectsResponseModel {
     private List<ImportProspectsFailure> failed;
-    private List<ProspectResponseModel>  prospects;
+    private List<ProspectResponseModel> prospects;
 
     public ImportProspectsResponseModel(List<ImportProspectsFailure> failed, List<ProspectResponseModel> prospects) {
         this.failed = failed;

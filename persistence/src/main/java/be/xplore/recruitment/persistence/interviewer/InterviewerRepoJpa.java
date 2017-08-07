@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 @Component
 @Transactional
 public class InterviewerRepoJpa implements InterviewerRepository {
+    private static final String FIND_ALL_QUERY = "SELECT i FROM JpaInterviewer i";
     private final EntityManager entityManager;
 
     @Autowired
@@ -28,7 +29,6 @@ public class InterviewerRepoJpa implements InterviewerRepository {
         return entity.toInterviewer();
     }
 
-    private static final String FIND_ALL_QUERY = "SELECT i FROM JpaInterviewer i";
     @Override
     public List<Interviewer> findAll() {
         List<JpaInterviewer> result = entityManager.createQuery(FIND_ALL_QUERY, JpaInterviewer.class).getResultList();
@@ -42,8 +42,7 @@ public class InterviewerRepoJpa implements InterviewerRepository {
         JpaInterviewer e = entityManager.find(JpaInterviewer.class, id);
         if (e == null) {
             return Optional.empty();
-        }
-        else {
+        } else {
             return Optional.of(e.toInterviewer());
         }
     }
@@ -53,8 +52,7 @@ public class InterviewerRepoJpa implements InterviewerRepository {
         JpaInterviewer e = entityManager.find(JpaInterviewer.class, id);
         if (e == null) {
             return Optional.empty();
-        }
-        else {
+        } else {
             Optional<Interviewer> result = Optional.of(e.toInterviewer());
             entityManager.remove(e);
             return result;
@@ -66,8 +64,7 @@ public class InterviewerRepoJpa implements InterviewerRepository {
         JpaInterviewer e = entityManager.find(JpaInterviewer.class, interviewer.getInterviewerId());
         if (e == null) {
             return Optional.empty();
-        }
-        else {
+        } else {
             e.setFirstName(interviewer.getFirstName());
             e.setLastName(interviewer.getLastName());
             entityManager.persist(e);

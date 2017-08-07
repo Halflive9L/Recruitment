@@ -16,6 +16,13 @@ public class JsonImportFailure implements Serializable {
     public JsonImportFailure() {
     }
 
+    public static JsonImportFailure asJsonImportFailure(ImportProspectsFailure failure) {
+        JsonImportFailure json = new JsonImportFailure();
+        json.setInput(failure.getInput());
+        json.setReason(failure.getReason());
+        return json;
+    }
+
     @JsonProperty
     public String getInput() {
         return input;
@@ -34,13 +41,6 @@ public class JsonImportFailure implements Serializable {
     @JsonProperty
     public void setReason(String reason) {
         this.reason = reason;
-    }
-
-    public static JsonImportFailure asJsonImportFailure(ImportProspectsFailure failure) {
-        JsonImportFailure json = new JsonImportFailure();
-        json.setInput(failure.getInput());
-        json.setReason(failure.getReason());
-        return json;
     }
 }
 

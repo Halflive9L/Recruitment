@@ -45,9 +45,10 @@ public class ReadInterviewerTest {
         });
     }
 
-    @Test(expected = NotFoundException.class )
+    @Test(expected = NotFoundException.class)
     public void readsNonExistent() {
-        useCase.readInterviewerById(new ReadInterviewerRequest(9999), response -> {});
+        useCase.readInterviewerById(new ReadInterviewerRequest(9999), response -> {
+        });
     }
 
     private void assertResponseEquals(Interviewer interviewer, InterviewerResponseModel response) {

@@ -31,8 +31,8 @@ public class ScheduleInterviewTest {
     public void setup() {
         mockInterviewerRepo = new MockInterviewerRepo(Arrays.asList(
                 new Interviewer(1, "Casandra", "Kleinveld"),
-                   new Interviewer(2, "Tyra", "van Vlymen"),
-                   new Interviewer(3, "Jitte", "Slotboom")
+                new Interviewer(2, "Tyra", "van Vlymen"),
+                new Interviewer(3, "Jitte", "Slotboom")
         ));
         mockApplicantRepo = new MockApplicantRepo();
         mockApplicantRepo.createApplicant(Applicant.builder()

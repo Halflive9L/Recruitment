@@ -1,7 +1,6 @@
 package be.xplore.recruitment;
 
 import be.xplore.recruitment.web.applicant.JsonApplicant;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.ExpectedDatabase;
 import com.github.springtestdbunit.assertion.DatabaseAssertionMode;
@@ -48,15 +47,13 @@ public class ApplicantTest extends TestBase {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<String> httpEntity = new HttpEntity<>(getJsonTestObject().toJSONString(), headers);
-        restTemplate.postForEntity("/api/v1/applicant", httpEntity, List.class);
+        restTemplate.postForEntity("/api/v1/applicant", httpEntity, JsonApplicant.class);
     }
 
     @Test
     @DatabaseSetup("/applicant/ApplicantTest.testGetById.xml")
     public void testGetById() {
-        List applicants = restTemplate.getForEntity("/api/v1/applicant/1", List.class).getBody();
-        ObjectMapper mapper = new ObjectMapper();
-        JsonApplicant applicant = mapper.convertValue(applicants.get(0), JsonApplicant.class);
+        JsonApplicant applicant = restTemplate.getForEntity("/api/v1/applicant/1", JsonApplicant.class).getBody();
         assertThat(applicant.getFirstName()).isEqualTo("jos");
         assertThat(applicant.getLastName()).isEqualTo("vermeulen");
         assertThat(applicant.getAddress()).isEqualTo("antwerpen");
