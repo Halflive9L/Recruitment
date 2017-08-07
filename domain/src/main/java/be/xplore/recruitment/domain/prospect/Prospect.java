@@ -135,12 +135,12 @@ public class Prospect {
             return new Prospect(this);
         }
 
-        public ProspectBuilder withFirstName(String firstName){
+        public ProspectBuilder withFirstName(String firstName) {
             this.firstName = firstName;
             return this;
         }
 
-        public ProspectBuilder withLastName(String lastName){
+        public ProspectBuilder withLastName(String lastName) {
             this.lastName = lastName;
             return this;
         }

@@ -16,6 +16,10 @@ public class Interviewer {
         this.lastName = lastName;
     }
 
+    public static InterviewerBuilder builder() {
+        return new InterviewerBuilder();
+    }
+
     public long getInterviewerId() {
         return interviewerId;
     }
@@ -40,8 +44,23 @@ public class Interviewer {
         this.lastName = lastName;
     }
 
-    public static InterviewerBuilder builder() {
-        return new InterviewerBuilder();
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Interviewer)) {
+            return false;
+        }
+        Interviewer that = (Interviewer) o;
+        return interviewerId == that.interviewerId &&
+                Objects.equals(firstName, that.firstName) &&
+                Objects.equals(lastName, that.lastName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(interviewerId, firstName, lastName);
     }
 
     public static final class InterviewerBuilder {
@@ -78,24 +97,5 @@ public class Interviewer {
             interviewer.setLastName(lastName);
             return interviewer;
         }
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof Interviewer)) {
-            return false;
-        }
-        Interviewer that = (Interviewer) o;
-        return interviewerId == that.interviewerId &&
-                Objects.equals(firstName, that.firstName) &&
-                Objects.equals(lastName, that.lastName);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(interviewerId, firstName, lastName);
     }
 }

@@ -46,14 +46,15 @@ public class CancelInterviewTest {
 
     @Test
     public void cancelsInterview() {
-       useCase.cancelInterview(new CancelInterviewRequest(1), response -> {
-           assertThat(response.isCancelled(), is(true));
-       });
+        useCase.cancelInterview(new CancelInterviewRequest(1), response -> {
+            assertThat(response.isCancelled(), is(true));
+        });
     }
 
     @Test
     public void uncancelInterview() {
-        useCase.cancelInterview(new CancelInterviewRequest(1), response -> {});
+        useCase.cancelInterview(new CancelInterviewRequest(1), response -> {
+        });
         useCase.cancelInterview(new CancelInterviewRequest(1), response -> {
             assertThat(response.isCancelled(), is(false));
         });
@@ -61,6 +62,7 @@ public class CancelInterviewTest {
 
     @Test(expected = NotFoundException.class)
     public void cancelNonExistent() {
-        useCase.cancelInterview(new CancelInterviewRequest(999999), response -> {});
+        useCase.cancelInterview(new CancelInterviewRequest(999999), response -> {
+        });
     }
 }

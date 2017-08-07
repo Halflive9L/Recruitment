@@ -15,6 +15,7 @@ import be.xplore.recruitment.domain.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,21 +29,21 @@ import java.util.List;
  * @author Stijn Schack
  * @since 7/20/2017
  */
+
+@CrossOrigin
 @RestController
 public class ApplicantController {
+    private final String applicantUrl = "/api/v1/applicant";
     @Autowired
     private CreateApplicant createApplicant;
-
     @Autowired
     private ReadApplicant readApplicant;
-
     @Autowired
     private UpdateApplicant updateApplicant;
-
     @Autowired
     private DeleteApplicant deleteApplicant;
 
-    @RequestMapping(method = RequestMethod.POST, value = "/api/applicant")
+    @RequestMapping(method = RequestMethod.POST, value = applicantUrl)
     public ResponseEntity<JsonApplicant> addApplicant(@RequestBody JsonApplicant input) {
         CreateApplicantRequest request = getCreateRequestFromJsonApplicant(input);
         JsonApplicantResponseModelPresenter presenter = new JsonApplicantResponseModelPresenter();
@@ -54,7 +55,7 @@ public class ApplicantController {
         return presenter.getResponseEntity();
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/api/applicant/{applicantId}")
+    @RequestMapping(method = RequestMethod.GET, value = applicantUrl + "/{applicantId}")
     public ResponseEntity<JsonApplicant> getApplicantById(@PathVariable long applicantId) {
         ReadApplicantRequest request = new ReadApplicantRequest();
         request.applicantId = applicantId;
@@ -67,7 +68,7 @@ public class ApplicantController {
         return presenter.getResponseEntity();
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/api/applicant")
+    @RequestMapping(method = RequestMethod.GET, value = applicantUrl)
     public ResponseEntity<List<JsonApplicant>> getApplicantByParam(@ModelAttribute JsonApplicant jsonApplicant) {
         try {
             return presentApplicantsByParam(jsonApplicant);
@@ -87,7 +88,7 @@ public class ApplicantController {
         return presenter.getResponseEntity();
     }
 
-    @RequestMapping(method = RequestMethod.DELETE, value = "/api/applicant/{applicantId}")
+    @RequestMapping(method = RequestMethod.DELETE, value = applicantUrl + "/{applicantId}")
     public ResponseEntity<JsonApplicant> deleteApplicant(@PathVariable long applicantId) {
         DeleteApplicantRequest request = new DeleteApplicantRequest(applicantId);
         JsonApplicantResponseModelPresenter presenter = new JsonApplicantResponseModelPresenter();
@@ -99,9 +100,9 @@ public class ApplicantController {
         return presenter.getResponseEntity();
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "/api/applicant/{applicantId}")
+    @RequestMapping(method = RequestMethod.PUT, value = applicantUrl + "/{applicantId}")
     public ResponseEntity<JsonApplicant> updateApplicant(@PathVariable long applicantId,
-                                                               @RequestBody JsonApplicant applicant) {
+                                                         @RequestBody JsonApplicant applicant) {
         UpdateApplicantRequest request = getUpdateApplicantRequestFromJsonApplicant(applicantId, applicant);
         JsonApplicantResponseModelPresenter presenter = new JsonApplicantResponseModelPresenter();
         try {

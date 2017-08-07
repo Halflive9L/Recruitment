@@ -38,7 +38,8 @@ public class DeleteInterviewerTest {
 
     @Test(expected = NotFoundException.class)
     public void deleteNonExistent() {
-        useCase.deleteInterviewer(new DeleteInterviewerRequest(5), response -> {});
+        useCase.deleteInterviewer(new DeleteInterviewerRequest(5), response -> {
+        });
     }
 
     private void assertResponseEquals(Interviewer interviewer, InterviewerResponseModel response) {

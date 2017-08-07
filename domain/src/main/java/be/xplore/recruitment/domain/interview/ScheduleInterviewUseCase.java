@@ -31,7 +31,7 @@ public class ScheduleInterviewUseCase implements ScheduleInterview {
         List<Interviewer> interviewers = request.getInterviewerIds().stream()
                 .map(id -> interviewerRepository.findById(id).orElseThrow(NotFoundException::new))
                 .collect(Collectors.toList());
-        Interview interview= Interview.builder()
+        Interview interview = Interview.builder()
                 .withCreatedTime(request.getCreatedTime())
                 .withScheduledTime(request.getScheduledTime())
                 .withInterviewers(interviewers)

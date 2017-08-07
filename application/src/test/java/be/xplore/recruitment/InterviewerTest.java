@@ -40,9 +40,10 @@ public class InterviewerTest extends TestBase {
     @DatabaseSetup("/interviewer/InterviewerTest.testData.xml")
     public void testGetAll() {
         ParameterizedTypeReference<List<JsonInterviewer>> typeRef =
-                new ParameterizedTypeReference<List<JsonInterviewer>>() {};
+                new ParameterizedTypeReference<List<JsonInterviewer>>() {
+                };
         List<JsonInterviewer> result = restTemplate
-                .exchange("/api/interviewer/all", HttpMethod.GET, null,  typeRef)
+                .exchange("/api/interviewer/all", HttpMethod.GET, null, typeRef)
                 .getBody();
         assertThat(result).hasSize(3);
     }
@@ -68,7 +69,7 @@ public class InterviewerTest extends TestBase {
     @ExpectedDatabase(value = "/interviewer/InterviewerTest.afterUpdate.xml",
             assertionMode = DatabaseAssertionMode.NON_STRICT)
     public void testUpdate() {
-    JSONObject body = createInterviewerJsonObject(1, "Maarten", "Billiet");
+        JSONObject body = createInterviewerJsonObject(1, "Maarten", "Billiet");
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<String> httpEntity = new HttpEntity<>(body.toJSONString(), headers);

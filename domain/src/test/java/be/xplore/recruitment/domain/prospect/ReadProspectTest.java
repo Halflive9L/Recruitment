@@ -24,7 +24,7 @@ public class ReadProspectTest {
     @Test
     public void testReadAllProspects() {
         List<Prospect> prospects = repository.findAll();
-        assertEquals(prospects,repository.mockProspects);
+        assertEquals(prospects, repository.mockProspects);
     }
 
     @Test

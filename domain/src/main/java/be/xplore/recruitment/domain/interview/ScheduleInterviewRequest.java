@@ -12,6 +12,10 @@ public class ScheduleInterviewRequest {
     public ScheduleInterviewRequest() {
     }
 
+    public static ScheduleInterviewRequestBuilder builder() {
+        return new ScheduleInterviewRequestBuilder();
+    }
+
     public LocalDateTime getCreatedTime() {
         return createdTime;
     }
@@ -26,10 +30,6 @@ public class ScheduleInterviewRequest {
 
     public List<Long> getInterviewerIds() {
         return interviewerIds;
-    }
-
-    public static ScheduleInterviewRequestBuilder builder() {
-        return new ScheduleInterviewRequestBuilder();
     }
 
     public static final class ScheduleInterviewRequestBuilder {

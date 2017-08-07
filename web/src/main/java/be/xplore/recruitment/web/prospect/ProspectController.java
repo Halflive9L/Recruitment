@@ -16,6 +16,7 @@ import be.xplore.recruitment.domain.prospect.UpdateProspectRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,25 +33,23 @@ import java.util.List;
  * @author Stijn Schack
  * @since 7/18/2017
  */
+@CrossOrigin
 @RestController
 public class ProspectController {
 
+    private final String prospectUrl = "/api/v1/prospect";
     @Autowired
     private CreateProspect createProspect;
-
     @Autowired
     private ReadProspect readProspect;
-
     @Autowired
     private UpdateProspect updateProspect;
-
     @Autowired
     private DeleteProspect deleteProspect;
-
     @Autowired
     private ImportProspects importProspects;
 
-    @RequestMapping(method = RequestMethod.POST, value = "/api/prospect")
+    @RequestMapping(method = RequestMethod.POST, value = prospectUrl)
     public ResponseEntity<JsonProspect> addProspect(@RequestBody JsonProspect input) {
         CreateProspectRequest request = jsonProspectToCreateProspectRequest(input);
         JsonProspectResponseModelPresenter presenter = new JsonProspectResponseModelPresenter();
@@ -71,8 +70,7 @@ public class ProspectController {
         return request;
     }
 
-
-    @RequestMapping(method = RequestMethod.GET, value = "/api/prospect/{prospectId}")
+    @RequestMapping(method = RequestMethod.GET, value = prospectUrl + "/{prospectId}")
     public ResponseEntity<JsonProspect> getProspectById(@PathVariable long prospectId) {
         ReadProspectRequest request = new ReadProspectRequest();
         request.prospectId = prospectId;
@@ -85,9 +83,8 @@ public class ProspectController {
         return presenter.getResponseEntity();
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/api/prospect")
+    @RequestMapping(method = RequestMethod.GET, value = prospectUrl)
     public ResponseEntity<List<JsonProspect>> getProspectByParam(@ModelAttribute JsonProspect jsonProspect) {
-        System.out.println(jsonProspect);
         try {
             return presentProspectsByParam(jsonProspect);
         } catch (NotFoundException e) {
@@ -106,7 +103,7 @@ public class ProspectController {
         return presenter.getResponseEntity();
     }
 
-    @RequestMapping(method = RequestMethod.DELETE, value = "/api/prospect/{prospectId}")
+    @RequestMapping(method = RequestMethod.DELETE, value = prospectUrl + "/{prospectId}")
     public ResponseEntity<JsonProspect> deleteProspect(@PathVariable long prospectId) {
         DeleteProspectRequest request = new DeleteProspectRequest(prospectId);
         JsonProspectResponseModelPresenter presenter = new JsonProspectResponseModelPresenter();
@@ -118,7 +115,7 @@ public class ProspectController {
         return presenter.getResponseEntity();
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "/api/prospect/{prospectId}")
+    @RequestMapping(method = RequestMethod.PUT, value = prospectUrl + "/{prospectId}")
     public ResponseEntity<JsonProspect> updateProspect(@PathVariable long prospectId,
                                                        @RequestBody JsonProspect query) {
         UpdateProspectRequest request = new UpdateProspectRequest();
@@ -154,13 +151,6 @@ public class ProspectController {
         request.email = prospect.getEmail();
         request.phone = prospect.getPhone();
         return request;
-    }
-
-    private void JsonProspectToReadProspectRequest(@ModelAttribute JsonProspect query, ReadProspectRequest request) {
-        request.firstName = query.getFirstName();
-        request.lastName = query.getLastName();
-        request.email = query.getEmail();
-        request.phone = query.getPhone();
     }
 
     private void JsonProspectToUpdateProspectRequest(JsonProspect query,

@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
@@ -20,6 +19,8 @@ import java.util.stream.Collectors;
 @Component
 @Transactional
 public class InterviewRepoJpa implements InterviewRepository {
+    private static final String FIND_INTERVIEWERS = "SELECT i FROM JpaInterviewer i WHERE i.interviewerId IN (?1)";
+    private static final String FIND_ALL_QUERY = "SELECT i FROM JpaInterview i";
     private ApplicantRepository applicantRepository;
     private EntityManager entityManager;
 
@@ -28,8 +29,6 @@ public class InterviewRepoJpa implements InterviewRepository {
         this.entityManager = entityManager;
         this.applicantRepository = applicantRepository;
     }
-
-    private static final String FIND_INTERVIEWERS = "SELECT i FROM JpaInterviewer i WHERE i.interviewerId IN (?1)";
 
     @Override
     public Interview createInterview(Interview interview) {
@@ -48,7 +47,6 @@ public class InterviewRepoJpa implements InterviewRepository {
         return jpaInterview.toInterview();
     }
 
-    private static final String FIND_ALL_QUERY = "SELECT i FROM JpaInterview i";
     @Override
     public List<Interview> findAll() {
         List<JpaInterview> interviews = entityManager.createQuery(FIND_ALL_QUERY, JpaInterview.class).getResultList();
@@ -80,8 +78,8 @@ public class InterviewRepoJpa implements InterviewRepository {
         }
         jpaInterview.setCreatedTime(interview.getCreatedTime());
         jpaInterview.setInterviewers(interview.getInterviewers().stream()
-            .map(i -> entityManager.find(JpaInterviewer.class, i.getInterviewerId()))
-            .collect(Collectors.toList()));
+                .map(i -> entityManager.find(JpaInterviewer.class, i.getInterviewerId()))
+                .collect(Collectors.toList()));
         jpaInterview.setApplicant(entityManager.find(JpaApplicant.class, interview.getApplicant().getApplicantId()));
         jpaInterview.setScheduledTime(interview.getScheduledTime());
         jpaInterview.setCancelled(interview.isCancelled());

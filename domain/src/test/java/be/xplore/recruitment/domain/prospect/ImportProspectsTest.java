@@ -20,6 +20,10 @@ public class ImportProspectsTest {
     @Mock
     private ProspectRepository prospectRepository;
     private ImportProspects importProspects;
+    private List<String> emails = Arrays.asList(
+            "AudryLauwerijssen@teleworm.us",
+            "RoselieBoonman@armyspy.com",
+            "OnneReerink@dayrep.com");
 
     @Before
     public void setup() {
@@ -54,11 +58,6 @@ public class ImportProspectsTest {
             assertThat(result.getFailed().get(1).getReason(), is("Invalid e-mail"));
         });
     }
-
-    private List<String> emails = Arrays.asList(
-            "AudryLauwerijssen@teleworm.us",
-            "RoselieBoonman@armyspy.com",
-            "OnneReerink@dayrep.com");
 
     @Test
     public void parsesMultipleLines() {

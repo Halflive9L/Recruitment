@@ -36,8 +36,7 @@ public class ImportProspectsUseCase implements ImportProspects {
             }
             response = new ImportProspectsResponseModel(failures, successes);
             consumer.accept(response);
-        }
-        catch (IOException ex) {
+        } catch (IOException ex) {
             throw new ImportException();
         }
     }

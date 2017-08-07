@@ -1,14 +1,8 @@
 package be.xplore.recruitment.persistence.prospect;
 
-import be.xplore.recruitment.domain.prospect.Prospect;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.util.StringUtils;
-
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 
 /**
  * @author Stijn Schack
@@ -17,18 +11,18 @@ import javax.persistence.criteria.Root;
 public class ProspectSpecification {
 
 
-        private JpaProspect prospect;
+    private JpaProspect prospect;
 
-        public ProspectSpecification(JpaProspect prospect) {
-            this.prospect = prospect;
-        }
+    public ProspectSpecification(JpaProspect prospect) {
+        this.prospect = prospect;
+    }
 
-        Specification<JpaProspect> getFullSpecification() {
-            return Specifications.where(hasFirstName())
-                    .and(hasLastName())
-                    .and(hasEmail())
-                    .and(hasPhone());
-        }
+    Specification<JpaProspect> getFullSpecification() {
+        return Specifications.where(hasFirstName())
+                .and(hasLastName())
+                .and(hasEmail())
+                .and(hasPhone());
+    }
 
 
     private Specification<JpaProspect> hasFirstName() {

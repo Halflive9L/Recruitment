@@ -16,6 +16,18 @@ public class JsonInterviewer {
     public JsonInterviewer() {
     }
 
+    public static JsonInterviewer asJsonInterviewer(InterviewerResponseModel response) {
+        return builder()
+                .withFirstName(response.getFirstName())
+                .withLastName(response.getLastName())
+                .withInterviewerId(response.getInterviewerId())
+                .build();
+    }
+
+    public static JsonInterviewerBuilder builder() {
+        return new JsonInterviewerBuilder();
+    }
+
     @JsonProperty
     public long getInterviewerId() {
         return interviewerId;
@@ -46,24 +58,12 @@ public class JsonInterviewer {
         this.lastName = lastName;
     }
 
-    public static JsonInterviewer asJsonInterviewer(InterviewerResponseModel response) {
-        return builder()
-                .withFirstName(response.getFirstName())
-                .withLastName(response.getLastName())
-                .withInterviewerId(response.getInterviewerId())
-                .build();
-    }
-
     public Interviewer toInterviewer() {
         return Interviewer.builder()
                 .withFirstName(getFirstName())
                 .withLastName(getLastName())
                 .withInterviewerId(getInterviewerId())
                 .build();
-    }
-
-    public static JsonInterviewerBuilder builder() {
-        return new JsonInterviewerBuilder();
     }
 
     public static final class JsonInterviewerBuilder {

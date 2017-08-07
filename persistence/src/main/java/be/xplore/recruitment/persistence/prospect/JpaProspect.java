@@ -24,7 +24,7 @@ import javax.persistence.Table;
         @NamedQuery(name = JpaProspect.QUERY_FIND_ALL,
                 query = "SELECT p from JpaProspect p"),
         @NamedQuery(name = JpaProspect.QUERY_DELETE,
-                query = "DELETE FROM JpaProspect p where p.prospectId = :prospectId") })
+                query = "DELETE FROM JpaProspect p where p.prospectId = :prospectId")})
 
 public class JpaProspect {
 
