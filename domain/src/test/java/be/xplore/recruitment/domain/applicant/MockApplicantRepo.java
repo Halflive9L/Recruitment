@@ -15,11 +15,11 @@ import static be.xplore.recruitment.domain.util.Validator.isNullOrEmpty;
  * @author Stijn Schack
  * @since 7/27/2017
  */
-class MockApplicantRepo implements ApplicantRepository {
+public class MockApplicantRepo implements ApplicantRepository {
     List<Applicant> mockApplicants = new ArrayList<>();
     List<Attachment> mockAttachments = new ArrayList<>(1);
 
-    MockApplicantRepo() {
+    public MockApplicantRepo() {
         mockApplicants.add(Applicant.builder()
                 .withFirstName("John").withLastName("Smith").withId(1)
                 .withDateOfBirth(LocalDate.of(1996, 10, 3))
@@ -39,8 +39,9 @@ class MockApplicantRepo implements ApplicantRepository {
     }
 
     @Override
-    public void createApplicant(Applicant a) {
+    public Applicant createApplicant(Applicant a) {
         mockApplicants.add(a);
+        return a;
     }
 
     @Override

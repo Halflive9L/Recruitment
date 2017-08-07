@@ -7,6 +7,8 @@ import be.xplore.recruitment.domain.prospect.CreateProspect;
 import be.xplore.recruitment.domain.prospect.CreateProspectRequest;
 import be.xplore.recruitment.domain.prospect.DeleteProspect;
 import be.xplore.recruitment.domain.prospect.DeleteProspectRequest;
+import be.xplore.recruitment.domain.prospect.ImportProspects;
+import be.xplore.recruitment.domain.prospect.ImportProspectsRequest;
 import be.xplore.recruitment.domain.prospect.ReadProspect;
 import be.xplore.recruitment.domain.prospect.ReadProspectRequest;
 import be.xplore.recruitment.domain.prospect.UpdateProspect;
@@ -14,38 +16,40 @@ import be.xplore.recruitment.domain.prospect.UpdateProspectRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
-
 
 /**
  * @author Stijn Schack
  * @since 7/18/2017
  */
-
+@CrossOrigin
 @RestController
 public class ProspectController {
 
+    private final String prospectUrl = "/api/v1/prospect";
     @Autowired
     private CreateProspect createProspect;
-
     @Autowired
     private ReadProspect readProspect;
-
     @Autowired
     private UpdateProspect updateProspect;
-
     @Autowired
     private DeleteProspect deleteProspect;
+    @Autowired
+    private ImportProspects importProspects;
 
-
-    @RequestMapping(method = RequestMethod.POST, value = "/api/prospect")
+    @RequestMapping(method = RequestMethod.POST, value = prospectUrl)
     public ResponseEntity<JsonProspect> addProspect(@RequestBody JsonProspect input) {
         CreateProspectRequest request = jsonProspectToCreateProspectRequest(input);
         JsonProspectResponseModelPresenter presenter = new JsonProspectResponseModelPresenter();
@@ -66,8 +70,7 @@ public class ProspectController {
         return request;
     }
 
-
-    @RequestMapping(method = RequestMethod.GET, value = "/api/prospect/{prospectId}")
+    @RequestMapping(method = RequestMethod.GET, value = prospectUrl + "/{prospectId}")
     public ResponseEntity<JsonProspect> getProspectById(@PathVariable long prospectId) {
         ReadProspectRequest request = new ReadProspectRequest();
         request.prospectId = prospectId;
@@ -80,9 +83,8 @@ public class ProspectController {
         return presenter.getResponseEntity();
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/api/prospect")
+    @RequestMapping(method = RequestMethod.GET, value = prospectUrl)
     public ResponseEntity<List<JsonProspect>> getProspectByParam(@ModelAttribute JsonProspect jsonProspect) {
-
         try {
             return presentProspectsByParam(jsonProspect);
         } catch (NotFoundException e) {
@@ -101,7 +103,7 @@ public class ProspectController {
         return presenter.getResponseEntity();
     }
 
-    @RequestMapping(method = RequestMethod.DELETE, value = "/api/prospect/{prospectId}")
+    @RequestMapping(method = RequestMethod.DELETE, value = prospectUrl + "/{prospectId}")
     public ResponseEntity<JsonProspect> deleteProspect(@PathVariable long prospectId) {
         DeleteProspectRequest request = new DeleteProspectRequest(prospectId);
         JsonProspectResponseModelPresenter presenter = new JsonProspectResponseModelPresenter();
@@ -113,7 +115,7 @@ public class ProspectController {
         return presenter.getResponseEntity();
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "/api/prospect/{prospectId}")
+    @RequestMapping(method = RequestMethod.PUT, value = prospectUrl + "/{prospectId}")
     public ResponseEntity<JsonProspect> updateProspect(@PathVariable long prospectId,
                                                        @RequestBody JsonProspect query) {
         UpdateProspectRequest request = new UpdateProspectRequest();
@@ -128,6 +130,18 @@ public class ProspectController {
             return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         }
         return presenter.getResponseEntity();
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/api/importprospects")
+    public ResponseEntity<JsonImportResult> importProspects(@RequestParam("file") MultipartFile uploaded) {
+        JsonProspectImportResponseModelPresenter presenter = new JsonProspectImportResponseModelPresenter();
+        try {
+            ImportProspectsRequest request = new ImportProspectsRequest(uploaded.getInputStream());
+            importProspects.importProspects(request, presenter);
+            return presenter.getResponseEntity();
+        } catch (IOException ex) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     private ReadProspectRequest getReadProspectRequestFromJsonProspect(JsonProspect prospect) {

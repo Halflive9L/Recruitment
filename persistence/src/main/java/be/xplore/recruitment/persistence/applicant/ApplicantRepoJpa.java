@@ -46,9 +46,10 @@ public class ApplicantRepoJpa implements ApplicantRepository {
     }
 
     @Override
-    public void createApplicant(Applicant applicant) {
+    public Applicant createApplicant(Applicant applicant) {
         JpaApplicant jpaApplicant = applicantToJpaApplicant(applicant);
         entityManager.persist(jpaApplicant);
+        return jpaApplicant.toApplicant();
     }
 
     @Override

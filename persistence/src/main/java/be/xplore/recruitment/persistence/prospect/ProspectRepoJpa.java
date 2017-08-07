@@ -37,9 +37,10 @@ public class ProspectRepoJpa implements ProspectRepository {
     }
 
     @Override
-    public void createProspect(Prospect prospect) {
+    public Prospect createProspect(Prospect prospect) {
         JpaProspect jpaProspect = prospectToJpaProspect(prospect);
         entityManager.persist(jpaProspect);
+        return jpaProspect.toProspect();
     }
 
     @Override

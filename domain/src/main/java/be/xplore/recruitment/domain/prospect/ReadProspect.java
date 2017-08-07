@@ -18,4 +18,5 @@ public interface ReadProspect {
 
     void readProspectsByParam(ReadProspectRequest request, Consumer<List<ProspectResponseModel>> response)
             throws NotFoundException;
+
 }

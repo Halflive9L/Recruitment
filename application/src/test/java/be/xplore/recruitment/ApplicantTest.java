@@ -46,13 +46,13 @@ public class ApplicantTest extends TestBase {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<String> httpEntity = new HttpEntity<>(getJsonTestObject().toJSONString(), headers);
-        restTemplate.postForEntity("/api/applicant", httpEntity, JsonApplicant.class);
+        restTemplate.postForEntity("/api/v1/applicant", httpEntity, JsonApplicant.class);
     }
 
     @Test
     @DatabaseSetup("/applicant/ApplicantTest.testGetById.xml")
     public void testGetById() {
-        JsonApplicant applicant = restTemplate.getForEntity("/api/applicant/1", JsonApplicant.class).getBody();
+        JsonApplicant applicant = restTemplate.getForEntity("/api/v1/applicant/1", JsonApplicant.class).getBody();
         assertThat(applicant.getFirstName()).isEqualTo("jos");
         assertThat(applicant.getLastName()).isEqualTo("vermeulen");
         assertThat(applicant.getAddress()).isEqualTo("antwerpen");
@@ -68,7 +68,7 @@ public class ApplicantTest extends TestBase {
                 new ParameterizedTypeReference<List<JsonApplicant>>() {
                 };
         List<JsonApplicant> applicants =
-                restTemplate.exchange("/api/applicant", HttpMethod.GET, null, typeReference).getBody();
+                restTemplate.exchange("/api/v1/applicant", HttpMethod.GET, null, typeReference).getBody();
         assertThat(applicants).hasSize(3);
     }
 
@@ -79,7 +79,7 @@ public class ApplicantTest extends TestBase {
                 new ParameterizedTypeReference<List<JsonApplicant>>() {
                 };
         List<JsonApplicant> applicants =
-                restTemplate.exchange("/api/applicant?firstName=stijn", HttpMethod.GET,
+                restTemplate.exchange("/api/v1/applicant?firstName=stijn", HttpMethod.GET,
                         null, typeReference).getBody();
         assertThat(applicants).hasSize(2);
         assertThat(applicants.get(0).getFirstName()).isEqualTo(applicants.get(1).getFirstName())
@@ -104,7 +104,7 @@ public class ApplicantTest extends TestBase {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<String> httpEntity = new HttpEntity<>(jsonBody, headers);
-        restTemplate.put("/api/applicant/3", httpEntity, ResponseEntity.class);
+        restTemplate.put("/api/v1/applicant/3", httpEntity, ResponseEntity.class);
 
     }
 
