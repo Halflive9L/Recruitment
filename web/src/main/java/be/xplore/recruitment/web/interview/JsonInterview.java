@@ -19,6 +19,7 @@ public class JsonInterview {
     private long applicantId;
     private List<Long> interviewerIds;
     private boolean cancelled;
+    private String location;
 
     @JsonCreator
     public JsonInterview() {
@@ -36,6 +37,7 @@ public class JsonInterview {
                 .withInterviewerIds(response.getInterviewerIds())
                 .withInterviewId(response.getInterviewId())
                 .withCancelled(response.isCancelled())
+                .withLocation(response.getLocation())
                 .build();
     }
 
@@ -105,6 +107,16 @@ public class JsonInterview {
         this.cancelled = cancelled;
     }
 
+    @JsonProperty
+    public String getLocation() {
+        return location;
+    }
+
+    @JsonProperty
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
     @Override
     public String toString() {
         return "JsonInterview{" +
@@ -113,6 +125,8 @@ public class JsonInterview {
                 ", scheduledTime=" + scheduledTime +
                 ", applicantId=" + applicantId +
                 ", interviewerIds=" + interviewerIds +
+                ", cancelled=" + cancelled +
+                ", location='" + location + '\'' +
                 '}';
     }
 
@@ -123,6 +137,7 @@ public class JsonInterview {
         private long applicantId;
         private List<Long> interviewerIds;
         private boolean cancelled;
+        private String location;
 
         private JsonInterviewBuilder() {
         }
@@ -162,6 +177,11 @@ public class JsonInterview {
             return this;
         }
 
+        public JsonInterviewBuilder withLocation(String location) {
+            this.location = location;
+            return this;
+        }
+
         public JsonInterview build() {
             JsonInterview jsonInterview = new JsonInterview();
             jsonInterview.setInterviewId(interviewId);
@@ -170,6 +190,7 @@ public class JsonInterview {
             jsonInterview.setApplicantId(applicantId);
             jsonInterview.setInterviewerIds(interviewerIds);
             jsonInterview.setCancelled(cancelled);
+            jsonInterview.setLocation(location);
             return jsonInterview;
         }
     }

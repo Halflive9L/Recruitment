@@ -11,6 +11,7 @@ public class InterviewResponseModel {
     private long applicantId;
     private List<Long> interviewerIds;
     private boolean cancelled;
+    private String location;
 
     public InterviewResponseModel() {
     }
@@ -25,6 +26,7 @@ public class InterviewResponseModel {
                 .map(i -> i.getInterviewerId())
                 .collect(Collectors.toList()));
         model.setCancelled(interview.isCancelled());
+        model.setLocation(interview.getLocation());
         return model;
     }
 
@@ -74,5 +76,13 @@ public class InterviewResponseModel {
 
     public void setCancelled(boolean cancelled) {
         this.cancelled = cancelled;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
     }
 }

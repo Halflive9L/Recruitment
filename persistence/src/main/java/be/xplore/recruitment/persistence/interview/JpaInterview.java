@@ -46,6 +46,9 @@ public class JpaInterview {
     @Column
     private boolean cancelled;
 
+    @Column
+    private String location;
+
     public JpaInterview() {
     }
 
@@ -97,6 +100,14 @@ public class JpaInterview {
         this.cancelled = cancelled;
     }
 
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
     public Interview toInterview() {
         return Interview.builder()
                 .withApplicant(getApplicant().toApplicant())
@@ -107,6 +118,7 @@ public class JpaInterview {
                         .map(JpaInterviewer::toInterviewer)
                         .collect(Collectors.toList()))
                 .withCancelled(isCancelled())
+                .withLocation(getLocation())
                 .build();
     }
 
