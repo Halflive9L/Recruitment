@@ -2,6 +2,8 @@ package be.xplore.recruitment.domain.applicant.attachment;
 
 import be.xplore.recruitment.domain.applicant.ApplicantRepository;
 import be.xplore.recruitment.domain.attachment.Attachment;
+import be.xplore.recruitment.domain.attachment.DownloadAttachmentRequest;
+import be.xplore.recruitment.domain.attachment.DownloadAttachmentResponseModel;
 import be.xplore.recruitment.domain.exception.NotFoundException;
 
 import javax.inject.Named;

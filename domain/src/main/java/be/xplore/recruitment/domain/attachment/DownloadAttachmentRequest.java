@@ -1,4 +1,4 @@
-package be.xplore.recruitment.domain.applicant.attachment;
+package be.xplore.recruitment.domain.attachment;
 
 import java.io.OutputStream;
 
@@ -20,7 +20,7 @@ public class DownloadAttachmentRequest {
         return attachmentId;
     }
 
-    OutputStream getOutputStream() {
+    public OutputStream getOutputStream() {
         return outputStream;
     }
 }
