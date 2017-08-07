@@ -120,9 +120,9 @@ export class AppComponent {
     let body = JSON.stringify(form.value);
     this._applicant.createApplicant(body)
       .subscribe(iapplicant => {
-          iapplicant[0].applicantId = this.highestApplicantId + 1;
+          iapplicant.applicantId = (this.highestApplicantId + 1);
           this.highestApplicantId++;
-        this.iapplicants.push(iapplicant[0])
+        this.iapplicants.push(iapplicant);
       });
   };
 
@@ -130,12 +130,10 @@ export class AppComponent {
     let body = JSON.stringify(form.value);
     this._applicant.updateApplicant(body, this.currentApplicantId)
       .subscribe(iapplicant => {
-        console.log("lenght = " + this.iapplicants.length);
-        console.log("id = " + this.currentApplicantId)
-        let index = this.iapplicants.findIndex(x => x.applicantId === iapplicant[0].applicantId);
+        let index = this.iapplicants.findIndex(x => x.applicantId === iapplicant.applicantId);
         let array1 = this.iapplicants.slice(0, index);
         let array2 = this.iapplicants.slice(index + 1, this.iapplicants.length);
-        array1.push(iapplicant[0]);
+        array1.push(iapplicant);
         this.iapplicants = array1.concat(array2);
       });
   };
@@ -143,7 +141,7 @@ export class AppComponent {
   deleteApplicant(id: number): void {
     this._applicant.deleteApplicant(id)
       .subscribe(iapplicant => {
-        let index = this.iapplicants.findIndex(x => x.applicantId === iapplicant[0].applicantId);
+        let index = this.iapplicants.findIndex(x => x.applicantId === iapplicant.applicantId);
         let array1 = this.iapplicants.slice(0, index);
         let array2 = this.iapplicants.slice(index + 1, this.iapplicants.length);
         this.iapplicants = array1.concat(array2);
@@ -159,9 +157,9 @@ export class AppComponent {
     let body = JSON.stringify(form.value);
     this._prospects.createProspect(body)
       .subscribe(iprospect => {
-          iprospect[0].prospectId = this.highestProspectId + 1;
+          iprospect.prospectId = this.highestProspectId + 1;
           this.highestProspectId++;
-        this.iprospects.push(iprospect[0])
+        this.iprospects.push(iprospect)
       });
   };
 
@@ -169,10 +167,10 @@ export class AppComponent {
     let body = JSON.stringify(form.value);
     this._prospects.updateProspect(body, this.currentProspectId)
       .subscribe(iprospect => {
-        let index = this.iprospects.findIndex(x => x.prospectId === iprospect[0].prospectId);
+        let index = this.iprospects.findIndex(x => x.prospectId === iprospect.prospectId);
         let array1 = this.iprospects.slice(0, index);
         let array2 = this.iprospects.slice(index + 1, this.iprospects.length);
-        array1.push(iprospect[0]);
+        array1.push(iprospect);
         this.iprospects = array1.concat(array2);
       });
   };
@@ -181,7 +179,7 @@ export class AppComponent {
     console.log(id);
     this._prospects.deleteProspect(id)
       .subscribe(iprospect => {
-        let index = this.iprospects.findIndex(x => x.prospectId === iprospect[0].prospectId);
+        let index = this.iprospects.findIndex(x => x.prospectId === iprospect.prospectId);
         let array1 = this.iprospects.slice(0, index);
         let array2 = this.iprospects.slice(index + 1, this.iprospects.length);
         this.iprospects = array1.concat(array2);
