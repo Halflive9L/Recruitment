@@ -111,7 +111,7 @@ public class InterviewTest extends TestBase {
     @Test
     @DatabaseSetup(value = "/interview/InterviewTest.testRemind.xml")
     @Ignore
-    public void testRemindApplicantBeforeInterview() throws Exception {
+    public void testRemindParticipantsBeforeInterview() throws Exception {
         Interview interview = interviewRepository.findById(1).get();
         interview.setScheduledTime(LocalDateTime.now().plusHours(12));
         interviewRepository.updateInterviewer(interview);
@@ -120,9 +120,15 @@ public class InterviewTest extends TestBase {
         interview = interviewRepository.findById(1).get();
         assertThat(interview.isPreInterviewReminderSent()).isTrue();
 
-        MockMailbox mb = MockMailbox.get("jos.vermeulen@example.com");
+        verifyMailboxHasMessages("jos.vermeulen@example.com", 1);
+        verifyMailboxHasMessages("casandra.kleinveld@email.com", 1);
+        verifyMailboxHasMessages("jitte.slotboom@email.com", 1);
+    }
+
+    private void verifyMailboxHasMessages(String mailbox, int count) throws Exception {
+        MockMailbox mb = MockMailbox.get(mailbox);
         Message[] messages = mb.getInbox().getMessages();
-        assertThat(messages.length).isEqualTo(1);
+        assertThat(messages.length).isEqualTo(count);
     }
 
     private JSONObject createInterviewObject(long interviewId, long applicantId, List<Integer> interviewerIds) {
