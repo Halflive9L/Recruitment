@@ -30,7 +30,7 @@ public class InterviewerTest extends TestBase {
     @Test
     @DatabaseSetup("/interviewer/InterviewerTest.testData.xml")
     public void testGetById() {
-        JsonInterviewer interviewer = restTemplate.getForEntity("/api/interviewer/1", JsonInterviewer.class)
+        JsonInterviewer interviewer = restTemplate.getForEntity("/api/v1/interviewer/1", JsonInterviewer.class)
                 .getBody();
         assertThat(interviewer.getFirstName()).isEqualTo("Casandra");
         assertThat(interviewer.getLastName()).isEqualTo("Kleinveld");
@@ -43,7 +43,7 @@ public class InterviewerTest extends TestBase {
                 new ParameterizedTypeReference<List<JsonInterviewer>>() {
                 };
         List<JsonInterviewer> result = restTemplate
-                .exchange("/api/interviewer/all", HttpMethod.GET, null, typeRef)
+                .exchange("/api/v1/interviewer/all", HttpMethod.GET, null, typeRef)
                 .getBody();
         assertThat(result).hasSize(3);
     }
@@ -58,7 +58,7 @@ public class InterviewerTest extends TestBase {
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<String> httpEntity = new HttpEntity<>(body.toJSONString(), headers);
         JsonInterviewer result = restTemplate
-                .postForEntity("/api/interviewer/create", httpEntity, JsonInterviewer.class)
+                .postForEntity("/api/v1/interviewer/create", httpEntity, JsonInterviewer.class)
                 .getBody();
         assertThat(result.getFirstName()).isEqualTo("Maarten");
         assertThat(result.getLastName()).isEqualTo("Billiet");
@@ -74,7 +74,7 @@ public class InterviewerTest extends TestBase {
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<String> httpEntity = new HttpEntity<>(body.toJSONString(), headers);
         JsonInterviewer result = restTemplate
-                .postForEntity("/api/interviewer/update", httpEntity, JsonInterviewer.class)
+                .postForEntity("/api/v1/interviewer/update", httpEntity, JsonInterviewer.class)
                 .getBody();
         assertThat(result.getFirstName()).isEqualTo("Maarten");
         assertThat(result.getLastName()).isEqualTo("Billiet");
@@ -86,7 +86,7 @@ public class InterviewerTest extends TestBase {
             assertionMode = DatabaseAssertionMode.NON_STRICT)
     public void testDelete() {
         restTemplate
-                .exchange("/api/interviewer/1", HttpMethod.DELETE, null, Object.class)
+                .exchange("/api/v1/interviewer/1", HttpMethod.DELETE, null, Object.class)
                 .getBody();
     }
 
