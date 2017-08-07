@@ -1,6 +1,4 @@
-package be.xplore.recruitment.domain.applicant.attachment;
-
-import be.xplore.recruitment.domain.attachment.Attachment;
+package be.xplore.recruitment.domain.attachment;
 
 import java.io.OutputStream;
 
@@ -12,7 +10,7 @@ public class DownloadAttachmentResponseModel {
     private Attachment attachment;
     private OutputStream outputStream;
 
-    DownloadAttachmentResponseModel(Attachment attachment, OutputStream outputStream) {
+    public DownloadAttachmentResponseModel(Attachment attachment, OutputStream outputStream) {
         this.attachment = attachment;
         this.outputStream = outputStream;
     }

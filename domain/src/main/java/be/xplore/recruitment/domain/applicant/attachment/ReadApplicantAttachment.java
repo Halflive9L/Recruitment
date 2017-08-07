@@ -11,6 +11,4 @@ public interface ReadApplicantAttachment {
 
     void listAllAttachmentsForApplicant(ListAllAttachmentsForApplicantRequest request,
                                         Consumer<List<ApplicantAttachmentResponseModel>> response);
-
-    void downloadAttachment(DownloadAttachmentRequest request, Consumer<DownloadAttachmentResponseModel> presenter);
 }

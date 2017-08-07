@@ -1,7 +1,6 @@
 package be.xplore.recruitment.domain.applicant;
 
 import be.xplore.recruitment.domain.attachment.Attachment;
-import be.xplore.recruitment.domain.exception.CouldNotDownloadAttachmentException;
 import be.xplore.recruitment.domain.exception.NotFoundException;
 
 import java.io.IOException;
@@ -141,7 +140,7 @@ public class MockApplicantRepo implements ApplicantRepository {
 
     @Override
     public Optional<Attachment> addAttachment(long applicantId, Attachment attachment) {
-        if (applicantId == 500){
+        if (applicantId == 500) {
             throw new NotFoundException();
         }
         if (mockAttachments.size() > 1) {
@@ -163,15 +162,5 @@ public class MockApplicantRepo implements ApplicantRepository {
         return mockAttachments;
     }
 
-    @Override
-    public Optional<Attachment> downloadAttachment(long attachmentId) throws CouldNotDownloadAttachmentException {
-        Attachment attachment = null;
-        for (Attachment a : mockAttachments) {
-            if (a.getAttachmentId() == attachmentId) {
-                attachment = a;
-            }
-        }
-        return Optional.ofNullable(attachment);
-    }
 
 }

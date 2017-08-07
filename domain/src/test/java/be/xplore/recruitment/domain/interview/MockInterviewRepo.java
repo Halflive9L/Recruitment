@@ -1,5 +1,7 @@
 package be.xplore.recruitment.domain.interview;
 
+import be.xplore.recruitment.domain.attachment.Attachment;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -53,5 +55,10 @@ public class MockInterviewRepo implements InterviewRepository {
                     i.setScheduledTime(interview.getScheduledTime());
                     return i;
                 });
+    }
+
+    @Override
+    public Optional<Attachment> addAttachment(long interviewId, Attachment attachment) {
+        return null;
     }
 }

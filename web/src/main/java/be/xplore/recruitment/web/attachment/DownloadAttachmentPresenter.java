@@ -1,7 +1,7 @@
-package be.xplore.recruitment.web.applicant.attachment;
+package be.xplore.recruitment.web.attachment;
 
-import be.xplore.recruitment.domain.applicant.attachment.DownloadAttachmentResponseModel;
 import be.xplore.recruitment.domain.attachment.Attachment;
+import be.xplore.recruitment.domain.attachment.DownloadAttachmentResponseModel;
 import org.springframework.http.HttpHeaders;
 
 import javax.servlet.http.HttpServletResponse;

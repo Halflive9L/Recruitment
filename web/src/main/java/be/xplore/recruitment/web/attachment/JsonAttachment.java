@@ -1,4 +1,4 @@
-package be.xplore.recruitment.web.applicant.attachment;
+package be.xplore.recruitment.web.attachment;
 
 import be.xplore.recruitment.domain.attachment.Attachment;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -23,6 +23,10 @@ public class JsonAttachment {
         this.attachmentName = attachmentName;
     }
 
+    public static JsonAttachment asJsonAttachment(Attachment attachment) {
+        return new JsonAttachment(attachment.getAttachmentId(), attachment.getAttachmentName());
+    }
+
     @JsonProperty
     public long getId() {
         return id;
@@ -41,9 +45,5 @@ public class JsonAttachment {
     @JsonProperty
     public void setAttachmentName(String attachmentName) {
         this.attachmentName = attachmentName;
-    }
-
-    static JsonAttachment asJsonAttachment(Attachment attachment) {
-        return new JsonAttachment(attachment.getAttachmentId(), attachment.getAttachmentName());
     }
 }

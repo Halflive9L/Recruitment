@@ -2,11 +2,11 @@ package be.xplore.recruitment.web.applicant.attachment;
 
 import be.xplore.recruitment.domain.applicant.attachment.AddApplicantAttachment;
 import be.xplore.recruitment.domain.applicant.attachment.AddApplicantAttachmentRequest;
-import be.xplore.recruitment.domain.applicant.attachment.DownloadAttachmentRequest;
 import be.xplore.recruitment.domain.applicant.attachment.ListAllAttachmentsForApplicantRequest;
 import be.xplore.recruitment.domain.applicant.attachment.ReadApplicantAttachment;
 import be.xplore.recruitment.domain.attachment.Attachment;
 import be.xplore.recruitment.domain.exception.NotFoundException;
+import be.xplore.recruitment.web.attachment.JsonAttachment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
@@ -69,16 +68,5 @@ public class ApplicantAttachmentController {
         ListAllAttachmentsForApplicantPresenter presenter = new ListAllAttachmentsForApplicantPresenter();
         readApplicantAttachment.listAllAttachmentsForApplicant(request, presenter);
         return presenter.getResponseEntity();
-    }
-
-    @RequestMapping(method = RequestMethod.GET, value = "/api/v1/download/{attachmentId}")
-    public void downloadFile(@PathVariable("attachmentId") long attachmentId,
-                             HttpServletResponse response)
-            throws IOException {
-        DownloadAttachmentRequest request =
-                new DownloadAttachmentRequest(attachmentId, response.getOutputStream());
-        DownloadAttachmentPresenter presenter = new DownloadAttachmentPresenter(response);
-        readApplicantAttachment.downloadAttachment(request, presenter);
-        response.flushBuffer();
     }
 }

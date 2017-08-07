@@ -4,7 +4,6 @@ package be.xplore.recruitment.persistence.applicant;
 import be.xplore.recruitment.domain.applicant.Applicant;
 import be.xplore.recruitment.domain.applicant.ApplicantRepository;
 import be.xplore.recruitment.domain.attachment.Attachment;
-import be.xplore.recruitment.domain.exception.CouldNotDownloadAttachmentException;
 import be.xplore.recruitment.domain.exception.NotFoundException;
 import be.xplore.recruitment.persistence.attachment.FileManager;
 import be.xplore.recruitment.persistence.attachment.JpaAttachment;
@@ -177,25 +176,6 @@ public class ApplicantRepoJpa implements ApplicantRepository {
     private Set<JpaAttachment> getAttachmentSetFromApplicantId(long applicantId) {
         JpaApplicant jpaApplicant = findJpaApplicantById(applicantId);
         return jpaApplicant.getAttachments();
-    }
-
-    @Override
-    public Optional<Attachment> downloadAttachment(long attachmentId)
-            throws CouldNotDownloadAttachmentException {
-        Attachment attachment = entityManager.find(JpaAttachment.class, attachmentId).toAttachment();
-        if (attachment != null) {
-            trySetInputStream(attachment);
-        }
-
-        return Optional.ofNullable(attachment);
-    }
-
-    private void trySetInputStream(Attachment attachment) throws CouldNotDownloadAttachmentException {
-        try {
-            attachment.setInputStream(fileManager.downloadAttachment(attachment.getAttachmentName()));
-        } catch (IOException e) {
-            throw new CouldNotDownloadAttachmentException(e);
-        }
     }
 
     private JpaApplicant applicantToJpaApplicant(Applicant applicant) {

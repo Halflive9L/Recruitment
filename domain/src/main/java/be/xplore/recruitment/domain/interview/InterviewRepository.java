@@ -1,5 +1,7 @@
 package be.xplore.recruitment.domain.interview;
 
+import be.xplore.recruitment.domain.attachment.Attachment;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -13,4 +15,6 @@ public interface InterviewRepository {
     Optional<Interview> deleteInterviewer(long id);
 
     Optional<Interview> updateInterviewer(Interview interview);
+
+    Optional<Attachment> addAttachment(long interviewId, Attachment attachment);
 }

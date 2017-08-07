@@ -78,6 +78,7 @@ public class InterviewerTest extends TestBase {
         assertThat(result.getFirstName()).isEqualTo("Maarten");
         assertThat(result.getLastName()).isEqualTo("Billiet");
     }
+
     @Test
     @DatabaseSetup("/interviewer/InterviewerTest.testData.xml")
     @ExpectedDatabase(value = "/interviewer/InterviewerTest.afterDelete.xml",
