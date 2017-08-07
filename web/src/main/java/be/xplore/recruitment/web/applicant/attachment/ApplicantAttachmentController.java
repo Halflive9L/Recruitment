@@ -38,7 +38,7 @@ public class ApplicantAttachmentController {
         this.readApplicantAttachment = readApplicantAttachment;
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/api/applicant/{applicantId}/file",
+    @RequestMapping(method = RequestMethod.POST, value = "/api/v1/applicant/{applicantId}/attachment",
             consumes = "multipart/form-data")
     public ResponseEntity<JsonAttachment> uploadAttachment(@PathVariable long applicantId,
                                                            @RequestParam("attachment") MultipartFile file)
@@ -64,7 +64,7 @@ public class ApplicantAttachmentController {
         return request;
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/api/applicant/{applicantId}/files")
+    @RequestMapping(method = RequestMethod.GET, value = "/api/v1/applicant/{applicantId}/attachment")
     public ResponseEntity<List<JsonAttachment>> listAllFilesForApplicant(@PathVariable long applicantId) {
         ListAllAttachmentsForApplicantRequest request = new ListAllAttachmentsForApplicantRequest(applicantId);
         ListAllAttachmentsForApplicantPresenter presenter = new ListAllAttachmentsForApplicantPresenter();
@@ -72,8 +72,8 @@ public class ApplicantAttachmentController {
         return presenter.getResponseEntity();
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/api/download/{attachmentId}")
-    public void downloadFile(@PathVariable("attatchmentId") long attachmentId,
+    @RequestMapping(method = RequestMethod.GET, value = "/api/v1/download/{attachmentId}")
+    public void downloadFile(@PathVariable("attachmentId") long attachmentId,
                              HttpServletResponse response)
             throws IOException {
         DownloadAttachmentRequest request =
