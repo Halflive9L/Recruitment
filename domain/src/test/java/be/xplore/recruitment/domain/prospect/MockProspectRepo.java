@@ -17,7 +17,7 @@ import static be.xplore.recruitment.domain.util.Validator.isValidPhone;
  */
 class MockProspectRepo implements ProspectRepository {
 
-    List<Prospect> mockProspects = new ArrayList<>();
+    List<Prospect> mockProspects = new ArrayList<>(2);
 
     MockProspectRepo() {
         mockProspects.add(Prospect.builder()
