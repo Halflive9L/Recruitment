@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<dataset>
-    <applicant applicant_id="1"/>
-    <attachment attachment_id="1"/>
-    <applicant_attachment applicant_applicant_id="1" attachment_id="1"/>
-</dataset>
