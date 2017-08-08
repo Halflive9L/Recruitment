@@ -44,8 +44,6 @@ export class ApplicantsService {
       let attachment: FormData = new FormData();
       attachment.append('attachment', file, file.name);
       let headers = new Headers();
-      //headers.append('Content-Type', 'multipart/form-data');
-      //headers.append('Accept', 'application/json');
       let options = new RequestOptions({headers: headers});
       return this._http.post(this._applicantUrl + "/" + id + "/attachment", attachment)
         .map(res => res.json());
@@ -58,15 +56,8 @@ export class ApplicantsService {
   }
 
   downloadApplicantFile(fileId: number) {
-    return this._http.get("http://localhost:9090/api/v1/attachment/" + fileId, {
-      responseType: ResponseContentType.ArrayBuffer
-    })
-      .map(function (data) {
-         let file = new Blob([data.arrayBuffer()], {type: 'application/octet-stream'});
-        let fileURL = URL.createObjectURL(file);
-        window.open(fileURL);
-      });
-  }
+    window.open("http://localhost:9090/api/v1/attachment/" + fileId);
+  };
 
 
 }

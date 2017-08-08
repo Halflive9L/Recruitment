@@ -101,9 +101,7 @@ export class AppComponent {
     this._applicant.readApplicantFileList(id).subscribe(
       file => {
         this.applicantFileList = file;
-        console.log(file);
       });
-    console.log(this.applicantFileList);
   }
 
   onSelectFile(event) {
@@ -116,6 +114,7 @@ export class AppComponent {
     } else {
       this.currentApplicantId = $event.target.id;
     }
+    console.log(this.currentApplicantId);
   };
 
   getProspectId($event) {
@@ -145,7 +144,7 @@ export class AppComponent {
   };
 
   downloadApplicantFile(fileId: number) : void {
-    this._applicant.downloadApplicantFile(fileId).subscribe();
+    this._applicant.downloadApplicantFile(fileId);
   }
 
   updateApplicant(form: FormGroup): void {

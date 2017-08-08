@@ -117,9 +117,9 @@
       <td class="text-center">{{applicant.education}}</td>
       <td class="text-center">{{applicant.address}}</td>
       <td class="text-center">
-        <button [attr.id]="'applicant'+applicant?.applicantId"
+        <button [attr.id]="applicant?.applicantId"
                 class="btn btn-primary" data-toggle="modal" data-target="#filesModal"
-        (click)="readAllApplicantFiles(applicant?.applicantId)">Files
+        (click)="readAllApplicantFiles(applicant?.applicantId); getApplicantId($event);">Files
         </button>
       </td>
       <td class="text-center">
@@ -281,14 +281,16 @@
 
     <div class="modal-content">
       <div class="modal-header">
+        Files for {{readApplicantById(currentApplicantId-1)?.firstName}}
+        {{readApplicantById(currentApplicantId-1)?.lastName}}
       <button type="button" class="close" data-dismiss="modal">&times;</button>
     </div>
       <div class="modal-body text-center">
         <div id="files">
           <!--TO-DO-->
           <div id="filesModalList" class="row" *ngFor="let file of applicantFileList">
-            <div class="col-md-8">
-              {{file?.attachmentName}}
+            <div class="col-md-8 text-center">
+              File {{file.id}}: {{file?.attachmentName}}
             </div>
             <div class="col-md-2">
               <button class="btn btn-info" data-dismiss="filesModal" (click)="downloadApplicantFile(file?.id)">Download</button>

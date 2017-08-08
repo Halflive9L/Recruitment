@@ -9,4 +9,11 @@ table {
   margin-right: auto;
 }
 
+#filesModalList div {
+  padding: 2%;
+}
 
+.row {
+  border: 1px solid skyblue;
+  margin: 2%;
+}
