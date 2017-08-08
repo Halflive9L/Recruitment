@@ -28,7 +28,7 @@ export class AppComponent {
   updateApplicantForm: FormGroup;
   updateProspectForm: FormGroup;
   file: FileList;
-  applicantFileList: File[] = [];
+  applicantFileList: File;
 
   constructor(private _applicant: ApplicantsService, private _prospects: ProspectsService,
               private formBuilder: FormBuilder) {
@@ -97,6 +97,14 @@ export class AppComponent {
       });
   };
 
+  readAllApplicantFiles(id: number) {
+    this._applicant.readApplicantFileList(id).subscribe(
+      file => {
+        this.applicantFileList = file;
+      });
+    console.log(this.applicantFileList);
+  }
+
   onSelectFile(event) {
     this.file = event.srcElement.files;
   }
@@ -150,12 +158,7 @@ export class AppComponent {
       });
   };
 
-  readAllApplicantFiles(id: number) {
-    this._applicant.readApplicantFileList(id).subscribe(
-      file => {
-        this.applicantFileList.push(file[0]);
-      });
-  }
+
   deleteApplicant(id: number): void {
     this._applicant.deleteApplicant(id)
       .subscribe(iapplicant => {

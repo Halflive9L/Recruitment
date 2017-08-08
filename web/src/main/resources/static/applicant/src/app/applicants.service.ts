@@ -54,4 +54,8 @@ export class ApplicantsService {
       return this._http.get(this._applicantUrl+"/"+applicantId+"/attachment/")
         .map((response:Response)=> response.json());
   }
+
+  downloadApplicantFile(fileId: number) {
+    return this._http.get(this._applicantUrl+"/"+fileId+"")
+  }
 }

@@ -119,7 +119,7 @@
       <td class="text-center">
         <button [attr.id]="'applicant'+applicant?.applicantId"
                 class="btn btn-primary" data-toggle="modal" data-target="#filesModal"
-                (click)="readAllApplicantFiles(applicant?.applicantId)">Files
+        (click)="readAllApplicantFiles(applicant?.applicantId)">Files
         </button>
       </td>
       <td class="text-center">
@@ -277,7 +277,7 @@
 
 <!-- Modal -->
 <div id="filesModal" class="modal fade" role="dialog">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-lg">
 
     <div class="modal-content">
       <div class="modal-header">
@@ -285,14 +285,17 @@
     </div>
       <div class="modal-body text-center">
         <div id="files">
-
           <!--TO-DO-->
-          <div id="filesModalList" class="row">
-            {{applicantFileList[0]?.attachmentName}}
-            {{applicantFileList[1]?.attachmentName}}
-            {{applicantFileList[2]?.attachmentName}}
-            {{applicantFileList[3]?.attachmentName}}
-            {{applicantFileList[4]?.attachmentName}}
+          <div id="filesModalList" class="row" *ngFor="let file of applicantFileList">
+            <div class="col-md-8">
+              {{file?.attachmentName}}
+            </div>
+            <div class="col-md-2">
+              <button class="btn btn-info">Download</button>
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-danger">Delete</button>
+            </div>
           </div>
         </div>
       </div>
