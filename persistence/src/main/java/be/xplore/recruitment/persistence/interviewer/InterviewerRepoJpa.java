@@ -3,7 +3,7 @@ package be.xplore.recruitment.persistence.interviewer;
 import be.xplore.recruitment.domain.interviewer.Interviewer;
 import be.xplore.recruitment.domain.interviewer.InterviewerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Component
+@Repository
 @Transactional
 public class InterviewerRepoJpa implements InterviewerRepository {
     private static final String FIND_ALL_QUERY = "SELECT i FROM JpaInterviewer i";

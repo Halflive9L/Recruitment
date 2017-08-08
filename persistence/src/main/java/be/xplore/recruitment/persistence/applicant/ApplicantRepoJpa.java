@@ -9,7 +9,7 @@ import be.xplore.recruitment.persistence.attachment.FileManager;
 import be.xplore.recruitment.persistence.attachment.JpaAttachment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -31,7 +31,7 @@ import static be.xplore.recruitment.persistence.applicant.JpaApplicant.QUERY_FIN
  * @author Lander
  * @since 26/07/2017
  */
-@Component
+@Repository
 @Transactional
 public class ApplicantRepoJpa implements ApplicantRepository {
 
