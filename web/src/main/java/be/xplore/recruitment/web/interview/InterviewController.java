@@ -6,7 +6,10 @@ import be.xplore.recruitment.domain.interview.ReadInterview;
 import be.xplore.recruitment.domain.interview.ReadInterviewRequest;
 import be.xplore.recruitment.domain.interview.ScheduleInterview;
 import be.xplore.recruitment.domain.interview.ScheduleInterviewRequest;
+import be.xplore.recruitment.domain.interview.UpdateInterviewLocation;
+import be.xplore.recruitment.domain.interview.UpdateInterviewLocationRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,6 +31,9 @@ public class InterviewController {
     @Autowired
     private CancelInterview cancelInterview;
 
+    @Autowired
+    private UpdateInterviewLocation updateInterviewLocation;
+
     public InterviewController() {
     }
 
@@ -39,6 +45,7 @@ public class InterviewController {
                 .withCreatedTime(body.getCreatedTime())
                 .withScheduledTime(body.getScheduledTime())
                 .withInterviewerIds(body.getInterviewerIds())
+                .withLocation(body.getLocation())
                 .build();
         scheduleInterview.scheduleInterview(request, presenter);
         return presenter.getResponseEntity();
@@ -62,6 +69,17 @@ public class InterviewController {
     public ResponseEntity<JsonInterview> cancelInterviewById(@PathVariable long interviewId) {
         JsonInterviewResponseModelPresenter presenter = new JsonInterviewResponseModelPresenter();
         cancelInterview.cancelInterview(new CancelInterviewRequest(interviewId), presenter);
+        return presenter.getResponseEntity();
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, value = "/{interviewId}/updatelocation",
+            consumes = MediaType.TEXT_PLAIN_VALUE)
+    public ResponseEntity<JsonInterview> updateInterviewLocation(@PathVariable long interviewId,
+                                                                 @RequestBody String location) {
+        System.out.println(location);
+        JsonInterviewResponseModelPresenter presenter = new JsonInterviewResponseModelPresenter();
+        UpdateInterviewLocationRequest request = new UpdateInterviewLocationRequest(interviewId, location);
+        updateInterviewLocation.updateInterviewLocation(request, presenter);
         return presenter.getResponseEntity();
     }
 }

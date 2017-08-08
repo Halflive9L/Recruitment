@@ -38,7 +38,7 @@ public class ApplicantAttachmentController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/api/v1/applicant/{applicantId}/attachment",
-           consumes = "multipart/form-data")
+            consumes = "multipart/form-data")
     public ResponseEntity<JsonAttachment> uploadAttachment(@PathVariable long applicantId,
                                                            @RequestParam("attachment") MultipartFile file)
             throws IOException {

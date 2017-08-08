@@ -8,6 +8,7 @@ public class ScheduleInterviewRequest {
     private LocalDateTime scheduledTime;
     private long applicantId;
     private List<Long> interviewerIds;
+    private String location;
 
     public ScheduleInterviewRequest() {
     }
@@ -32,11 +33,16 @@ public class ScheduleInterviewRequest {
         return interviewerIds;
     }
 
+    public String getLocation() {
+        return location;
+    }
+
     public static final class ScheduleInterviewRequestBuilder {
         private LocalDateTime createdTime;
         private LocalDateTime scheduledTime;
         private long applicantId;
         private List<Long> interviewerIds;
+        private String location;
 
         private ScheduleInterviewRequestBuilder() {
         }
@@ -65,12 +71,18 @@ public class ScheduleInterviewRequest {
             return this;
         }
 
+        public ScheduleInterviewRequestBuilder withLocation(String location){
+            this.location = location;
+            return this;
+        }
+
         public ScheduleInterviewRequest build() {
             ScheduleInterviewRequest scheduleInterviewRequest = new ScheduleInterviewRequest();
             scheduleInterviewRequest.createdTime = this.createdTime;
             scheduleInterviewRequest.interviewerIds = this.interviewerIds;
             scheduleInterviewRequest.applicantId = this.applicantId;
             scheduleInterviewRequest.scheduledTime = this.scheduledTime;
+            scheduleInterviewRequest.location = this.location;
             return scheduleInterviewRequest;
         }
     }

@@ -51,6 +51,7 @@ public class InterviewRepoJpa implements InterviewRepository {
         jpaInterview.setScheduledTime(interview.getScheduledTime());
         jpaInterview.setApplicant(jpaApplicant);
         jpaInterview.setInterviewers(interviewers);
+        jpaInterview.setLocation(interview.getLocation());
         entityManager.persist(jpaInterview);
         return jpaInterview.toInterview();
     }
@@ -96,6 +97,17 @@ public class InterviewRepoJpa implements InterviewRepository {
     }
 
     @Override
+    public Optional<Interview> updateInterviewLocation(long interviewId, String location) {
+        JpaInterview jpaInterview = entityManager.find(JpaInterview.class, interviewId);
+        if (jpaInterview == null) {
+            return Optional.empty();
+        }
+        jpaInterview.setLocation(location);
+        entityManager.merge(jpaInterview);
+        return Optional.of(jpaInterview.toInterview());
+    }
+
+    @Override
     public Optional<Attachment> addAttachment(long interviewId, Attachment attachment)
             throws NotFoundException {
         JpaInterview interview = entityManager.find(JpaInterview.class, interviewId);
@@ -104,7 +116,7 @@ public class InterviewRepoJpa implements InterviewRepository {
         }
 
         Optional<Attachment> createdAttachment = Optional.ofNullable(tryCreateAttachment(attachment));
-        createdAttachment.ifPresent(a -> registerAttachment(interview, a.getAttachmentName()));
+        createdAttachment.ifPresent(a -> a.setAttachmentId(registerAttachment(interview, a.getAttachmentName())));
         return createdAttachment;
     }
 
@@ -119,8 +131,9 @@ public class InterviewRepoJpa implements InterviewRepository {
         }
     }
 
-    private void registerAttachment(JpaInterview interview, String fileName) {
+    private long registerAttachment(JpaInterview interview, String fileName) {
         JpaAttachment attachment = new JpaAttachment(interview, fileName);
         entityManager.persist(attachment);
+        return attachment.getAttachmentId();
     }
 }
