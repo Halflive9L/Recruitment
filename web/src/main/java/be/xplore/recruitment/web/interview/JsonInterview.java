@@ -20,6 +20,7 @@ public class JsonInterview {
     private List<Long> interviewerIds;
     private boolean cancelled;
     private String location;
+    private boolean preInterviewReminderSent;
 
     @JsonCreator
     public JsonInterview() {
@@ -38,6 +39,7 @@ public class JsonInterview {
                 .withInterviewId(response.getInterviewId())
                 .withCancelled(response.isCancelled())
                 .withLocation(response.getLocation())
+                .withPreInterviewReminderSent(response.isPreInterviewReminderSent())
                 .build();
     }
 
@@ -117,6 +119,17 @@ public class JsonInterview {
         this.location = location;
     }
 
+    @JsonProperty
+    public boolean isPreInterviewReminderSent() {
+        return preInterviewReminderSent;
+    }
+
+    @JsonProperty
+    public void setPreInterviewReminderSent(boolean preInterviewReminderSent) {
+        this.preInterviewReminderSent = preInterviewReminderSent;
+    }
+
+
     @Override
     public String toString() {
         return "JsonInterview{" +
@@ -138,6 +151,7 @@ public class JsonInterview {
         private List<Long> interviewerIds;
         private boolean cancelled;
         private String location;
+        private boolean preInterviewReminderSent;
 
         private JsonInterviewBuilder() {
         }
@@ -182,6 +196,11 @@ public class JsonInterview {
             return this;
         }
 
+        public JsonInterviewBuilder withPreInterviewReminderSent(boolean sent) {
+            this.preInterviewReminderSent = sent;
+            return this;
+        }
+
         public JsonInterview build() {
             JsonInterview jsonInterview = new JsonInterview();
             jsonInterview.setInterviewId(interviewId);
@@ -191,6 +210,7 @@ public class JsonInterview {
             jsonInterview.setInterviewerIds(interviewerIds);
             jsonInterview.setCancelled(cancelled);
             jsonInterview.setLocation(location);
+            jsonInterview.setPreInterviewReminderSent(preInterviewReminderSent);
             return jsonInterview;
         }
     }

@@ -14,6 +14,7 @@ public class Interview {
     private List<Interviewer> interviewers;
     private boolean cancelled;
     private String location;
+    private boolean preInterviewReminderSent;
 
     public Interview() {
     }
@@ -78,6 +79,14 @@ public class Interview {
         this.location = location;
     }
 
+    public boolean isPreInterviewReminderSent() {
+        return preInterviewReminderSent;
+    }
+
+    public void setPreInterviewReminderSent(boolean preInterviewReminderSent) {
+        this.preInterviewReminderSent = preInterviewReminderSent;
+    }
+
     @Override
     public String toString() {
         return "Interview{" +
@@ -99,6 +108,7 @@ public class Interview {
         private List<Interviewer> interviewers;
         private boolean cancelled;
         private String location;
+        private boolean preInterviewReminderSent;
 
         private InterviewBuilder() {
         }
@@ -142,6 +152,11 @@ public class Interview {
             return this;
         }
 
+        public InterviewBuilder withPreInterviewReminderSent(boolean sent) {
+            this.preInterviewReminderSent = sent;
+            return this;
+        }
+
         public Interview build() {
             Interview interview = new Interview();
             interview.setInterviewId(interviewId);
@@ -151,6 +166,7 @@ public class Interview {
             interview.setInterviewers(interviewers);
             interview.setCancelled(cancelled);
             interview.setLocation(location);
+            interview.setPreInterviewReminderSent(preInterviewReminderSent);
             return interview;
         }
     }

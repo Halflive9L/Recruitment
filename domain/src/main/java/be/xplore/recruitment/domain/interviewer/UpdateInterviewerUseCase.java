@@ -19,6 +19,7 @@ public class UpdateInterviewerUseCase implements UpdateInterviewer {
                 .withInterviewerId(request.getInterviewerId())
                 .withFirstName(request.getFirstName())
                 .withLastName(request.getLastName())
+                .withEmail(request.getEmail())
                 .build();
         Interviewer interviewer = repository.updateInterviewer(updated).orElseThrow(NotFoundException::new);
         consumer.accept(new InterviewerResponseModel(interviewer));

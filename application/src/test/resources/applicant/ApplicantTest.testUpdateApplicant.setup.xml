@@ -9,4 +9,7 @@
     <applicant applicant_id="3" first_name="stijn" last_name="test" date_Of_Birth="1995-01-01"
                email="stijn.schack@example.com" phone="+32458723699"
                address="Antwerpen" education="college"/>
+    <!-- Nodig om FK constraint violation te voorkomen -->
+    <interview/>
+    <interview_interviewers/>
 </dataset>

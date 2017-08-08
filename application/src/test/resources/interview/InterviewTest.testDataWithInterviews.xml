@@ -4,15 +4,15 @@
                phone="0356854598" address="villermontstraat 9" education="university"/>
     <applicant applicant_id="2" first_name="stijn" last_name="schack" email="stijn.schack@example.com"
                phone="0458723694" address="Mortsel" education="college"/>
-    <interviewer interviewer_id="1" first_name="Casandra" last_name="Kleinveld"/>
-    <interviewer interviewer_id="2" first_name="Tyra" last_name="van Vlymen"/>
-    <interviewer interviewer_id="3" first_name="Jitte" last_name="Slotboom"/>
+    <interviewer interviewer_id="1" first_name="Casandra" last_name="Kleinveld" email="casandra.kleinveld@email.com"/>
+    <interviewer interviewer_id="2" first_name="Tyra" last_name="van Vlymen" email="tyra.van.vlymen@email.com"/>
+    <interviewer interviewer_id="3" first_name="Jitte" last_name="Slotboom" email="jitte.slotboom@email.com"/>
     <interview interview_id="1" created_time="2017-01-01 20:00:00" scheduled_time="2017-02-02 21:00:00"
-               applicant_id="1" cancelled="false"/>
+               applicant_id="1" cancelled="false" pre_interview_reminder_sent="false"/>
     <interview interview_id="2" created_time="2017-01-01 20:00:00" scheduled_time="2017-02-02 21:00:00"
-               applicant_id="2" cancelled="false"/>
+               applicant_id="2" cancelled="false" pre_interview_reminder_sent="false"/>
     <interview interview_id="3" created_time="2017-03-01 20:00:00" scheduled_time="2017-09-02 21:00:00"
-               applicant_id="1" cancelled="false"/>
+               applicant_id="1" cancelled="false" pre_interview_reminder_sent="false"/>
     <interview_interviewers interview_id="1" interviewer_id="1"/>
     <interview_interviewers interview_id="1" interviewer_id="3"/>
     <interview_interviewers interview_id="2" interviewer_id="2"/>

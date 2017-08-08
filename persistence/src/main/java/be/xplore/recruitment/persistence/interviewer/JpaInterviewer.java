@@ -24,15 +24,10 @@ public class JpaInterviewer {
     @Column
     private String lastName;
 
-    public JpaInterviewer() {
-    }
+    @Column
+    private String email;
 
-    public static JpaInterviewer fromInterviewer(Interviewer interviewer) {
-        JpaInterviewer e = new JpaInterviewer();
-        e.setFirstName(interviewer.getFirstName());
-        e.setLastName(interviewer.getLastName());
-        e.setInterviewerId(interviewer.getInterviewerId());
-        return e;
+    public JpaInterviewer() {
     }
 
     public long getInterviewerId() {
@@ -59,11 +54,29 @@ public class JpaInterviewer {
         this.lastName = lastName;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public Interviewer toInterviewer() {
         return Interviewer.builder()
                 .withInterviewerId(getInterviewerId())
                 .withFirstName(getFirstName())
                 .withLastName(getLastName())
+                .withEmail(getEmail())
                 .build();
+    }
+
+    public static JpaInterviewer fromInterviewer(Interviewer interviewer) {
+        JpaInterviewer e = new JpaInterviewer();
+        e.setFirstName(interviewer.getFirstName());
+        e.setLastName(interviewer.getLastName());
+        e.setInterviewerId(interviewer.getInterviewerId());
+        e.setEmail(interviewer.getEmail());
+        return e;
     }
 }

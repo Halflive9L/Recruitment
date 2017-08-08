@@ -30,7 +30,12 @@ public class UpdateInterviewerTest {
 
     @Test
     public void updates() {
-        UpdateInterviewerRequest request = new UpdateInterviewerRequest(1, "Lies", "Achten");
+        UpdateInterviewerRequest request = UpdateInterviewerRequest.builder()
+                .withFirstName("Lies")
+                .withLastName("Achten")
+                .withInterviewerId(1)
+                .withEmail("lies.achten@email.com")
+                .build();
         useCase.updateInterviewer(request, response -> {
             assertThat(response.getFirstName(), is(request.getFirstName()));
             assertThat(response.getLastName(), is(request.getLastName()));
@@ -44,7 +49,12 @@ public class UpdateInterviewerTest {
 
     @Test(expected = NotFoundException.class)
     public void updateNonExistent() {
-        UpdateInterviewerRequest request = new UpdateInterviewerRequest(99999, "Lies", "Achten");
+        UpdateInterviewerRequest request = UpdateInterviewerRequest.builder()
+                .withFirstName("Lies")
+                .withLastName("Achten")
+                .withInterviewerId(99999)
+                .withEmail("lies.achten@email.com")
+                .build();
         useCase.updateInterviewer(request, response -> {
         });
     }
