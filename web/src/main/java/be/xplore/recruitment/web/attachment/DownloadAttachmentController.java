@@ -16,7 +16,7 @@ import java.io.IOException;
  * @author Stijn Schack
  * @since 8/7/2017
  */
-@CrossOrigin(origins = "*", allowCredentials = "true", allowedHeaders = "*")
+@CrossOrigin
 @RestController
 public class DownloadAttachmentController {
     private DownloadAttachment downloadAttachment;
@@ -30,6 +30,7 @@ public class DownloadAttachmentController {
     public void downloadFile(@PathVariable("attachmentId") long attachmentId,
                              HttpServletResponse response)
             throws IOException {
+        System.out.println("Hello I am downloading for you! :)");
         DownloadAttachmentRequest request =
                 new DownloadAttachmentRequest(attachmentId, response.getOutputStream());
         DownloadAttachmentPresenter presenter = new DownloadAttachmentPresenter(response);

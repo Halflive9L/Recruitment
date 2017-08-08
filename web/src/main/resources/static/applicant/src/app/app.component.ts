@@ -101,6 +101,7 @@ export class AppComponent {
     this._applicant.readApplicantFileList(id).subscribe(
       file => {
         this.applicantFileList = file;
+        console.log(file);
       });
     console.log(this.applicantFileList);
   }
@@ -142,6 +143,10 @@ export class AppComponent {
         this.highestApplicantId++;
       });
   };
+
+  downloadApplicantFile(fileId: number) : void {
+    this._applicant.downloadApplicantFile(fileId).subscribe();
+  }
 
   updateApplicant(form: FormGroup): void {
     let body = JSON.stringify(form.value);

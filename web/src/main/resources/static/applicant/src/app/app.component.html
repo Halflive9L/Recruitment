@@ -291,7 +291,7 @@
               {{file?.attachmentName}}
             </div>
             <div class="col-md-2">
-              <button class="btn btn-info">Download</button>
+              <button class="btn btn-info" data-dismiss="filesModal" (click)="downloadApplicantFile(file?.id)">Download</button>
             </div>
             <div class="col-md-2">
                 <button class="btn btn-danger">Delete</button>
