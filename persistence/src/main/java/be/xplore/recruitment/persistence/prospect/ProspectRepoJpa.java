@@ -100,13 +100,12 @@ public class ProspectRepoJpa implements ProspectRepository {
     public Optional<Prospect> updateProspect(Prospect prospect) {
         JpaProspect jpaProspect = prospectToJpaProspect(prospect);
         jpaProspect.setProspectId(prospect.getProspectId());
-        Prospect prospectToReturn;
         try {
-            prospectToReturn = entityManager.merge(jpaProspect).toProspect();
+            prospect = entityManager.merge(jpaProspect).toProspect();
         } catch (IllegalArgumentException e) {
-            prospectToReturn = null;
+            prospect = null;
         }
-        return Optional.ofNullable(prospectToReturn);
+        return Optional.ofNullable(prospect);
     }
 
     @Override
