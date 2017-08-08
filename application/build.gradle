@@ -16,7 +16,7 @@ dependencies {
     runtime project(':domain')
     runtime project(':web')
     runtime project(':persistence')
-    runtime project(':smtp-reminder')
+    compile project(':smtp-reminder')
     compile("org.springframework.boot:spring-boot-starter-web:1.5.6.RELEASE")
     testCompile group: 'junit', name: 'junit', version: '4.12'
     testCompile('org.springframework.boot:spring-boot-starter-test')
