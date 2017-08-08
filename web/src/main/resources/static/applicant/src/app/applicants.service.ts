@@ -36,4 +36,18 @@ export class ApplicantsService {
     return this._http.delete(this._applicantUrl+"/"+id,options).map((res: Response) => res.json());
   }
 
+  createApplicantFile(fileList: FileList, id:number) {
+    if(fileList.length > 0) {
+      let file: File = fileList[0];
+      let attachment:FormData = new FormData();
+      attachment.append('attachment', file, file.name);
+      let headers = new Headers();
+      //headers.append('Content-Type', 'multipart/form-data');
+      //headers.append('Accept', 'application/json');
+      let options = new RequestOptions({ headers: headers });
+      this._http.post(this._applicantUrl+"/"+id+"/attachment", attachment, options)
+        .map(res => res.json());
+    }
+  }
+
 }

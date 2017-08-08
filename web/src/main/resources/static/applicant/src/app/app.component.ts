@@ -4,8 +4,6 @@ import {ApplicantsService} from "./applicants.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ProspectsService} from "./prospects.service";
 import {IProspect} from "./prospects";
-import {forEach} from "@angular/router/src/utils/collection";
-import {postApplicantComponent} from "./postApplicant.component";
 
 
 @Component({
@@ -28,6 +26,7 @@ export class AppComponent {
   prospectForm: FormGroup;
   updateApplicantForm: FormGroup;
   updateProspectForm: FormGroup;
+  file: FileList;
 
   constructor(private _applicant: ApplicantsService, private _prospects: ProspectsService,
               private formBuilder: FormBuilder) {
@@ -46,7 +45,7 @@ export class AppComponent {
         "4[987654310]|3[9643210]|2[70]|7|1)\\d{1,14}")]],
       address: '',
       dateOfBirth: '',
-      education: ''
+      education: '',
     });
 
     this.updateApplicantForm = this.formBuilder.group({
@@ -60,7 +59,7 @@ export class AppComponent {
         "4[987654310]|3[9643210]|2[70]|7|1)\\d{1,14}")]],
       address: '',
       dateOfBirth: '',
-      education: ''
+      education: '',
     });
 
     this.prospectForm = this.formBuilder.group({
@@ -95,6 +94,11 @@ export class AppComponent {
       this.iprospects = iprospects; });
   };
 
+  onSelectFile(event) {
+    let files = event.srcElement.files;
+    this.file = files;
+  }
+
   getApplicantId($event) {
     if (isNaN($event.target.id)) {
       this.currentApplicantId = 0;
@@ -121,9 +125,11 @@ export class AppComponent {
     this._applicant.createApplicant(body)
       .subscribe(iapplicant => {
           iapplicant.applicantId = (this.highestApplicantId + 1);
-          this.highestApplicantId++;
         this.iapplicants.push(iapplicant);
+        this._applicant.createApplicantFile(this.file, iapplicant.applicantId);
+        this.highestApplicantId++;
       });
+
   };
 
   updateApplicant(form: FormGroup): void {

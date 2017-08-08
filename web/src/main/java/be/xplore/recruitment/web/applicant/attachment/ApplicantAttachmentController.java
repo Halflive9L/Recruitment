@@ -10,6 +10,7 @@ import be.xplore.recruitment.web.attachment.JsonAttachment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -37,11 +38,11 @@ public class ApplicantAttachmentController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/api/v1/applicant/{applicantId}/attachment",
-            consumes = "multipart/form-data")
+           consumes = "multipart/form-data")
     public ResponseEntity<JsonAttachment> uploadAttachment(@PathVariable long applicantId,
                                                            @RequestParam("attachment") MultipartFile file)
             throws IOException {
-        System.out.println(file.getOriginalFilename());
+        System.out.println("Filename :" + file.getOriginalFilename());
         AddApplicantAttachmentRequest request = getAddAttachmentRequest(applicantId, file);
         AddApplicantAttachmentPresenter presenter = new AddApplicantAttachmentPresenter();
         try {
