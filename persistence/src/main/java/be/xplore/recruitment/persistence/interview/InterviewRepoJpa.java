@@ -11,10 +11,9 @@ import be.xplore.recruitment.persistence.attachment.FileManager;
 import be.xplore.recruitment.persistence.attachment.JpaAttachment;
 import be.xplore.recruitment.persistence.interviewer.JpaInterviewer;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 import java.io.IOException;
@@ -23,7 +22,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Component
+@Repository
 @Transactional
 public class InterviewRepoJpa implements InterviewRepository {
     private static final String FIND_INTERVIEWERS = "SELECT i FROM JpaInterviewer i WHERE i.interviewerId IN (?1)";

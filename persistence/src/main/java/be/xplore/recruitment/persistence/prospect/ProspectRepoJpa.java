@@ -6,7 +6,7 @@ import be.xplore.recruitment.domain.prospect.Prospect;
 import be.xplore.recruitment.domain.prospect.ProspectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -25,7 +25,7 @@ import static be.xplore.recruitment.persistence.prospect.JpaProspect.QUERY_FIND_
  * @author Lander
  * @since 26/07/2017
  */
-@Component
+@Repository
 @Transactional
 public class ProspectRepoJpa implements ProspectRepository {
 
