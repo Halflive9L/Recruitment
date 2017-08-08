@@ -2,6 +2,7 @@ package be.xplore.recruitment.domain.applicant.attachment;
 
 import be.xplore.recruitment.domain.applicant.ApplicantRepository;
 import be.xplore.recruitment.domain.attachment.Attachment;
+import be.xplore.recruitment.domain.attachment.AttachmentResponseModel;
 
 import javax.inject.Named;
 import java.util.ArrayList;
@@ -23,14 +24,14 @@ public class ReadApplicantAttachmentUseCase implements ReadApplicantAttachment {
 
     @Override
     public void listAllAttachmentsForApplicant(ListAllAttachmentsForApplicantRequest request,
-                                               Consumer<List<ApplicantAttachmentResponseModel>> response) {
+                                               Consumer<List<AttachmentResponseModel>> response) {
         List<Attachment> attachments = repository.findAllAttachmentsForApplicant(request.getApplicantId());
         response.accept(getResponseModelList(attachments));
     }
 
-    private List<ApplicantAttachmentResponseModel> getResponseModelList(List<Attachment> attachments) {
-        List<ApplicantAttachmentResponseModel> responseModel = new ArrayList<>();
-        attachments.forEach(attachment -> responseModel.add(new ApplicantAttachmentResponseModel(attachment)));
+    private List<AttachmentResponseModel> getResponseModelList(List<Attachment> attachments) {
+        List<AttachmentResponseModel> responseModel = new ArrayList<>();
+        attachments.forEach(attachment -> responseModel.add(new AttachmentResponseModel(attachment)));
         return responseModel;
     }
 }

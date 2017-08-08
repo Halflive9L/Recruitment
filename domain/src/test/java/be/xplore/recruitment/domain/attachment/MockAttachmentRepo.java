@@ -32,4 +32,9 @@ public class MockAttachmentRepo implements AttachmentRepository {
         }
         return Optional.empty();
     }
+
+    @Override
+    public Optional<Attachment> deleteAttachment(long attachmentId) {
+        return null;
+    }
 }
