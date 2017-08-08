@@ -14,6 +14,7 @@ import java.io.Serializable;
  */
 @JsonComponent
 class JsonProspect implements Serializable {
+    private static final long serialVersionUID = -1155194210930940184L;
     private long prospectId;
     private String firstName;
     private String lastName;

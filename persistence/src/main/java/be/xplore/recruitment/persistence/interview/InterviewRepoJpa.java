@@ -43,11 +43,11 @@ public class InterviewRepoJpa implements InterviewRepository {
     @Override
     public Interview createInterview(Interview interview) {
         JpaApplicant jpaApplicant = entityManager.find(JpaApplicant.class, interview.getApplicant().getApplicantId());
-        Query query = entityManager.createQuery(FIND_INTERVIEWERS);
+        TypedQuery<JpaInterviewer> query = entityManager.createQuery(FIND_INTERVIEWERS, JpaInterviewer.class);
         query.setParameter(1, interview.getInterviewers().stream()
                 .map(Interviewer::getInterviewerId)
                 .collect(Collectors.toList()));
-        List<JpaInterviewer> interviewers = (List<JpaInterviewer>) query.getResultList();
+        List<JpaInterviewer> interviewers = query.getResultList();
         JpaInterview jpaInterview = new JpaInterview();
         jpaInterview.setCreatedTime(interview.getCreatedTime());
         jpaInterview.setScheduledTime(interview.getScheduledTime());

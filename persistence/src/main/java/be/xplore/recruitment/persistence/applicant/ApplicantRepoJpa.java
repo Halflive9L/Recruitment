@@ -53,7 +53,7 @@ public class ApplicantRepoJpa implements ApplicantRepository {
 
     @Override
     public List<Applicant> findAll() {
-        List<JpaApplicant> list = entityManager.createNamedQuery(QUERY_FIND_ALL)
+        List<JpaApplicant> list = entityManager.createNamedQuery(QUERY_FIND_ALL, JpaApplicant.class)
                 .getResultList();
         List<Applicant> result = list.stream().map(JpaApplicant::toApplicant).collect(Collectors.toList());
         return result;
@@ -127,11 +127,12 @@ public class ApplicantRepoJpa implements ApplicantRepository {
 
     @Override
     public Optional<Applicant> deleteApplicant(long applicantId) {
-        List applicantList = entityManager.createNamedQuery(JpaApplicant.QUERY_FIND_BY_ID)
+        List<JpaApplicant> applicantList = entityManager
+                .createNamedQuery(JpaApplicant.QUERY_FIND_BY_ID, JpaApplicant.class)
                 .setParameter("applicantId", applicantId).getResultList();
         entityManager.createNamedQuery(JpaApplicant.QUERY_DELETE).setParameter("applicantId", applicantId)
                 .executeUpdate();
-        return Optional.ofNullable(((JpaApplicant) applicantList.get(0)).toApplicant());
+        return Optional.ofNullable((applicantList.get(0)).toApplicant());
     }
 
     @Override

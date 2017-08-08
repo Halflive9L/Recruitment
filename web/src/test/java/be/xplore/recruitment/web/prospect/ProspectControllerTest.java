@@ -9,9 +9,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.function.Consumer;
-
-import static org.mockito.Matchers.isA;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 
 /**
@@ -30,6 +28,6 @@ public class ProspectControllerTest {
     public void testCreateProspect() {
         ArgumentCaptor<CreateProspectRequest> captor = ArgumentCaptor.forClass(CreateProspectRequest.class);
         controller.addProspect(new JsonProspect());
-        verify(createProspect).createProspect(captor.capture(), isA(Consumer.class));
+        verify(createProspect).createProspect(captor.capture(), any());
     }
 }
