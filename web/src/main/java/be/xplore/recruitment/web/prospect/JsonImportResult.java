@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 @JsonComponent
 public class JsonImportResult implements Serializable {
-
+    private static final long serialVersionUID = 7912309631885354667L;
     private List<JsonProspect> prospects;
     private List<JsonImportFailure> failed;
 
