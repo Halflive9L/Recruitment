@@ -117,13 +117,12 @@ public class ApplicantRepoJpa implements ApplicantRepository {
     public Optional<Applicant> updateApplicant(Applicant applicant) {
         JpaApplicant jpaApplicant = applicantToJpaApplicant(applicant);
         jpaApplicant.setApplicantId(applicant.getApplicantId());
-        Applicant applicantToReturn;
         try {
-            applicantToReturn = entityManager.merge(jpaApplicant).toApplicant();
+            applicant = entityManager.merge(jpaApplicant).toApplicant();
         } catch (IllegalArgumentException e) {
-            applicantToReturn = null;
+            applicant = null;
         }
-        return Optional.ofNullable(applicantToReturn);
+        return Optional.ofNullable(applicant);
     }
 
     @Override
