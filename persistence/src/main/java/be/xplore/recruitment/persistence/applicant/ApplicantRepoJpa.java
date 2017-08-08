@@ -144,7 +144,7 @@ public class ApplicantRepoJpa implements ApplicantRepository {
             throw new NotFoundException("Applicant with ID: " + applicantId + " does not exist.");
         }
         Optional<Attachment> createdAttachment = Optional.ofNullable(tryCreateAttachment(attachment));
-        createdAttachment.ifPresent(a -> registerAttachment(applicant, a.getAttachmentName()));
+        createdAttachment.ifPresent(a -> a.setAttachmentId(registerAttachment(applicant, a.getAttachmentName())));
         return createdAttachment;
     }
 
@@ -159,9 +159,10 @@ public class ApplicantRepoJpa implements ApplicantRepository {
         }
     }
 
-    private void registerAttachment(JpaApplicant applicant, String fileName) {
-        JpaAttachment attachment = new JpaAttachment(applicant, fileName);
-        entityManager.persist(attachment);
+    private long registerAttachment(JpaApplicant applicant, String fileName) {
+        JpaAttachment jpaAttachment = new JpaAttachment(applicant, fileName);
+        entityManager.persist(jpaAttachment);
+        return jpaAttachment.getAttachmentId();
     }
 
     @Override

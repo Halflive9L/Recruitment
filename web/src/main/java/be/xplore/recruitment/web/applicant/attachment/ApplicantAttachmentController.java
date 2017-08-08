@@ -41,7 +41,6 @@ public class ApplicantAttachmentController {
     public ResponseEntity<JsonAttachment> uploadAttachment(@PathVariable long applicantId,
                                                            @RequestParam("attachment") MultipartFile file)
             throws IOException {
-        System.out.println(file.getOriginalFilename());
         AddApplicantAttachmentRequest request = getAddAttachmentRequest(applicantId, file);
         AddApplicantAttachmentPresenter presenter = new AddApplicantAttachmentPresenter();
         try {
