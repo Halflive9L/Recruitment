@@ -16,6 +16,7 @@ public class CreateInterviewerUseCase implements CreateInterviewer {
         Interviewer interviewer = Interviewer.builder()
                 .withFirstName(request.getFirstName())
                 .withLastName(request.getLastName())
+                .withEmail(request.getEmail())
                 .build();
         // TODO: validation
         Interviewer result = repository.createInterviewer(interviewer);

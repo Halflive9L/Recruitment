@@ -53,7 +53,11 @@ public class InterviewerController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/create")
     public ResponseEntity<JsonInterviewer> createInterviewer(@RequestBody JsonInterviewer body) {
-        CreateInterviewerRequest request = new CreateInterviewerRequest(body.getFirstName(), body.getLastName());
+        CreateInterviewerRequest request = CreateInterviewerRequest.builder()
+                .withFirstName(body.getFirstName())
+                .withLastName(body.getLastName())
+                .withEmail(body.getEmail())
+                .build();
         JsonInterviewerResponsePresenter presenter = new JsonInterviewerResponsePresenter();
         createInterviewer.createInterviewer(request, presenter);
         return presenter.getResponseEntity();
@@ -69,10 +73,12 @@ public class InterviewerController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/update")
     public ResponseEntity<JsonInterviewer> updateInterviewer(@RequestBody JsonInterviewer body) {
-        UpdateInterviewerRequest request = new UpdateInterviewerRequest();
-        request.setInterviewerId(body.getInterviewerId());
-        request.setFirstName(body.getFirstName());
-        request.setLastName(body.getLastName());
+        UpdateInterviewerRequest request = UpdateInterviewerRequest.builder()
+                .withInterviewerId(body.getInterviewerId())
+                .withFirstName(body.getFirstName())
+                .withLastName(body.getLastName())
+                .withEmail(body.getEmail())
+                .build();
         JsonInterviewerResponsePresenter presenter = new JsonInterviewerResponsePresenter();
         updateInterviewer.updateInterviewer(request, presenter);
         return presenter.getResponseEntity();

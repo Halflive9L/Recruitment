@@ -6,4 +6,7 @@
                phone="0458723694" address="Mortsel" education="college"/>
     <applicant applicant_id="3" first_name="stijn" last_name="test" email="stijn.schack@example.com" phone="0458723699"
                address="Antwerpen" education="college"/>
+    <!-- Nodig om FK constraint violation te voorkomen -->
+    <interview/>
+    <interview_interviewers/>
 </dataset>

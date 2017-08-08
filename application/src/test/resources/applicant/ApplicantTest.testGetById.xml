@@ -2,4 +2,7 @@
 <dataset>
     <applicant applicant_id="1" first_name="jos" last_name="vermeulen" email="jos.vermeulen@example.com"
                phone="+32356854598" address="antwerpen" education="none" date_Of_Birth="1990-01-01"/>
+    <!-- Nodig om FK constraint violation te voorkomen -->
+    <interview/>
+    <interview_interviewers/>
 </dataset>

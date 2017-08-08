@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dataset>
+    <!-- Nodig om FK constraint violation te voorkomen -->
+    <prospect/>
+    <applicant/>
+    <interview/>
+    <interview_interviewers/>
+</dataset>

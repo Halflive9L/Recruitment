@@ -37,6 +37,7 @@ public class ScheduleInterviewUseCase implements ScheduleInterview {
                 .withInterviewers(interviewers)
                 .withApplicant(applicant)
                 .withLocation(request.getLocation())
+                .withPreInterviewReminderSent(request.isPreInterviewReminderSent())
                 .build();
         Interview created = interviewRepository.createInterview(interview);
         consumer.accept(InterviewResponseModel.fromInterview(created));

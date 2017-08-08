@@ -21,7 +21,11 @@ public class CreateInterviewerTest {
 
     @Test
     public void createsInterviewer() {
-        CreateInterviewerRequest request = new CreateInterviewerRequest("Maarten", "Billiet");
+        CreateInterviewerRequest request = CreateInterviewerRequest.builder()
+                .withFirstName("Maarten")
+                .withLastName("Billiet")
+                .withEmail("mb@email.com")
+                .build();
         useCase.createInterviewer(request, response -> {
             assertThat(response.getFirstName(), is("Maarten"));
             assertThat(response.getLastName(), is("Billiet"));
