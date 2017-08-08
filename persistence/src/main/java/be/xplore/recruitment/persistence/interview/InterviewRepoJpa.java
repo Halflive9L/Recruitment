@@ -116,7 +116,7 @@ public class InterviewRepoJpa implements InterviewRepository {
         }
 
         Optional<Attachment> createdAttachment = Optional.ofNullable(tryCreateAttachment(attachment));
-        createdAttachment.ifPresent(a -> registerAttachment(interview, a.getAttachmentName()));
+        createdAttachment.ifPresent(a -> a.setAttachmentId(registerAttachment(interview, a.getAttachmentName())));
         return createdAttachment;
     }
 
@@ -131,8 +131,9 @@ public class InterviewRepoJpa implements InterviewRepository {
         }
     }
 
-    private void registerAttachment(JpaInterview interview, String fileName) {
+    private long registerAttachment(JpaInterview interview, String fileName) {
         JpaAttachment attachment = new JpaAttachment(interview, fileName);
         entityManager.persist(attachment);
+        return attachment.getAttachmentId();
     }
 }

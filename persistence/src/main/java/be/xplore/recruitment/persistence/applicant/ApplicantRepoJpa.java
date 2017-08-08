@@ -117,13 +117,12 @@ public class ApplicantRepoJpa implements ApplicantRepository {
     public Optional<Applicant> updateApplicant(Applicant applicant) {
         JpaApplicant jpaApplicant = applicantToJpaApplicant(applicant);
         jpaApplicant.setApplicantId(applicant.getApplicantId());
-        Applicant applicantToReturn;
         try {
-            applicantToReturn = entityManager.merge(jpaApplicant).toApplicant();
+            applicant = entityManager.merge(jpaApplicant).toApplicant();
         } catch (IllegalArgumentException e) {
-            applicantToReturn = null;
+            applicant = null;
         }
-        return Optional.ofNullable(applicantToReturn);
+        return Optional.ofNullable(applicant);
     }
 
     @Override
@@ -145,7 +144,7 @@ public class ApplicantRepoJpa implements ApplicantRepository {
             throw new NotFoundException("Applicant with ID: " + applicantId + " does not exist.");
         }
         Optional<Attachment> createdAttachment = Optional.ofNullable(tryCreateAttachment(attachment));
-        createdAttachment.ifPresent(a -> registerAttachment(applicant, a.getAttachmentName()));
+        createdAttachment.ifPresent(a -> a.setAttachmentId(registerAttachment(applicant, a.getAttachmentName())));
         return createdAttachment;
     }
 
@@ -160,9 +159,10 @@ public class ApplicantRepoJpa implements ApplicantRepository {
         }
     }
 
-    private void registerAttachment(JpaApplicant applicant, String fileName) {
-        JpaAttachment attachment = new JpaAttachment(applicant, fileName);
-        entityManager.persist(attachment);
+    private long registerAttachment(JpaApplicant applicant, String fileName) {
+        JpaAttachment jpaAttachment = new JpaAttachment(applicant, fileName);
+        entityManager.persist(jpaAttachment);
+        return jpaAttachment.getAttachmentId();
     }
 
     @Override

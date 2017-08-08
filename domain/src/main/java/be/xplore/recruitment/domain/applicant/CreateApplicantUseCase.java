@@ -24,7 +24,7 @@ class CreateApplicantUseCase implements CreateApplicant {
             throws InvalidEmailException, InvalidPhoneException, InvalidDateException {
         Applicant applicant = createApplicantFromRequest(request);
         applicant.validateApplicant();
-        repository.createApplicant(applicant);
+        applicant = repository.createApplicant(applicant);
         response.accept(new ApplicantResponseModel(applicant));
     }
 
