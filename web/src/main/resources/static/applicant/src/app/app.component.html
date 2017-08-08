@@ -288,9 +288,9 @@
       <div class="modal-body text-center">
         <div id="files">
           <!--TO-DO-->
-          <div id="filesModalList" class="row" *ngFor="let file of applicantFileList">
+          <div id="filesModalList" class="row" *ngFor="let file of applicantFileList; let i = index">
             <div class="col-md-8 text-center">
-              File {{file.id}}: {{file?.attachmentName}}
+              File {{i+1}}: {{file?.attachmentName}}
             </div>
             <div class="col-md-2">
               <button class="btn btn-info" data-dismiss="filesModal" (click)="downloadApplicantFile(file?.id)">Download</button>
