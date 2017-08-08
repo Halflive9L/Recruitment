@@ -86,7 +86,8 @@
       <label for="InputCV">CV toevoegen</label>
       <input type="file" id="InputCV">
     </div>
-    <button type="submit" onClick="document.getElementById('applicantTable').scrollIntoView();" value="submit" [disabled]="!applicantForm.valid" class="btn btn-default btn-lg center-block">
+    <button type="submit" onClick="document.getElementById('applicantTable').scrollIntoView();" value="submit"
+            [disabled]="!applicantForm.valid" class="btn btn-default btn-lg center-block">
       Submit
     </button>
   </form>
@@ -119,7 +120,8 @@
                 data-toggle="modal" data-target="#applicantModal">Edit
         </button>
         <button [attr.id]="applicant?.applicantId" class="btn btn-sm btn-danger" (click)="getApplicantId($event)"
-        data-toggle="modal" data-target="#deleteModal">Delete</button>
+                data-toggle="modal" data-target="#deleteModal">Delete
+        </button>
       </td>
     </tr>
     </tbody>
@@ -211,7 +213,8 @@
 
           <div class="form-group center-block">
             <label for="InputDateOfBirthModal">Date of birth</label>
-            <input type="date" value="{{readApplicantById(currentApplicantId-1)?.dateOfBirth}}" data-date-format="YYYY/MM/dd"
+            <input type="date" value="{{readApplicantById(currentApplicantId-1)?.dateOfBirth}}"
+                   data-date-format="YYYY/MM/dd"
                    class="form-control datepicker" id="InputDateOfBirthModal"
                    placeholder="Date of birth"
                    formControlName="dateOfBirth" [ngModel]="readApplicantById(currentApplicantId-1)?.dateOfBirth">
@@ -255,9 +258,11 @@
     <div class="modal-content">
       <div class="modal-body text-center">
         <p class="text-center">Are you sure you want to delete this applicant? </p>
-        <p class="text-center">{{readApplicantById(currentApplicantId-1)?.firstName}}  {{readApplicantById(currentApplicantId-1)?.lastName}}</p>
-        <button class="btn btn-danger btn-lg" (click)="deleteApplicant(currentApplicantId)" data-dismiss="modal">Yes</button>
-        <button class="btn btn-success btn-lg" data-dismiss="modal">No </button>
+        <p class="text-center">{{readApplicantById(currentApplicantId-1)?.firstName}}
+          {{readApplicantById(currentApplicantId-1)?.lastName}}</p>
+        <button class="btn btn-danger btn-lg" (click)="deleteApplicant(currentApplicantId)" data-dismiss="modal">Yes
+        </button>
+        <button class="btn btn-success btn-lg" data-dismiss="modal">No</button>
       </div>
     </div>
   </div>
@@ -328,13 +333,14 @@
       </div>
     </div>
 
-    <button type="submit" onClick="document.getElementById('prospectTable').scrollIntoView();" value="submit" [disabled]="!prospectForm.valid" class="btn btn-default btn-lg center-block">
+    <button type="submit" onClick="document.getElementById('prospectTable').scrollIntoView();" value="submit"
+            [disabled]="!prospectForm.valid" class="btn btn-default btn-lg center-block">
       Submit
     </button>
   </form>
 </div>
 
-<div id ="prospectTable" class="prospectTable">
+<div id="prospectTable" class="prospectTable">
   <table class="table table-striped table-hover table-bordered">
     <tbody>
     <tr>
@@ -355,7 +361,8 @@
                 data-toggle="modal" data-target="#prospectModal">Edit
         </button>
         <button [attr.id]="prospect?.prospectId" class="btn btn-sm btn-danger" (click)="getProspectId($event)"
-                data-toggle="modal" data-target="#deleteProspectModal">Delete</button>
+                data-toggle="modal" data-target="#deleteProspectModal">Delete
+        </button>
       </td>
     </tr>
     </tbody>
@@ -466,9 +473,11 @@
     <div class="modal-content">
       <div class="modal-body text-center">
         <p class="text-center">Are you sure you want to delete this prospect? </p>
-        <p class="text-center">{{readProspectById(currentProspectId-1)?.firstName}}  {{readProspectById(currentProspectId-1)?.lastName}}</p>
-        <button class="btn btn-danger btn-lg" (click)="deleteProspect(currentProspectId)" data-dismiss="modal">Yes</button>
-        <button class="btn btn-success btn-lg" data-dismiss="modal">No </button>
+        <p class="text-center">{{readProspectById(currentProspectId-1)?.firstName}}
+          {{readProspectById(currentProspectId-1)?.lastName}}</p>
+        <button class="btn btn-danger btn-lg" (click)="deleteProspect(currentProspectId)" data-dismiss="modal">Yes
+        </button>
+        <button class="btn btn-success btn-lg" data-dismiss="modal">No</button>
       </div>
     </div>
   </div>

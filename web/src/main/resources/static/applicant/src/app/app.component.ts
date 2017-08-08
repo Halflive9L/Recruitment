@@ -4,8 +4,6 @@ import {ApplicantsService} from "./applicants.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ProspectsService} from "./prospects.service";
 import {IProspect} from "./prospects";
-import {forEach} from "@angular/router/src/utils/collection";
-import {postApplicantComponent} from "./postApplicant.component";
 
 
 @Component({
@@ -87,12 +85,14 @@ export class AppComponent {
 
     this._applicant.getApplicants()
       .subscribe(iapplicants => {
-        iapplicants.forEach(iapplicant =>  this.highestApplicantId = iapplicant.applicantId);
-        this.iapplicants = iapplicants });
+        iapplicants.forEach(iapplicant => this.highestApplicantId = iapplicant.applicantId);
+        this.iapplicants = iapplicants
+      });
     this._prospects.getProspects()
       .subscribe(iprospects => {
         iprospects.forEach(iprospect => this.highestProspectId = iprospect.prospectId);
-      this.iprospects = iprospects; });
+        this.iprospects = iprospects;
+      });
   };
 
   getApplicantId($event) {
@@ -120,8 +120,8 @@ export class AppComponent {
     let body = JSON.stringify(form.value);
     this._applicant.createApplicant(body)
       .subscribe(iapplicant => {
-          iapplicant.applicantId = (this.highestApplicantId + 1);
-          this.highestApplicantId++;
+        iapplicant.applicantId = (this.highestApplicantId + 1);
+        this.highestApplicantId++;
         this.iapplicants.push(iapplicant);
       });
   };
@@ -157,8 +157,8 @@ export class AppComponent {
     let body = JSON.stringify(form.value);
     this._prospects.createProspect(body)
       .subscribe(iprospect => {
-          iprospect.prospectId = this.highestProspectId + 1;
-          this.highestProspectId++;
+        iprospect.prospectId = this.highestProspectId + 1;
+        this.highestProspectId++;
         this.iprospects.push(iprospect)
       });
   };
