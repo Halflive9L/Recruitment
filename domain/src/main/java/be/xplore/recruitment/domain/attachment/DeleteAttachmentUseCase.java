@@ -19,8 +19,9 @@ public class DeleteAttachmentUseCase implements DeleteAttachment {
 
     @Override
     public void deleteAttachment(DeleteAttachmentRequest request, Consumer<AttachmentResponseModel> response) {
-        Attachment attachment = repository.deleteAttachment(request.getAttachmentId())
-                .orElseThrow(NotFoundException::new);
+        Attachment attachment = repository.deleteAttachment(request.getAttachmentId()).orElseThrow(() ->
+                new NotFoundException("Attachment with ID: " + request.getAttachmentId() + " does not exist")
+        );
         response.accept(new AttachmentResponseModel(attachment));
     }
 }

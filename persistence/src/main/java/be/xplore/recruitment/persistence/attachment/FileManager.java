@@ -7,6 +7,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
 
 /**
  * @author Stijn Schack
@@ -43,8 +44,12 @@ public class FileManager {
         }
     }
 
-    public InputStream downloadAttachment(String attachmentName) throws IOException {
+    InputStream downloadAttachment(String attachmentName) throws IOException {
         return new FileInputStream(getFileFromAttachmentName(attachmentName));
+    }
+
+    void deleteAttachment(String attachmentName) throws IOException {
+        Files.deleteIfExists(getFileFromAttachmentName(attachmentName).toPath());
     }
 
     private File getFileFromAttachmentName(String fileName) {

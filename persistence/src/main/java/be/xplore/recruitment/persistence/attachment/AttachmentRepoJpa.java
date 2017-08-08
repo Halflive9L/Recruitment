@@ -2,6 +2,7 @@ package be.xplore.recruitment.persistence.attachment;
 
 import be.xplore.recruitment.domain.attachment.Attachment;
 import be.xplore.recruitment.domain.attachment.AttachmentRepository;
+import be.xplore.recruitment.domain.exception.CouldNotDeleteAttachmentException;
 import be.xplore.recruitment.domain.exception.CouldNotDownloadAttachmentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -38,21 +39,32 @@ public class AttachmentRepoJpa implements AttachmentRepository {
         return Optional.ofNullable(attachment);
     }
 
-    @Override
-    public Optional<Attachment> deleteAttachment(long attachmentId) {
-        JpaAttachment jpaAttachment = entityManager.find(JpaAttachment.class, attachmentId);
-        if (jpaAttachment == null) {
-            return Optional.empty();
-        }
-        entityManager.remove(jpaAttachment);
-        return Optional.of(jpaAttachment.toAttachment());
-    }
-
     private void trySetInputStream(Attachment attachment) throws CouldNotDownloadAttachmentException {
         try {
             attachment.setInputStream(fileManager.downloadAttachment(attachment.getAttachmentName()));
         } catch (IOException e) {
             throw new CouldNotDownloadAttachmentException(e);
+        }
+    }
+
+    @Override
+    public Optional<Attachment> deleteAttachment(long attachmentId)
+            throws CouldNotDeleteAttachmentException {
+        JpaAttachment jpaAttachment = entityManager.find(JpaAttachment.class, attachmentId);
+        if (jpaAttachment == null) {
+            return Optional.empty();
+        }
+        tryDeleteAttachmentFromFileSystem(jpaAttachment);
+        entityManager.remove(jpaAttachment);
+        return Optional.of(jpaAttachment.toAttachment());
+    }
+
+    private void tryDeleteAttachmentFromFileSystem(JpaAttachment jpaAttachment)
+            throws CouldNotDeleteAttachmentException {
+        try {
+            fileManager.deleteAttachment(jpaAttachment.getFileName());
+        } catch (IOException e) {
+            throw new CouldNotDeleteAttachmentException(e);
         }
     }
 }
