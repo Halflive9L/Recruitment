@@ -19,6 +19,7 @@ subprojects {
 
 allprojects {
     apply plugin: 'checkstyle'
+    apply plugin: 'project-report'
 
     repositories {
         mavenCentral()
@@ -29,4 +30,3 @@ allprojects {
         toolVersion = '8.1'
     }
 }
-
