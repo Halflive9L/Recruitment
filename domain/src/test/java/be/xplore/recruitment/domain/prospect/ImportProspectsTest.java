@@ -2,9 +2,6 @@ package be.xplore.recruitment.domain.prospect;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -15,10 +12,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertNull;
 
-@RunWith(MockitoJUnitRunner.class)
 public class ImportProspectsTest {
-    @Mock
-    private ProspectRepository prospectRepository;
     private ImportProspects importProspects;
     private List<String> emails = Arrays.asList(
             "AudryLauwerijssen@teleworm.us",
@@ -27,7 +21,7 @@ public class ImportProspectsTest {
 
     @Before
     public void setup() {
-        CreateProspect createProspect = new CreateProspectUseCase(prospectRepository);
+        CreateProspect createProspect = new CreateProspectUseCase(new MockProspectRepo());
         importProspects = new ImportProspectsUseCase(createProspect);
     }
 

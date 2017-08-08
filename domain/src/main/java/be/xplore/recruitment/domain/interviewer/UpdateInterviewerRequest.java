@@ -4,12 +4,7 @@ public class UpdateInterviewerRequest {
     private long interviewerId;
     private String firstName;
     private String lastName;
-
-    public UpdateInterviewerRequest(long interviewerId, String firstName, String lastName) {
-        this.interviewerId = interviewerId;
-        this.firstName = firstName;
-        this.lastName = lastName;
-    }
+    private String email;
 
     public UpdateInterviewerRequest() {
     }
@@ -37,4 +32,60 @@ public class UpdateInterviewerRequest {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public static UpdateInterviewerRequestBuilder builder() {
+        return new UpdateInterviewerRequestBuilder();
+    }
+
+    public static final class UpdateInterviewerRequestBuilder {
+        private long interviewerId;
+        private String firstName;
+        private String lastName;
+        private String email;
+
+        private UpdateInterviewerRequestBuilder() {
+        }
+
+        public static UpdateInterviewerRequestBuilder anUpdateInterviewerRequest() {
+            return new UpdateInterviewerRequestBuilder();
+        }
+
+        public UpdateInterviewerRequestBuilder withInterviewerId(long interviewerId) {
+            this.interviewerId = interviewerId;
+            return this;
+        }
+
+        public UpdateInterviewerRequestBuilder withFirstName(String firstName) {
+            this.firstName = firstName;
+            return this;
+        }
+
+        public UpdateInterviewerRequestBuilder withLastName(String lastName) {
+            this.lastName = lastName;
+            return this;
+        }
+
+        public UpdateInterviewerRequestBuilder withEmail(String email) {
+            this.email = email;
+            return this;
+        }
+
+        public UpdateInterviewerRequest build() {
+            UpdateInterviewerRequest updateInterviewerRequest = new UpdateInterviewerRequest();
+            updateInterviewerRequest.setInterviewerId(interviewerId);
+            updateInterviewerRequest.setFirstName(firstName);
+            updateInterviewerRequest.setLastName(lastName);
+            updateInterviewerRequest.setEmail(email);
+            return updateInterviewerRequest;
+        }
+    }
 }
+
