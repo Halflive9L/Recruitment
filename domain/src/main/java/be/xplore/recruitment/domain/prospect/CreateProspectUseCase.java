@@ -25,7 +25,7 @@ public class CreateProspectUseCase implements CreateProspect {
             throws InvalidEmailException, InvalidPhoneException {
         Prospect prospect = createProspectFromRequest(request);
         prospect.validateProspect();
-        repository.createProspect(prospect);
+        prospect = repository.createProspect(prospect);
         response.accept(new ProspectResponseModel(prospect));
     }
 
