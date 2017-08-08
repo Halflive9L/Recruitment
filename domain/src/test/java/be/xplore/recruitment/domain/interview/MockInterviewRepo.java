@@ -10,14 +10,17 @@ import java.util.stream.Collectors;
 public class MockInterviewRepo implements InterviewRepository {
     private List<Interview> data;
     private long currentId = 0;
+    private List<Attachment> attachments;
 
     public MockInterviewRepo() {
         this.data = new ArrayList<>();
+        this.attachments = new ArrayList<>();
     }
 
     public MockInterviewRepo(List<Interview> data) {
         this.data = data;
         this.currentId = data.stream().mapToLong(Interview::getInterviewId).max().getAsLong();
+        this.attachments = new ArrayList<>();
     }
 
     @Override
@@ -65,7 +68,17 @@ public class MockInterviewRepo implements InterviewRepository {
 
     @Override
     public Optional<Attachment> addAttachment(long interviewId, Attachment attachment) {
-        return null;
+        for (Interview i : data) {
+            if (i.getInterviewId() == interviewId) {
+                attachment.setAttachmentId(attachments.size() == 0 ? 1 : attachments.size());
+                attachments.add(attachment);
+                return Optional.of(attachment);
+            }
+        }
+        return Optional.empty();
+    }
+    public List<Attachment> getAttachments() {
+        return attachments;
     }
 
     public List<Interview> findInterviewsToRemind() {

@@ -18,8 +18,14 @@
 
 ### NetBeans ###
 nbproject/private/
-build/
 nbbuild/
 dist/
 nbdist/
 .nb-gradle/
+*.uml
+domain/src/main/resources/
+domain/src/test/resources/be/xplore/recruitment/domain/file/
+out/
+package-lock.json
+persistence/src/test/java/
+web/src/test/resources/
