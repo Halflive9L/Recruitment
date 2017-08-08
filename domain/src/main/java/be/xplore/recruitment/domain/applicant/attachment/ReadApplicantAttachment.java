@@ -1,5 +1,7 @@
 package be.xplore.recruitment.domain.applicant.attachment;
 
+import be.xplore.recruitment.domain.attachment.AttachmentResponseModel;
+
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -10,5 +12,5 @@ import java.util.function.Consumer;
 public interface ReadApplicantAttachment {
 
     void listAllAttachmentsForApplicant(ListAllAttachmentsForApplicantRequest request,
-                                        Consumer<List<ApplicantAttachmentResponseModel>> response);
+                                        Consumer<List<AttachmentResponseModel>> response);
 }

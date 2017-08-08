@@ -24,7 +24,9 @@ public class FileManager {
     }
 
     private File createFileInFileSystem(String fileName, String extension) throws IOException {
-        return File.createTempFile(fileName, extension);
+        File file = File.createTempFile(fileName, extension);
+        file.deleteOnExit();
+        return file;
     }
 
     private void writeFileToDisk(InputStream input, File file) throws IOException {

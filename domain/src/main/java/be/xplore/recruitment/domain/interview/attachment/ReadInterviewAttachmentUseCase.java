@@ -1,5 +1,7 @@
 package be.xplore.recruitment.domain.interview.attachment;
 
+import be.xplore.recruitment.domain.attachment.AttachmentResponseModel;
+
 import javax.inject.Named;
 import java.util.List;
 import java.util.function.Consumer;
@@ -12,7 +14,7 @@ import java.util.function.Consumer;
 public class ReadInterviewAttachmentUseCase implements ReadInterviewAttachment {
     @Override
     public void listAllAttachmentsForInterview(ListAllAttachmentsForInterviewRequest request,
-                                               Consumer<List<InterviewAttachmentResponseModel>> presenter) {
+                                               Consumer<List<AttachmentResponseModel>> presenter) {
 
     }
 }

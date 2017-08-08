@@ -1,6 +1,6 @@
 package be.xplore.recruitment.web.interview.attachment;
 
-import be.xplore.recruitment.domain.interview.attachment.InterviewAttachmentResponseModel;
+import be.xplore.recruitment.domain.attachment.AttachmentResponseModel;
 import be.xplore.recruitment.web.attachment.JsonAttachment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,11 +15,11 @@ import static be.xplore.recruitment.web.attachment.JsonAttachment.asJsonAttachme
  * @author Stijn Schack
  * @since 8/4/2017
  */
-public class ListAllAttachmentsForInterviewPresenter implements Consumer<List<InterviewAttachmentResponseModel>> {
+public class ListAllAttachmentsForInterviewPresenter implements Consumer<List<AttachmentResponseModel>> {
     private ResponseEntity<List<JsonAttachment>> responseEntity;
 
     @Override
-    public void accept(List<InterviewAttachmentResponseModel> interviewAttachmentResponseModels) {
+    public void accept(List<AttachmentResponseModel> interviewAttachmentResponseModels) {
         List<JsonAttachment> body = new ArrayList<>(interviewAttachmentResponseModels.size());
         interviewAttachmentResponseModels.forEach(interviewAttachmentResponseModel -> {
             JsonAttachment attachment = asJsonAttachment(interviewAttachmentResponseModel.getAttachment());

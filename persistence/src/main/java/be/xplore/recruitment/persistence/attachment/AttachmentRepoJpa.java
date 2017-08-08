@@ -38,6 +38,16 @@ public class AttachmentRepoJpa implements AttachmentRepository {
         return Optional.ofNullable(attachment);
     }
 
+    @Override
+    public Optional<Attachment> deleteAttachment(long attachmentId) {
+        JpaAttachment jpaAttachment = entityManager.find(JpaAttachment.class, attachmentId);
+        if (jpaAttachment == null) {
+            return Optional.empty();
+        }
+        entityManager.remove(jpaAttachment);
+        return Optional.of(jpaAttachment.toAttachment());
+    }
+
     private void trySetInputStream(Attachment attachment) throws CouldNotDownloadAttachmentException {
         try {
             attachment.setInputStream(fileManager.downloadAttachment(attachment.getAttachmentName()));
