@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dataset>
+    <applicant applicant_id="1"/>
+    <interview interview_id="1" applicant_id="1" cancelled="false"/>
+</dataset>
