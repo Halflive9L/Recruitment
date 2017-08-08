@@ -1,14 +1,16 @@
 package be.xplore.recruitment.smtpreminder;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.mail.Authenticator;
 import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
-import java.util.logging.Logger;
 
 public class SMTPTemplate {
-    private static final Logger LOGGER = Logger.getGlobal();
+    private static final Logger LOGGER = LoggerFactory.getLogger(SMTPTemplate.class);
 
     public SMTPTemplate() {
     }
@@ -28,8 +30,8 @@ public class SMTPTemplate {
             });
             callback.exec(session);
         } catch (Exception ex) {
-            LOGGER.warning("Error in SMTP session");
-            LOGGER.warning(ex.toString());
+            LOGGER.warn("Error in SMTP session");
+            LOGGER.warn(ex.toString());
         }
     }
 
@@ -45,8 +47,8 @@ public class SMTPTemplate {
                 transport.connect();
                 callback.exec(session, transport);
             } catch (MessagingException ex) {
-                LOGGER.warning("Error in SMTP session");
-                LOGGER.warning(ex.toString());
+                LOGGER.warn("Error in SMTP session");
+                LOGGER.warn(ex.toString());
             } finally {
                 closeTransport(transport);
             }
@@ -59,8 +61,8 @@ public class SMTPTemplate {
                 transport.close();
             }
         } catch (MessagingException ex) {
-            LOGGER.warning("Error closing SMTP session");
-            LOGGER.warning(ex.toString());
+            LOGGER.warn("Error closing SMTP session");
+            LOGGER.warn(ex.toString());
         }
     }
 }

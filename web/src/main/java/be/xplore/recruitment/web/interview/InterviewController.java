@@ -8,6 +8,8 @@ import be.xplore.recruitment.domain.interview.ScheduleInterview;
 import be.xplore.recruitment.domain.interview.ScheduleInterviewRequest;
 import be.xplore.recruitment.domain.interview.UpdateInterviewLocation;
 import be.xplore.recruitment.domain.interview.UpdateInterviewLocationRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +24,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/interview")
 public class InterviewController {
+    private Logger LOGGER = LoggerFactory.getLogger(InterviewController.class);
+
     @Autowired
     private ScheduleInterview scheduleInterview;
 
@@ -76,7 +80,7 @@ public class InterviewController {
             consumes = MediaType.TEXT_PLAIN_VALUE)
     public ResponseEntity<JsonInterview> updateInterviewLocation(@PathVariable long interviewId,
                                                                  @RequestBody String location) {
-        System.out.println(location);
+        LOGGER.debug(location);
         JsonInterviewResponseModelPresenter presenter = new JsonInterviewResponseModelPresenter();
         UpdateInterviewLocationRequest request = new UpdateInterviewLocationRequest(interviewId, location);
         updateInterviewLocation.updateInterviewLocation(request, presenter);
