@@ -49,6 +49,9 @@ public class JpaInterview {
     @Column
     private String location;
 
+    @Column
+    private boolean preInterviewReminderSent;
+
     public JpaInterview() {
     }
 
@@ -108,6 +111,14 @@ public class JpaInterview {
         this.location = location;
     }
 
+    public boolean isPreInterviewReminderSent() {
+        return preInterviewReminderSent;
+    }
+
+    public void setPreInterviewReminderSent(boolean preInterviewReminderSent) {
+        this.preInterviewReminderSent = preInterviewReminderSent;
+    }
+
     public Interview toInterview() {
         return Interview.builder()
                 .withApplicant(getApplicant().toApplicant())
@@ -119,6 +130,7 @@ public class JpaInterview {
                         .collect(Collectors.toList()))
                 .withCancelled(isCancelled())
                 .withLocation(getLocation())
+                .withPreInterviewReminderSent(isPreInterviewReminderSent())
                 .build();
     }
 

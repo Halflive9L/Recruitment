@@ -12,6 +12,7 @@ public class InterviewResponseModel {
     private List<Long> interviewerIds;
     private boolean cancelled;
     private String location;
+    private boolean preInterviewReminderSent;
 
     public InterviewResponseModel() {
     }
@@ -27,6 +28,7 @@ public class InterviewResponseModel {
                 .collect(Collectors.toList()));
         model.setCancelled(interview.isCancelled());
         model.setLocation(interview.getLocation());
+        model.setPreInterviewReminderSent(interview.isPreInterviewReminderSent());
         return model;
     }
 
@@ -84,5 +86,13 @@ public class InterviewResponseModel {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public boolean isPreInterviewReminderSent() {
+        return preInterviewReminderSent;
+    }
+
+    public void setPreInterviewReminderSent(boolean preInterviewReminderSent) {
+        this.preInterviewReminderSent = preInterviewReminderSent;
     }
 }

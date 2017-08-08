@@ -9,6 +9,7 @@ import java.io.Serializable;
 
 @JsonComponent
 public class JsonImportFailure implements Serializable {
+    private static final long serialVersionUID = -3977225873451707535L;
     private String input;
     private String reason;
 

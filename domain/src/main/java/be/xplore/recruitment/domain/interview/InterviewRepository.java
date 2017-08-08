@@ -19,4 +19,6 @@ public interface InterviewRepository {
     Optional<Interview> updateInterviewLocation(long interviewId, String location);
 
     Optional<Attachment> addAttachment(long interviewId, Attachment attachment);
+
+    List<Interview> findInterviewsToRemind();
 }

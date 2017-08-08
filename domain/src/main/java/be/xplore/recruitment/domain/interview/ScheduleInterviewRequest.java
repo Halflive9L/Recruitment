@@ -9,6 +9,7 @@ public class ScheduleInterviewRequest {
     private long applicantId;
     private List<Long> interviewerIds;
     private String location;
+    private boolean preInterviewReminderSent;
 
     public ScheduleInterviewRequest() {
     }
@@ -37,12 +38,17 @@ public class ScheduleInterviewRequest {
         return location;
     }
 
+    public boolean isPreInterviewReminderSent() {
+        return preInterviewReminderSent;
+    }
+
     public static final class ScheduleInterviewRequestBuilder {
         private LocalDateTime createdTime;
         private LocalDateTime scheduledTime;
         private long applicantId;
         private List<Long> interviewerIds;
         private String location;
+        private boolean preInterviewReminderSent;
 
         private ScheduleInterviewRequestBuilder() {
         }
@@ -71,8 +77,13 @@ public class ScheduleInterviewRequest {
             return this;
         }
 
-        public ScheduleInterviewRequestBuilder withLocation(String location){
+        public ScheduleInterviewRequestBuilder withLocation(String location) {
             this.location = location;
+            return this;
+        }
+
+        public ScheduleInterviewRequestBuilder withPreInterviewReminderSent(boolean sent) {
+            this.preInterviewReminderSent = sent;
             return this;
         }
 
@@ -83,6 +94,7 @@ public class ScheduleInterviewRequest {
             scheduleInterviewRequest.applicantId = this.applicantId;
             scheduleInterviewRequest.scheduledTime = this.scheduledTime;
             scheduleInterviewRequest.location = this.location;
+            scheduleInterviewRequest.preInterviewReminderSent = this.preInterviewReminderSent;
             return scheduleInterviewRequest;
         }
     }

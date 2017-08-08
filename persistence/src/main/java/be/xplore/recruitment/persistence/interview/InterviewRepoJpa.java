@@ -15,8 +15,10 @@ import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -41,17 +43,18 @@ public class InterviewRepoJpa implements InterviewRepository {
     @Override
     public Interview createInterview(Interview interview) {
         JpaApplicant jpaApplicant = entityManager.find(JpaApplicant.class, interview.getApplicant().getApplicantId());
-        Query query = entityManager.createQuery(FIND_INTERVIEWERS);
+        TypedQuery<JpaInterviewer> query = entityManager.createQuery(FIND_INTERVIEWERS, JpaInterviewer.class);
         query.setParameter(1, interview.getInterviewers().stream()
                 .map(Interviewer::getInterviewerId)
                 .collect(Collectors.toList()));
-        List<JpaInterviewer> interviewers = (List<JpaInterviewer>) query.getResultList();
+        List<JpaInterviewer> interviewers = query.getResultList();
         JpaInterview jpaInterview = new JpaInterview();
         jpaInterview.setCreatedTime(interview.getCreatedTime());
         jpaInterview.setScheduledTime(interview.getScheduledTime());
         jpaInterview.setApplicant(jpaApplicant);
         jpaInterview.setInterviewers(interviewers);
         jpaInterview.setLocation(interview.getLocation());
+        jpaInterview.setPreInterviewReminderSent(interview.isPreInterviewReminderSent());
         entityManager.persist(jpaInterview);
         return jpaInterview.toInterview();
     }
@@ -92,6 +95,7 @@ public class InterviewRepoJpa implements InterviewRepository {
         jpaInterview.setApplicant(entityManager.find(JpaApplicant.class, interview.getApplicant().getApplicantId()));
         jpaInterview.setScheduledTime(interview.getScheduledTime());
         jpaInterview.setCancelled(interview.isCancelled());
+        jpaInterview.setPreInterviewReminderSent(interview.isPreInterviewReminderSent());
         entityManager.persist(jpaInterview);
         return Optional.of(jpaInterview.toInterview());
     }
@@ -135,5 +139,18 @@ public class InterviewRepoJpa implements InterviewRepository {
         JpaAttachment attachment = new JpaAttachment(interview, fileName);
         entityManager.persist(attachment);
         return attachment.getAttachmentId();
+    }
+
+    private static final String FIND_REMIND_INTERVIEWS_QUERY = "SELECT i FROM JpaInterview i WHERE " +
+            "i.preInterviewReminderSent = false AND i.cancelled = false AND :reminderCutoff > i.scheduledTime";
+
+    @Override
+    public List<Interview> findInterviewsToRemind() {
+        TypedQuery<JpaInterview> query = entityManager.createQuery(FIND_REMIND_INTERVIEWS_QUERY, JpaInterview.class);
+        LocalDateTime cutoff = LocalDateTime.now().plusDays(1);
+        query.setParameter("reminderCutoff", cutoff);
+        return query.getResultList().stream()
+            .map(JpaInterview::toInterview)
+            .collect(Collectors.toList());
     }
 }

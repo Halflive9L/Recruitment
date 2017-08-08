@@ -6,4 +6,5 @@ package be.xplore.recruitment.domain.exception;
  */
 public class InvalidEmailException extends RuntimeException {
 
+    private static final long serialVersionUID = -6823976897134174437L;
 }

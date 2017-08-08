@@ -6,4 +6,5 @@ package be.xplore.recruitment.domain.exception;
  */
 public class InvalidPhoneException extends RuntimeException {
 
+    private static final long serialVersionUID = 5979758101792880549L;
 }
