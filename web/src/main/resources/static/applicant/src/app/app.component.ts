@@ -4,6 +4,7 @@ import {ApplicantsService} from "./applicants.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ProspectsService} from "./prospects.service";
 import {IProspect} from "./prospects";
+import {isUndefined} from "util";
 
 
 @Component({
@@ -14,9 +15,9 @@ import {IProspect} from "./prospects";
 })
 
 export class AppComponent {
-  iapplicants: IApplicant[];
+  iapplicants: IApplicant[] = [];
   iapplicant: IApplicant;
-  iprospects: IProspect[];
+  iprospects: IProspect[] = [];
   iprospect: IProspect;
   currentApplicantId: number;
   currentProspectId: number;
@@ -27,11 +28,11 @@ export class AppComponent {
   updateApplicantForm: FormGroup;
   updateProspectForm: FormGroup;
   file: FileList;
+  applicantFileList: File[] = [];
 
   constructor(private _applicant: ApplicantsService, private _prospects: ProspectsService,
               private formBuilder: FormBuilder) {
   }
-
 
   ngOnInit() {
     this.applicantForm = this.formBuilder.group({
@@ -86,17 +87,18 @@ export class AppComponent {
 
     this._applicant.getApplicants()
       .subscribe(iapplicants => {
-        iapplicants.forEach(iapplicant =>  this.highestApplicantId = iapplicant.applicantId);
-        this.iapplicants = iapplicants });
+        iapplicants.forEach(iapplicant => this.highestApplicantId = iapplicant.applicantId);
+        this.iapplicants = iapplicants
+      });
     this._prospects.getProspects()
       .subscribe(iprospects => {
         iprospects.forEach(iprospect => this.highestProspectId = iprospect.prospectId);
-      this.iprospects = iprospects; });
+        this.iprospects = iprospects;
+      });
   };
 
   onSelectFile(event) {
-    let files = event.srcElement.files;
-    this.file = files;
+    this.file = event.srcElement.files;
   }
 
   getApplicantId($event) {
@@ -126,10 +128,11 @@ export class AppComponent {
       .subscribe(iapplicant => {
           iapplicant.applicantId = (this.highestApplicantId + 1);
         this.iapplicants.push(iapplicant);
-        this._applicant.createApplicantFile(this.file, iapplicant.applicantId);
+        if(!isUndefined(this.file) &&  this.file.length > 0) {
+        this._applicant.createApplicantFile(this.file, iapplicant.applicantId).subscribe();
+        }
         this.highestApplicantId++;
       });
-
   };
 
   updateApplicant(form: FormGroup): void {
@@ -141,9 +144,18 @@ export class AppComponent {
         let array2 = this.iapplicants.slice(index + 1, this.iapplicants.length);
         array1.push(iapplicant);
         this.iapplicants = array1.concat(array2);
+        if(!isUndefined(this.file) && this.file.length > 0) {
+          this._applicant.createApplicantFile(this.file, iapplicant.applicantId).subscribe();
+        }
       });
   };
 
+  readAllApplicantFiles(id: number) {
+    this._applicant.readApplicantFileList(id).subscribe(
+      file => {
+        this.applicantFileList.push(file[0]);
+      });
+  }
   deleteApplicant(id: number): void {
     this._applicant.deleteApplicant(id)
       .subscribe(iapplicant => {

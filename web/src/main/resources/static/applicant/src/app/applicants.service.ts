@@ -45,9 +45,13 @@ export class ApplicantsService {
       //headers.append('Content-Type', 'multipart/form-data');
       //headers.append('Accept', 'application/json');
       let options = new RequestOptions({ headers: headers });
-      this._http.post(this._applicantUrl+"/"+id+"/attachment", attachment, options)
+      return this._http.post(this._applicantUrl+"/"+id+"/attachment", attachment)
         .map(res => res.json());
     }
   }
 
+  readApplicantFileList(applicantId:number) {
+      return this._http.get(this._applicantUrl+"/"+applicantId+"/attachment/")
+        .map((response:Response)=> response.json());
+  }
 }

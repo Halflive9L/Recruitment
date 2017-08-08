@@ -25,6 +25,7 @@ import java.util.List;
  * @author Stijn Schack
  * @since 8/4/2017
  */
+@CrossOrigin
 @RestController
 public class ApplicantAttachmentController {
     private final AddApplicantAttachment addApplicantAttachment;
@@ -36,6 +37,7 @@ public class ApplicantAttachmentController {
         this.addApplicantAttachment = addApplicantAttachment;
         this.readApplicantAttachment = readApplicantAttachment;
     }
+
 
     @RequestMapping(method = RequestMethod.POST, value = "/api/v1/applicant/{applicantId}/attachment",
             consumes = "multipart/form-data")
