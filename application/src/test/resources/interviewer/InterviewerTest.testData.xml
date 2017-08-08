@@ -3,4 +3,7 @@
     <interviewer interviewer_id="1" first_name="Casandra" last_name="Kleinveld" email="casandra.kleinveld@email.com"/>
     <interviewer interviewer_id="2" first_name="Tyra" last_name="van Vlymen"  email="tyra.van.vlymen@email.com"/>
     <interviewer interviewer_id="3" first_name="Jitte" last_name="Slotboom"  email="jitte.slotboom@email.com"/>
+    <!-- Nodig om FK constraint violation te voorkomen -->
+    <interview/>
+    <interview_interviewers/>
 </dataset>

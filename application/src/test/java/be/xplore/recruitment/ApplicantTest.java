@@ -1,6 +1,7 @@
 package be.xplore.recruitment;
 
 import be.xplore.recruitment.web.applicant.JsonApplicant;
+import com.github.springtestdbunit.annotation.DatabaseOperation;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.ExpectedDatabase;
 import com.github.springtestdbunit.assertion.DatabaseAssertionMode;
@@ -42,6 +43,7 @@ public class ApplicantTest extends TestBase {
     }
 
     @Test
+    @DatabaseSetup(value = "/applicant/ApplicantTest.testPOSTSetup.xml")
     @ExpectedDatabase(value = "/applicant/ApplicantTest.testPOST.xml", assertionMode = DatabaseAssertionMode.NON_STRICT)
     public void testPOST() {
         HttpHeaders headers = new HttpHeaders();

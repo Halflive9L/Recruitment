@@ -3,19 +3,13 @@ package be.xplore.recruitment;
 import be.xplore.recruitment.domain.interview.Interview;
 import be.xplore.recruitment.domain.interview.InterviewRepository;
 import be.xplore.recruitment.domain.interview.RemindParticipants;
-import be.xplore.recruitment.domain.interview.RemindParticipantsUseCase;
-import be.xplore.recruitment.domain.interview.ReminderSender;
-import be.xplore.recruitment.smtpreminder.SMTPConfig;
-import be.xplore.recruitment.smtpreminder.SMTPReminderSender;
 import be.xplore.recruitment.web.interview.JsonInterview;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import de.saly.javamail.mock2.MockMailbox;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -48,9 +42,7 @@ public class InterviewTest extends TestBase {
     }
 
     @Test
-    @Ignore
     @DatabaseSetup(value = "/interview/InterviewTest.testData.xml")
-    //@DatabaseTearDown(type = DatabaseOperation.TRUNCATE_TABLE)
     public void schedulesInterview() {
         JSONObject object = createInterviewObject(0, 1, Arrays.asList(1, 2));
         HttpHeaders headers = new HttpHeaders();
@@ -59,13 +51,11 @@ public class InterviewTest extends TestBase {
         JsonInterview result = restTemplate
                 .postForEntity("/api/interview/create", httpEntity, JsonInterview.class)
                 .getBody();
-        assertThat(result.getInterviewId()).isEqualTo(1);
         assertThat(result.getApplicantId()).isEqualTo(1);
         assertThat(result.getInterviewerIds()).contains(1L, 2L);
     }
 
     @Test
-    @Ignore
     @DatabaseSetup(value = "/interview/InterviewTest.testDataWithInterviews.xml")
     public void testReadAllInterviews() {
         ParameterizedTypeReference<List<JsonInterview>> typeRef =
@@ -84,8 +74,6 @@ public class InterviewTest extends TestBase {
 
     @Test
     @DatabaseSetup(value = "/interview/InterviewTest.testDataWithInterviews.xml")
-    @Ignore
-    //@DatabaseTearDown(type = DatabaseOperation.TRUNCATE_TABLE)
     public void testReadInterviewById() {
         JsonInterview interview = restTemplate.getForEntity("/api/interview/1", JsonInterview.class)
                 .getBody();
@@ -96,7 +84,6 @@ public class InterviewTest extends TestBase {
 
     @Test
     @DatabaseSetup(value = "/interview/InterviewTest.testDataWithInterviews.xml")
-    @Ignore
     public void testCancelInterview() {
         JSONObject object = createInterviewObject(0, 1, Arrays.asList(1, 2));
         HttpHeaders headers = new HttpHeaders();
@@ -110,7 +97,6 @@ public class InterviewTest extends TestBase {
 
     @Test
     @DatabaseSetup(value = "/interview/InterviewTest.testRemind.xml")
-    @Ignore
     public void testRemindParticipantsBeforeInterview() throws Exception {
         Interview interview = interviewRepository.findById(1).get();
         interview.setScheduledTime(LocalDateTime.now().plusHours(12));
