@@ -108,7 +108,7 @@ public class ApplicantController {
         ResponseEntity<JsonApplicant> responseEntity;
         try {
             updateApplicant.updateApplicant(request, presenter);
-             responseEntity = presenter.getResponseEntity();
+            responseEntity = presenter.getResponseEntity();
         } catch (NotFoundException e) {
             responseEntity = new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (InvalidDateException | InvalidEmailException | InvalidPhoneException e) {
