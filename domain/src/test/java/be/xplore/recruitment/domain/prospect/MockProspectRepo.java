@@ -27,7 +27,7 @@ class MockProspectRepo implements ProspectRepository {
                 .withEmail("john.smith@example.com")
                 .withPhone("+32424963258").build());
         mockProspects.add(Prospect.builder()
-                .withFirstName("Leroy")
+                .withFirstName("Leeroy")
                 .withLastName("Jenkins")
                 .withId(2)
                 .withEmail("leeroy@jenkins.com")
@@ -57,7 +57,14 @@ class MockProspectRepo implements ProspectRepository {
 
     @Override
     public List<Prospect> findByParameters(Prospect prospect) {
-        return null;
+        List<Prospect> matches = new ArrayList<>();
+        for (Prospect mockProspect : mockProspects) {
+            if (!isNullOrEmpty(prospect.getFirstName()) &&
+                    prospect.getFirstName().equalsIgnoreCase(mockProspect.getFirstName())) {
+                matches.add(mockProspect);
+            }
+        }
+        return matches;
     }
 
     @Override
