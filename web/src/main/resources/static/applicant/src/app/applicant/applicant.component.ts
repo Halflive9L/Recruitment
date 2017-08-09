@@ -6,13 +6,13 @@ import {isUndefined} from "util";
 
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
+  selector: 'applicant',
+  templateUrl: './applicant.component.html',
+  styleUrls: ['./applicant.component.css'],
   providers: [ApplicantsService]
 })
 
-export class AppComponent {
+export class applicantComponent {
   iapplicants: IApplicant[] = [];
   iapplicant: IApplicant;
   currentApplicantId: number;

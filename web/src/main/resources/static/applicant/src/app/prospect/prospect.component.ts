@@ -4,8 +4,6 @@ import {Component} from "@angular/core";
 import {ProspectsService} from "./prospects.service";
 import {IProspect} from "./prospects";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {applySourceSpanToExpressionIfNeeded} from "@angular/compiler/src/output/output_ast";
-
 @Component({
   selector: 'prospect',
   templateUrl: './prospect.component.html',
@@ -83,7 +81,6 @@ export class prospectComponent {
     this._prospects.updateProspect(body, this.currentProspectId)
       .subscribe(iprospect => {
         let index = this.iprospects.findIndex(x => x.prospectId === iprospect.prospectId);
-        console.log(index);
         let array1 = this.iprospects.slice(0, index);
         let array2 = this.iprospects.slice(index + 1, this.iprospects.length);
         array1.push(iprospect);
@@ -92,7 +89,6 @@ export class prospectComponent {
   };
 
   deleteProspect(id: number): void {
-    console.log(id);
     this._prospects.deleteProspect(id)
       .subscribe(iprospect => {
         let index = this.iprospects.findIndex(x => x.prospectId === iprospect.prospectId);
