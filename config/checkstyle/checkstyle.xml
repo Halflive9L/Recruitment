@@ -44,5 +44,7 @@
         <module name="NestedTryDepth">
             <property name="max" value="1"/>
         </module>
+        <module name="EqualsAvoidNull"/>
+        <module name="EqualsHashCode"/>
     </module>
 </module>

@@ -97,6 +97,7 @@ public class InterviewTest extends TestBase {
     @Test
     @DatabaseSetup(value = "/interview/InterviewTest.testRemind.xml")
     public void testRemindParticipantsBeforeInterview() throws Exception {
+        MockMailbox.resetAll();
         Interview interview = interviewRepository.findById(1).get();
         interview.setScheduledTime(LocalDateTime.now().plusHours(12));
         interviewRepository.updateInterviewer(interview);
