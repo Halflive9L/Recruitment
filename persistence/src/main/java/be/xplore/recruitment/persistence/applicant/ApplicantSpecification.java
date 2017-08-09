@@ -29,13 +29,13 @@ public class ApplicantSpecification {
     private Specification<JpaApplicant> hasFirstName() {
         return isStringNullOrEmpty(applicant.getFirstName()) ? null :
                 (root, query, cb) -> cb.equal(cb.lower(root.get("firstName")),
-                        (applicant.getFirstName()).toLowerCase());
+                        applicant.getFirstName().toLowerCase());
     }
 
     private Specification<JpaApplicant> hasLastName() {
         return isStringNullOrEmpty(applicant.getLastName()) ? null :
                 (root, query, cb) -> cb.equal(cb.lower(root.get("lastName")),
-                        (applicant.getLastName()).toLowerCase());
+                        applicant.getLastName().toLowerCase());
     }
 
     private Specification<JpaApplicant> hasEmail() {

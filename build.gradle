@@ -33,6 +33,7 @@ subprojects {
 allprojects {
     apply plugin: 'checkstyle'
     apply plugin: 'project-report'
+    apply plugin: 'pmd'
 
     repositories {
         mavenCentral()
@@ -41,5 +42,11 @@ allprojects {
     checkstyle {
         configFile = rootProject.file('config/checkstyle/checkstyle.xml')
         toolVersion = '8.1'
+    }
+
+    pmd {
+        consoleOutput = true
+        ruleSetFiles = rootProject.files("config/pmd/pmd.xml")
+        toolVersion = '5.8.1'
     }
 }
