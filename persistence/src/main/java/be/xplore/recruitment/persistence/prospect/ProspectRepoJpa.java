@@ -114,7 +114,7 @@ public class ProspectRepoJpa implements ProspectRepository {
                 .setParameter("prospectId", prospectId).getResultList();
         entityManager.createNamedQuery(JpaProspect.QUERY_DELETE).setParameter("prospectId", prospectId)
                 .executeUpdate();
-        return Optional.ofNullable((prospectList.get(0)).toProspect());
+        return Optional.ofNullable(prospectList.get(0).toProspect());
     }
 
     private JpaProspect prospectToJpaProspect(Prospect prospect) {

@@ -132,7 +132,7 @@ public class ApplicantRepoJpa implements ApplicantRepository {
                 .setParameter("applicantId", applicantId).getResultList();
         entityManager.createNamedQuery(JpaApplicant.QUERY_DELETE).setParameter("applicantId", applicantId)
                 .executeUpdate();
-        return Optional.ofNullable((applicantList.get(0)).toApplicant());
+        return Optional.ofNullable(applicantList.get(0).toApplicant());
     }
 
     @Override

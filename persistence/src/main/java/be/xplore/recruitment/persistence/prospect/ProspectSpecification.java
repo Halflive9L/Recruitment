@@ -28,25 +28,25 @@ public class ProspectSpecification {
     private Specification<JpaProspect> hasFirstName() {
         return isStringNullOrEmpty(prospect.getFirstName()) ? null :
                 (root, query, cb) -> cb.equal(cb.lower(root.get("firstName")),
-                        (prospect.getFirstName()).toLowerCase());
+                        prospect.getFirstName().toLowerCase());
     }
 
     private Specification<JpaProspect> hasLastName() {
         return isStringNullOrEmpty(prospect.getLastName()) ? null :
                 (root, query, cb) -> cb.equal(cb.lower(root.get("lastName")),
-                        (prospect.getLastName()).toLowerCase());
+                        prospect.getLastName().toLowerCase());
     }
 
     private Specification<JpaProspect> hasEmail() {
         return isStringNullOrEmpty(prospect.getEmail()) ? null :
                 (root, query, cb) -> cb.equal(cb.lower(root.get("email")),
-                        (prospect.getEmail()).toLowerCase());
+                        prospect.getEmail().toLowerCase());
     }
 
     private Specification<JpaProspect> hasPhone() {
         return isStringNullOrEmpty(prospect.getPhone()) ? null :
                 (root, query, cb) -> cb.equal(cb.lower(root.get("phone")),
-                        (prospect.getPhone().toLowerCase()));
+                        prospect.getPhone().toLowerCase());
     }
 
     private boolean isStringNullOrEmpty(String s) {
