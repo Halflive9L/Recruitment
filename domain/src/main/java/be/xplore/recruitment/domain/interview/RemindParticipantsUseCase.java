@@ -36,6 +36,6 @@ public class RemindParticipantsUseCase implements RemindParticipants {
 
     private void flagInterviewReminded(Interview interview) {
         interview.setPreInterviewReminderSent(true);
-        repository.updateInterviewer(interview);
+        repository.updateInterview(interview);
     }
 }
