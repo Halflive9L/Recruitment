@@ -4,7 +4,6 @@ import {ApplicantsService} from "./applicants.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {isUndefined} from "util";
 
-
 @Component({
   selector: 'applicant',
   templateUrl: './applicant.component.html',
@@ -128,7 +127,6 @@ export class applicantComponent {
       });
   };
 
-
   deleteApplicant(id: number): void {
     this._applicant.deleteApplicant(id)
       .subscribe(iapplicant => {
@@ -138,6 +136,5 @@ export class applicantComponent {
         this.iapplicants = array1.concat(array2);
       });
   };
-
 }
 

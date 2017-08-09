@@ -1,9 +1,8 @@
-
-
 import {Component} from "@angular/core";
 import {ProspectsService} from "./prospects.service";
 import {IProspect} from "./prospects";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+
 @Component({
   selector: 'prospect',
   templateUrl: './prospect.component.html',
