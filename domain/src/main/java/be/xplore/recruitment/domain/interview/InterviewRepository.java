@@ -14,7 +14,7 @@ public interface InterviewRepository {
 
     Optional<Interview> deleteInterviewer(long id);
 
-    Optional<Interview> updateInterviewer(Interview interview);
+    Optional<Interview> updateInterview(Interview interview);
 
     Optional<Interview> updateInterviewLocation(long interviewId, String location);
 

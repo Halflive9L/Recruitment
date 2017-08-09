@@ -17,7 +17,7 @@ public class CancelInterviewUseCase implements CancelInterview {
     public void cancelInterview(CancelInterviewRequest request, Consumer<InterviewResponseModel> consumer) {
         Interview interview = repository.findById(request.getInterviewId()).orElseThrow(NotFoundException::new);
         interview.setCancelled(!interview.isCancelled());
-        interview = repository.updateInterviewer(interview).orElseThrow(NotFoundException::new);
+        interview = repository.updateInterview(interview).orElseThrow(NotFoundException::new);
         consumer.accept(InterviewResponseModel.fromInterview(interview));
     }
 }
