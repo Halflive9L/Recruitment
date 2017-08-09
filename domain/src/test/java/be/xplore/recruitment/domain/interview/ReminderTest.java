@@ -19,13 +19,11 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-
 @RunWith(MockitoJUnitRunner.class)
 public class ReminderTest {
     @Mock
     private MockInterviewRepo mockInterviewRepo;
     private RemindParticipants useCase;
-
     private List<Applicant> applicants = Arrays.asList(
             Applicant.builder()
                     .withId(1)
@@ -53,28 +51,7 @@ public class ReminderTest {
                     .build()
     );
 
-    private InterviewRepository setupRepo(Interview... interviews) {
-        List<Interview> list = Arrays.asList(interviews);
-        return new MockInterviewRepo(list);
-    }
-
-    private RemindParticipants setupUseCase(ReminderSender sender, Interview... interviews) {
-        List<Interview> list = Arrays.asList(interviews);
-        mockInterviewRepo = new MockInterviewRepo(list);
-        return new RemindParticipantsUseCase(mockInterviewRepo, sender);
-    }
-
     private long nextId;
-
-    private Interview.InterviewBuilder interviewBuilder(long inHours, Applicant applicant,
-                                                        List<Interviewer> interviewers) {
-        return Interview.builder()
-                .withInterviewId(nextId++)
-                .withScheduledTime(LocalDateTime.now().plusHours(inHours))
-                .withCreatedTime(LocalDateTime.now().minusDays(5))
-                .withApplicant(applicant)
-                .withInterviewers(interviewers);
-    }
 
     @Before
     public void setup() {
@@ -158,6 +135,28 @@ public class ReminderTest {
         );
         useCase.checkReminders();
         verify(sender, times(interviewers.size())).remindInterviewer(any(), any());
+    }
+
+    private InterviewRepository setupRepo(Interview... interviews) {
+        List<Interview> list = Arrays.asList(interviews);
+        return new MockInterviewRepo(list);
+    }
+
+    private RemindParticipants setupUseCase(ReminderSender sender, Interview... interviews) {
+        List<Interview> list = Arrays.asList(interviews);
+        mockInterviewRepo = new MockInterviewRepo(list);
+        return new RemindParticipantsUseCase(mockInterviewRepo, sender);
+    }
+
+
+    private Interview.InterviewBuilder interviewBuilder(long inHours, Applicant applicant,
+                                                        List<Interviewer> interviewers) {
+        return Interview.builder()
+                .withInterviewId(nextId++)
+                .withScheduledTime(LocalDateTime.now().plusHours(inHours))
+                .withCreatedTime(LocalDateTime.now().minusDays(5))
+                .withApplicant(applicant)
+                .withInterviewers(interviewers);
     }
 
 }

@@ -30,5 +30,6 @@
             <property name="max" value="3"/>
             <property name="tokens" value="CTOR_DEF,METHOD_DEF"/>
         </module>
+        <module name="DeclarationOrder"/>
     </module>
 </module>

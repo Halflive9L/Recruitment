@@ -27,6 +27,8 @@ import java.util.stream.Collectors;
 public class InterviewRepoJpa implements InterviewRepository {
     private static final String FIND_INTERVIEWERS = "SELECT i FROM JpaInterviewer i WHERE i.interviewerId IN (?1)";
     private static final String FIND_ALL_QUERY = "SELECT i FROM JpaInterview i";
+    private static final String FIND_REMIND_INTERVIEWS_QUERY = "SELECT i FROM JpaInterview i WHERE " +
+            "i.preInterviewReminderSent = false AND i.cancelled = false AND :reminderCutoff > i.scheduledTime";
     private ApplicantRepository applicantRepository;
     private EntityManager entityManager;
     private FileManager fileManager;
@@ -123,6 +125,16 @@ public class InterviewRepoJpa implements InterviewRepository {
         return createdAttachment;
     }
 
+    @Override
+    public List<Interview> findInterviewsToRemind() {
+        TypedQuery<JpaInterview> query = entityManager.createQuery(FIND_REMIND_INTERVIEWS_QUERY, JpaInterview.class);
+        LocalDateTime cutoff = LocalDateTime.now().plusDays(1);
+        query.setParameter("reminderCutoff", cutoff);
+        return query.getResultList().stream()
+                .map(JpaInterview::toInterview)
+                .collect(Collectors.toList());
+    }
+
     private Attachment tryCreateAttachment(Attachment attachment) {
         try {
             attachment.setAttachmentName(fileManager.createFile(attachment.getInputStream(),
@@ -138,18 +150,5 @@ public class InterviewRepoJpa implements InterviewRepository {
         JpaAttachment attachment = new JpaAttachment(interview, fileName);
         entityManager.persist(attachment);
         return attachment.getAttachmentId();
-    }
-
-    private static final String FIND_REMIND_INTERVIEWS_QUERY = "SELECT i FROM JpaInterview i WHERE " +
-            "i.preInterviewReminderSent = false AND i.cancelled = false AND :reminderCutoff > i.scheduledTime";
-
-    @Override
-    public List<Interview> findInterviewsToRemind() {
-        TypedQuery<JpaInterview> query = entityManager.createQuery(FIND_REMIND_INTERVIEWS_QUERY, JpaInterview.class);
-        LocalDateTime cutoff = LocalDateTime.now().plusDays(1);
-        query.setParameter("reminderCutoff", cutoff);
-        return query.getResultList().stream()
-            .map(JpaInterview::toInterview)
-            .collect(Collectors.toList());
     }
 }
