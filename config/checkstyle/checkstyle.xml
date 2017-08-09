@@ -31,5 +31,9 @@
             <property name="tokens" value="CTOR_DEF,METHOD_DEF"/>
         </module>
         <module name="DeclarationOrder"/>
+        <module name="ReturnCount">
+            <property name="max" value="2"/>
+            <property name="maxForVoid" value="1"/>
+        </module>
     </module>
 </module>

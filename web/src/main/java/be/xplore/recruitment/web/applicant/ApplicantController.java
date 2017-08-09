@@ -105,14 +105,16 @@ public class ApplicantController {
                                                          @RequestBody JsonApplicant applicant) {
         UpdateApplicantRequest request = getUpdateApplicantRequestFromJsonApplicant(applicantId, applicant);
         JsonApplicantResponseModelPresenter presenter = new JsonApplicantResponseModelPresenter();
+        ResponseEntity<JsonApplicant> responseEntity;
         try {
             updateApplicant.updateApplicant(request, presenter);
+             responseEntity = presenter.getResponseEntity();
         } catch (NotFoundException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            responseEntity = new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (InvalidDateException | InvalidEmailException | InvalidPhoneException e) {
-            return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+            responseEntity = new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         }
-        return presenter.getResponseEntity();
+        return responseEntity;
     }
 
     private CreateApplicantRequest getCreateRequestFromJsonApplicant(JsonApplicant applicant) {

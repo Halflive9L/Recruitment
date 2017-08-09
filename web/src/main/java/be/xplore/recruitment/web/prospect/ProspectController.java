@@ -122,14 +122,16 @@ public class ProspectController {
         JsonProspectResponseModelPresenter presenter = new JsonProspectResponseModelPresenter();
         JsonProspectToUpdateProspectRequest(query, request);
         request.prospectId = prospectId;
+        ResponseEntity<JsonProspect> responseEntity;
         try {
             updateProspect.updateProspect(request, presenter);
+            responseEntity = presenter.getResponseEntity();
         } catch (NotFoundException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            responseEntity = new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (InvalidEmailException | InvalidPhoneException e) {
-            return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+            responseEntity = new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         }
-        return presenter.getResponseEntity();
+        return responseEntity;
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/importprospects")
