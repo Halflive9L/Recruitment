@@ -3,15 +3,16 @@ import { NgModule } from '@angular/core';
 import { HttpModule} from "@angular/http"
 import {AppComponent} from "./app.component";
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {prospectComponent} from "./prospect/prospect.component";
 
 @NgModule({
   declarations: [
-    AppComponent,
+    AppComponent, prospectComponent
   ],
   imports: [
     BrowserModule, HttpModule, FormsModule, ReactiveFormsModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent, prospectComponent]
 })
 export class AppModule { }
