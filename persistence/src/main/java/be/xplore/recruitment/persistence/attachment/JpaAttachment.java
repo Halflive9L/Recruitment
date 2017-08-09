@@ -29,6 +29,7 @@ import static be.xplore.recruitment.persistence.attachment.JpaAttachment.QUERY_F
 @NamedQueries({
         @NamedQuery(name = QUERY_FIND_BY_ID, query =
                 "SELECT a FROM JpaAttachment a WHERE a.attachmentId = :attachmentId")
+
 })
 public class JpaAttachment {
     static final String QUERY_FIND_BY_ID = "Attachment.findById";

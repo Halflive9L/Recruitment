@@ -46,7 +46,7 @@ public class MockInterviewRepo implements InterviewRepository {
     }
 
     @Override
-    public Optional<Interview> updateInterviewer(Interview interview) {
+    public Optional<Interview> updateInterview(Interview interview) {
         return data.stream()
                 .filter(i -> i.getInterviewId() == interview.getInterviewId())
                 .findFirst()

@@ -117,11 +117,7 @@ public class ApplicantRepoJpa implements ApplicantRepository {
     public Optional<Applicant> updateApplicant(Applicant applicant) {
         JpaApplicant jpaApplicant = applicantToJpaApplicant(applicant);
         jpaApplicant.setApplicantId(applicant.getApplicantId());
-        try {
-            applicant = entityManager.merge(jpaApplicant).toApplicant();
-        } catch (IllegalArgumentException e) {
-            applicant = null;
-        }
+        applicant = entityManager.merge(jpaApplicant).toApplicant();
         return Optional.ofNullable(applicant);
     }
 
@@ -132,7 +128,7 @@ public class ApplicantRepoJpa implements ApplicantRepository {
                 .setParameter("applicantId", applicantId).getResultList();
         entityManager.createNamedQuery(JpaApplicant.QUERY_DELETE).setParameter("applicantId", applicantId)
                 .executeUpdate();
-        return Optional.ofNullable((applicantList.get(0)).toApplicant());
+        return Optional.ofNullable(applicantList.get(0).toApplicant());
     }
 
     @Override
@@ -152,7 +148,7 @@ public class ApplicantRepoJpa implements ApplicantRepository {
     private Attachment tryCreateAttachment(Attachment attachment) {
         try {
             attachment.setAttachmentName(fileManager.createFile(attachment.getInputStream(),
-                    "applicant", attachment.getAttachmentName()));
+                                                                "applicant", attachment.getAttachmentName()));
             return attachment;
         } catch (IOException e) {
             e.printStackTrace();

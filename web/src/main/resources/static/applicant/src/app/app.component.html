@@ -84,7 +84,7 @@
     </div>
     <div class="form-group center-block">
       <label for="InputCV">CV toevoegen</label>
-      <input type="file" id="InputCV">
+      <input type="file" accept=".pdf,.doc,.docx" id="InputCV" (change)="onSelectFile($event)">
     </div>
     <button type="submit" onClick="document.getElementById('applicantTable').scrollIntoView();" value="submit"
             [disabled]="!applicantForm.valid" class="btn btn-default btn-lg center-block">
@@ -105,6 +105,7 @@
       <th class="text-center">Date of Birth</th>
       <th class="text-center">Education</th>
       <th class="text-center">Address</th>
+      <th class="text-center">Files</th>
     </tr>
     <tr *ngFor="let applicant of iapplicants">
       <td class="text-center">{{applicant.applicantId}}</td>
@@ -115,6 +116,12 @@
       <td class="text-center">{{applicant.dateOfBirth}}</td>
       <td class="text-center">{{applicant.education}}</td>
       <td class="text-center">{{applicant.address}}</td>
+      <td class="text-center">
+        <button [attr.id]="applicant?.applicantId"
+                class="btn btn-primary" data-toggle="modal" data-target="#filesModal"
+        (click)="readAllApplicantFiles(applicant?.applicantId); getApplicantId($event);">Files
+        </button>
+      </td>
       <td class="text-center">
         <button [attr.id]="applicant?.applicantId" (click)="getApplicantId($event)" class="btn btn-sm btn-info"
                 data-toggle="modal" data-target="#applicantModal">Edit
@@ -234,7 +241,7 @@
           </div>
           <div class="form-group center-block">
             <label for="InputCVModal">CV toevoegen</label>
-            <input type="file" id="InputCVModal">
+            <input type="file" id="InputCVModal" accept=".pdf,.doc,.docx" (change)="onSelectFile($event)">
             <!--          <p class="help-block">Example block-level help text here.</p> -->
           </div>
           <button type="button" (click)="updateApplicant(updateApplicantForm)" value="submit"
@@ -263,6 +270,38 @@
         <button class="btn btn-danger btn-lg" (click)="deleteApplicant(currentApplicantId)" data-dismiss="modal">Yes
         </button>
         <button class="btn btn-success btn-lg" data-dismiss="modal">No</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div id="filesModal" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+
+    <div class="modal-content">
+      <div class="modal-header">
+        Files for {{readApplicantById(currentApplicantId-1)?.firstName}}
+        {{readApplicantById(currentApplicantId-1)?.lastName}}
+      <button type="button" class="close" data-dismiss="modal">&times;</button>
+    </div>
+      <div class="modal-body text-center">
+        <div id="files">
+          <!--TO-DO-->
+          <div id="filesModalList" class="row" *ngFor="let file of applicantFileList; let i = index">
+            <div class="col-md-8 text-center">
+              File {{i+1}}: {{file?.attachmentName}}
+            </div>
+            <div class="col-md-2">
+              <button class="btn btn-info" data-dismiss="filesModal"
+                      (click)="downloadApplicantFile(file?.id)">Download</button>
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-danger" data-dismiss="filesModal"
+                        (click)="deleteApplicantFile(file?.id)">Delete</button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

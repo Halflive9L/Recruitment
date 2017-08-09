@@ -4,6 +4,7 @@ import {ApplicantsService} from "./applicants.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ProspectsService} from "./prospects.service";
 import {IProspect} from "./prospects";
+import {isUndefined} from "util";
 
 
 @Component({
@@ -14,9 +15,9 @@ import {IProspect} from "./prospects";
 })
 
 export class AppComponent {
-  iapplicants: IApplicant[];
+  iapplicants: IApplicant[] = [];
   iapplicant: IApplicant;
-  iprospects: IProspect[];
+  iprospects: IProspect[] = [];
   iprospect: IProspect;
   currentApplicantId: number;
   currentProspectId: number;
@@ -26,11 +27,12 @@ export class AppComponent {
   prospectForm: FormGroup;
   updateApplicantForm: FormGroup;
   updateProspectForm: FormGroup;
+  file: FileList;
+  applicantFileList: File;
 
   constructor(private _applicant: ApplicantsService, private _prospects: ProspectsService,
               private formBuilder: FormBuilder) {
   }
-
 
   ngOnInit() {
     this.applicantForm = this.formBuilder.group({
@@ -39,13 +41,12 @@ export class AppComponent {
       email: ['', [Validators.required, Validators.pattern("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+" +
         "@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}])" +
         "|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$")]],
-      phone: ['', [Validators.required,
-        Validators.pattern("\\+(9[976]\\d|8[987530]\\d|6[987]\\d|5[90]\\d|42\\d|" +
+      phone: ['', [Validators.required, Validators.pattern("\\+(9[976]\\d|8[987530]\\d|6[987]\\d|5[90]\\d|42\\d|" +
         "3[875]\\d|2[98654321]\\d|9[8543210]|8[6421]|6[6543210]|5[87654321]|" +
         "4[987654310]|3[9643210]|2[70]|7|1)\\d{1,14}")]],
       address: '',
       dateOfBirth: '',
-      education: ''
+      education: '',
     });
 
     this.updateApplicantForm = this.formBuilder.group({
@@ -54,13 +55,12 @@ export class AppComponent {
       email: ['', [Validators.required, Validators.pattern("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+" +
         "@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}])" +
         "|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$")]],
-      phone: ['', [Validators.required,
-        Validators.pattern("\\+(9[976]\\d|8[987530]\\d|6[987]\\d|5[90]\\d|42\\d|" +
+      phone: ['', [Validators.required, Validators.pattern("\\+(9[976]\\d|8[987530]\\d|6[987]\\d|5[90]\\d|42\\d|" +
         "3[875]\\d|2[98654321]\\d|9[8543210]|8[6421]|6[6543210]|5[87654321]|" +
         "4[987654310]|3[9643210]|2[70]|7|1)\\d{1,14}")]],
       address: '',
       dateOfBirth: '',
-      education: ''
+      education: '',
     });
 
     this.prospectForm = this.formBuilder.group({
@@ -69,8 +69,7 @@ export class AppComponent {
       email: ['', [Validators.required, Validators.pattern("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+" +
         "@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}])" +
         "|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$")]],
-      phone: ['', [Validators.required,
-        Validators.pattern("\\+(9[976]\\d|8[987530]\\d|6[987]\\d|5[90]\\d|42\\d|" +
+      phone: ['', [Validators.required, Validators.pattern("\\+(9[976]\\d|8[987530]\\d|6[987]\\d|5[90]\\d|42\\d|" +
         "3[875]\\d|2[98654321]\\d|9[8543210]|8[6421]|6[6543210]|5[87654321]|" +
         "4[987654310]|3[9643210]|2[70]|7|1)\\d{1,14}")]]
     });
@@ -81,8 +80,7 @@ export class AppComponent {
       email: ['', [Validators.required, Validators.pattern("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+" +
         "@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}])" +
         "|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$")]],
-      phone: ['', [Validators.required,
-        Validators.pattern("\\+(9[976]\\d|8[987530]\\d|6[987]\\d|5[90]\\d|42\\d|" +
+      phone: ['', [Validators.required, Validators.pattern("\\+(9[976]\\d|8[987530]\\d|6[987]\\d|5[90]\\d|42\\d|" +
         "3[875]\\d|2[98654321]\\d|9[8543210]|8[6421]|6[6543210]|5[87654321]|" +
         "4[987654310]|3[9643210]|2[70]|7|1)\\d{1,14}")]]
     });
@@ -98,6 +96,17 @@ export class AppComponent {
         this.iprospects = iprospects;
       });
   };
+
+  readAllApplicantFiles(id: number) {
+    this._applicant.readApplicantFileList(id).subscribe(
+      file => {
+        this.applicantFileList = file;
+      });
+  }
+
+  onSelectFile(event) {
+    this.file = event.srcElement.files;
+  }
 
   getApplicantId($event) {
     if (isNaN($event.target.id)) {
@@ -124,11 +133,23 @@ export class AppComponent {
     let body = JSON.stringify(form.value);
     this._applicant.createApplicant(body)
       .subscribe(iapplicant => {
-        iapplicant.applicantId = (this.highestApplicantId + 1);
-        this.highestApplicantId++;
+          iapplicant.applicantId = (this.highestApplicantId + 1);
         this.iapplicants.push(iapplicant);
+        if(!isUndefined(this.file) &&  this.file.length > 0) {
+        this._applicant.createApplicantFile(this.file, iapplicant.applicantId).subscribe();
+        }
+        this.highestApplicantId++;
       });
   };
+
+  downloadApplicantFile(fileId: number) : void {
+    this._applicant.downloadApplicantFile(fileId);
+  }
+
+  deleteApplicantFile(fileId: number) : void {
+    this._applicant.deleteApplicantFile(fileId)
+      .subscribe(() => this.readAllApplicantFiles(this.currentApplicantId));
+    };
 
   updateApplicant(form: FormGroup): void {
     let body = JSON.stringify(form.value);
@@ -139,8 +160,12 @@ export class AppComponent {
         let array2 = this.iapplicants.slice(index + 1, this.iapplicants.length);
         array1.push(iapplicant);
         this.iapplicants = array1.concat(array2);
+        if(!isUndefined(this.file) && this.file.length > 0) {
+          this._applicant.createApplicantFile(this.file, iapplicant.applicantId).subscribe();
+        }
       });
   };
+
 
   deleteApplicant(id: number): void {
     this._applicant.deleteApplicant(id)
@@ -161,8 +186,8 @@ export class AppComponent {
     let body = JSON.stringify(form.value);
     this._prospects.createProspect(body)
       .subscribe(iprospect => {
-        iprospect.prospectId = this.highestProspectId + 1;
-        this.highestProspectId++;
+          iprospect.prospectId = this.highestProspectId + 1;
+          this.highestProspectId++;
         this.iprospects.push(iprospect)
       });
   };

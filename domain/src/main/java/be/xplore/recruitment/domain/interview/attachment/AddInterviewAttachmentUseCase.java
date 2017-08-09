@@ -1,6 +1,7 @@
 package be.xplore.recruitment.domain.interview.attachment;
 
 import be.xplore.recruitment.domain.attachment.Attachment;
+import be.xplore.recruitment.domain.attachment.AttachmentResponseModel;
 import be.xplore.recruitment.domain.exception.CouldNotAddAttachmentException;
 import be.xplore.recruitment.domain.exception.NotFoundException;
 import be.xplore.recruitment.domain.interview.InterviewRepository;
@@ -22,10 +23,10 @@ public class AddInterviewAttachmentUseCase implements AddInterviewAttachment {
 
     @Override
     public void addAttachment(AddInterviewAttachmentRequest request,
-                              Consumer<InterviewAttachmentResponseModel> response)
+                              Consumer<AttachmentResponseModel> response)
             throws NotFoundException, CouldNotAddAttachmentException {
         Attachment attachment = tryAddAttachment(request);
-        response.accept(new InterviewAttachmentResponseModel(attachment));
+        response.accept(new AttachmentResponseModel(attachment));
     }
 
     private Attachment tryAddAttachment(AddInterviewAttachmentRequest request) {
