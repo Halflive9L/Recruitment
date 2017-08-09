@@ -6,6 +6,7 @@ import be.xplore.recruitment.domain.attachment.DownloadAttachment;
 import be.xplore.recruitment.domain.attachment.DownloadAttachmentRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -18,6 +19,7 @@ import java.io.IOException;
  * @author Stijn Schack
  * @since 8/7/2017
  */
+@CrossOrigin
 @RestController
 public class DownloadDeleteAttachmentController {
     private final DownloadAttachment downloadAttachment;

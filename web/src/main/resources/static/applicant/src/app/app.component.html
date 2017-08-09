@@ -293,10 +293,12 @@
               File {{i+1}}: {{file?.attachmentName}}
             </div>
             <div class="col-md-2">
-              <button class="btn btn-info" data-dismiss="filesModal" (click)="downloadApplicantFile(file?.id)">Download</button>
+              <button class="btn btn-info" data-dismiss="filesModal"
+                      (click)="downloadApplicantFile(file?.id)">Download</button>
             </div>
             <div class="col-md-2">
-                <button class="btn btn-danger">Delete</button>
+                <button class="btn btn-danger" data-dismiss="filesModal"
+                        (click)="deleteApplicantFile(file?.id)">Delete</button>
             </div>
           </div>
         </div>

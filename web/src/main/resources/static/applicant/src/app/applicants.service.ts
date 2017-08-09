@@ -45,7 +45,7 @@ export class ApplicantsService {
       attachment.append('attachment', file, file.name);
       let headers = new Headers();
       let options = new RequestOptions({headers: headers});
-      return this._http.post(this._applicantUrl + "/" + id + "/attachment", attachment)
+      return this._http.post(this._applicantUrl + "/" + id + "/attachment/", attachment)
         .map(res => res.json());
     }
   }
@@ -58,6 +58,11 @@ export class ApplicantsService {
   downloadApplicantFile(fileId: number) {
     window.open("http://localhost:9090/api/v1/attachment/" + fileId);
   };
+
+  deleteApplicantFile(fileId: number) {
+    return this._http.delete("http://localhost:9090/api/v1/attachment/" + fileId)
+      .map(res => res.json());
+  }
 
 
 }

@@ -114,7 +114,6 @@ export class AppComponent {
     } else {
       this.currentApplicantId = $event.target.id;
     }
-    console.log(this.currentApplicantId);
   };
 
   getProspectId($event) {
@@ -146,6 +145,11 @@ export class AppComponent {
   downloadApplicantFile(fileId: number) : void {
     this._applicant.downloadApplicantFile(fileId);
   }
+
+  deleteApplicantFile(fileId: number) : void {
+    this._applicant.deleteApplicantFile(fileId)
+      .subscribe(() => this.readAllApplicantFiles(this.currentApplicantId));
+    };
 
   updateApplicant(form: FormGroup): void {
     let body = JSON.stringify(form.value);
