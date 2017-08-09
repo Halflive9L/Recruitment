@@ -6,10 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static be.xplore.recruitment.domain.prospect.Prospect.builder;
 import static be.xplore.recruitment.domain.util.Validator.isNullOrEmpty;
-import static be.xplore.recruitment.domain.util.Validator.isValidEmail;
-import static be.xplore.recruitment.domain.util.Validator.isValidPhone;
 
 /**
  * @author Lander
@@ -21,17 +18,17 @@ class MockProspectRepo implements ProspectRepository {
 
     MockProspectRepo() {
         mockProspects.add(Prospect.builder()
-                .withFirstName("John")
-                .withLastName("Smith")
-                .withId(1)
-                .withEmail("john.smith@example.com")
-                .withPhone("+32424963258").build());
+                                  .withFirstName("John")
+                                  .withLastName("Smith")
+                                  .withId(1)
+                                  .withEmail("john.smith@example.com")
+                                  .withPhone("+32424963258").build());
         mockProspects.add(Prospect.builder()
-                .withFirstName("Leroy")
-                .withLastName("Jenkins")
-                .withId(2)
-                .withEmail("leeroy@jenkins.com")
-                .withPhone("+325435435435").build());
+                                  .withFirstName("Leeroy")
+                                  .withLastName("Jenkins")
+                                  .withId(2)
+                                  .withEmail("leeroy@jenkins.com")
+                                  .withPhone("+325435435435").build());
     }
 
     @Override
@@ -57,30 +54,31 @@ class MockProspectRepo implements ProspectRepository {
 
     @Override
     public List<Prospect> findByParameters(Prospect prospect) {
-        return null;
+        List<Prospect> matches = new ArrayList<>();
+        for (Prospect mockProspect : mockProspects) {
+            if (!isNullOrEmpty(prospect.getFirstName()) &&
+                    prospect.getFirstName().equalsIgnoreCase(mockProspect.getFirstName())) {
+                matches.add(mockProspect);
+            }
+        }
+        return matches;
     }
 
     @Override
     public Optional<Prospect> updateProspect(Prospect prospect) {
-        if (findProspectById(prospect.getProspectId()) == null) {
-            throw new NotFoundException();
+        for (int i = 0; i < mockProspects.size(); i++) {
+            if (mockProspects.get(i).getProspectId() == prospect.getProspectId()) {
+                mockProspects.set(i, Prospect.builder()
+                        .withId(prospect.getProspectId())
+                        .withFirstName(firstName(prospect, i))
+                        .withLastName(lastName(prospect, i))
+                        .withEmail(email(prospect, i))
+                        .withPhone(phone(prospect, i))
+                        .build());
+                return Optional.of(mockProspects.get(i));
+            }
         }
-        Optional<Prospect> zoekProspect = findProspectById(prospect.getProspectId());
-        if (prospect.getEmail() != null || isValidEmail(prospect.getEmail())) {
-            prospect.setEmail(zoekProspect.get().getEmail());
-        }
-        if (prospect.getPhone() != null || isValidPhone(prospect.getPhone())) {
-            prospect.setPhone(zoekProspect.get().getPhone());
-        }
-        zoekProspect = Optional.ofNullable(builder()
-                .withFirstName(prospect.getFirstName())
-                .withLastName(prospect.getLastName())
-                .withEmail(prospect.getEmail())
-                .withPhone(prospect.getPhone())
-                .withId(prospect.getProspectId()).build());
-        int index = (int) prospect.getProspectId() - 1;
-        mockProspects.set(index, zoekProspect.get());
-        return zoekProspect;
+        return Optional.empty();
     }
 
     private String firstName(Prospect prospect, int i) {

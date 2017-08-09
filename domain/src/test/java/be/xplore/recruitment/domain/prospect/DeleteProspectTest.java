@@ -1,12 +1,15 @@
 package be.xplore.recruitment.domain.prospect;
 
 
-import org.junit.Assert;
+import be.xplore.recruitment.domain.exception.NotFoundException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author Stijn Schack
@@ -14,22 +17,26 @@ import org.mockito.junit.MockitoJUnitRunner;
  */
 @RunWith(MockitoJUnitRunner.class)
 public class DeleteProspectTest {
-
-    @Mock
-    private MockProspectRepo repository;
-
     private DeleteProspect useCase;
+    private List<Prospect> mockProspects;
 
     @Before
     public void initUseCase() {
+        MockProspectRepo repository = new MockProspectRepo();
+        mockProspects = repository.mockProspects;
         useCase = new DeleteProspectUseCase(repository);
-        repository = new MockProspectRepo();
     }
 
     @Test
-    public void testDeleteProspect() {
-        DeleteProspectRequest request = new DeleteProspectRequest(1);
-        repository.deleteProspect(1);
-        Assert.assertEquals(repository.mockProspects.size(), 1);
+    public void testDeleteProspectTest() {
+        useCase.deleteProspect(new DeleteProspectRequest(1), prospectId -> {
+        });
+        assertEquals(1, mockProspects.size());
+    }
+
+    @Test(expected = NotFoundException.class)
+    public void testDeleteNonExistingProspectTest() {
+        useCase.deleteProspect(new DeleteProspectRequest(500), prospectId -> {
+        });
     }
 }
