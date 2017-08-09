@@ -61,6 +61,10 @@ public class FileManager {
         return directory.resolve(fileName);
     }
 
+    void deleteAttachment(String attachmentName) throws IOException {
+        Files.deleteIfExists(getFileFromAttachmentName(attachmentName).toFile().toPath());
+    }
+
     private void closeQuietly(Closeable closeable) {
         try {
             closeable.close();

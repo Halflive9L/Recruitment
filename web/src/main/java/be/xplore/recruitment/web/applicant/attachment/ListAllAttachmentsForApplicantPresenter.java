@@ -1,6 +1,6 @@
 package be.xplore.recruitment.web.applicant.attachment;
 
-import be.xplore.recruitment.domain.applicant.attachment.ApplicantAttachmentResponseModel;
+import be.xplore.recruitment.domain.attachment.AttachmentResponseModel;
 import be.xplore.recruitment.web.attachment.JsonAttachment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,13 +15,13 @@ import static be.xplore.recruitment.web.attachment.JsonAttachment.asJsonAttachme
  * @author Stijn Schack
  * @since 8/4/2017
  */
-public class ListAllAttachmentsForApplicantPresenter implements Consumer<List<ApplicantAttachmentResponseModel>> {
+public class ListAllAttachmentsForApplicantPresenter implements Consumer<List<AttachmentResponseModel>> {
     private ResponseEntity<List<JsonAttachment>> responseEntity;
 
     @Override
-    public void accept(List<ApplicantAttachmentResponseModel> applicantAttachmentResponseModels) {
-        List<JsonAttachment> body = new ArrayList<>(applicantAttachmentResponseModels.size());
-        applicantAttachmentResponseModels.forEach(applicantAttachmentResponseModel -> {
+    public void accept(List<AttachmentResponseModel> attachmentResponseModels) {
+        List<JsonAttachment> body = new ArrayList<>(attachmentResponseModels.size());
+        attachmentResponseModels.forEach(applicantAttachmentResponseModel -> {
             JsonAttachment attachment = asJsonAttachment(applicantAttachmentResponseModel.getAttachment());
             body.add(attachment);
         });

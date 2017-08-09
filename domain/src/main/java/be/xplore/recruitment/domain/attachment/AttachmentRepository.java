@@ -1,5 +1,6 @@
 package be.xplore.recruitment.domain.attachment;
 
+import be.xplore.recruitment.domain.exception.CouldNotDeleteAttachmentException;
 import be.xplore.recruitment.domain.exception.CouldNotDownloadAttachmentException;
 
 import java.util.Optional;
@@ -10,4 +11,6 @@ import java.util.Optional;
  */
 public interface AttachmentRepository {
     Optional<Attachment> downloadAttachment(long attachmentId) throws CouldNotDownloadAttachmentException;
+
+    Optional<Attachment> deleteAttachment(long attachmentId) throws CouldNotDeleteAttachmentException;
 }
