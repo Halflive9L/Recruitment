@@ -6,7 +6,7 @@ import be.xplore.recruitment.domain.prospect.Prospect;
 import be.xplore.recruitment.domain.prospect.ProspectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -25,7 +25,7 @@ import static be.xplore.recruitment.persistence.prospect.JpaProspect.QUERY_FIND_
  * @author Lander
  * @since 26/07/2017
  */
-@Component
+@Repository
 @Transactional
 public class ProspectRepoJpa implements ProspectRepository {
 
@@ -45,7 +45,7 @@ public class ProspectRepoJpa implements ProspectRepository {
 
     @Override
     public List<Prospect> findAll() {
-        List<JpaProspect> list = entityManager.createNamedQuery(QUERY_FIND_ALL)
+        List<JpaProspect> list = entityManager.createNamedQuery(QUERY_FIND_ALL, JpaProspect.class)
                 .getResultList();
         List<Prospect> result = list.stream().map(JpaProspect::toProspect).collect(Collectors.toList());
         return result;
@@ -53,10 +53,10 @@ public class ProspectRepoJpa implements ProspectRepository {
 
     @Override
     public Optional<Prospect> findProspectById(long prospectId) {
-        List list = entityManager
-                .createNamedQuery(JpaProspect.QUERY_FIND_BY_ID)
+        List<JpaProspect> list = entityManager
+                .createNamedQuery(JpaProspect.QUERY_FIND_BY_ID, JpaProspect.class)
                 .setParameter("prospectId", prospectId).getResultList();
-        JpaProspect jpaProspect = (JpaProspect) list.get(0);
+        JpaProspect jpaProspect = list.get(0);
         return Optional.ofNullable(jpaProspect.toProspect());
     }
 
@@ -110,11 +110,11 @@ public class ProspectRepoJpa implements ProspectRepository {
 
     @Override
     public Optional<Prospect> deleteProspect(long prospectId) {
-        List prospectList = entityManager.createNamedQuery(JpaProspect.QUERY_FIND_BY_ID)
+        List<JpaProspect> prospectList = entityManager.createNamedQuery(JpaProspect.QUERY_FIND_BY_ID, JpaProspect.class)
                 .setParameter("prospectId", prospectId).getResultList();
         entityManager.createNamedQuery(JpaProspect.QUERY_DELETE).setParameter("prospectId", prospectId)
                 .executeUpdate();
-        return Optional.ofNullable(((JpaProspect) prospectList.get(0)).toProspect());
+        return Optional.ofNullable((prospectList.get(0)).toProspect());
     }
 
     private JpaProspect prospectToJpaProspect(Prospect prospect) {

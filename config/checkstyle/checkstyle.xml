@@ -16,7 +16,7 @@
         <module name="AvoidStarImport"/>
         <module name="CommentsIndentation"/>
         <module name="EmptyCatchBlock">
-            <property name="exceptionVariableName" value="expected,ignored"/>
+            <property name="exceptionVariableName" value="expected|ignore"/>
         </module>
         <module name="LineLength">
             <property name="max" value="120"/>

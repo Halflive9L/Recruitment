@@ -9,7 +9,7 @@ import be.xplore.recruitment.persistence.attachment.FileManager;
 import be.xplore.recruitment.persistence.attachment.JpaAttachment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -31,7 +31,7 @@ import static be.xplore.recruitment.persistence.applicant.JpaApplicant.QUERY_FIN
  * @author Lander
  * @since 26/07/2017
  */
-@Component
+@Repository
 @Transactional
 public class ApplicantRepoJpa implements ApplicantRepository {
 
@@ -53,7 +53,7 @@ public class ApplicantRepoJpa implements ApplicantRepository {
 
     @Override
     public List<Applicant> findAll() {
-        List<JpaApplicant> list = entityManager.createNamedQuery(QUERY_FIND_ALL)
+        List<JpaApplicant> list = entityManager.createNamedQuery(QUERY_FIND_ALL, JpaApplicant.class)
                 .getResultList();
         List<Applicant> result = list.stream().map(JpaApplicant::toApplicant).collect(Collectors.toList());
         return result;
@@ -127,11 +127,12 @@ public class ApplicantRepoJpa implements ApplicantRepository {
 
     @Override
     public Optional<Applicant> deleteApplicant(long applicantId) {
-        List applicantList = entityManager.createNamedQuery(JpaApplicant.QUERY_FIND_BY_ID)
+        List<JpaApplicant> applicantList = entityManager
+                .createNamedQuery(JpaApplicant.QUERY_FIND_BY_ID, JpaApplicant.class)
                 .setParameter("applicantId", applicantId).getResultList();
         entityManager.createNamedQuery(JpaApplicant.QUERY_DELETE).setParameter("applicantId", applicantId)
                 .executeUpdate();
-        return Optional.ofNullable(((JpaApplicant) applicantList.get(0)).toApplicant());
+        return Optional.ofNullable((applicantList.get(0)).toApplicant());
     }
 
     @Override

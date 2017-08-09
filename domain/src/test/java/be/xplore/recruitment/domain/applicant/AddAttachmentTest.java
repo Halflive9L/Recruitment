@@ -7,8 +7,10 @@ import be.xplore.recruitment.domain.attachment.Attachment;
 import be.xplore.recruitment.domain.exception.NotFoundException;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 import static org.junit.Assert.assertEquals;
 
@@ -29,7 +31,7 @@ public class AddAttachmentTest {
     @Test
     public void testAddAttachment() throws IOException {
         Attachment attachment = new Attachment();
-        attachment.setInputStream(getClass().getResourceAsStream("testPdf.pdf"));
+        attachment.setInputStream(Mockito.mock(InputStream.class));
         attachment.setAttachmentName("testPdf.pdf");
         AddApplicantAttachmentRequest request = new AddApplicantAttachmentRequest();
         request.setAttachment(attachment);
@@ -43,7 +45,7 @@ public class AddAttachmentTest {
     @Test(expected = NotFoundException.class)
     public void testAddAttachmentForNonExistingApplicant() throws IOException {
         Attachment attachment = new Attachment();
-        attachment.setInputStream(getClass().getResourceAsStream("testPdf.pdf"));
+        attachment.setInputStream(Mockito.mock(InputStream.class));
         attachment.setAttachmentName("testPdf.pdf");
         AddApplicantAttachmentRequest request = new AddApplicantAttachmentRequest();
         request.setAttachment(attachment);

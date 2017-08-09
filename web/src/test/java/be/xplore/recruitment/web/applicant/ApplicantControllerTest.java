@@ -11,11 +11,9 @@ import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
-import java.util.function.Consumer;
-
-import static org.mockito.Matchers.isA;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 
 /**
@@ -43,20 +41,20 @@ public class ApplicantControllerTest {
     public void testCreateApplicant() {
         ArgumentCaptor<CreateApplicantRequest> captor = ArgumentCaptor.forClass(CreateApplicantRequest.class);
         controller.addApplicant(new JsonApplicant());
-        verify(createApplicant).createApplicant(captor.capture(), isA(Consumer.class));
+        verify(createApplicant).createApplicant(captor.capture(), any());
     }
 
     @Test
     public void testReadApplicantById() {
         ArgumentCaptor<ReadApplicantRequest> captor = ArgumentCaptor.forClass(ReadApplicantRequest.class);
         controller.getApplicantById(1);
-        verify(readApplicant).readApplicantById(captor.capture(), isA(Consumer.class));
+        verify(readApplicant).readApplicantById(captor.capture(), any());
     }
 
     @Test
     public void testReadAllApplicants() {
         controller.getApplicantByParam(new JsonApplicant());
-        verify(readApplicant).readAllApplicants(isA(Consumer.class));
+        verify(readApplicant).readAllApplicants(any());
     }
 
     @Test
@@ -65,6 +63,6 @@ public class ApplicantControllerTest {
         JsonApplicant applicant = new JsonApplicant();
         applicant.setFirstName("Danny");
         controller.getApplicantByParam(applicant);
-        verify(readApplicant).readApplicantsByParam(captor.capture(), isA(Consumer.class));
+        verify(readApplicant).readApplicantsByParam(captor.capture(), any());
     }
 }

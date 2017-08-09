@@ -7,8 +7,11 @@ import be.xplore.recruitment.domain.interview.attachment.AddInterviewAttachmentR
 import be.xplore.recruitment.domain.interview.attachment.ListAllAttachmentsForInterviewRequest;
 import be.xplore.recruitment.domain.interview.attachment.ReadInterviewAttachment;
 import be.xplore.recruitment.web.attachment.JsonAttachment;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +29,7 @@ import java.util.List;
  */
 @RestController
 public class InterviewAttachmentController {
+    private final static Logger LOGGER = LoggerFactory.getLogger(InterviewAttachmentController.class);
     private final AddInterviewAttachment addInterviewAttachment;
     private final ReadInterviewAttachment readInterviewAttachment;
 
@@ -37,11 +41,11 @@ public class InterviewAttachmentController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/api/v1/interview/{interviewId}/attachment",
-            consumes = "multipart/form-data")
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<JsonAttachment> uploadAttachment(@PathVariable long interviewId,
                                                            @RequestParam("attachment") MultipartFile file)
             throws IOException {
-        System.out.println(file.getOriginalFilename());
+        LOGGER.info(file.getOriginalFilename());
         AddInterviewAttachmentRequest request = getAddAttachmentRequest(interviewId, file);
         AddInterviewAttachmentPresenter presenter = new AddInterviewAttachmentPresenter();
         try {

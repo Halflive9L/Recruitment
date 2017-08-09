@@ -2,6 +2,7 @@ package be.xplore.recruitment.domain.applicant.attachment;
 
 import be.xplore.recruitment.domain.applicant.ApplicantRepository;
 import be.xplore.recruitment.domain.attachment.Attachment;
+import be.xplore.recruitment.domain.attachment.AttachmentResponseModel;
 import be.xplore.recruitment.domain.exception.CouldNotAddAttachmentException;
 import be.xplore.recruitment.domain.exception.NotFoundException;
 
@@ -22,10 +23,10 @@ public class AddApplicantAttachmentUseCase implements AddApplicantAttachment {
 
     @Override
     public void addAttachment(AddApplicantAttachmentRequest request,
-                              Consumer<ApplicantAttachmentResponseModel> response)
+                              Consumer<AttachmentResponseModel> response)
             throws NotFoundException, CouldNotAddAttachmentException {
         Attachment attachment = tryAddAttachment(request);
-        response.accept(new ApplicantAttachmentResponseModel(attachment));
+        response.accept(new AttachmentResponseModel(attachment));
     }
 
     private Attachment tryAddAttachment(AddApplicantAttachmentRequest request) {

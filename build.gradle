@@ -12,13 +12,27 @@ subprojects {
     }
 
     dependencies {
+        compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
         testCompile 'junit:junit:4.12'
-        testCompile group: 'org.mockito', name: 'mockito-all', version: '1.8.4'
+        testCompile group: 'org.mockito', name: 'mockito-core', version: '2.8.47'
+    }
+
+    compileJava {
+        options.compilerArgs += ["-Xlint:all", "-Werror"]
+        options.deprecation = true
+        options.warnings = true
+    }
+
+    compileTestJava {
+        options.compilerArgs += ["-Xlint:all", "-Werror"]
+        options.deprecation = true
+        options.warnings = true
     }
 }
 
 allprojects {
     apply plugin: 'checkstyle'
+    apply plugin: 'project-report'
 
     repositories {
         mavenCentral()
@@ -29,4 +43,3 @@ allprojects {
         toolVersion = '8.1'
     }
 }
-

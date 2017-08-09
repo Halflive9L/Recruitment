@@ -9,6 +9,7 @@ import be.xplore.recruitment.domain.exception.NotFoundException;
 import be.xplore.recruitment.web.attachment.JsonAttachment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,7 +41,7 @@ public class ApplicantAttachmentController {
 
 
     @RequestMapping(method = RequestMethod.POST, value = "/api/v1/applicant/{applicantId}/attachment",
-            consumes = "multipart/form-data")
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<JsonAttachment> uploadAttachment(@PathVariable long applicantId,
                                                            @RequestParam("attachment") MultipartFile file)
             throws IOException {
