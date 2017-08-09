@@ -53,11 +53,12 @@ public class ProspectRepoJpa implements ProspectRepository {
 
     @Override
     public Optional<Prospect> findProspectById(long prospectId) {
-        List<JpaProspect> list = entityManager
-                .createNamedQuery(JpaProspect.QUERY_FIND_BY_ID, JpaProspect.class)
-                .setParameter("prospectId", prospectId).getResultList();
-        JpaProspect jpaProspect = list.get(0);
+        JpaProspect jpaProspect = findJpaProspectById(prospectId);
         return Optional.ofNullable(jpaProspect.toProspect());
+    }
+
+    private JpaProspect findJpaProspectById(long prospectId) {
+        return entityManager.find(JpaProspect.class, prospectId);
     }
 
     @Override
@@ -98,14 +99,14 @@ public class ProspectRepoJpa implements ProspectRepository {
 
     @Override
     public Optional<Prospect> updateProspect(Prospect prospect) {
-        JpaProspect jpaProspect = prospectToJpaProspect(prospect);
-        jpaProspect.setProspectId(prospect.getProspectId());
-        try {
-            prospect = entityManager.merge(jpaProspect).toProspect();
-        } catch (IllegalArgumentException e) {
-            prospect = null;
+        JpaProspect jpaProspect = findJpaProspectById(prospect.getProspectId());
+        if (jpaProspect == null) {
+            return Optional.empty();
         }
-        return Optional.ofNullable(prospect);
+        jpaProspect = prospectToJpaProspect(prospect);
+        prospect = entityManager.merge(jpaProspect).toProspect();
+        System.out.println(prospect);
+        return Optional.of(prospect);
     }
 
     @Override
@@ -119,6 +120,7 @@ public class ProspectRepoJpa implements ProspectRepository {
 
     private JpaProspect prospectToJpaProspect(Prospect prospect) {
         JpaProspect jpaProspect = new JpaProspect();
+        jpaProspect.setProspectId(prospect.getProspectId());
         jpaProspect.setFirstName(prospect.getFirstName());
         jpaProspect.setLastName(prospect.getLastName());
         jpaProspect.setEmail(prospect.getEmail());

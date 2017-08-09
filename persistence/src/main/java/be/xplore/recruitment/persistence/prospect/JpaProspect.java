@@ -51,13 +51,6 @@ public class JpaProspect {
     public JpaProspect() {
     }
 
-    JpaProspect(JpaProspect jpaProspect) {
-        this.firstName = jpaProspect.firstName;
-        this.lastName = jpaProspect.lastName;
-        this.email = jpaProspect.email;
-        this.phone = jpaProspect.phone;
-    }
-
     Prospect toProspect() {
         return Prospect.builder()
                 .withFirstName(this.getFirstName())
