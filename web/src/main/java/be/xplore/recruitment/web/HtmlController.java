@@ -14,4 +14,6 @@ public class HtmlController {
     public String greeting() {
         return "index.html";
     }
+
+
 }
