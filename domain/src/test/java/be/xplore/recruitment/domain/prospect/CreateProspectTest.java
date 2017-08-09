@@ -6,9 +6,8 @@ import be.xplore.recruitment.domain.exception.InvalidPhoneException;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
@@ -16,18 +15,15 @@ import static org.junit.Assert.assertEquals;
  * @author Stijn Schack
  * @since 7/26/2017
  */
-@RunWith(MockitoJUnitRunner.class)
 public class CreateProspectTest {
-
-    @Mock
-    private MockProspectRepo repository;
-
     private CreateProspect useCase;
+    private List<Prospect> mockRepo;
 
     @Before
     public void initUseCase() {
-        repository = new MockProspectRepo();
-        useCase = new CreateProspectUseCase(repository);
+        MockProspectRepo repo = new MockProspectRepo();
+        mockRepo = repo.mockProspects;
+        useCase = new CreateProspectUseCase(repo);
     }
 
     @Test
@@ -36,58 +32,44 @@ public class CreateProspectTest {
         CreateProspectRequest request = getRequestFromProspect(expected);
         useCase.createProspect(request, prospectId -> {
         });
-        assertEquals(3, repository.mockProspects.size());
-        assertEquals(expected, repository.mockProspects.get(2));
+        assertEquals(3, mockRepo.size());
+        assertEquals(expected, mockRepo.get(2));
+    }
+
+    @Test(expected = InvalidPhoneException.class)
+    public void testCreateProspectWithInvalidPhone() {
+        CreateProspectRequest request = getRequestFromProspect(Prospect.builder()
+                                                                         .withPhone("a").build());
+        useCase.createProspect(request, prospectId -> {
+        });
+    }
+
+    @Test
+    public void testCreateProspectWithValidPhone() {
+        CreateProspectRequest request = getRequestFromProspect(Prospect.builder()
+                                                                         .withPhone("+32424589632").build());
+        useCase.createProspect(request, id -> {
+        });
     }
 
     @Test(expected = InvalidEmailException.class)
     public void testCreateProspectWithInvalidEmail() {
-        CreateProspectRequest request = new CreateProspectRequest();
-        request.firstName = "John";
-        request.lastName = "Smith";
-        request.email = "a";
-        useCase.createProspect(request, prospects -> {
+        CreateProspectRequest request = getRequestFromProspect(Prospect.builder()
+                                                                         .withEmail("a").build());
+        useCase.createProspect(request, prospect -> {
+
         });
-        assertEquals(repository.mockProspects.size(), 2);
-        assertEquals(repository.mockProspects.get(2),
-                Prospect.builder().withFirstName(request.firstName).withLastName(request.lastName).build());
     }
 
     @Test
     public void testCreateProspectWithValidEmail() {
         CreateProspectRequest request = getRequestFromProspect(Prospect.builder()
-                .withEmail("test.name@example.com").build());
+                                                                         .withEmail("test.name@example.com").build());
         useCase.createProspect(request, id -> {
         });
     }
 
-    @Test(expected = InvalidPhoneException.class)
-    public void testCreateProspectWithInvalidPhone() {
-        CreateProspectRequest request = new CreateProspectRequest();
-        request.firstName = "John";
-        request.lastName = "Smith";
-        request.phone = "a";
-        useCase.createProspect(request, prospects -> {
-        });
-        assertEquals(2, repository.mockProspects.size());
-        assertEquals(repository.mockProspects.get(2),
-                Prospect.builder().withFirstName(request.firstName).withLastName(request.lastName).build());
-    }
-
-    @Test
-    public void testCreateProspectWithValidPhone() {
-        CreateProspectRequest request = new CreateProspectRequest();
-        request.firstName = "John";
-        request.lastName = "Smith";
-        request.phone = "+3248657569";
-        repository.createProspect(Prospect.builder().withFirstName(request.firstName).withLastName(request.lastName)
-                .withPhone(request.phone).build());
-        assertEquals(3, repository.mockProspects.size());
-        assertEquals(repository.mockProspects.get(2),
-                Prospect.builder().withFirstName(request.firstName).withLastName(request.lastName)
-                        .withPhone(request.phone).build());
-    }
-
+    @SuppressWarnings("Duplicates")
     @Ignore
     private CreateProspectRequest getRequestFromProspect(Prospect prospect) {
         CreateProspectRequest request = new CreateProspectRequest();
