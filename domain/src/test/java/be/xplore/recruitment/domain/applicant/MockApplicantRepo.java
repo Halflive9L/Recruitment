@@ -28,7 +28,7 @@ public class MockApplicantRepo implements ApplicantRepository {
                 .withEmail("john.smith@example.com")
                 .withPhone("+32424963258").build());
         mockApplicants.add(Applicant.builder()
-                .withFirstName("Leeroy").withLastName("Jenkins").withId(2)
+                .withFirstName("leeroy").withLastName("Jenkins").withId(2)
                 .withDateOfBirth(LocalDate.of(1996, 10, 3))
                 .withAddress("Kontich")
                 .withEducation("University")
