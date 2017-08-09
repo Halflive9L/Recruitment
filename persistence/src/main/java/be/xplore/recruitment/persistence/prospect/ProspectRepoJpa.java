@@ -99,14 +99,10 @@ public class ProspectRepoJpa implements ProspectRepository {
 
     @Override
     public Optional<Prospect> updateProspect(Prospect prospect) {
-        JpaProspect jpaProspect = findJpaProspectById(prospect.getProspectId());
-        if (jpaProspect == null) {
-            return Optional.empty();
-        }
-        jpaProspect = prospectToJpaProspect(prospect);
+        JpaProspect jpaProspect = prospectToJpaProspect(prospect);
+        jpaProspect.setProspectId(prospect.getProspectId());
         prospect = entityManager.merge(jpaProspect).toProspect();
-        System.out.println(prospect);
-        return Optional.of(prospect);
+        return Optional.ofNullable(prospect);
     }
 
     @Override
