@@ -35,6 +35,13 @@ public class MockAttachmentRepo implements AttachmentRepository {
 
     @Override
     public Optional<Attachment> deleteAttachment(long attachmentId) {
-        return null;
+        for (int i = 0; i < attachments.size(); i++) {
+            Attachment a = attachments.get(i);
+            if (attachments.get(i).getAttachmentId() == attachmentId) {
+                attachments.remove(i);
+                return Optional.of(a);
+            }
+        }
+        return Optional.empty();
     }
 }
