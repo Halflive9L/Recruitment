@@ -1,0 +1,230 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<h1>Prospects</h1>
+
+<hr>
+
+<ul class="nav nav-pills">
+  <li class="active">
+    <a href="#tabProspectForm" data-toggle="tab">Prospectform</a>
+  </li>
+  <li><a href="#tabProspectList" data-toggle="tab">Prospectlist</a>
+  </li>
+</ul>
+<div class="tab-content clearfix">
+  <div class="tab-pane active" id="tabProspectForm">
+    <div class="prospectFormulier">
+      <form [formGroup]="prospectForm" (ngSubmit)="addProspect(prospectForm)">
+        <div class="form-group center-block">
+          <label for="InputFirstNameProspect">First name</label>
+          <input type="text" class="form-control" id="InputFirstNameProspect" placeholder="First name"
+                 formControlName="firstName">
+        </div>
+        <div *ngIf="prospectForm.controls.firstName.errors &&
+     (prospectForm.controls.firstName.dirty || prospectForm.controls.firstName.touched)"
+             class="alert alert-danger">
+          <div *ngIf="prospectForm.controls.firstName.errors.required">
+            Last name is required!
+          </div>
+          <div *ngIf="prospectForm.controls.firstName.errors.minlength">
+            Minimum length is 2 characters!
+          </div>
+          <div *ngIf="prospectForm.controls.firstName.errors.maxlength">
+            Maximum length is 50 characters!
+          </div>
+        </div>
+        <div class="form-group center-block">
+          <label for="InputLastNameProspect">Last Name</label>
+          <input type="text" class="form-control" id="InputLastNameProspect" placeholder="Last name"
+                 formControlName="lastName">
+        </div>
+        <div *ngIf="prospectForm.controls.lastName.errors &&
+     (prospectForm.controls.lastName.dirty || prospectForm.controls.lastName.touched)"
+             class="alert alert-danger">
+          <div *ngIf="prospectForm.controls.lastName.errors.required">
+            Last name is required!
+          </div>
+          <div *ngIf="prospectForm.controls.lastName.errors.minlength">
+            Minimum length is 2 characters!
+          </div>
+          <div *ngIf="prospectForm.controls.lastName.errors.maxlength">
+            Maximum length is 50 characters!
+          </div>
+        </div>
+        <div class="form-group center-block">
+          <label for="InputEmailProspect">Email address</label>
+          <input type="email" class="form-control" id="InputEmailProspect" placeholder="Email"
+                 formControlName="email">
+        </div>
+        <div *ngIf="prospectForm.controls.email.errors &&
+     (prospectForm.controls.email.dirty || prospectForm.controls.email.touched)"
+             class="alert alert-danger">
+          <div>
+            Invalid email!
+          </div>
+        </div>
+        <div class="form-group center-block">
+          <label for="InputPhoneProspect">Phone number</label>
+          <input type="text" class="form-control" id="InputPhoneProspect" placeholder="Phone number"
+                 formControlName="phone">
+        </div>
+        <div *ngIf="prospectForm.controls.phone.errors &&
+     (prospectForm.controls.phone.dirty || prospectForm.controls.phone.touched)"
+             class="alert alert-danger">
+          <div>
+            Invalid email!
+          </div>
+        </div>
+
+        <button type="submit" onClick="document.getElementById('prospectTable').scrollIntoView();" value="submit"
+                [disabled]="!prospectForm.valid" class="btn btn-default btn-lg center-block">
+          Submit
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div class="tab-pane" id="tabProspectList">
+    <div id="prospectTable" class="prospectTable">
+      <table class="table table-striped table-hover table-bordered">
+        <tbody>
+        <tr>
+          <th class="text-center">ID</th>
+          <th class="text-center">FirstName</th>
+          <th class="text-center">LastName</th>
+          <th class="text-center">Email</th>
+          <th class="text-center">Phone</th>
+        </tr>
+        <tr *ngFor="let prospect of iprospects">
+          <td class="text-center">{{prospect.prospectId}}</td>
+          <td class="text-center">{{prospect.firstName}}</td>
+          <td class="text-center">{{prospect.lastName}}</td>
+          <td class="text-center">{{prospect.email}}</td>
+          <td class="text-center">{{prospect.phone}}</td>
+          <td class="text-center">
+            <button [attr.id]="prospect?.prospectId" (click)="getProspectId($event)" class="btn btn-sm btn-info"
+                    data-toggle="modal" data-target="#prospectModal">Edit
+            </button>
+            <button [attr.id]="prospect?.prospectId" class="btn btn-sm btn-danger" (click)="getProspectId($event)"
+                    data-toggle="modal" data-target="#deleteProspectModal">Delete
+            </button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal -->
+<div id="prospectModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">{{readProspectById(currentProspectId-1)?.firstName}}
+          {{readProspectById(currentProspectId-1)?.lastName}}</h4>
+        <p>Prospect number: {{readProspectById(currentProspectId-1)?.prospectId}}</p>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="updateProspectForm">
+          <div class="form-group center-block">
+            <label for="InputFirstNameProspectModal">First name</label>
+            <input type="text" value="{{readProspectById(currentProspectId-1)?.firstName}}" class="form-control"
+                   id="InputFirstNameProspectModal" placeholder="First name"
+                   formControlName="firstName" required minlength="2" maxlength="50"
+                   [ngModel]="readProspectById(currentProspectId-1)?.firstName">
+            <div *ngIf="updateProspectForm.controls.firstName.errors &&
+       (updateProspectForm.controls.firstName.dirty || updateProspectForm.controls.firstName.touched)"
+                 class="alert alert-danger">
+              <div *ngIf="updateProspectForm.controls.firstName.errors.required">
+                First name is required!
+              </div>
+              <div *ngIf="updateProspectForm.controls.firstName.errors.minlength">
+                Minimum length is 2 characters!
+              </div>
+              <div *ngIf="updateProspectForm.controls.firstName.errors.maxlength">
+                Maximum length is 50 characters!
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group center-block">
+            <label for="InputLastNameProspectModal">Last Name</label>
+            <input type="text" value="{{readProspectById(currentProspectId-1)?.lastName}}" class="form-control"
+                   id="InputLastNameProspectModal" placeholder="Last name"
+                   formControlName="lastName" required maxlength="50" minlength="2"
+                   [ngModel]="readProspectById(currentProspectId-1)?.lastName">
+          </div>
+          <div *ngIf="updateProspectForm.controls.lastName.errors &&
+     (updateProspectForm.controls.lastName.dirty || updateProspectForm.controls.lastName.touched)"
+               class="alert alert-danger">
+            <div *ngIf="updateProspectForm.controls.lastName.errors.required">
+              Last name is required!
+            </div>
+            <div *ngIf="updateProspectForm.controls.lastName.errors.minlength">
+              Minimum length is 2 characters!
+            </div>
+            <div *ngIf="updateProspectForm.controls.lastName.errors.maxlength">
+              Maximum length is 50 characters!
+            </div>
+          </div>
+          <div class="form-group center-block">
+            <label for="InputEmailProspectModal">Email address</label>
+            <input type="email" value="{{readProspectById(currentProspectId-1)?.email}}" class="form-control"
+                   id="InputEmailProspectModal" placeholder="Email"
+                   formControlName="email" [ngModel]="readProspectById(currentProspectId-1)?.email">
+          </div>
+          <div *ngIf="updateProspectForm.controls.email.errors &&
+     (updateProspectForm.controls.email.dirty || updateProspectForm.controls.email.touched)"
+               class="alert alert-danger">
+            <div>
+              Invalid email!
+            </div>
+          </div>
+          <div class="form-group center-block">
+            <label for="InputPhoneProspectModal">Phone number</label>
+            <input type="text" value="{{readProspectById(currentProspectId-1)?.phone}}" class="form-control"
+                   id="InputPhoneProspectModal" placeholder="Phone number"
+                   formControlName="phone" [ngModel]="readProspectById(currentProspectId-1)?.phone">
+          </div>
+
+          <div *ngIf="updateProspectForm.controls.phone.errors &&
+     (updateProspectForm.controls.phone.dirty || updateProspectForm.controls.phone.touched)"
+               class="alert alert-danger">
+            <div>
+              Invalid phone number!
+            </div>
+          </div>
+          <button type="button" (click)="updateProspect(updateProspectForm)" value="submit"
+                  [disabled]="!updateProspectForm.valid"
+                  class="btn btn-default btn-lg center-block" data-dismiss="modal">Submit
+          </button>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Modal -->
+<div id="deleteProspectModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-body text-center">
+        <p class="text-center">Are you sure you want to delete this prospect? </p>
+        <p class="text-center">{{readProspectById(currentProspectId-1)?.firstName}}
+          {{readProspectById(currentProspectId-1)?.lastName}}</p>
+        <button class="btn btn-danger btn-lg" (click)="deleteProspect(currentProspectId)" data-dismiss="modal">Yes
+        </button>
+        <button class="btn btn-success btn-lg" data-dismiss="modal">No</button>
+      </div>
+    </div>
+  </div>
+</div>
