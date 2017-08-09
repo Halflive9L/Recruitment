@@ -118,10 +118,9 @@ public class ProspectController {
     @RequestMapping(method = RequestMethod.PUT, value = "/{prospectId}")
     public ResponseEntity<JsonProspect> updateProspect(@PathVariable long prospectId,
                                                        @RequestBody JsonProspect query) {
-        UpdateProspectRequest request = new UpdateProspectRequest();
+        UpdateProspectRequest request = new UpdateProspectRequest(prospectId);
         JsonProspectResponseModelPresenter presenter = new JsonProspectResponseModelPresenter();
         JsonProspectToUpdateProspectRequest(query, request);
-        request.prospectId = prospectId;
         try {
             updateProspect.updateProspect(request, presenter);
         } catch (NotFoundException e) {

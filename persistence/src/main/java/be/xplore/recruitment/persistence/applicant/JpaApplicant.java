@@ -64,15 +64,6 @@ public class JpaApplicant {
     @OneToMany(mappedBy = "applicant")
     private Set<JpaAttachment> attachments;
 
-    public JpaApplicant(JpaApplicant applicant) {
-        this.firstName = applicant.firstName;
-        this.lastName = applicant.lastName;
-        this.dateOfBirth = applicant.dateOfBirth;
-        this.address = applicant.address;
-        this.education = applicant.education;
-        this.email = applicant.email;
-        this.phone = applicant.phone;
-    }
 
     public JpaApplicant() {
     }
