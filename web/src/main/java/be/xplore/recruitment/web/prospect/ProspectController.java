@@ -29,15 +29,10 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
 
-/**
- * @author Stijn Schack
- * @since 7/18/2017
- */
 @CrossOrigin
 @RestController
 @RequestMapping("/api/v1/prospect")
 public class ProspectController {
-
     @Autowired
     private CreateProspect createProspect;
     @Autowired
@@ -62,12 +57,7 @@ public class ProspectController {
     }
 
     private CreateProspectRequest jsonProspectToCreateProspectRequest(JsonProspect prospect) {
-        CreateProspectRequest request = new CreateProspectRequest();
-        request.firstName = prospect.getFirstName();
-        request.lastName = prospect.getLastName();
-        request.email = prospect.getEmail();
-        request.phone = prospect.getPhone();
-        return request;
+        return prospect.toCreateRequest();
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/{prospectId}")
@@ -116,11 +106,9 @@ public class ProspectController {
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/{prospectId}")
-    public ResponseEntity<JsonProspect> updateProspect(@PathVariable long prospectId,
-                                                       @RequestBody JsonProspect query) {
-        UpdateProspectRequest request = new UpdateProspectRequest();
+    public ResponseEntity<JsonProspect> updateProspect(@PathVariable long prospectId, @RequestBody JsonProspect query) {
+        UpdateProspectRequest request = JsonProspectToUpdateProspectRequest(query);
         JsonProspectResponseModelPresenter presenter = new JsonProspectResponseModelPresenter();
-        JsonProspectToUpdateProspectRequest(query, request);
         request.prospectId = prospectId;
         ResponseEntity<JsonProspect> responseEntity;
         try {
@@ -147,19 +135,10 @@ public class ProspectController {
     }
 
     private ReadProspectRequest getReadProspectRequestFromJsonProspect(JsonProspect prospect) {
-        ReadProspectRequest request = new ReadProspectRequest();
-        request.firstName = prospect.getFirstName();
-        request.lastName = prospect.getLastName();
-        request.email = prospect.getEmail();
-        request.phone = prospect.getPhone();
-        return request;
+        return prospect.toReadRequest();
     }
 
-    private void JsonProspectToUpdateProspectRequest(JsonProspect query,
-                                                     UpdateProspectRequest request) {
-        request.firstName = query.getFirstName();
-        request.lastName = query.getLastName();
-        request.email = query.getEmail();
-        request.phone = query.getPhone();
+    private UpdateProspectRequest JsonProspectToUpdateProspectRequest(JsonProspect query) {
+        return query.toUpdateRequest();
     }
 }

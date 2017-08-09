@@ -23,13 +23,13 @@ class MockProspectRepo implements ProspectRepository {
         mockProspects.add(Prospect.builder()
                 .withFirstName("John")
                 .withLastName("Smith")
-                .withId(1)
+                .withProspectId(1)
                 .withEmail("john.smith@example.com")
                 .withPhone("+32424963258").build());
         mockProspects.add(Prospect.builder()
                 .withFirstName("Leroy")
                 .withLastName("Jenkins")
-                .withId(2)
+                .withProspectId(2)
                 .withEmail("leeroy@jenkins.com")
                 .withPhone("+325435435435").build());
     }
@@ -77,7 +77,7 @@ class MockProspectRepo implements ProspectRepository {
                 .withLastName(prospect.getLastName())
                 .withEmail(prospect.getEmail())
                 .withPhone(prospect.getPhone())
-                .withId(prospect.getProspectId()).build());
+                .withProspectId(prospect.getProspectId()).build());
         int index = (int) prospect.getProspectId() - 1;
         mockProspects.set(index, zoekProspect.get());
         return zoekProspect;

@@ -24,7 +24,8 @@ public class UpdateProspectTest {
                 .withLastName("jenkins")
                 .withEmail("leeroy@jenkins.com")
                 .withPhone("+325435435435")
-                .withId(2).build();
+                .withProspectId(2)
+                .build();
         repository.updateProspect(prospect);
         Assert.assertEquals(repository.mockProspects.get(1), getExpectedProspect());
     }
@@ -36,7 +37,7 @@ public class UpdateProspectTest {
                 .withLastName("jenkins")
                 .withEmail("a")
                 .withPhone("+325435435435")
-                .withId(2).build();
+                .withProspectId(2).build();
         repository.updateProspect(prospect);
         Assert.assertEquals(repository.mockProspects.get(1), getExpectedProspect());
     }
@@ -48,7 +49,7 @@ public class UpdateProspectTest {
                 .withLastName("jenkins")
                 .withEmail("leeroy@jenkins.com")
                 .withPhone("a")
-                .withId(2).build();
+                .withProspectId(2).build();
         repository.updateProspect(prospect);
         Assert.assertEquals(repository.mockProspects.get(1), getExpectedProspect());
     }
@@ -60,6 +61,6 @@ public class UpdateProspectTest {
                 .withLastName("jenkins")
                 .withEmail("leeroy@jenkins.com")
                 .withPhone("+325435435435")
-                .withId(2).build();
+                .withProspectId(2).build();
     }
 }

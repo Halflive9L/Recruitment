@@ -26,30 +26,19 @@ public class ReadInterviewTest {
         this.mockInterviewRepo = new MockInterviewRepo(Arrays.asList(
                 Interview.builder()
                         .withApplicant(Applicant.builder()
-                                .withId(1)
+                                .withApplicantId(1)
                                 .withFirstName("Maarten")
                                 .build())
                         .withInterviewId(1)
                         .withInterviewers(Arrays.asList(
-                                Interviewer.builder()
-                                        .withInterviewerId(1)
-                                        .build(),
-                                Interviewer.builder()
-                                        .withInterviewerId(3)
-                                        .build()
+                                Interviewer.builder().withInterviewerId(1).build(),
+                                Interviewer.builder().withInterviewerId(3).build()
                         ))
                         .build(),
                 Interview.builder()
-                        .withApplicant(Applicant.builder()
-                                .withId(2)
-                                .withFirstName("sqf")
-                                .build())
+                        .withApplicant(Applicant.builder().withApplicantId(2).withFirstName("sqf").build())
                         .withInterviewId(2)
-                        .withInterviewers(Arrays.asList(
-                                Interviewer.builder()
-                                        .withInterviewerId(2)
-                                        .build()
-                        ))
+                        .withInterviewers(Arrays.asList(Interviewer.builder().withInterviewerId(2).build()))
                         .build()
         ));
         useCase = new ReadInterviewUseCase(mockInterviewRepo);

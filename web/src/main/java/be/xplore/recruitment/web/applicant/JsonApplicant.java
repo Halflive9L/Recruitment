@@ -10,10 +10,6 @@ import org.springframework.boot.jackson.JsonComponent;
 
 import java.time.LocalDate;
 
-/**
- * @author Stijn Schack
- * @since 7/26/2017
- */
 @JsonComponent
 public class JsonApplicant {
     private long applicantId;

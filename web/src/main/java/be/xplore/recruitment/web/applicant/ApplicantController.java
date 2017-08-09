@@ -25,11 +25,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-/**
- * @author Stijn Schack
- * @since 7/20/2017
- */
-
 @CrossOrigin
 @RestController
 @RequestMapping("/api/v1/applicant")

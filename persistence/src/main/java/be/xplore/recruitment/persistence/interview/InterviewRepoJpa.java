@@ -71,11 +71,7 @@ public class InterviewRepoJpa implements InterviewRepository {
     @Override
     public Optional<Interview> findById(long id) {
         JpaInterview jpaInterview = entityManager.find(JpaInterview.class, id);
-        if (jpaInterview == null) {
-            return Optional.empty();
-        } else {
-            return Optional.of(jpaInterview.toInterview());
-        }
+        return jpaInterview == null ? Optional.empty() : Optional.of(jpaInterview.toInterview());
     }
 
     @Override
@@ -128,8 +124,7 @@ public class InterviewRepoJpa implements InterviewRepository {
     @Override
     public List<Interview> findInterviewsToRemind() {
         TypedQuery<JpaInterview> query = entityManager.createQuery(FIND_REMIND_INTERVIEWS_QUERY, JpaInterview.class);
-        LocalDateTime cutoff = LocalDateTime.now().plusDays(1);
-        query.setParameter("reminderCutoff", cutoff);
+        query.setParameter("reminderCutoff", LocalDateTime.now().plusDays(1));
         return query.getResultList().stream()
                 .map(JpaInterview::toInterview)
                 .collect(Collectors.toList());

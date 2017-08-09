@@ -62,7 +62,7 @@ public class JpaProspect {
         return Prospect.builder()
                 .withFirstName(this.getFirstName())
                 .withLastName(this.getLastName())
-                .withId(this.getProspectId())
+                .withProspectId(this.getProspectId())
                 .withEmail(this.getEmail())
                 .withPhone(this.getPhone())
                 .build();

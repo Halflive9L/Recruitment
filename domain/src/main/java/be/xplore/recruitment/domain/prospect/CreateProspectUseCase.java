@@ -35,6 +35,7 @@ public class CreateProspectUseCase implements CreateProspect {
                 .withLastName(request.lastName)
                 .withEmail(request.email)
                 .withPhone(request.phone)
-                .withId(request.prospectId).build();
+                .withProspectId(request.prospectId)
+                .build();
     }
 }
