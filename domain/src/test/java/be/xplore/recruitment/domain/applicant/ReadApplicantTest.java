@@ -54,17 +54,15 @@ public class ReadApplicantTest {
         });
     }
 
-    /*
-        @Test
-        public void testReadApplicantsByParam() {
-            ReadApplicantRequest request = getRequestFromApplicant(Applicant.builder().withFirstName("leeroy").build());
-            List<Applicant> applicantResponse = new ArrayList<>();
-            useCase.readApplicantById(request, response -> {
-                applicantResponse.addAll(getApplicantListFromResponseModelList(response));
-            });
-            assertEquals(applicantResponse.get(0), mockApplicants.get(1));
-        }
-    */
+    @Test
+    public void testReadApplicantsByParam() {
+        ReadApplicantRequest request = getRequestFromApplicant(Applicant.builder().withFirstName("leeroy").build());
+        useCase.readApplicantsByParam(request, responseModel -> {
+           assertEquals(1, responseModel.size());
+           assertEquals(mockApplicants.get(1), getApplicantFromApplicantResponseModel(responseModel.get(0)));
+        });
+    }
+
     @Ignore
     private ReadApplicantRequest getRequestFromApplicant(Applicant applicant) {
         ReadApplicantRequest request = new ReadApplicantRequest();
