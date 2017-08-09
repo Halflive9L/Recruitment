@@ -69,6 +69,11 @@ export class applicantComponent {
       });
   }
 
+  addApplicantFile() {
+    if(!isUndefined(this.file) && this.file.length > 0)
+    this._applicant.createApplicantFile(this.file, this.currentApplicantId).subscribe( () => this.readAllApplicantFiles(this.currentApplicantId));
+  }
+
   onSelectFile(event) {
     this.file = event.srcElement.files;
   }

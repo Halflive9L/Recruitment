@@ -288,7 +288,7 @@
       <div class="modal-body text-center">
         <div id="files">
           <!--TO-DO-->
-          <div id="filesModalList" class="row" *ngFor="let file of applicantFileList; let i = index">
+          <div id="filesModalList" class="row" *ngFor="let file of applicantFileList | orderBy : ['id']; let i = index">
             <div class="col-md-8 text-center">
               File {{i+1}}: {{file?.attachmentName}}
             </div>
@@ -302,6 +302,14 @@
             </div>
           </div>
         </div>
+      </div>
+      <div class="modal-footer texter-center">
+        <div class="form-group center-block text-center">
+          <label for="addFilesModal">CV toevoegen</label>
+          <input class="center-block" type="file" id="addFilesModal" accept=".pdf,.doc,.docx" (change)="onSelectFile($event)">
+
+        </div>
+        <button class="btn btn-primary center-block" (click)="addApplicantFile()">ADD</button>
       </div>
     </div>
   </div>
