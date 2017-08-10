@@ -22,10 +22,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
 
-/**
- * @author Stijn Schack
- * @since 8/4/2017
- */
 @CrossOrigin
 @RestController
 public class ApplicantAttachmentController {
@@ -45,25 +41,38 @@ public class ApplicantAttachmentController {
     public ResponseEntity<JsonAttachment> uploadAttachment(@PathVariable long applicantId,
                                                            @RequestParam("attachment") MultipartFile file)
             throws IOException {
-        System.out.println("Filename :" + file.getOriginalFilename());
         AddApplicantAttachmentRequest request = getAddAttachmentRequest(applicantId, file);
         AddApplicantAttachmentPresenter presenter = new AddApplicantAttachmentPresenter();
+        return uploadAttachment(request, presenter);
+    }
+
+    private ResponseEntity<JsonAttachment> uploadAttachment(AddApplicantAttachmentRequest request,
+                                                            AddApplicantAttachmentPresenter presenter) {
         try {
             addApplicantAttachment.addAttachment(request, presenter);
+            return presenter.getResponseEntity();
         } catch (NotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return presenter.getResponseEntity();
     }
 
     private AddApplicantAttachmentRequest getAddAttachmentRequest(long applicantId, MultipartFile file)
             throws IOException {
-        Attachment attachment = new Attachment(0, file.getOriginalFilename());
+        Attachment attachment = getAttachment(file);
+        return createAddRequest(applicantId, attachment);
+    }
+
+    private AddApplicantAttachmentRequest createAddRequest(long applicantId, Attachment attachment) {
         AddApplicantAttachmentRequest request = new AddApplicantAttachmentRequest();
-        attachment.setInputStream(file.getInputStream());
         request.setAttachment(attachment);
         request.setApplicantId(applicantId);
         return request;
+    }
+
+    private Attachment getAttachment(MultipartFile file) throws IOException {
+        Attachment attachment = new Attachment(0, file.getOriginalFilename());
+        attachment.setInputStream(file.getInputStream());
+        return attachment;
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/api/v1/applicant/{applicantId}/attachment")

@@ -42,9 +42,8 @@ public class ApplicantController {
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<JsonApplicant> addApplicant(@RequestBody JsonApplicant input) {
-        CreateApplicantRequest request = ApplicantRequestBuilder.buildCreateRequest(input);
         try {
-            createApplicant.createApplicant(request, presenter);
+            createApplicant.createApplicant(ApplicantRequestBuilder.buildCreateRequest(input), presenter);
         } catch (InvalidEmailException | InvalidPhoneException | InvalidDateException e) {
             return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         }
@@ -111,6 +110,7 @@ public class ApplicantController {
         return responseEntity;
     }
 
+    @SuppressWarnings("checkstyle:ExecutableStatementCount")
     private ResponseEntity<JsonApplicant> getJsonApplicantResponseEntity(
             UpdateApplicantRequest request, JsonApplicantResponseModelPresenter presenter) {
         ResponseEntity<JsonApplicant> result;

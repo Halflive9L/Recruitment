@@ -80,7 +80,6 @@ public class InterviewController {
             consumes = MediaType.TEXT_PLAIN_VALUE)
     public ResponseEntity<JsonInterview> updateInterviewLocation(@PathVariable long interviewId,
                                                                  @RequestBody String location) {
-        LOGGER.debug(location);
         JsonInterviewResponseModelPresenter presenter = new JsonInterviewResponseModelPresenter();
         UpdateInterviewLocationRequest request = new UpdateInterviewLocationRequest(interviewId, location);
         updateInterviewLocation.updateInterviewLocation(request, presenter);

@@ -57,10 +57,10 @@
         <module name="EqualsHashCode"/>
         <module name="EmptyStatement"/>
 
-<!--        <module name="ExecutableStatementCount">
+        <module name="ExecutableStatementCount">
             <property name="max" value="4"/>
             <property name="tokens" value="METHOD_DEF"/>
-        </module>-->
+        </module>
         <module name="MethodLength">
             <property name="countEmpty" value="false"/>
             <property name="max" value="30"/>

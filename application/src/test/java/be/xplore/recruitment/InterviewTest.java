@@ -114,7 +114,7 @@ public class InterviewTest extends TestBase {
     private void verifyMailboxHasMessages(String mailbox, int count) throws Exception {
         MockMailbox mb = MockMailbox.get(mailbox);
         Message[] messages = mb.getInbox().getMessages();
-        assertThat(messages.length).isEqualTo(count);
+        assertThat(messages.length).isGreaterThanOrEqualTo(count);
     }
 
     private JSONObject createInterviewObject(long interviewId, long applicantId, List<Integer> interviewerIds) {

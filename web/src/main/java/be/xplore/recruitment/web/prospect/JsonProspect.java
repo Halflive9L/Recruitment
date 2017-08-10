@@ -25,40 +25,52 @@ class JsonProspect implements Serializable {
     }
 
     public static JsonProspect asJsonProspect(ProspectResponseModel responseModel) {
-        JsonProspect jsonProspect = new JsonProspect();
-        jsonProspect.setProspectId(responseModel.getProspectId());
-        jsonProspect.setFirstName(responseModel.getFirstName());
-        jsonProspect.setLastName(responseModel.getLastName());
-        jsonProspect.setPhone(responseModel.getPhone());
-        jsonProspect.setEmail(responseModel.getEmail());
-        return jsonProspect;
+        return JsonProspectBuilder.aJsonProspect()
+                .withProspectId(responseModel.getProspectId())
+                .withFirstName(responseModel.getFirstName())
+                .withLastName(responseModel.getLastName())
+                .withPhone(responseModel.getPhone())
+                .withEmail(responseModel.getEmail())
+                .build();
     }
 
     public ReadProspectRequest toReadRequest() {
         ReadProspectRequest request = new ReadProspectRequest();
+        setReadRequestProperties(request);
+        return request;
+    }
+
+    private void setReadRequestProperties(ReadProspectRequest request) {
         request.firstName = this.getFirstName();
         request.lastName = this.getLastName();
         request.email = this.getEmail();
         request.phone = this.getPhone();
-        return request;
     }
 
     public UpdateProspectRequest toUpdateRequest() {
         UpdateProspectRequest request = new UpdateProspectRequest();
+        setUpdateRequestProperties(request);
+        return request;
+    }
+
+    private void setUpdateRequestProperties(UpdateProspectRequest request) {
         request.firstName = this.getFirstName();
         request.lastName = this.getLastName();
         request.email = this.getEmail();
         request.phone = this.getPhone();
-        return request;
     }
 
     public CreateProspectRequest toCreateRequest() {
         CreateProspectRequest request = new CreateProspectRequest();
+        setCreateRequestProperties(request);
+        return request;
+    }
+
+    private void setCreateRequestProperties(CreateProspectRequest request) {
         request.firstName = this.getFirstName();
         request.lastName = this.getLastName();
         request.email = this.getEmail();
         request.phone = this.getPhone();
-        return request;
     }
 
     @JsonProperty
