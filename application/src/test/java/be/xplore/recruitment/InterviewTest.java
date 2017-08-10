@@ -27,13 +27,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class InterviewTest extends TestBase {
     @Autowired
     private InterviewRepository interviewRepository;
-
     @Autowired
     private RemindParticipants remindParticipants;
-
-    protected JSONObject getJsonTestObject() {
-        return null;
-    }
 
     @Test
     public void contextLoads() {

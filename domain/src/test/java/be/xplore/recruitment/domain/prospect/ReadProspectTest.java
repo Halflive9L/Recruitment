@@ -42,7 +42,7 @@ public class ReadProspectTest {
 
     @Test
     public void testReadProspectById() {
-        ReadProspectRequest request = getRequestFromProspect(Prospect.builder().withId(1).build());
+        ReadProspectRequest request = getRequestFromProspect(Prospect.builder().withProspectId(1).build());
         final Prospect[] responseProspect = new Prospect[1];
         useCase.readProspectById(request, prospectResponseModel -> {
             responseProspect[0] = getProspectFromProspectResponseModel(prospectResponseModel);
@@ -52,7 +52,7 @@ public class ReadProspectTest {
 
     @Test(expected = NotFoundException.class)
     public void testReadProspectById_IdDoesNotExist() {
-        ReadProspectRequest request = getRequestFromProspect(Prospect.builder().withId(500).build());
+        ReadProspectRequest request = getRequestFromProspect(Prospect.builder().withProspectId(500).build());
         useCase.readProspectById(request, prospectResponseModel -> {
         });
     }
@@ -90,7 +90,7 @@ public class ReadProspectTest {
     @Ignore
     private Prospect getProspectFromProspectResponseModel(ProspectResponseModel responseModel) {
         return Prospect.builder()
-                .withId(responseModel.getProspectId())
+                .withProspectId(responseModel.getProspectId())
                 .withFirstName(responseModel.getFirstName())
                 .withLastName(responseModel.getLastName())
                 .withEmail(responseModel.getEmail())

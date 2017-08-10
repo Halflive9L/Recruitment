@@ -64,10 +64,14 @@ public class RescheduleInterviewRequest {
 
         public RescheduleInterviewRequest build() {
             RescheduleInterviewRequest rescheduleInterviewRequest = new RescheduleInterviewRequest();
+            setRequestParams(rescheduleInterviewRequest);
+            return rescheduleInterviewRequest;
+        }
+
+        private void setRequestParams(RescheduleInterviewRequest rescheduleInterviewRequest) {
             rescheduleInterviewRequest.setInterviewId(interviewId);
             rescheduleInterviewRequest.setNewLocation(newLocation);
             rescheduleInterviewRequest.setNewScheduledTime(newScheduledTime);
-            return rescheduleInterviewRequest;
         }
     }
 }

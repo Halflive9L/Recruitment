@@ -48,7 +48,7 @@ class JsonProspect implements Serializable {
     }
 
     public UpdateProspectRequest toUpdateRequest() {
-        UpdateProspectRequest request = new UpdateProspectRequest();
+        UpdateProspectRequest request = new UpdateProspectRequest(prospectId);
         setUpdateRequestProperties(request);
         return request;
     }

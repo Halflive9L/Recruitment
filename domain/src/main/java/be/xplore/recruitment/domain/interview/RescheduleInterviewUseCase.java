@@ -17,16 +17,24 @@ public class RescheduleInterviewUseCase implements RescheduleInterview {
     @Override
     public void reschedule(RescheduleInterviewRequest request, Consumer<InterviewResponseModel> consumer) {
         Interview interview = repository.findById(request.getInterviewId()).orElseThrow(NotFoundException::new);
-        if (request.getNewLocation() == null && request.getNewScheduledTime() == null) {
-            throw new InvalidSchedulingException();
-        }
+        checkRequestValidity(request);
+        updateDomainObject(request, interview);
+        consumer.accept(InterviewResponseModel.fromInterview(
+                repository.updateInterview(interview).orElseThrow(RuntimeException::new)));
+    }
+
+    private void updateDomainObject(RescheduleInterviewRequest request, Interview interview) {
         if (request.getNewLocation() != null) {
             interview.setLocation(request.getNewLocation());
         }
         if (request.getNewScheduledTime() != null) {
             interview.setScheduledTime(request.getNewScheduledTime());
         }
-        consumer.accept(InterviewResponseModel.fromInterview(
-                repository.updateInterview(interview).orElseThrow(RuntimeException::new)));
+    }
+
+    private void checkRequestValidity(RescheduleInterviewRequest request) {
+        if (request.getNewLocation() == null && request.getNewScheduledTime() == null) {
+            throw new InvalidSchedulingException();
+        }
     }
 }

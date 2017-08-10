@@ -5,7 +5,7 @@ package be.xplore.recruitment.domain.prospect;
  * @since 27/07/2017
  */
 public class UpdateProspectRequest {
-    private final long prospectId;
+    public final long prospectId;
     public String firstName;
     public String lastName;
     public String email;

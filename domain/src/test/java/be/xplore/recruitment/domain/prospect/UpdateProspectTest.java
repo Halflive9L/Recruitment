@@ -45,7 +45,7 @@ public class UpdateProspectTest {
 
     @Test(expected = NotFoundException.class)
     public void testUpdateNonExistingProspect() {
-        useCase.updateProspect(getRequestFromProspect(Prospect.builder().withId(500).build()), prospect -> {
+        useCase.updateProspect(getRequestFromProspect(Prospect.builder().withProspectId(500).build()), prospect -> {
         });
     }
 
@@ -62,14 +62,14 @@ public class UpdateProspectTest {
     @Ignore
     private Prospect getValidProspect() {
         return Prospect.builder()
-                .withId(1)
+                .withProspectId(1)
                 .withPhone("+32452148963").build();
     }
 
     @Ignore
     private Prospect getProspectWithInvalidPhone() {
         return Prospect.builder()
-                .withId(1)
+                .withProspectId(1)
                 .withPhone("a")
                 .build();
     }
@@ -77,7 +77,7 @@ public class UpdateProspectTest {
     @Ignore
     private Prospect getExpectedProspect() {
         return Prospect.builder()
-                .withId(1)
+                .withProspectId(1)
                 .withFirstName("John")
                 .withLastName("Smith")
                 .withEmail("john.smith@example.com")
