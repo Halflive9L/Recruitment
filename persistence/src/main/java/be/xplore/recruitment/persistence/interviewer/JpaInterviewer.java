@@ -72,11 +72,11 @@ public class JpaInterviewer {
     }
 
     public static JpaInterviewer fromInterviewer(Interviewer interviewer) {
-        JpaInterviewer e = new JpaInterviewer();
-        e.setFirstName(interviewer.getFirstName());
-        e.setLastName(interviewer.getLastName());
-        e.setInterviewerId(interviewer.getInterviewerId());
-        e.setEmail(interviewer.getEmail());
-        return e;
+        return JpaInterviewerBuilder.aJpaInterviewer()
+                .withInterviewerId(interviewer.getInterviewerId())
+                .withFirstName(interviewer.getFirstName())
+                .withLastName(interviewer.getLastName())
+                .withEmail(interviewer.getEmail())
+                .build();
     }
 }

@@ -22,18 +22,14 @@ public class MockApplicantRepo implements ApplicantRepository {
 
     public MockApplicantRepo() {
         mockApplicants.add(Applicant.builder()
-                .withFirstName("John").withLastName("Smith").withId(1)
-                .withDateOfBirth(LocalDate.of(1996, 10, 3))
-                .withAddress("Antwerp")
-                .withEducation("College")
-                .withEmail("john.smith@example.com")
+                .withFirstName("John").withLastName("Smith").withApplicantId(1)
+                .withDateOfBirth(LocalDate.of(1996, 10, 3)).withAddress("Antwerp")
+                .withEducation("College").withEmail("john.smith@example.com")
                 .withPhone("+32424963258").build());
         mockApplicants.add(Applicant.builder()
-                .withFirstName("leeroy").withLastName("Jenkins").withId(2)
-                .withDateOfBirth(LocalDate.of(1996, 10, 3))
-                .withAddress("Kontich")
-                .withEducation("University")
-                .withEmail("leeroy@jenkins.com")
+                .withFirstName("leeroy").withLastName("Jenkins").withApplicantId(2)
+                .withDateOfBirth(LocalDate.of(1996, 10, 3)).withAddress("Kontich")
+                .withEducation("University").withEmail("leeroy@jenkins.com")
                 .withPhone("+32 420 00 1337").build());
         mockAttachments.add(new Attachment(1, "test.pdf"));
         mockAttachments.add(new Attachment(2, "test.doc"));
@@ -77,7 +73,7 @@ public class MockApplicantRepo implements ApplicantRepository {
         for (int i = 0; i < mockApplicants.size(); i++) {
             if (mockApplicants.get(i).getApplicantId() == applicant.getApplicantId()) {
                 mockApplicants.set(i, Applicant.builder()
-                        .withId(applicant.getApplicantId())
+                        .withApplicantId(applicant.getApplicantId())
                         .withFirstName(firstName(applicant, i))
                         .withLastName(lastName(applicant, i))
                         .withEmail(email(applicant, i))
@@ -91,34 +87,28 @@ public class MockApplicantRepo implements ApplicantRepository {
         return Optional.empty();
     }
 
-    private String firstName(Applicant applicant, int i) {
-        return isNullOrEmpty(applicant.getFirstName()) ?
-                mockApplicants.get(i).getFirstName() : applicant.getFirstName();
+    private String firstName(Applicant appl, int i) {
+        return isNullOrEmpty(appl.getFirstName()) ? mockApplicants.get(i).getFirstName() : appl.getFirstName();
     }
 
     private String lastName(Applicant applicant, int i) {
-        return isNullOrEmpty(applicant.getLastName()) ?
-                mockApplicants.get(i).getLastName() : applicant.getLastName();
+        return isNullOrEmpty(applicant.getLastName()) ? mockApplicants.get(i).getLastName() : applicant.getLastName();
     }
 
     private String address(Applicant applicant, int i) {
-        return isNullOrEmpty(applicant.getAddress()) ?
-                mockApplicants.get(i).getAddress() : applicant.getAddress();
+        return isNullOrEmpty(applicant.getAddress()) ? mockApplicants.get(i).getAddress() : applicant.getAddress();
     }
 
     private String email(Applicant applicant, int i) {
-        return isNullOrEmpty(applicant.getEmail()) ?
-                mockApplicants.get(i).getEmail() : applicant.getEmail();
+        return isNullOrEmpty(applicant.getEmail()) ? mockApplicants.get(i).getEmail() : applicant.getEmail();
     }
 
     private String phone(Applicant applicant, int i) {
-        return isNullOrEmpty(applicant.getPhone()) ?
-                mockApplicants.get(i).getPhone() : applicant.getPhone();
+        return isNullOrEmpty(applicant.getPhone()) ? mockApplicants.get(i).getPhone() : applicant.getPhone();
     }
 
-    private String education(Applicant applicant, int i) {
-        return isNullOrEmpty(applicant.getEducation()) ?
-                mockApplicants.get(i).getEducation() : applicant.getEducation();
+    private String education(Applicant appl, int i) {
+        return isNullOrEmpty(appl.getEducation()) ? mockApplicants.get(i).getEducation() : appl.getEducation();
     }
 
     private LocalDate dateOfBirth(Applicant applicant, int i) {

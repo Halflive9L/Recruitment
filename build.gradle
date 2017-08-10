@@ -40,6 +40,8 @@ allprojects {
 
     checkstyle {
         configFile = rootProject.file('config/checkstyle/checkstyle.xml')
+
+        configProperties = [ "suppressionFile" : project(':').file('config/checkstyle/suppressions.xml')]
         toolVersion = '8.1'
     }
 

@@ -90,10 +90,14 @@ public class JsonRescheduleRequest {
 
         public JsonRescheduleRequest build() {
             JsonRescheduleRequest jsonRescheduleRequest = new JsonRescheduleRequest();
+            setRequestProperties(jsonRescheduleRequest);
+            return jsonRescheduleRequest;
+        }
+
+        private void setRequestProperties(JsonRescheduleRequest jsonRescheduleRequest) {
             jsonRescheduleRequest.setInterviewId(interviewId);
             jsonRescheduleRequest.setNewScheduledTime(newScheduledTime);
             jsonRescheduleRequest.setNewLocation(newLocation);
-            return jsonRescheduleRequest;
         }
     }
 }

@@ -7,7 +7,6 @@ import java.time.LocalDate;
  * @since 7/28/2017
  */
 public class UpdateApplicantRequest {
-    private final long applicantId;
     public String firstName;
     public String lastName;
     public LocalDate dateOfBirth;
@@ -15,6 +14,7 @@ public class UpdateApplicantRequest {
     public String education;
     public String email;
     public String phone;
+    private final long applicantId;
 
     public UpdateApplicantRequest(long applicantId) {
         this.applicantId = applicantId;

@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 import static be.xplore.recruitment.web.attachment.JsonAttachment.asJsonAttachment;
 
@@ -20,11 +21,9 @@ public class ListAllAttachmentsForApplicantPresenter implements Consumer<List<At
 
     @Override
     public void accept(List<AttachmentResponseModel> attachmentResponseModels) {
-        List<JsonAttachment> body = new ArrayList<>(attachmentResponseModels.size());
-        attachmentResponseModels.forEach(applicantAttachmentResponseModel -> {
-            JsonAttachment attachment = asJsonAttachment(applicantAttachmentResponseModel.getAttachment());
-            body.add(attachment);
-        });
+        List<JsonAttachment> body = attachmentResponseModels.stream()
+                .map(model -> asJsonAttachment(model.getAttachment()))
+                .collect(Collectors.toList());
         responseEntity = new ResponseEntity<>(body, HttpStatus.OK);
     }
 

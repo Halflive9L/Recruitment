@@ -65,9 +65,9 @@ public class JpaProspect {
 
     Prospect toProspect() {
         return Prospect.builder()
-                .withId(this.getProspectId())
                 .withFirstName(this.getFirstName())
                 .withLastName(this.getLastName())
+                .withProspectId(this.getProspectId())
                 .withEmail(this.getEmail())
                 .withPhone(this.getPhone())
                 .build();

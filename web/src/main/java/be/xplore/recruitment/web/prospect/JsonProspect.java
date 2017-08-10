@@ -1,6 +1,9 @@
 package be.xplore.recruitment.web.prospect;
 
+import be.xplore.recruitment.domain.prospect.CreateProspectRequest;
 import be.xplore.recruitment.domain.prospect.ProspectResponseModel;
+import be.xplore.recruitment.domain.prospect.ReadProspectRequest;
+import be.xplore.recruitment.domain.prospect.UpdateProspectRequest;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -8,10 +11,6 @@ import org.springframework.boot.jackson.JsonComponent;
 
 import java.io.Serializable;
 
-/**
- * @author Stijn Schack
- * @since 7/26/2017
- */
 @JsonComponent
 class JsonProspect implements Serializable {
     private static final long serialVersionUID = -1155194210930940184L;
@@ -25,14 +24,53 @@ class JsonProspect implements Serializable {
     public JsonProspect() {
     }
 
-    static JsonProspect asJsonProspect(ProspectResponseModel responseModel) {
-        JsonProspect jsonProspect = new JsonProspect();
-        jsonProspect.setProspectId(responseModel.getProspectId());
-        jsonProspect.setFirstName(responseModel.getFirstName());
-        jsonProspect.setLastName(responseModel.getLastName());
-        jsonProspect.setPhone(responseModel.getPhone());
-        jsonProspect.setEmail(responseModel.getEmail());
-        return jsonProspect;
+    public static JsonProspect asJsonProspect(ProspectResponseModel responseModel) {
+        return JsonProspectBuilder.aJsonProspect()
+                .withProspectId(responseModel.getProspectId())
+                .withFirstName(responseModel.getFirstName())
+                .withLastName(responseModel.getLastName())
+                .withPhone(responseModel.getPhone())
+                .withEmail(responseModel.getEmail())
+                .build();
+    }
+
+    public ReadProspectRequest toReadRequest() {
+        ReadProspectRequest request = new ReadProspectRequest();
+        setReadRequestProperties(request);
+        return request;
+    }
+
+    private void setReadRequestProperties(ReadProspectRequest request) {
+        request.firstName = this.getFirstName();
+        request.lastName = this.getLastName();
+        request.email = this.getEmail();
+        request.phone = this.getPhone();
+    }
+
+    public UpdateProspectRequest toUpdateRequest() {
+        UpdateProspectRequest request = new UpdateProspectRequest(prospectId);
+        setUpdateRequestProperties(request);
+        return request;
+    }
+
+    private void setUpdateRequestProperties(UpdateProspectRequest request) {
+        request.firstName = this.getFirstName();
+        request.lastName = this.getLastName();
+        request.email = this.getEmail();
+        request.phone = this.getPhone();
+    }
+
+    public CreateProspectRequest toCreateRequest() {
+        CreateProspectRequest request = new CreateProspectRequest();
+        setCreateRequestProperties(request);
+        return request;
+    }
+
+    private void setCreateRequestProperties(CreateProspectRequest request) {
+        request.firstName = this.getFirstName();
+        request.lastName = this.getLastName();
+        request.email = this.getEmail();
+        request.phone = this.getPhone();
     }
 
     @JsonProperty

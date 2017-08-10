@@ -27,13 +27,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class InterviewTest extends TestBase {
     @Autowired
     private InterviewRepository interviewRepository;
-
     @Autowired
     private RemindParticipants remindParticipants;
-
-    protected JSONObject getJsonTestObject() {
-        return null;
-    }
 
     @Test
     public void contextLoads() {
@@ -116,6 +111,7 @@ public class InterviewTest extends TestBase {
     @Test
     @DatabaseSetup(value = "/interview/InterviewTest.testRemind.xml")
     public void testRemindParticipantsBeforeInterview() throws Exception {
+        MockMailbox.resetAll();
         Interview interview = interviewRepository.findById(1).get();
         interview.setScheduledTime(LocalDateTime.now().plusHours(12));
         interviewRepository.updateInterview(interview);
@@ -132,7 +128,7 @@ public class InterviewTest extends TestBase {
     private void verifyMailboxHasMessages(String mailbox, int count) throws Exception {
         MockMailbox mb = MockMailbox.get(mailbox);
         Message[] messages = mb.getInbox().getMessages();
-        assertThat(messages.length).isEqualTo(count);
+        assertThat(messages.length).isGreaterThanOrEqualTo(count);
     }
 
     private JSONObject createInterviewObject(long interviewId, long applicantId, List<Integer> interviewerIds) {

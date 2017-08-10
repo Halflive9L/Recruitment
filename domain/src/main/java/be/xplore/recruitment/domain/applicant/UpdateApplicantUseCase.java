@@ -31,7 +31,7 @@ public class UpdateApplicantUseCase implements UpdateApplicant {
 
     private Applicant createApplicantFromRequest(UpdateApplicantRequest request) {
         return Applicant.builder()
-                .withId(request.getApplicantId())
+                .withApplicantId(request.getApplicantId())
                 .withFirstName(request.firstName)
                 .withLastName(request.lastName)
                 .withAddress(request.address)

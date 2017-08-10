@@ -17,18 +17,11 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
-/**
- * @author Stijn Schack
- * @since 7/20/2017
- */
-
 public class ApplicantTest extends TestBase {
     @Test
     public void contextLoads() {
         assertThat(restTemplate).isNotNull();
     }
-
     public JSONObject getJsonTestObject() {
         JSONObject jsonTestObject = new JSONObject();
         jsonTestObject.put("firstName", "jos");
@@ -40,7 +33,6 @@ public class ApplicantTest extends TestBase {
         jsonTestObject.put("phone", "+32356854598");
         return jsonTestObject;
     }
-
     @Test
     @DatabaseSetup(value = "/applicant/ApplicantTest.testPOSTSetup.xml")
     @ExpectedDatabase(value = "/applicant/ApplicantTest.testPOST.xml", assertionMode = DatabaseAssertionMode.NON_STRICT)
@@ -50,7 +42,6 @@ public class ApplicantTest extends TestBase {
         HttpEntity<String> httpEntity = new HttpEntity<>(getJsonTestObject().toJSONString(), headers);
         restTemplate.postForEntity("/api/v1/applicant", httpEntity, JsonApplicant.class);
     }
-
     @Test
     @DatabaseSetup("/applicant/ApplicantTest.testGetById.xml")
     public void testGetById() {
@@ -62,7 +53,6 @@ public class ApplicantTest extends TestBase {
         assertThat(applicant.getEmail()).isEqualTo("jos.vermeulen@example.com");
         assertThat(applicant.getPhone()).isEqualTo("+32356854598");
     }
-
     @Test
     @DatabaseSetup(value = "/applicant/ApplicantTest.testGetAll.xml")
     public void testGetAll() {
@@ -73,7 +63,6 @@ public class ApplicantTest extends TestBase {
                 restTemplate.exchange("/api/v1/applicant", HttpMethod.GET, null, typeReference).getBody();
         assertThat(applicants).hasSize(3);
     }
-
     @Test
     @DatabaseSetup(value = "/applicant/ApplicantTest.testGetByParam.xml")
     public void testGetByParam() {
@@ -87,7 +76,6 @@ public class ApplicantTest extends TestBase {
         assertThat(applicants.get(0).getFirstName()).isEqualTo(applicants.get(1).getFirstName())
                 .isEqualToIgnoringCase("stijn");
     }
-
     @Test
     @DatabaseSetup(value = "/applicant/ApplicantTest.testUpdateApplicant.setup.xml")
     @ExpectedDatabase(value = "/applicant/ApplicantTest.testUpdateApplicant.expected.xml",
@@ -102,12 +90,9 @@ public class ApplicantTest extends TestBase {
                 "\"address\":\"Kontich\", " +
                 "\"education\":\"college\"" +
                 "}";
-
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<String> httpEntity = new HttpEntity<>(jsonBody, headers);
         restTemplate.put("/api/v1/applicant/3", httpEntity, ResponseEntity.class);
-
     }
-
 }

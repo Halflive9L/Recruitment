@@ -8,8 +8,17 @@
     <property name="charset" value="UTF-8"/>
     <property name="fileExtensions" value="java, properties, xml"/>
 
+    <module name="SuppressionFilter">
+        <property name="file" value="${suppressionFile}"/>
+    </module>
+    <module name="SuppressWarningsFilter" />
+
     <module name="FileTabCharacter">
         <property name="eachLine" value="true"/>
+    </module>
+    <module name="FileLength">
+        <property name="fileExtensions" value="java"/>
+        <property name="max" value="150"/>
     </module>
 
     <module name="TreeWalker">
@@ -30,5 +39,35 @@
             <property name="max" value="3"/>
             <property name="tokens" value="CTOR_DEF,METHOD_DEF"/>
         </module>
+        <module name="DeclarationOrder"/>
+        <module name="ReturnCount">
+            <property name="max" value="2"/>
+            <property name="maxForVoid" value="1"/>
+        </module>
+        <module name="NestedForDepth">
+            <property name="max" value="1"/>
+        </module>
+        <module name="NestedIfDepth">
+            <property name="max" value="1"/>
+        </module>
+        <module name="NestedTryDepth">
+            <property name="max" value="1"/>
+        </module>
+        <module name="EqualsAvoidNull"/>
+        <module name="EqualsHashCode"/>
+        <module name="EmptyStatement"/>
+
+        <module name="ExecutableStatementCount">
+            <property name="max" value="4"/>
+            <property name="tokens" value="METHOD_DEF"/>
+        </module>
+        <module name="MethodLength">
+            <property name="countEmpty" value="false"/>
+            <property name="max" value="30"/>
+        </module>
+        <module name="MethodCount">
+            <property name="maxTotal" value="25"/>
+        </module>
+        <module name="SuppressWarningsHolder" />
     </module>
 </module>

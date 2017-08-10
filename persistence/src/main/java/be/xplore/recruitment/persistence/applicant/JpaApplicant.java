@@ -35,7 +35,6 @@ import java.util.Set;
                 query = "DELETE FROM JpaApplicant a WHERE a.applicantId = :applicantId")})
 
 public class JpaApplicant {
-
     static final String QUERY_FIND_BY_ID = "Applicant.findApplicantById";
     static final String QUERY_FIND_ALL = "Applicant.findAll";
     static final String QUERY_DELETE = "Applicant.deleteApplicant";
@@ -44,44 +43,34 @@ public class JpaApplicant {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column
     private long applicantId;
-
     @Column
     private String firstName;
-
     @Column
     private String lastName;
-
     @Column
     private LocalDate dateOfBirth;
-
     @Column
     private String address;
-
     @Column
     private String education;
-
     @Column
     private String email;
-
     @Column
     private String phone;
-
     @ManyToMany(targetEntity = JpaTag.class, fetch = FetchType.EAGER)
     @JoinTable(name = "applicant_tag",
             joinColumns = @JoinColumn(name = "applicant_id", referencedColumnName = "applicantId"),
             inverseJoinColumns = @JoinColumn(name = "tag_id", referencedColumnName = "tagId"))
     private Set<JpaTag> tags;
-
     @OneToMany(mappedBy = "applicant")
     private Set<JpaAttachment> attachments;
-
 
     public JpaApplicant() {
     }
 
     public Applicant toApplicant() {
         return Applicant.builder()
-                .withId(this.getApplicantId())
+                .withApplicantId(this.getApplicantId())
                 .withFirstName(this.getFirstName())
                 .withLastName(this.getLastName())
                 .withAddress(this.getAddress())
@@ -166,5 +155,18 @@ public class JpaApplicant {
 
     public Set<JpaTag> getTags() {
         return tags;
+    }
+
+    public static JpaApplicant fromApplicant(Applicant applicant) {
+        return JpaApplicantBuilder.aJpaApplicant()
+                .withApplicantId(applicant.getApplicantId())
+                .withFirstName(applicant.getFirstName())
+                .withLastName(applicant.getLastName())
+                .withEmail(applicant.getEmail())
+                .withPhone(applicant.getPhone())
+                .withDateOfBirth(applicant.getDateOfBirth())
+                .withAddress(applicant.getAddress())
+                .withEducation(applicant.getEducation())
+                .build();
     }
 }

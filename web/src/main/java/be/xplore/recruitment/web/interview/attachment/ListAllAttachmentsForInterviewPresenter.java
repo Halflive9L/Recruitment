@@ -21,11 +21,16 @@ public class ListAllAttachmentsForInterviewPresenter implements Consumer<List<At
     @Override
     public void accept(List<AttachmentResponseModel> interviewAttachmentResponseModels) {
         List<JsonAttachment> body = new ArrayList<>(interviewAttachmentResponseModels.size());
+        populateBody(interviewAttachmentResponseModels, body);
+        responseEntity = new ResponseEntity<>(body, HttpStatus.OK);
+    }
+
+    private void populateBody(List<AttachmentResponseModel> interviewAttachmentResponseModels,
+                              List<JsonAttachment> body) {
         interviewAttachmentResponseModels.forEach(interviewAttachmentResponseModel -> {
             JsonAttachment attachment = asJsonAttachment(interviewAttachmentResponseModel.getAttachment());
             body.add(attachment);
         });
-        responseEntity = new ResponseEntity<>(body, HttpStatus.OK);
     }
 
     public ResponseEntity<List<JsonAttachment>> getResponseEntity() {

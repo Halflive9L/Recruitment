@@ -28,7 +28,7 @@ public class RescheduleInterviewTest {
                         .withPreInterviewReminderSent(false)
                         .withCancelled(false)
                         .withApplicant(Applicant.builder()
-                                .withId(1)
+                                .withApplicantId(1)
                                 .withFirstName("Maarten")
                                 .withLastName("Billiet")
                                 .build())

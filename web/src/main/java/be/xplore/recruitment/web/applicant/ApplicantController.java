@@ -25,11 +25,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-/**
- * @author Stijn Schack
- * @since 7/20/2017
- */
-
 @CrossOrigin
 @RestController
 @RequestMapping("/api/v1/applicant")
@@ -42,13 +37,13 @@ public class ApplicantController {
     private UpdateApplicant updateApplicant;
     @Autowired
     private DeleteApplicant deleteApplicant;
+    private JsonApplicantResponseModelPresenter presenter = new JsonApplicantResponseModelPresenter();
+    private JsonApplicantResponseModelListPresenter listPresenter = new JsonApplicantResponseModelListPresenter();
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<JsonApplicant> addApplicant(@RequestBody JsonApplicant input) {
-        CreateApplicantRequest request = getCreateRequestFromJsonApplicant(input);
-        JsonApplicantResponseModelPresenter presenter = new JsonApplicantResponseModelPresenter();
         try {
-            createApplicant.createApplicant(request, presenter);
+            createApplicant.createApplicant(ApplicantRequestBuilder.buildCreateRequest(input), presenter);
         } catch (InvalidEmailException | InvalidPhoneException | InvalidDateException e) {
             return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         }
@@ -57,15 +52,19 @@ public class ApplicantController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/{applicantId}")
     public ResponseEntity<JsonApplicant> getApplicantById(@PathVariable long applicantId) {
-        ReadApplicantRequest request = new ReadApplicantRequest();
-        request.applicantId = applicantId;
-        JsonApplicantResponseModelPresenter presenter = new JsonApplicantResponseModelPresenter();
+        ReadApplicantRequest request = createReadRequest(applicantId);
         try {
             readApplicant.readApplicantById(request, presenter);
         } catch (NotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return presenter.getResponseEntity();
+    }
+
+    private ReadApplicantRequest createReadRequest(@PathVariable long applicantId) {
+        ReadApplicantRequest request = new ReadApplicantRequest();
+        request.applicantId = applicantId;
+        return request;
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -79,75 +78,56 @@ public class ApplicantController {
 
     private ResponseEntity<List<JsonApplicant>> presentApplicantsByParam(JsonApplicant applicant)
             throws NotFoundException {
-        JsonApplicantResponseModelListPresenter presenter = new JsonApplicantResponseModelListPresenter();
         if (applicant.isEmpty()) {
-            readApplicant.readAllApplicants(presenter);
+            readApplicant.readAllApplicants(listPresenter);
         } else {
-            readApplicant.readApplicantsByParam(getReadApplicantRequestFromJsonApplicant(applicant), presenter);
+            readApplicant.readApplicantsByParam(ApplicantRequestBuilder.buildReadRequest(applicant), listPresenter);
         }
-        return presenter.getResponseEntity();
+        return listPresenter.getResponseEntity();
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/{applicantId}")
     public ResponseEntity<JsonApplicant> deleteApplicant(@PathVariable long applicantId) {
         DeleteApplicantRequest request = new DeleteApplicantRequest(applicantId);
-        JsonApplicantResponseModelPresenter presenter = new JsonApplicantResponseModelPresenter();
+        return getJsonApplicantResponseEntity(request, presenter);
+    }
+
+    private ResponseEntity<JsonApplicant> getJsonApplicantResponseEntity(
+            DeleteApplicantRequest request, JsonApplicantResponseModelPresenter presenter) {
         try {
             deleteApplicant.deleteApplicant(request, presenter);
+            return presenter.getResponseEntity();
         } catch (NotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return presenter.getResponseEntity();
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/{applicantId}")
     public ResponseEntity<JsonApplicant> updateApplicant(@PathVariable long applicantId,
                                                          @RequestBody JsonApplicant applicant) {
-        UpdateApplicantRequest request = getUpdateApplicantRequestFromJsonApplicant(applicantId, applicant);
-        JsonApplicantResponseModelPresenter presenter = new JsonApplicantResponseModelPresenter();
+        UpdateApplicantRequest request = ApplicantRequestBuilder.buildUpdateRequest(applicantId, applicant);
+        ResponseEntity<JsonApplicant> responseEntity = getJsonApplicantResponseEntity(request, presenter);
+        return responseEntity;
+    }
+
+    @SuppressWarnings("checkstyle:ExecutableStatementCount")
+    private ResponseEntity<JsonApplicant> getJsonApplicantResponseEntity(
+            UpdateApplicantRequest request, JsonApplicantResponseModelPresenter presenter) {
+        ResponseEntity<JsonApplicant> result;
         try {
-            updateApplicant.updateApplicant(request, presenter);
+            result = updateApplicant(request, presenter);
         } catch (NotFoundException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            result = new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (InvalidDateException | InvalidEmailException | InvalidPhoneException e) {
-            return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+            result = new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         }
+        return result;
+    }
+
+    private ResponseEntity<JsonApplicant> updateApplicant(UpdateApplicantRequest request,
+                                                          JsonApplicantResponseModelPresenter presenter) {
+        updateApplicant.updateApplicant(request, presenter);
         return presenter.getResponseEntity();
     }
-
-    private CreateApplicantRequest getCreateRequestFromJsonApplicant(JsonApplicant applicant) {
-        CreateApplicantRequest request = new CreateApplicantRequest();
-        request.firstName = applicant.getFirstName();
-        request.lastName = applicant.getLastName();
-        request.email = applicant.getEmail();
-        request.phone = applicant.getPhone();
-        request.address = applicant.getAddress();
-        request.dateOfBirth = applicant.getDateOfBirth();
-        request.education = applicant.getEducation();
-        return request;
-    }
-
-    private ReadApplicantRequest getReadApplicantRequestFromJsonApplicant(JsonApplicant applicant) {
-        ReadApplicantRequest request = new ReadApplicantRequest();
-        request.firstName = applicant.getFirstName();
-        request.lastName = applicant.getLastName();
-        request.email = applicant.getEmail();
-        request.phone = applicant.getPhone();
-        request.address = applicant.getAddress();
-        request.dateOfBirth = applicant.getDateOfBirth();
-        request.education = applicant.getEducation();
-        return request;
-    }
-
-    private UpdateApplicantRequest getUpdateApplicantRequestFromJsonApplicant(long id, JsonApplicant applicant) {
-        UpdateApplicantRequest request = new UpdateApplicantRequest(id);
-        request.firstName = applicant.getFirstName();
-        request.lastName = applicant.getLastName();
-        request.email = applicant.getEmail();
-        request.phone = applicant.getPhone();
-        request.address = applicant.getAddress();
-        request.dateOfBirth = applicant.getDateOfBirth();
-        request.education = applicant.getEducation();
-        return request;
-    }
 }
+

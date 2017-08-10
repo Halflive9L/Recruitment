@@ -18,18 +18,18 @@ public class InterviewResponseModel {
     }
 
     public static InterviewResponseModel fromInterview(Interview interview) {
-        InterviewResponseModel model = new InterviewResponseModel();
-        model.setApplicantId(interview.getApplicant().getApplicantId());
-        model.setScheduledTime(interview.getScheduledTime());
-        model.setCreatedTime(interview.getCreatedTime());
-        model.setInterviewId(interview.getInterviewId());
-        model.setInterviewerIds(interview.getInterviewers().stream()
-                .map(i -> i.getInterviewerId())
-                .collect(Collectors.toList()));
-        model.setCancelled(interview.isCancelled());
-        model.setLocation(interview.getLocation());
-        model.setPreInterviewReminderSent(interview.isPreInterviewReminderSent());
-        return model;
+        return InterviewResponseModelBuilder.anInterviewResponseModel()
+                .withApplicantId(interview.getApplicant().getApplicantId())
+                .withScheduledTime(interview.getScheduledTime())
+                .withCreatedTime(interview.getCreatedTime())
+                .withInterviewId(interview.getInterviewId())
+                .withInterviewerIds(interview.getInterviewers().stream()
+                        .map(i -> i.getInterviewerId())
+                        .collect(Collectors.toList()))
+                .withCancelled(interview.isCancelled())
+                .withLocation(interview.getLocation())
+                .withPreInterviewReminderSent(interview.isPreInterviewReminderSent())
+                .build();
     }
 
     public long getInterviewId() {
