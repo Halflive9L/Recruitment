@@ -4,18 +4,18 @@ package be.xplore.recruitment.domain.tag;
  * @author Stijn Schack
  * @since 8/10/2017
  */
-public class TagResponseModel {
+public class CreateTagResponseModel {
     private long id;
     private String name;
     private boolean created;
 
-    public TagResponseModel(long id, String name) {
+    public CreateTagResponseModel(long id, String name) {
         this.id = id;
         this.name = name;
         this.created = true;
     }
 
-    public TagResponseModel() {
+    public CreateTagResponseModel() {
         this.created = false;
     }
 
@@ -25,5 +25,9 @@ public class TagResponseModel {
 
     public String getName() {
         return name;
+    }
+
+    public boolean isCreated() {
+        return created;
     }
 }

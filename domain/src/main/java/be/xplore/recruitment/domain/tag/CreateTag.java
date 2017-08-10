@@ -7,5 +7,5 @@ import java.util.function.Consumer;
  * @since 8/10/2017
  */
 public interface CreateTag {
-    void createTag(CreateTagRequest request, Consumer<TagResponseModel> response);
+    void createTag(CreateTagRequest request, Consumer<CreateTagResponseModel> response);
 }

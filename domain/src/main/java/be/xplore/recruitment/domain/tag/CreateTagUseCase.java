@@ -18,7 +18,7 @@ public class CreateTagUseCase implements CreateTag {
     }
 
     @Override
-    public void createTag(CreateTagRequest request, Consumer<TagResponseModel> response) {
+    public void createTag(CreateTagRequest request, Consumer<CreateTagResponseModel> response) {
         Tag tag = tryCreateTag(request);
         response.accept(getTagResponseModelFromTag(tag));
     }
@@ -31,10 +31,10 @@ public class CreateTagUseCase implements CreateTag {
         }
     }
 
-    private TagResponseModel getTagResponseModelFromTag(Tag tag) {
+    private CreateTagResponseModel getTagResponseModelFromTag(Tag tag) {
         if (tag == null) {
-            return new TagResponseModel();
+            return new CreateTagResponseModel();
         }
-        return new TagResponseModel(tag.getTagId(), tag.getTagName());
+        return new CreateTagResponseModel(tag.getTagId(), tag.getTagName());
     }
 }
