@@ -21,10 +21,6 @@ import java.util.stream.Collectors;
 
 import static be.xplore.recruitment.persistence.prospect.JpaProspect.QUERY_FIND_ALL;
 
-/**
- * @author Lander
- * @since 26/07/2017
- */
 @Repository
 @Transactional
 public class ProspectRepoJpa implements ProspectRepository {
@@ -79,9 +75,7 @@ public class ProspectRepoJpa implements ProspectRepository {
         CriteriaQuery<JpaProspect> query = getCriteriaBuilder().createQuery(JpaProspect.class);
         Specification<JpaProspect> spec = new ProspectSpecification(jpaProspect).getFullSpecification();
         Root<JpaProspect> root = applySpecification(spec, query);
-
-        query.select(root);
-        return query;
+        return query.select(root);
     }
 
     private Root<JpaProspect> applySpecification(Specification<JpaProspect> spec, CriteriaQuery<JpaProspect> query) {
@@ -100,9 +94,16 @@ public class ProspectRepoJpa implements ProspectRepository {
     @Override
     public Optional<Prospect> updateProspect(Prospect prospect) {
         JpaProspect jpaProspect = prospectToJpaProspect(prospect);
-        jpaProspect.setProspectId(prospect.getProspectId());
-        prospect = entityManager.merge(jpaProspect).toProspect();
+        prospect = tryMergeProspect(jpaProspect);
         return Optional.ofNullable(prospect);
+    }
+
+    private Prospect tryMergeProspect(JpaProspect jpaProspect) {
+        try {
+            return entityManager.merge(jpaProspect).toProspect();
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
     }
 
     @Override
@@ -115,12 +116,12 @@ public class ProspectRepoJpa implements ProspectRepository {
     }
 
     private JpaProspect prospectToJpaProspect(Prospect prospect) {
-        JpaProspect jpaProspect = new JpaProspect();
-        jpaProspect.setProspectId(prospect.getProspectId());
-        jpaProspect.setFirstName(prospect.getFirstName());
-        jpaProspect.setLastName(prospect.getLastName());
-        jpaProspect.setEmail(prospect.getEmail());
-        jpaProspect.setPhone(prospect.getPhone());
-        return jpaProspect;
+        return JpaProspectBuilder.aJpaProspect()
+                .withProspectId(prospect.getProspectId())
+                .withFirstName(prospect.getFirstName())
+                .withLastName(prospect.getLastName())
+                .withEmail(prospect.getEmail())
+                .withPhone(prospect.getPhone())
+                .build();
     }
 }

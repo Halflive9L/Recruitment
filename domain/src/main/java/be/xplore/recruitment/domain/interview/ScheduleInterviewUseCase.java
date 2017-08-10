@@ -28,18 +28,21 @@ public class ScheduleInterviewUseCase implements ScheduleInterview {
     public void scheduleInterview(ScheduleInterviewRequest request, Consumer<InterviewResponseModel> consumer) {
         Applicant applicant = applicantRepository.findApplicantById(request.getApplicantId())
                 .orElseThrow(NotFoundException::new);
-        List<Interviewer> interviewers = request.getInterviewerIds().stream()
-                .map(id -> interviewerRepository.findById(id).orElseThrow(NotFoundException::new))
-                .collect(Collectors.toList());
         Interview interview = Interview.builder()
                 .withCreatedTime(request.getCreatedTime())
                 .withScheduledTime(request.getScheduledTime())
-                .withInterviewers(interviewers)
+                .withInterviewers(getInterviewers(request))
                 .withApplicant(applicant)
                 .withLocation(request.getLocation())
                 .withPreInterviewReminderSent(request.isPreInterviewReminderSent())
                 .build();
         Interview created = interviewRepository.createInterview(interview);
         consumer.accept(InterviewResponseModel.fromInterview(created));
+    }
+
+    private List<Interviewer> getInterviewers(ScheduleInterviewRequest request) {
+        return request.getInterviewerIds().stream()
+                    .map(id -> interviewerRepository.findById(id).orElseThrow(NotFoundException::new))
+                    .collect(Collectors.toList());
     }
 }

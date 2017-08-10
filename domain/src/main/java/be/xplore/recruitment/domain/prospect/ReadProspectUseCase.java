@@ -34,8 +34,7 @@ public class ReadProspectUseCase implements ReadProspect {
         if (prospects.isEmpty()) {
             throw new NotFoundException();
         }
-        List<ProspectResponseModel> responseList = getResponseListFromProspectList(prospects);
-        response.accept(responseList);
+        response.accept(getResponseListFromProspectList(prospects));
     }
 
     private List<ProspectResponseModel> getResponseListFromProspectList(List<Prospect> prospects) {

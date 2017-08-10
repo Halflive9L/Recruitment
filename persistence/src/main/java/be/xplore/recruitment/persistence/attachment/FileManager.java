@@ -37,10 +37,14 @@ public class FileManager {
 
     public String createFile(InputStream input, String ownerType, String extension) throws IOException {
         Path file = createFileInFileSystem(ownerType, extension);
-        JpaAttachment jpaAttachment = new JpaAttachment();
-        jpaAttachment.setFileName(file.toFile().getName());
+        createAttachment(file);
         writeFileToDisk(input, file);
         return file.toFile().getName();
+    }
+
+    private void createAttachment(Path file) {
+        JpaAttachment jpaAttachment = new JpaAttachment();
+        jpaAttachment.setFileName(file.toFile().getName());
     }
 
     private Path createFileInFileSystem(String fileName, String extension) throws IOException {

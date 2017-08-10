@@ -4,19 +4,38 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.util.StringUtils;
 
+import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import java.time.LocalDate;
 
-/**
- * Created by Lander on 20/07/2017.
- */
 public class ApplicantSpecification {
-    private JpaApplicant applicant;
+    private final JpaApplicant applicant;
+    private final EntityManager entityManager;
 
-    public ApplicantSpecification(JpaApplicant applicant) {
+    public ApplicantSpecification(JpaApplicant applicant, EntityManager entityManager) {
         this.applicant = applicant;
+        this.entityManager = entityManager;
     }
 
-    Specification<JpaApplicant> getFullSpecification() {
+    public CriteriaQuery<JpaApplicant> getCriteria() {
+        CriteriaQuery<JpaApplicant> query = entityManager.getCriteriaBuilder().createQuery(JpaApplicant.class);
+        Specification<JpaApplicant> spec = getFullSpecification();
+        Root<JpaApplicant> root = applySpecification(spec, query);
+        return query.select(root);
+    }
+
+    private Root<JpaApplicant> applySpecification(Specification<JpaApplicant> spec, CriteriaQuery<JpaApplicant> query) {
+        Root<JpaApplicant> root = query.from(JpaApplicant.class);
+        Predicate predicate = spec.toPredicate(root, query, entityManager.getCriteriaBuilder());
+        if (predicate != null) {
+            query.where(predicate);
+        }
+        return root;
+    }
+
+    private Specification<JpaApplicant> getFullSpecification() {
         return Specifications.where(hasFirstName())
                 .and(hasLastName())
                 .and(hasEmail())

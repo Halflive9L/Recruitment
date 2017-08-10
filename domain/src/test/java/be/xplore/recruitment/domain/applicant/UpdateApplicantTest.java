@@ -29,21 +29,20 @@ public class UpdateApplicantTest {
 
     @Test
     public void testUpdateApplicant() {
-        useCase.updateApplicant(getRequestFromApplicant(getValidApplicant()), applicant -> {
-        });
+        useCase.updateApplicant(getRequestFromApplicant(getValidApplicant()), applicant -> {});
         assertEquals(getExpectedApplicant(), mockApplicants.get(0));
     }
 
     @Test(expected = InvalidPhoneException.class)
     public void testUpdateApplicantWithInvalidPhone() {
-        useCase.updateApplicant(getRequestFromApplicant(getApplicantWithInvalidPhone()), applicant -> {
-        });
+        useCase.updateApplicant(getRequestFromApplicant(getApplicantWithInvalidPhone()), applicant -> {});
     }
 
     @Test(expected = NotFoundException.class)
     public void testUpdateNonExistingApplicant() {
-        useCase.updateApplicant(getRequestFromApplicant(Applicant.builder().withId(500).build()), applicant -> {
-        });
+        useCase.updateApplicant(getRequestFromApplicant(Applicant.builder()
+                .withApplicantId(500)
+                .build()), applicant -> {});
     }
 
     @Ignore
@@ -62,7 +61,7 @@ public class UpdateApplicantTest {
     @Ignore
     private Applicant getValidApplicant() {
         return Applicant.builder()
-                .withId(1)
+                .withApplicantId(1)
                 .withAddress("Mortsel")
                 .withPhone("+32452148963").build();
     }
@@ -70,7 +69,7 @@ public class UpdateApplicantTest {
     @Ignore
     private Applicant getApplicantWithInvalidPhone() {
         return Applicant.builder()
-                .withId(1)
+                .withApplicantId(1)
                 .withPhone("a")
                 .build();
     }
@@ -78,7 +77,9 @@ public class UpdateApplicantTest {
     @Ignore
     private Applicant getExpectedApplicant() {
         return Applicant.builder()
-                .withFirstName("John").withLastName("Smith").withId(1)
+                .withFirstName("John")
+                .withLastName("Smith")
+                .withApplicantId(1)
                 .withDateOfBirth(LocalDate.of(1996, 10, 3))
                 .withAddress("Mortsel")
                 .withEducation("College")

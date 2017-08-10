@@ -29,15 +29,10 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
 
-/**
- * @author Stijn Schack
- * @since 7/18/2017
- */
 @CrossOrigin
 @RestController
 @RequestMapping("/api/v1/prospect")
 public class ProspectController {
-
     @Autowired
     private CreateProspect createProspect;
     @Autowired
@@ -46,13 +41,16 @@ public class ProspectController {
     private UpdateProspect updateProspect;
     @Autowired
     private DeleteProspect deleteProspect;
-    @Autowired
-    private ImportProspects importProspects;
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<JsonProspect> addProspect(@RequestBody JsonProspect input) {
         CreateProspectRequest request = jsonProspectToCreateProspectRequest(input);
         JsonProspectResponseModelPresenter presenter = new JsonProspectResponseModelPresenter();
+        return tryAddProspect(request, presenter);
+    }
+
+    private ResponseEntity<JsonProspect> tryAddProspect(CreateProspectRequest request,
+                                                        JsonProspectResponseModelPresenter presenter) {
         try {
             createProspect.createProspect(request, presenter);
         } catch (InvalidEmailException | InvalidPhoneException e) {
@@ -62,12 +60,7 @@ public class ProspectController {
     }
 
     private CreateProspectRequest jsonProspectToCreateProspectRequest(JsonProspect prospect) {
-        CreateProspectRequest request = new CreateProspectRequest();
-        request.firstName = prospect.getFirstName();
-        request.lastName = prospect.getLastName();
-        request.email = prospect.getEmail();
-        request.phone = prospect.getPhone();
-        return request;
+        return prospect.toCreateRequest();
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/{prospectId}")
@@ -75,6 +68,11 @@ public class ProspectController {
         ReadProspectRequest request = new ReadProspectRequest();
         request.prospectId = prospectId;
         JsonProspectResponseModelPresenter presenter = new JsonProspectResponseModelPresenter();
+        return tryReadProspectById(request, presenter);
+    }
+
+    private ResponseEntity<JsonProspect> tryReadProspectById(ReadProspectRequest request,
+                                                             JsonProspectResponseModelPresenter presenter) {
         try {
             readProspect.readProspectById(request, presenter);
         } catch (NotFoundException e) {
@@ -92,21 +90,29 @@ public class ProspectController {
         }
     }
 
-    private ResponseEntity<List<JsonProspect>> presentProspectsByParam(JsonProspect prospect)
-            throws NotFoundException {
+    private ResponseEntity<List<JsonProspect>> presentProspectsByParam(JsonProspect prospect) throws NotFoundException {
         JsonProspectResponseModelListPresenter presenter = new JsonProspectResponseModelListPresenter();
+        readProspects(prospect, presenter);
+        return presenter.getResponseEntity();
+    }
+
+    private void readProspects(JsonProspect prospect, JsonProspectResponseModelListPresenter presenter) {
         if (prospect.isEmpty()) {
             readProspect.readAllProspects(presenter);
         } else {
-            readProspect.readProspectsByParam(getReadProspectRequestFromJsonProspect(prospect), presenter);
+            readProspect.readProspectsByParam(prospect.toReadRequest(), presenter);
         }
-        return presenter.getResponseEntity();
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/{prospectId}")
     public ResponseEntity<JsonProspect> deleteProspect(@PathVariable long prospectId) {
         DeleteProspectRequest request = new DeleteProspectRequest(prospectId);
         JsonProspectResponseModelPresenter presenter = new JsonProspectResponseModelPresenter();
+        return tryDeleteProspect(request, presenter);
+    }
+
+    private ResponseEntity<JsonProspect> tryDeleteProspect(DeleteProspectRequest request,
+                                                           JsonProspectResponseModelPresenter presenter) {
         try {
             deleteProspect.deleteProspect(request, presenter);
         } catch (NotFoundException e) {
@@ -116,47 +122,24 @@ public class ProspectController {
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/{prospectId}")
-    public ResponseEntity<JsonProspect> updateProspect(@PathVariable long prospectId,
-                                                       @RequestBody JsonProspect query) {
-        UpdateProspectRequest request = new UpdateProspectRequest(prospectId);
+    public ResponseEntity<JsonProspect> updateProspect(@PathVariable long prospectId, @RequestBody JsonProspect query) {
+        UpdateProspectRequest request = query.toUpdateRequest();
         JsonProspectResponseModelPresenter presenter = new JsonProspectResponseModelPresenter();
-        JsonProspectToUpdateProspectRequest(query, request);
+        return tryUpdateProspect(request, presenter);
+    }
+
+    @SuppressWarnings("checkstyle:ExecutableStatementCount")
+    private ResponseEntity<JsonProspect> tryUpdateProspect(UpdateProspectRequest request,
+                                                           JsonProspectResponseModelPresenter presenter) {
+        ResponseEntity<JsonProspect> responseEntity;
         try {
             updateProspect.updateProspect(request, presenter);
+            responseEntity = presenter.getResponseEntity();
         } catch (NotFoundException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            responseEntity = new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (InvalidEmailException | InvalidPhoneException e) {
-            return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+            responseEntity = new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         }
-        return presenter.getResponseEntity();
-    }
-
-    @RequestMapping(method = RequestMethod.POST, value = "/importprospects")
-    public ResponseEntity<JsonImportResult> importProspects(@RequestParam("file") MultipartFile uploaded) {
-        JsonProspectImportResponseModelPresenter presenter = new JsonProspectImportResponseModelPresenter();
-        try {
-            ImportProspectsRequest request = new ImportProspectsRequest(uploaded.getInputStream());
-            importProspects.importProspects(request, presenter);
-            return presenter.getResponseEntity();
-        } catch (IOException ex) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-    }
-
-    private ReadProspectRequest getReadProspectRequestFromJsonProspect(JsonProspect prospect) {
-        ReadProspectRequest request = new ReadProspectRequest();
-        request.firstName = prospect.getFirstName();
-        request.lastName = prospect.getLastName();
-        request.email = prospect.getEmail();
-        request.phone = prospect.getPhone();
-        return request;
-    }
-
-    private void JsonProspectToUpdateProspectRequest(JsonProspect query,
-                                                     UpdateProspectRequest request) {
-        request.firstName = query.getFirstName();
-        request.lastName = query.getLastName();
-        request.email = query.getEmail();
-        request.phone = query.getPhone();
+        return responseEntity;
     }
 }

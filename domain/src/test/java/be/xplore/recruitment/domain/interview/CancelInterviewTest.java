@@ -27,7 +27,7 @@ public class CancelInterviewTest {
         mockRepo = new MockInterviewRepo(Arrays.asList(
                 Interview.builder()
                         .withApplicant(Applicant.builder()
-                                .withId(1)
+                                .withApplicantId(1)
                                 .withFirstName("Maarten")
                                 .build())
                         .withInterviewId(1)

@@ -19,22 +19,20 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-
 @RunWith(MockitoJUnitRunner.class)
 public class ReminderTest {
     @Mock
     private MockInterviewRepo mockInterviewRepo;
     private RemindParticipants useCase;
-
     private List<Applicant> applicants = Arrays.asList(
             Applicant.builder()
-                    .withId(1)
+                    .withApplicantId(1)
                     .withEmail("CaseyStarrenburg@dayrep.com")
                     .withFirstName("Casey")
                     .withLastName("Starrenburg")
                     .build(),
             Applicant.builder()
-                    .withId(2)
+                    .withApplicantId(2)
                     .withEmail("CorneevanDoorne@teleworm.us")
                     .withFirstName("Cornee")
                     .withLastName("van Doorne")
@@ -53,28 +51,7 @@ public class ReminderTest {
                     .build()
     );
 
-    private InterviewRepository setupRepo(Interview... interviews) {
-        List<Interview> list = Arrays.asList(interviews);
-        return new MockInterviewRepo(list);
-    }
-
-    private RemindParticipants setupUseCase(ReminderSender sender, Interview... interviews) {
-        List<Interview> list = Arrays.asList(interviews);
-        mockInterviewRepo = new MockInterviewRepo(list);
-        return new RemindParticipantsUseCase(mockInterviewRepo, sender);
-    }
-
     private long nextId;
-
-    private Interview.InterviewBuilder interviewBuilder(long inHours, Applicant applicant,
-                                                        List<Interviewer> interviewers) {
-        return Interview.builder()
-                .withInterviewId(nextId++)
-                .withScheduledTime(LocalDateTime.now().plusHours(inHours))
-                .withCreatedTime(LocalDateTime.now().minusDays(5))
-                .withApplicant(applicant)
-                .withInterviewers(interviewers);
-    }
 
     @Before
     public void setup() {
@@ -140,10 +117,7 @@ public class ReminderTest {
     public void remindsApplicant() {
         Applicant applicant = applicants.get(0);
         ReminderSender sender = mock(ReminderSender.class);
-        useCase = setupUseCase(
-                sender,
-                interviewBuilder(12, applicant, interviewers).build()
-        );
+        useCase = setupUseCase(sender, interviewBuilder(12, applicant, interviewers).build());
         useCase.checkReminders();
         verify(sender, times(1)).remindApplicant(any(), any());
     }
@@ -152,12 +126,24 @@ public class ReminderTest {
     public void remindsInterviewers() {
         Applicant applicant = applicants.get(0);
         ReminderSender sender = mock(ReminderSender.class);
-        useCase = setupUseCase(
-                sender,
-                interviewBuilder(12, applicant, interviewers).build()
-        );
+        useCase = setupUseCase(sender, interviewBuilder(12, applicant, interviewers).build());
         useCase.checkReminders();
         verify(sender, times(interviewers.size())).remindInterviewer(any(), any());
     }
 
+    private RemindParticipants setupUseCase(ReminderSender sender, Interview... interviews) {
+        List<Interview> list = Arrays.asList(interviews);
+        mockInterviewRepo = new MockInterviewRepo(list);
+        return new RemindParticipantsUseCase(mockInterviewRepo, sender);
+    }
+
+    private InterviewBuilder interviewBuilder(long inHours, Applicant applicant,
+                                              List<Interviewer> interviewers) {
+        return Interview.builder()
+                .withInterviewId(nextId++)
+                .withScheduledTime(LocalDateTime.now().plusHours(inHours))
+                .withCreatedTime(LocalDateTime.now().minusDays(5))
+                .withApplicant(applicant)
+                .withInterviewers(interviewers);
+    }
 }

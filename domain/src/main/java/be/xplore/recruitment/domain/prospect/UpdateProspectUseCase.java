@@ -31,7 +31,7 @@ public class UpdateProspectUseCase implements UpdateProspect {
 
     private Prospect createProspectFromRequest(UpdateProspectRequest request) {
         return Prospect.builder()
-                .withId(request.getProspectId())
+                .withProspectId(request.getProspectId())
                 .withFirstName(request.firstName)
                 .withLastName(request.lastName)
                 .withEmail(request.email)

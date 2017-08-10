@@ -15,7 +15,7 @@ public class ScheduleInterviewRequest {
     }
 
     public static ScheduleInterviewRequestBuilder builder() {
-        return new ScheduleInterviewRequestBuilder();
+        return ScheduleInterviewRequestBuilder.aScheduleInterviewRequest();
     }
 
     public LocalDateTime getCreatedTime() {
@@ -42,60 +42,27 @@ public class ScheduleInterviewRequest {
         return preInterviewReminderSent;
     }
 
-    public static final class ScheduleInterviewRequestBuilder {
-        private LocalDateTime createdTime;
-        private LocalDateTime scheduledTime;
-        private long applicantId;
-        private List<Long> interviewerIds;
-        private String location;
-        private boolean preInterviewReminderSent;
+    public void setCreatedTime(LocalDateTime createdTime) {
+        this.createdTime = createdTime;
+    }
 
-        private ScheduleInterviewRequestBuilder() {
-        }
+    public void setScheduledTime(LocalDateTime scheduledTime) {
+        this.scheduledTime = scheduledTime;
+    }
 
-        public static ScheduleInterviewRequestBuilder aScheduleInterviewRequest() {
-            return new ScheduleInterviewRequestBuilder();
-        }
+    public void setApplicantId(long applicantId) {
+        this.applicantId = applicantId;
+    }
 
-        public ScheduleInterviewRequestBuilder withCreatedTime(LocalDateTime createdTime) {
-            this.createdTime = createdTime;
-            return this;
-        }
+    public void setInterviewerIds(List<Long> interviewerIds) {
+        this.interviewerIds = interviewerIds;
+    }
 
-        public ScheduleInterviewRequestBuilder withScheduledTime(LocalDateTime scheduledTime) {
-            this.scheduledTime = scheduledTime;
-            return this;
-        }
+    public void setLocation(String location) {
+        this.location = location;
+    }
 
-        public ScheduleInterviewRequestBuilder withApplicantId(long applicantId) {
-            this.applicantId = applicantId;
-            return this;
-        }
-
-        public ScheduleInterviewRequestBuilder withInterviewerIds(List<Long> interviewerIds) {
-            this.interviewerIds = interviewerIds;
-            return this;
-        }
-
-        public ScheduleInterviewRequestBuilder withLocation(String location) {
-            this.location = location;
-            return this;
-        }
-
-        public ScheduleInterviewRequestBuilder withPreInterviewReminderSent(boolean sent) {
-            this.preInterviewReminderSent = sent;
-            return this;
-        }
-
-        public ScheduleInterviewRequest build() {
-            ScheduleInterviewRequest scheduleInterviewRequest = new ScheduleInterviewRequest();
-            scheduleInterviewRequest.createdTime = this.createdTime;
-            scheduleInterviewRequest.interviewerIds = this.interviewerIds;
-            scheduleInterviewRequest.applicantId = this.applicantId;
-            scheduleInterviewRequest.scheduledTime = this.scheduledTime;
-            scheduleInterviewRequest.location = this.location;
-            scheduleInterviewRequest.preInterviewReminderSent = this.preInterviewReminderSent;
-            return scheduleInterviewRequest;
-        }
+    public void setPreInterviewReminderSent(boolean preInterviewReminderSent) {
+        this.preInterviewReminderSent = preInterviewReminderSent;
     }
 }

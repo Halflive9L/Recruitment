@@ -17,8 +17,7 @@ public class LocalDateTimeDeserializer extends JsonDeserializer<LocalDateTime> {
     public LocalDateTime deserialize(JsonParser p, DeserializationContext ctxt) throws IOException,
             JsonProcessingException {
         try {
-            String s = p.readValueAs(String.class);
-            return LocalDateTime.parse(s);
+            return LocalDateTime.parse(p.readValueAs(String.class));
         } catch (Exception ex) {
             LOGGER.error(ex.toString());
             return null;

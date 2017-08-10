@@ -50,26 +50,30 @@ public class InterviewerRepoJpa implements InterviewerRepository {
     @Override
     public Optional<Interviewer> deleteInterviewer(long id) {
         JpaInterviewer e = entityManager.find(JpaInterviewer.class, id);
-        if (e == null) {
-            return Optional.empty();
-        } else {
-            Optional<Interviewer> result = Optional.of(e.toInterviewer());
-            entityManager.remove(e);
-            return result;
-        }
+        return Optional.ofNullable(entityManager.find(JpaInterviewer.class, id))
+                .map(this::removeInterviewer);
     }
 
     @Override
     public Optional<Interviewer> updateInterviewer(Interviewer interviewer) {
-        JpaInterviewer e = entityManager.find(JpaInterviewer.class, interviewer.getInterviewerId());
-        if (e == null) {
-            return Optional.empty();
-        } else {
-            e.setFirstName(interviewer.getFirstName());
-            e.setLastName(interviewer.getLastName());
-            e.setEmail(interviewer.getEmail());
-            entityManager.persist(e);
-            return Optional.of(e.toInterviewer());
-        }
+        return Optional.ofNullable(entityManager.find(JpaInterviewer.class, interviewer.getInterviewerId()))
+                .map(e -> updateInterview(interviewer, e));
+    }
+
+    private Interviewer updateInterview(Interviewer interviewer, JpaInterviewer e) {
+        updateInterviewerFields(interviewer, e);
+        entityManager.persist(e);
+        return e.toInterviewer();
+    }
+
+    private void updateInterviewerFields(Interviewer interviewer, JpaInterviewer e) {
+        e.setFirstName(interviewer.getFirstName());
+        e.setLastName(interviewer.getLastName());
+        e.setEmail(interviewer.getEmail());
+    }
+
+    private Interviewer removeInterviewer(JpaInterviewer interviewer) {
+        entityManager.remove(interviewer);
+        return interviewer.toInterviewer();
     }
 }

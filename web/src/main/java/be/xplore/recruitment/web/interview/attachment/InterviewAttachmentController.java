@@ -48,6 +48,11 @@ public class InterviewAttachmentController {
         LOGGER.info(file.getOriginalFilename());
         AddInterviewAttachmentRequest request = getAddAttachmentRequest(interviewId, file);
         AddInterviewAttachmentPresenter presenter = new AddInterviewAttachmentPresenter();
+        return tryAddAttachment(request, presenter);
+    }
+
+    private ResponseEntity<JsonAttachment> tryAddAttachment(AddInterviewAttachmentRequest request,
+                                                            AddInterviewAttachmentPresenter presenter) {
         try {
             addInterviewAttachment.addAttachment(request, presenter);
         } catch (NotFoundException e) {
@@ -59,8 +64,13 @@ public class InterviewAttachmentController {
     private AddInterviewAttachmentRequest getAddAttachmentRequest(long interviewId, MultipartFile file)
             throws IOException {
         Attachment attachment = new Attachment(0, file.getOriginalFilename());
-        AddInterviewAttachmentRequest request = new AddInterviewAttachmentRequest();
         attachment.setInputStream(file.getInputStream());
+        AddInterviewAttachmentRequest request = createAddRequest(interviewId, attachment);
+        return request;
+    }
+
+    private AddInterviewAttachmentRequest createAddRequest(long interviewId, Attachment attachment) {
+        AddInterviewAttachmentRequest request = new AddInterviewAttachmentRequest();
         request.setAttachment(attachment);
         request.setInterviewId(interviewId);
         return request;

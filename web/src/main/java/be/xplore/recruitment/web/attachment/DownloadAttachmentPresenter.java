@@ -27,6 +27,10 @@ class DownloadAttachmentPresenter implements Consumer<DownloadAttachmentResponse
     public void accept(DownloadAttachmentResponseModel responseModel) {
         setResponseHeaders(responseModel);
         Attachment attachment = responseModel.getAttachment();
+        tryCopyStream(responseModel, attachment);
+    }
+
+    private void tryCopyStream(DownloadAttachmentResponseModel responseModel, Attachment attachment) {
         try (InputStream in = attachment.getInputStream(); OutputStream out = responseModel.getOutputStream()) {
             copy(in, out);
         } catch (IOException e) {

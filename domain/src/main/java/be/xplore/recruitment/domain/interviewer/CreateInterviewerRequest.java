@@ -20,44 +20,19 @@ public class CreateInterviewerRequest {
         return email;
     }
 
-    public static CreateInterviewerRequestBuilder builder() {
-        return new CreateInterviewerRequestBuilder();
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 
-    public static final class CreateInterviewerRequestBuilder {
-        private String firstName;
-        private String lastName;
-        private String email;
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-        private CreateInterviewerRequestBuilder() {
-        }
-
-        public static CreateInterviewerRequestBuilder aCreateInterviewerRequest() {
-            return new CreateInterviewerRequestBuilder();
-        }
-
-        public CreateInterviewerRequestBuilder withFirstName(String firstName) {
-            this.firstName = firstName;
-            return this;
-        }
-
-        public CreateInterviewerRequestBuilder withLastName(String lastName) {
-            this.lastName = lastName;
-            return this;
-        }
-
-        public CreateInterviewerRequestBuilder withEmail(String email) {
-            this.email = email;
-            return this;
-        }
-
-        public CreateInterviewerRequest build() {
-            CreateInterviewerRequest createInterviewerRequest = new CreateInterviewerRequest();
-            createInterviewerRequest.lastName = this.lastName;
-            createInterviewerRequest.firstName = this.firstName;
-            createInterviewerRequest.email = this.email;
-            return createInterviewerRequest;
-        }
+    public static CreateInterviewerRequestBuilder builder() {
+        return CreateInterviewerRequestBuilder.aCreateInterviewerRequest();
     }
 }
