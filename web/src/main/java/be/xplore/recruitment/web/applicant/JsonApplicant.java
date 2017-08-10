@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.springframework.boot.jackson.JsonComponent;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 /**
  * @author Stijn Schack
@@ -24,6 +25,7 @@ public class JsonApplicant {
     private String education;
     private String email;
     private String phone;
+    private Set<String> tags;
 
     @JsonCreator
     public JsonApplicant() {
@@ -123,6 +125,16 @@ public class JsonApplicant {
     @JsonProperty
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    @JsonProperty
+    public void setTags(Set<String> tags) {
+        this.tags = tags;
+    }
+
+    @JsonProperty
+    public Set<String> getTags() {
+        return tags;
     }
 
     boolean isEmpty() {

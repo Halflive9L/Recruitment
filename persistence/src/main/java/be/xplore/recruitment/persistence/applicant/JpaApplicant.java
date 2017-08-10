@@ -6,9 +6,11 @@ import be.xplore.recruitment.persistence.tag.JpaTag;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
@@ -64,8 +66,10 @@ public class JpaApplicant {
     @Column
     private String phone;
 
-    @ManyToMany
-    @JoinTable(name = "APPLICANT_TAG")
+    @ManyToMany(targetEntity = JpaTag.class, fetch = FetchType.EAGER)
+    @JoinTable(name = "applicant_tag",
+            joinColumns = @JoinColumn(name = "applicant_id", referencedColumnName = "applicantId"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id", referencedColumnName = "tagId"))
     private Set<JpaTag> tags;
 
     @OneToMany(mappedBy = "applicant")
@@ -154,5 +158,13 @@ public class JpaApplicant {
 
     public Set<JpaAttachment> getAttachments() {
         return attachments;
+    }
+
+    public void setTags(Set<JpaTag> tags) {
+        this.tags = tags;
+    }
+
+    public Set<JpaTag> getTags() {
+        return tags;
     }
 }

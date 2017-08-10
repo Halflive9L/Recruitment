@@ -2,6 +2,7 @@ package be.xplore.recruitment.domain.applicant;
 
 import be.xplore.recruitment.domain.attachment.Attachment;
 import be.xplore.recruitment.domain.exception.NotFoundException;
+import be.xplore.recruitment.domain.tag.Tag;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,4 +28,6 @@ public interface ApplicantRepository {
             throws NotFoundException;
 
     List<Attachment> findAllAttachmentsForApplicant(long applicantId);
+
+    Tag addTagToApplicant(long applicantId, Tag tag);
 }

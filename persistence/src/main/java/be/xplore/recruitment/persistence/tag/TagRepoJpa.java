@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -29,17 +30,17 @@ public class TagRepoJpa implements TagRepository {
     }
 
     @Override
-    public Tag createTag(Tag tag) throws TagAlreadyExistsException {
-        JpaTag jpaTag = new JpaTag(tag.getTagName());
+    public Tag createTag(String tagName) throws TagAlreadyExistsException {
+        JpaTag jpaTag = new JpaTag(tagName);
         tryCreateTag(jpaTag);
         return jpaTag.toTag();
     }
 
-    private void tryCreateTag(JpaTag tag) throws TagAlreadyExistsException {
+    private void tryCreateTag(JpaTag jpaTag) throws TagAlreadyExistsException {
         try {
-            entityManager.persist(tag);
+            entityManager.persist(jpaTag);
         } catch (EntityExistsException e) {
-            throw new TagAlreadyExistsException(tag.toTag(), e);
+            throw new TagAlreadyExistsException(jpaTag.toTag(), e);
         }
     }
 
@@ -47,6 +48,17 @@ public class TagRepoJpa implements TagRepository {
     public Optional<Tag> findTagById(long tagId) {
         JpaTag jpaTag = entityManager.find(JpaTag.class, tagId);
         return getOptionalTagFromJpaTag(jpaTag);
+    }
+
+    @Override
+    public Optional<Tag> findTagByName(String tagName) {
+        try {
+            JpaTag jpaTag = (JpaTag) entityManager.createNamedQuery(JpaTag.QUERY_FIND_BY_NAME)
+                    .setParameter("tagName", tagName).getSingleResult();
+            return Optional.of(jpaTag.toTag());
+        } catch (NoResultException e) {
+            return Optional.empty();
+        }
     }
 
     @Override

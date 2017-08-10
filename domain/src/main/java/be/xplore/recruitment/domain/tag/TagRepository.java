@@ -10,9 +10,11 @@ import java.util.Set;
  * @since 8/10/2017
  */
 public interface TagRepository {
-    Tag createTag(Tag tag) throws TagAlreadyExistsException;
+    Tag createTag(String tagName) throws TagAlreadyExistsException;
 
     Optional<Tag> findTagById(long tagId);
+
+    Optional<Tag> findTagByName(String tagName);
 
     Set<Tag> findAllTags();
 

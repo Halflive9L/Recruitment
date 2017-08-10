@@ -5,8 +5,10 @@ import be.xplore.recruitment.domain.applicant.Applicant;
 import be.xplore.recruitment.domain.applicant.ApplicantRepository;
 import be.xplore.recruitment.domain.attachment.Attachment;
 import be.xplore.recruitment.domain.exception.NotFoundException;
+import be.xplore.recruitment.domain.tag.Tag;
 import be.xplore.recruitment.persistence.attachment.FileManager;
 import be.xplore.recruitment.persistence.attachment.JpaAttachment;
+import be.xplore.recruitment.persistence.tag.JpaTag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Repository;
@@ -173,6 +175,14 @@ public class ApplicantRepoJpa implements ApplicantRepository {
     private Set<JpaAttachment> getAttachmentSetFromApplicantId(long applicantId) {
         JpaApplicant jpaApplicant = findJpaApplicantById(applicantId);
         return jpaApplicant.getAttachments();
+    }
+
+    @Override
+    public Tag addTagToApplicant(long applicantId, Tag tag) {
+        JpaApplicant applicant = findJpaApplicantById(applicantId);
+        applicant.getTags().add(new JpaTag(tag.getTagId(), tag.getTagName()));
+        entityManager.merge(applicant);
+        return tag;
     }
 
     private JpaApplicant applicantToJpaApplicant(Applicant applicant) {

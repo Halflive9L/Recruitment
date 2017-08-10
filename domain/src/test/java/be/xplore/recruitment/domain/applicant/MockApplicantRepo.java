@@ -2,6 +2,7 @@ package be.xplore.recruitment.domain.applicant;
 
 import be.xplore.recruitment.domain.attachment.Attachment;
 import be.xplore.recruitment.domain.exception.NotFoundException;
+import be.xplore.recruitment.domain.tag.Tag;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -160,6 +161,11 @@ public class MockApplicantRepo implements ApplicantRepository {
     @Override
     public List<Attachment> findAllAttachmentsForApplicant(long applicantId) {
         return mockAttachments;
+    }
+
+    @Override
+    public Tag addTagToApplicant(long applicantId, Tag tag) {
+        return null;
     }
 
 
