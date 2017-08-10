@@ -4,10 +4,10 @@ package be.xplore.recruitment.domain.applicant;
 import be.xplore.recruitment.domain.exception.InvalidDateException;
 import be.xplore.recruitment.domain.exception.InvalidEmailException;
 import be.xplore.recruitment.domain.exception.InvalidPhoneException;
+import be.xplore.recruitment.domain.tag.Tag;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 
 import static be.xplore.recruitment.domain.util.Validator.isNullOrEmpty;
 import static be.xplore.recruitment.domain.util.Validator.isValidDate;
@@ -28,7 +28,7 @@ public class Applicant {
     private String email;
     private String phone;
 
-    private List<String> files;
+    private Set<Tag> tags;
 
     private Applicant(ApplicantBuilder builder) {
         this.applicantId = builder.applicantId;
@@ -39,25 +39,10 @@ public class Applicant {
         this.education = builder.education;
         this.email = builder.email;
         this.phone = builder.phone;
-        this.files = new ArrayList<>();
     }
 
     public static ApplicantBuilder builder() {
         return new ApplicantBuilder();
-    }
-
-    @Override
-    public String toString() {
-        return "Applicant{" +
-                "applicantId=" + applicantId +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", dateOfBirth=" + dateOfBirth +
-                ", address='" + address + '\'' +
-                ", education='" + education + '\'' +
-                ", email='" + email + '\'' +
-                ", phone='" + phone + '\'' +
-                '}';
     }
 
     void validateApplicant() {
@@ -136,10 +121,6 @@ public class Applicant {
         this.phone = phone;
     }
 
-    public List<String> getFiles() {
-        return files;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -197,6 +178,7 @@ public class Applicant {
         private String education;
         private String email;
         private String phone;
+        private Set<Tag> tags;
 
         public ApplicantBuilder withFirstName(String firstName) {
             this.firstName = firstName;
@@ -235,6 +217,11 @@ public class Applicant {
 
         public ApplicantBuilder withPhone(String phone) {
             this.phone = phone;
+            return this;
+        }
+
+        public ApplicantBuilder withTags(Set<Tag> tags) {
+            this.tags = tags;
             return this;
         }
 

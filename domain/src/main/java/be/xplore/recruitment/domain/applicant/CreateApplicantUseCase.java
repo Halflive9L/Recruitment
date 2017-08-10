@@ -11,8 +11,7 @@ import java.util.function.Consumer;
  * @author Stijn Schack
  * @since 7/26/2017
  */
-@Named
-class CreateApplicantUseCase implements CreateApplicant {
+@Named class CreateApplicantUseCase implements CreateApplicant {
     private final ApplicantRepository repository;
 
     CreateApplicantUseCase(ApplicantRepository repository) {
@@ -37,6 +36,7 @@ class CreateApplicantUseCase implements CreateApplicant {
                 .withEducation(request.education)
                 .withEmail(request.email)
                 .withPhone(request.phone)
+                .withTags(request.tags)
                 .build();
     }
 }

@@ -1,15 +1,19 @@
 package be.xplore.recruitment.persistence.prospect;
 
 import be.xplore.recruitment.domain.prospect.Prospect;
+import be.xplore.recruitment.persistence.tag.JpaTag;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import java.util.Set;
 
 /**
  * @author Lander
@@ -47,6 +51,10 @@ public class JpaProspect {
 
     @Column
     private String phone;
+
+    @ManyToMany
+    @JoinTable(name = "PROSPECT_TAG")
+    private Set<JpaTag> tags;
 
     public JpaProspect() {
     }

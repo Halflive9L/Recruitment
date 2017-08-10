@@ -1,7 +1,10 @@
 package be.xplore.recruitment.domain.applicant;
 
 
+import be.xplore.recruitment.domain.tag.Tag;
+
 import java.time.LocalDate;
+import java.util.Set;
 
 /**
  * @author Stijn Schack
@@ -15,4 +18,5 @@ public class CreateApplicantRequest {
     public String education;
     public String email;
     public String phone;
+    public Set<Tag> tags;
 }

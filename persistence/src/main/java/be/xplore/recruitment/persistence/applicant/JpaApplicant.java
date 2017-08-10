@@ -2,12 +2,15 @@ package be.xplore.recruitment.persistence.applicant;
 
 import be.xplore.recruitment.domain.applicant.Applicant;
 import be.xplore.recruitment.persistence.attachment.JpaAttachment;
+import be.xplore.recruitment.persistence.tag.JpaTag;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -60,6 +63,10 @@ public class JpaApplicant {
 
     @Column
     private String phone;
+
+    @ManyToMany
+    @JoinTable(name = "APPLICANT_TAG")
+    private Set<JpaTag> tags;
 
     @OneToMany(mappedBy = "applicant")
     private Set<JpaAttachment> attachments;
