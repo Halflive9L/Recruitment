@@ -51,13 +51,6 @@ public class JpaProspect {
     public JpaProspect() {
     }
 
-    JpaProspect(JpaProspect jpaProspect) {
-        this.firstName = jpaProspect.firstName;
-        this.lastName = jpaProspect.lastName;
-        this.email = jpaProspect.email;
-        this.phone = jpaProspect.phone;
-    }
-
     Prospect toProspect() {
         return Prospect.builder()
                 .withFirstName(this.getFirstName())
@@ -107,16 +100,5 @@ public class JpaProspect {
 
     public void setPhone(String phone) {
         this.phone = phone;
-    }
-
-    @Override
-    public String toString() {
-        return "Prospect{" +
-                "prospectId=" + prospectId +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", phone='" + phone + '\'' +
-                '}';
     }
 }

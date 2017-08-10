@@ -78,7 +78,7 @@ public class InterviewRepoJpa implements InterviewRepository {
     }
 
     @Override
-    public Optional<Interview> updateInterviewer(Interview interview) {
+    public Optional<Interview> updateInterview(Interview interview) {
         JpaInterview jpaInterview = entityManager.find(JpaInterview.class, interview.getInterviewId());
         return Optional.ofNullable(jpaInterview).map(i -> this.updateJpaInterview(interview, i).toInterview());
     }
@@ -92,9 +92,9 @@ public class InterviewRepoJpa implements InterviewRepository {
                         .collect(Collectors.toList()))
                 .withApplicant(entityManager.find(JpaApplicant.class, interview.getApplicant().getApplicantId()))
                 .withScheduledTime(interview.getScheduledTime())
+                .withLocation(interview.getLocation())
                 .withCancelled(interview.isCancelled())
-                .withPreInterviewReminderSent(interview.isPreInterviewReminderSent())
-                .build();
+                .withPreInterviewReminderSent(interview.isPreInterviewReminderSent()).build();
         entityManager.persist(e);
         return e;
     }

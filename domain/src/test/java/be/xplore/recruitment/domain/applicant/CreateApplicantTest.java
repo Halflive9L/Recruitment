@@ -6,8 +6,6 @@ import be.xplore.recruitment.domain.exception.InvalidPhoneException;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -18,7 +16,6 @@ import static org.junit.Assert.assertEquals;
  * @author Stijn Schack
  * @since 7/26/2017
  */
-@RunWith(MockitoJUnitRunner.class)
 public class CreateApplicantTest {
     private CreateApplicant useCase;
     private List<Applicant> mockRepo;

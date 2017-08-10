@@ -4,12 +4,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PreDestroy;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.util.Comparator;
 
 /**
  * @author Stijn Schack
@@ -25,7 +27,12 @@ public class FileManager {
         directory = Files.createTempDirectory("recruitment");
         directory.toFile().deleteOnExit();
 
-        LOG.debug("Temporary directory created for file manager: {}", directory);
+        LOG.info("Temporary directory created for file manager: {}", directory);
+    }
+
+    @PreDestroy
+    public void deleteTemporaryDirectory() throws IOException {
+        Files.walk(directory).sorted(Comparator.reverseOrder()).forEach(this::deleteTemporaryFile);
     }
 
     public String createFile(InputStream input, String ownerType, String extension) throws IOException {
@@ -73,6 +80,16 @@ public class FileManager {
         try {
             closeable.close();
         } catch (IOException ignore) {
+        }
+    }
+
+    private void deleteTemporaryFile(Path path) {
+        try {
+            LOG.info("Delete temporary file: {}", path);
+
+            Files.delete(path);
+        } catch (IOException ignore) {
+            LOG.warn("Unable to delete temporary file: {}", path);
         }
     }
 }

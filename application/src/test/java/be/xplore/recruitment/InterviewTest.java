@@ -95,12 +95,31 @@ public class InterviewTest extends TestBase {
     }
 
     @Test
+    @DatabaseSetup(value = "/interview/InterviewTest.testDataWithInterviews.xml")
+    public void testRescheduleInterview() {
+        LocalDateTime time = LocalDateTime.now().plusDays(3);
+        JSONObject obj = new JSONObject();
+        obj.put("interviewId", 2);
+        obj.put("newScheduledTime", formatTime(time));
+        obj.put("newLocation", "Veldkant 35A");
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<String> httpEntity = new HttpEntity<>(obj.toJSONString(), headers);
+        JsonInterview result = restTemplate
+                .postForEntity("/api/v1/interview/reschedule", httpEntity, JsonInterview.class)
+                .getBody();
+        assertThat(result.getInterviewId()).isEqualTo(2L);
+        assertThat(result.getScheduledTime()).isEqualTo(time);
+        assertThat(result.getLocation()).isEqualTo("Veldkant 35A");
+    }
+
+    @Test
     @DatabaseSetup(value = "/interview/InterviewTest.testRemind.xml")
     public void testRemindParticipantsBeforeInterview() throws Exception {
         MockMailbox.resetAll();
         Interview interview = interviewRepository.findById(1).get();
         interview.setScheduledTime(LocalDateTime.now().plusHours(12));
-        interviewRepository.updateInterviewer(interview);
+        interviewRepository.updateInterview(interview);
         RemindParticipants useCase = remindParticipants;
         useCase.checkReminders();
         interview = interviewRepository.findById(1).get();

@@ -49,11 +49,12 @@ public class ProspectRepoJpa implements ProspectRepository {
 
     @Override
     public Optional<Prospect> findProspectById(long prospectId) {
-        List<JpaProspect> list = entityManager
-                .createNamedQuery(JpaProspect.QUERY_FIND_BY_ID, JpaProspect.class)
-                .setParameter("prospectId", prospectId).getResultList();
-        JpaProspect jpaProspect = list.get(0);
+        JpaProspect jpaProspect = findJpaProspectById(prospectId);
         return Optional.ofNullable(jpaProspect.toProspect());
+    }
+
+    private JpaProspect findJpaProspectById(long prospectId) {
+        return entityManager.find(JpaProspect.class, prospectId);
     }
 
     @Override

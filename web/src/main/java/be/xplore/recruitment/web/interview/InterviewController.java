@@ -4,6 +4,8 @@ import be.xplore.recruitment.domain.interview.CancelInterview;
 import be.xplore.recruitment.domain.interview.CancelInterviewRequest;
 import be.xplore.recruitment.domain.interview.ReadInterview;
 import be.xplore.recruitment.domain.interview.ReadInterviewRequest;
+import be.xplore.recruitment.domain.interview.RescheduleInterview;
+import be.xplore.recruitment.domain.interview.RescheduleInterviewRequest;
 import be.xplore.recruitment.domain.interview.ScheduleInterview;
 import be.xplore.recruitment.domain.interview.ScheduleInterviewRequest;
 import be.xplore.recruitment.domain.interview.UpdateInterviewLocation;
@@ -34,6 +36,9 @@ public class InterviewController {
 
     @Autowired
     private CancelInterview cancelInterview;
+
+    @Autowired
+    private RescheduleInterview rescheduleInterview;
 
     @Autowired
     private UpdateInterviewLocation updateInterviewLocation;
@@ -73,6 +78,14 @@ public class InterviewController {
     public ResponseEntity<JsonInterview> cancelInterviewById(@PathVariable long interviewId) {
         JsonInterviewResponseModelPresenter presenter = new JsonInterviewResponseModelPresenter();
         cancelInterview.cancelInterview(new CancelInterviewRequest(interviewId), presenter);
+        return presenter.getResponseEntity();
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/reschedule")
+    public ResponseEntity<JsonInterview> rescheduleInterview(@RequestBody JsonRescheduleRequest body) {
+        JsonInterviewResponseModelPresenter presenter = new JsonInterviewResponseModelPresenter();
+        RescheduleInterviewRequest request = body.toRequest();
+        rescheduleInterview.reschedule(request, presenter);
         return presenter.getResponseEntity();
     }
 

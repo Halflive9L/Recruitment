@@ -112,7 +112,7 @@ public class ApplicantRepoJpa implements ApplicantRepository {
     private Attachment tryCreateAttachment(Attachment attachment) {
         try {
             attachment.setAttachmentName(fileManager.createFile(attachment.getInputStream(),
-                    "applicant", attachment.getAttachmentName()));
+                                                                "applicant", attachment.getAttachmentName()));
             return attachment;
         } catch (IOException e) {
             return null;

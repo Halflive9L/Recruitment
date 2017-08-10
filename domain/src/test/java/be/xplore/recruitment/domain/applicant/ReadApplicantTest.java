@@ -39,7 +39,7 @@ public class ReadApplicantTest {
 
     @Test
     public void testReadApplicantById() {
-        ReadApplicantRequest request = getRequestFromApplicant(Applicant.builder().withApplicantId(1).build());
+        ReadApplicantRequest request = getRequestFromApplicant(Applicant.builder().withId(1).build());
         final Applicant[] responseApplicant = new Applicant[1];
         useCase.readApplicantById(request, applicantResponseModel -> {
             responseApplicant[0] = getApplicantFromApplicantResponseModel(applicantResponseModel);
@@ -49,8 +49,17 @@ public class ReadApplicantTest {
 
     @Test(expected = NotFoundException.class)
     public void testReadApplicantById_IdDoesNotExist() {
-        ReadApplicantRequest request = getRequestFromApplicant(Applicant.builder().withApplicantId(500).build());
+        ReadApplicantRequest request = getRequestFromApplicant(Applicant.builder().withId(500).build());
         useCase.readApplicantById(request, applicantResponseModel -> {
+        });
+    }
+
+    @Test
+    public void testReadApplicantsByParam() {
+        ReadApplicantRequest request = getRequestFromApplicant(Applicant.builder().withFirstName("leeroy").build());
+        useCase.readApplicantsByParam(request, responseModel -> {
+           assertEquals(1, responseModel.size());
+           assertEquals(mockApplicants.get(1), getApplicantFromApplicantResponseModel(responseModel.get(0)));
         });
     }
 
@@ -81,7 +90,7 @@ public class ReadApplicantTest {
     @Ignore
     private Applicant getApplicantFromApplicantResponseModel(ApplicantResponseModel responseModel) {
         return Applicant.builder()
-                .withApplicantId(responseModel.getApplicantId())
+                .withId(responseModel.getApplicantId())
                 .withFirstName(responseModel.getFirstName())
                 .withLastName(responseModel.getLastName())
                 .withAddress(responseModel.getAddress())

@@ -12,13 +12,11 @@ import java.util.function.Consumer;
  */
 @Named
 public class CreateProspectUseCase implements CreateProspect {
-
     private final ProspectRepository repository;
 
     public CreateProspectUseCase(ProspectRepository repository) {
         this.repository = repository;
     }
-
 
     @Override
     public void createProspect(CreateProspectRequest request, Consumer<ProspectResponseModel> response)
