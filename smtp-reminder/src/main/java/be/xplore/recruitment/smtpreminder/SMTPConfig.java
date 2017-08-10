@@ -79,6 +79,7 @@ public class SMTPConfig {
         this.ssl = ssl;
     }
 
+    @SuppressWarnings("checkstyle:ExecutableStatementCount")
     public Properties toJavaMailProperties() {
         Properties props = new Properties();
         props.setProperty("mail.smtp.auth", "true");

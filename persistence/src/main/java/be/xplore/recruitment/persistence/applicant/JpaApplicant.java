@@ -136,15 +136,15 @@ public class JpaApplicant {
     }
 
     public static JpaApplicant fromApplicant(Applicant applicant) {
-        JpaApplicant jpaApplicant = new JpaApplicant();
-        jpaApplicant.setApplicantId(applicant.getApplicantId());
-        jpaApplicant.setFirstName(applicant.getFirstName());
-        jpaApplicant.setLastName(applicant.getLastName());
-        jpaApplicant.setEmail(applicant.getEmail());
-        jpaApplicant.setPhone(applicant.getPhone());
-        jpaApplicant.setDateOfBirth(applicant.getDateOfBirth());
-        jpaApplicant.setAddress(applicant.getAddress());
-        jpaApplicant.setEducation(applicant.getEducation());
-        return jpaApplicant;
+        return JpaApplicantBuilder.aJpaApplicant()
+                .withApplicantId(applicant.getApplicantId())
+                .withFirstName(applicant.getFirstName())
+                .withLastName(applicant.getLastName())
+                .withEmail(applicant.getEmail())
+                .withPhone(applicant.getPhone())
+                .withDateOfBirth(applicant.getDateOfBirth())
+                .withAddress(applicant.getAddress())
+                .withEducation(applicant.getEducation())
+                .build();
     }
 }

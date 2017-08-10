@@ -55,7 +55,6 @@ public class AttachmentRepoJpa implements AttachmentRepository {
             return Optional.empty();
         }
         tryDeleteAttachmentFromFileSystem(jpaAttachment);
-        entityManager.remove(jpaAttachment);
         return Optional.of(jpaAttachment.toAttachment());
     }
 
@@ -66,5 +65,6 @@ public class AttachmentRepoJpa implements AttachmentRepository {
         } catch (IOException e) {
             throw new CouldNotDeleteAttachmentException(e);
         }
+        entityManager.remove(jpaAttachment);
     }
 }

@@ -8,15 +8,18 @@
     <property name="charset" value="UTF-8"/>
     <property name="fileExtensions" value="java, properties, xml"/>
 
+    <module name="SuppressionFilter">
+        <property name="file" value="${suppressionFile}"/>
+    </module>
+    <module name="SuppressWarningsFilter" />
+
     <module name="FileTabCharacter">
         <property name="eachLine" value="true"/>
     </module>
-
     <module name="FileLength">
         <property name="fileExtensions" value="java"/>
         <property name="max" value="150"/>
     </module>
-
 
     <module name="TreeWalker">
         <module name="AvoidStarImport"/>
@@ -54,10 +57,10 @@
         <module name="EqualsHashCode"/>
         <module name="EmptyStatement"/>
 
-        <!--        <module name="ExecutableStatementCount">
-                    <property name="max" value="4"/>
-                    <property name="tokens" value="METHOD_DEF"/>
-                </module>-->
+<!--        <module name="ExecutableStatementCount">
+            <property name="max" value="4"/>
+            <property name="tokens" value="METHOD_DEF"/>
+        </module>-->
         <module name="MethodLength">
             <property name="countEmpty" value="false"/>
             <property name="max" value="30"/>
@@ -65,5 +68,6 @@
         <module name="MethodCount">
             <property name="maxTotal" value="25"/>
         </module>
+        <module name="SuppressWarningsHolder" />
     </module>
 </module>

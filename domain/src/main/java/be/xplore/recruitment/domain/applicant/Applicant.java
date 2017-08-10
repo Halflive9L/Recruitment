@@ -41,6 +41,10 @@ public class Applicant {
         if (!Validator.isNullOrEmpty(phone) && !Validator.isValidPhone(phone)) {
             throw new InvalidPhoneException();
         }
+        validateDateOfBirth();
+    }
+
+    private void validateDateOfBirth() {
         if (dateOfBirth != null && !Validator.isValidDate(dateOfBirth)) {
             throw new InvalidDateException();
         }
@@ -115,6 +119,7 @@ public class Applicant {
     }
 
     @Override
+    @SuppressWarnings("checkstyle:ExecutableStatementCount")
     public boolean equals(Object o) {
         if (this == o) {
             return true;

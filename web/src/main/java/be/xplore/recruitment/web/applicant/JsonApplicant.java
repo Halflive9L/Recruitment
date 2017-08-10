@@ -25,21 +25,21 @@ public class JsonApplicant {
     public JsonApplicant() {
     }
 
-    static JsonApplicant asJsonApplicant(ApplicantResponseModel a) {
-        JsonApplicant jsonApplicant = new JsonApplicant();
-        jsonApplicant.setFirstName(a.getFirstName());
-        jsonApplicant.setLastName(a.getLastName());
-        jsonApplicant.setAddress(a.getAddress());
-        jsonApplicant.setDateOfBirth(a.getDateOfBirth());
-        jsonApplicant.setEducation(a.getEducation());
-        jsonApplicant.setEmail(a.getEmail());
-        jsonApplicant.setPhone(a.getPhone());
-        jsonApplicant.setApplicantId(a.getApplicantId());
-        return jsonApplicant;
+    public static JsonApplicant asJsonApplicant(ApplicantResponseModel a) {
+        return JsonApplicantBuilder.aJsonApplicant()
+                .withFirstName(a.getFirstName())
+                .withLastName(a.getLastName())
+                .withAddress(a.getAddress())
+                .withDateOfBirth(a.getDateOfBirth())
+                .withEducation(a.getEducation())
+                .withEmail(a.getEmail())
+                .withPhone(a.getPhone())
+                .withApplicantId(a.getApplicantId())
+                .build();
     }
 
     @JsonProperty
-    long getApplicantId() {
+    public long getApplicantId() {
         return applicantId;
     }
 
@@ -122,26 +122,7 @@ public class JsonApplicant {
     }
 
     boolean isEmpty() {
-        return firstName == null &&
-                lastName == null &&
-                dateOfBirth == null &&
-                address == null &&
-                education == null &&
-                email == null &&
-                phone == null;
-    }
-
-    @Override
-    public String toString() {
-        return "JsonApplicant{" +
-                "applicantId=" + applicantId +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", dateOfBirth=" + dateOfBirth +
-                ", address='" + address + '\'' +
-                ", education='" + education + '\'' +
-                ", email='" + email + '\'' +
-                ", phone='" + phone + '\'' +
-                '}';
+        return firstName == null && lastName == null && dateOfBirth == null && address == null && education == null
+                && email == null && phone == null;
     }
 }

@@ -7,7 +7,7 @@ import be.xplore.recruitment.domain.interviewer.Interviewer;
 import javax.inject.Named;
 import javax.mail.Message;
 import javax.mail.MessagingException;
-import javax.mail.Transport;
+import javax.mail.Session;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
@@ -31,14 +31,22 @@ public class SMTPReminderSender implements ReminderSender {
     }
 
     private void sendMail(String email, String message) {
-         new SMTPTemplate().withTransport(config, (session, transport) -> {
+        new SMTPTemplate().withTransport(config, (session, transport) -> {
             InternetAddress[] recipient = InternetAddress.parse(email);
-            Message msg = new MimeMessage(session);
-            msg.setFrom(new InternetAddress(config.getEmail()));
-            msg.setSubject("Interview reminder");
-            msg.setText(message);
+            Message msg = getMessage(message, session);
             transport.sendMessage(msg, recipient);
         });
     }
 
+    private Message getMessage(String message, Session session) throws MessagingException {
+        Message msg = new MimeMessage(session);
+        setMessageContent(message, msg);
+        return msg;
+    }
+
+    private void setMessageContent(String message, Message msg) throws MessagingException {
+        msg.setFrom(new InternetAddress(config.getEmail()));
+        msg.setSubject("Interview reminder");
+        msg.setText(message);
+    }
 }

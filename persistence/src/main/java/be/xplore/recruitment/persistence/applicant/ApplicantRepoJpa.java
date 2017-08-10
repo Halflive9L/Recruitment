@@ -93,15 +93,20 @@ public class ApplicantRepoJpa implements ApplicantRepository {
     @Override
     public Optional<Attachment> addAttachment(long applicantId, Attachment attachment)
             throws NotFoundException {
+        JpaApplicant applicant = tryFindById(applicantId);
+        Optional<Attachment> createdAttachment = Optional.ofNullable(tryCreateAttachment(attachment));
+        createdAttachment.ifPresent(a -> a.setAttachmentId(registerAttachment(applicant, a.getAttachmentName())));
+        return createdAttachment;
+    }
+
+    private JpaApplicant tryFindById(long applicantId) {
         JpaApplicant applicant;
         try {
             applicant = findJpaApplicantById(applicantId);
         } catch (NoResultException e) {
             throw new NotFoundException("Applicant with ID: " + applicantId + " does not exist.");
         }
-        Optional<Attachment> createdAttachment = Optional.ofNullable(tryCreateAttachment(attachment));
-        createdAttachment.ifPresent(a -> a.setAttachmentId(registerAttachment(applicant, a.getAttachmentName())));
-        return createdAttachment;
+        return applicant;
     }
 
     private Attachment tryCreateAttachment(Attachment attachment) {
@@ -110,7 +115,6 @@ public class ApplicantRepoJpa implements ApplicantRepository {
                     "applicant", attachment.getAttachmentName()));
             return attachment;
         } catch (IOException e) {
-            e.printStackTrace();
             return null;
         }
     }

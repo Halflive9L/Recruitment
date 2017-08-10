@@ -23,8 +23,7 @@ public class ApplicantSpecification {
         CriteriaQuery<JpaApplicant> query = entityManager.getCriteriaBuilder().createQuery(JpaApplicant.class);
         Specification<JpaApplicant> spec = getFullSpecification();
         Root<JpaApplicant> root = applySpecification(spec, query);
-        query.select(root);
-        return query;
+        return query.select(root);
     }
 
     private Root<JpaApplicant> applySpecification(Specification<JpaApplicant> spec, CriteriaQuery<JpaApplicant> query) {

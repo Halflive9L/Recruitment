@@ -89,6 +89,7 @@ public class Prospect {
     }
 
     @Override
+    @SuppressWarnings("checkstyle:ExecutableStatementCount")
     public boolean equals(Object o) {
         if (this == o) {
             return true;

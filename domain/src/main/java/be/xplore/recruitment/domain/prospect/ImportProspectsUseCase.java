@@ -11,7 +11,6 @@ import javax.inject.Named;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -25,56 +24,58 @@ public class ImportProspectsUseCase implements ImportProspects {
 
     @Override
     public void importProspects(ImportProspectsRequest request, Consumer<ImportProspectsResponseModel> consumer) {
-        List<ImportProspectsFailure> failures = new ArrayList<>();
-        List<ProspectResponseModel> successes = new ArrayList<>();
-        CSVParser parsed;
-        ImportProspectsResponseModel response;
+        ImportProspectsResponseModel response = new ImportProspectsResponseModel();
+        tryProcessCsv(request, response);
+        consumer.accept(response);
+    }
+
+    private void tryProcessCsv(ImportProspectsRequest request, ImportProspectsResponseModel response) {
         try (Reader reader = new InputStreamReader(request.getStream())) {
-            parsed = CSVFormat.DEFAULT.parse(reader);
-            for (CSVRecord record : parsed) {
-                processRecord(successes, failures, record);
-            }
-            response = new ImportProspectsResponseModel(failures, successes);
-            consumer.accept(response);
+            processCsv(response, reader);
         } catch (IOException ex) {
             throw new ImportException();
         }
     }
 
-    private void processRecord(List<ProspectResponseModel> success, List<ImportProspectsFailure> fails, CSVRecord rec) {
+    private void processCsv(ImportProspectsResponseModel response, Reader reader)
+            throws IOException {
+        CSVParser parsed = CSVFormat.DEFAULT.parse(reader);
+        for (CSVRecord record : parsed) {
+            processRecord(response, record);
+        }
+    }
+
+    private void processRecord(ImportProspectsResponseModel response, CSVRecord rec) {
         CreateProspectRequest request = createRequest(rec);
+        tryCreateProspect(response, rec, request);
+    }
+
+    private void tryCreateProspect(ImportProspectsResponseModel response, CSVRecord rec,
+                                   CreateProspectRequest request) {
         try {
-            createProspect.createProspect(request, resp -> {
-                success.add(resp);
-            });
+            createProspect.createProspect(request, response.getProspects()::add);
         } catch (InvalidEmailException ex) {
-            fails.add(new ImportProspectsFailure("Invalid e-mail", formatRecord(rec)));
+            response.getFailed().add(new ImportProspectsFailure("Invalid e-mail", formatRecord(rec)));
         } catch (InvalidPhoneException ex) {
-            fails.add(new ImportProspectsFailure("Invalid phone number", formatRecord(rec)));
+            response.getFailed().add(new ImportProspectsFailure("Invalid phone number", formatRecord(rec)));
         }
     }
 
     private String formatRecord(CSVRecord record) {
         StringBuilder sb = new StringBuilder();
         record.forEach(col -> {
-            sb.append(col);
-            sb.append(",");
+            sb.append(col).append(",");
         });
         return sb.toString();
     }
 
     private CreateProspectRequest createRequest(CSVRecord record) {
-        String firstName = getOrNull(record, 0);
-        String lastName = getOrNull(record, 1);
-        String email = getOrNull(record, 2);
-        String phoneNr = getOrNull(record, 3);
-
-        CreateProspectRequest request = new CreateProspectRequest();
-        request.firstName = firstName;
-        request.lastName = lastName;
-        request.email = email;
-        request.phone = phoneNr;
-        return request;
+        return CreateProspectRequest.builder()
+                .withFirstName(getOrNull(record, 0))
+                .withLastName(getOrNull(record, 1))
+                .withPhone(getOrNull(record, 3))
+                .withEmail(getOrNull(record, 2))
+                .build();
     }
 
     private String getOrNull(CSVRecord record, int i) {

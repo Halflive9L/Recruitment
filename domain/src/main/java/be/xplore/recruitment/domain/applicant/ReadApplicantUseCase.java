@@ -34,8 +34,7 @@ public class ReadApplicantUseCase implements ReadApplicant {
         if (applicants.isEmpty()) {
             throw new NotFoundException();
         }
-        List<ApplicantResponseModel> responseList = getResponseListFromApplicantList(applicants);
-        response.accept(responseList);
+        response.accept(getResponseListFromApplicantList(applicants));
     }
 
     private List<ApplicantResponseModel> getResponseListFromApplicantList(List<Applicant> applicants) {
