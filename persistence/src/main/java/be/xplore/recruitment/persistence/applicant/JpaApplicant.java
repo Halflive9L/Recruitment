@@ -57,7 +57,7 @@ public class JpaApplicant {
     private String email;
     @Column
     private String phone;
-    @ManyToMany(targetEntity = JpaTag.class, fetch = FetchType.EAGER)
+    @ManyToMany(targetEntity = JpaTag.class, fetch = FetchType.LAZY)
     @JoinTable(name = "applicant_tag",
             joinColumns = @JoinColumn(name = "applicant_id", referencedColumnName = "applicantId"),
             inverseJoinColumns = @JoinColumn(name = "tag_id", referencedColumnName = "tagId"))

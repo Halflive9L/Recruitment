@@ -22,7 +22,7 @@ import static be.xplore.recruitment.persistence.tag.JpaTag.QUERY_FIND_BY_NAME;
 @Table(name = "Tag")
 @NamedQueries({
         @NamedQuery(name = QUERY_FIND_ALL, query = "SELECT t FROM JpaTag t"),
-        @NamedQuery(name = QUERY_FIND_BY_NAME, query = "SELECT t FROM JpaTag t WHERE t.tagName LIKE :tagName")
+        @NamedQuery(name = QUERY_FIND_BY_NAME, query = "SELECT t FROM JpaTag t WHERE t.tagName = :tagName")
 
 })
 public class JpaTag {

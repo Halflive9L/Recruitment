@@ -1,5 +1,7 @@
 package be.xplore.recruitment.domain.prospect;
 
+import be.xplore.recruitment.domain.tag.Tag;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -19,4 +21,6 @@ public interface ProspectRepository {
     Optional<Prospect> deleteProspect(long id);
 
     Optional<Prospect> updateProspect(Prospect prospect);
+
+    Tag addTagToProspect(long prospectId, Tag tag);
 }

@@ -7,6 +7,7 @@ import be.xplore.recruitment.domain.tag.Tag;
 import be.xplore.recruitment.domain.tag.TagRepository;
 
 import javax.inject.Named;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 /**
@@ -33,14 +34,14 @@ public class AddApplicantTagUseCase implements AddApplicantTag {
         acceptValidResponse(request, response);
     }
 
-    private Tag getTagFromRepo(String tagName) {
-        return tagRepository.findTagByName(tagName)
-                .orElse(tagRepository.createTag(tagName));
-    }
-
     private void acceptValidResponse(AddTagToEntityRequest request, Consumer<AddTagResponseModel> response) {
         Tag tag = getTagFromRepo(request.getTagName());
         tag = applicantRepository.addTagToApplicant(request.getEntityId(), tag);
         response.accept(new AddTagResponseModel(tag.getTagName()));
+    }
+
+    private Tag getTagFromRepo(String tagName) {
+        Optional<Tag> optional = tagRepository.findTagByName(tagName);
+        return optional.orElseGet(() -> tagRepository.createTag(tagName));
     }
 }

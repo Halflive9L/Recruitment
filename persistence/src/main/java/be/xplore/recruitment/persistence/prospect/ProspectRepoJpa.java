@@ -4,6 +4,8 @@ package be.xplore.recruitment.persistence.prospect;
 import be.xplore.recruitment.domain.exception.NotFoundException;
 import be.xplore.recruitment.domain.prospect.Prospect;
 import be.xplore.recruitment.domain.prospect.ProspectRepository;
+import be.xplore.recruitment.domain.tag.Tag;
+import be.xplore.recruitment.persistence.tag.JpaTag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Repository;
@@ -123,5 +125,12 @@ public class ProspectRepoJpa implements ProspectRepository {
                 .withEmail(prospect.getEmail())
                 .withPhone(prospect.getPhone())
                 .build();
+    }
+    @Override
+    public Tag addTagToProspect(long prospectId, Tag tag) {
+        JpaProspect prospect = findJpaProspectById(prospectId);
+        prospect.getTags().add(new JpaTag(tag.getTagId(), tag.getTagName()));
+        entityManager.merge(prospect);
+        return tag;
     }
 }

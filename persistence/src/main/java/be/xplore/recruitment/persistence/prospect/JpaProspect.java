@@ -54,7 +54,7 @@ public class JpaProspect {
     @Column
     private String phone;
 
-    @ManyToMany(targetEntity = JpaTag.class, fetch = FetchType.EAGER)
+    @ManyToMany(targetEntity = JpaTag.class, fetch = FetchType.LAZY)
     @JoinTable(name = "prospect_tag",
             joinColumns = @JoinColumn(name = "prospect_id", referencedColumnName = "prospectId"),
             inverseJoinColumns = @JoinColumn(name = "tag_id", referencedColumnName = "tagId"))
