@@ -16,6 +16,7 @@ import static be.xplore.recruitment.domain.util.Validator.isNullOrEmpty;
  * @author Stijn Schack
  * @since 7/27/2017
  */
+@SuppressWarnings("checkstyle:filelength")
 public class MockApplicantRepo implements ApplicantRepository {
     List<Applicant> mockApplicants = new ArrayList<>();
     List<Attachment> mockAttachments = new ArrayList<>(1);
@@ -157,6 +158,4 @@ public class MockApplicantRepo implements ApplicantRepository {
     public Tag addTagToApplicant(long applicantId, Tag tag) {
         return null;
     }
-
-
 }

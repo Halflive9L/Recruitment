@@ -1,6 +1,9 @@
 package be.xplore.recruitment.domain.applicant;
 
+import be.xplore.recruitment.domain.tag.Tag;
+
 import java.time.LocalDate;
+import java.util.Set;
 
 public final class ApplicantBuilder {
     private long applicantId;
@@ -11,6 +14,7 @@ public final class ApplicantBuilder {
     private String education;
     private String email;
     private String phone;
+    private Set<Tag> tags;
 
     private ApplicantBuilder() {
     }
@@ -56,6 +60,11 @@ public final class ApplicantBuilder {
 
     public ApplicantBuilder withPhone(String phone) {
         this.phone = phone;
+        return this;
+    }
+
+    public ApplicantBuilder withTags(Set<Tag> tags) {
+        this.tags = tags;
         return this;
     }
 

@@ -30,13 +30,17 @@ public class AddApplicantTagUseCase implements AddApplicantTag {
             response.accept(new AddTagResponseModel());
             return;
         }
-        Tag tag = getTagFromRepo(request.getTagName());
-        tag = applicantRepository.addTagToApplicant(request.getEntityId(), tag);
-        response.accept(new AddTagResponseModel(tag.getTagName()));
+        acceptValidResponse(request, response);
     }
 
     private Tag getTagFromRepo(String tagName) {
         return tagRepository.findTagByName(tagName)
                 .orElse(tagRepository.createTag(tagName));
+    }
+
+    private void acceptValidResponse(AddTagToEntityRequest request, Consumer<AddTagResponseModel> response) {
+        Tag tag = getTagFromRepo(request.getTagName());
+        tag = applicantRepository.addTagToApplicant(request.getEntityId(), tag);
+        response.accept(new AddTagResponseModel(tag.getTagName()));
     }
 }

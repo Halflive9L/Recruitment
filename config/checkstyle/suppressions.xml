@@ -8,4 +8,5 @@
     <suppress checks="ExecutableStatementCount" files=".*Builder\.java"/>
     <!-- Ignore tests for now -->
     <suppress checks="ExecutableStatementCount" files=".*[\\/]src[\\/]test[\\/]"/>
+    <suppress checks="FileLength" files=".*[\\/]src[\\/]test[\\/]"/>
 </suppressions>
