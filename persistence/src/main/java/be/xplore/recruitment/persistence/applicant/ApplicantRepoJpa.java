@@ -147,8 +147,4 @@ public class ApplicantRepoJpa implements ApplicantRepository {
         entityManager.merge(applicant);
         return tag;
     }
-
-    private JpaApplicant applicantToJpaApplicant(Applicant applicant) {
-        return null;
-    }
 }

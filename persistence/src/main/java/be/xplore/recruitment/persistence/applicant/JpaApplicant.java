@@ -157,7 +157,7 @@ public class JpaApplicant {
         return tags;
     }
 
-    public static JpaApplicant fromApplicant(Applicant applicant) {
+    static JpaApplicant fromApplicant(Applicant applicant) {
         return JpaApplicantBuilder.aJpaApplicant()
                 .withApplicantId(applicant.getApplicantId())
                 .withFirstName(applicant.getFirstName())

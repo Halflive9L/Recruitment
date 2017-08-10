@@ -12,7 +12,7 @@ public class JsonInterviewerResponsePresenter implements Consumer<InterviewerRes
     @Override
     public void accept(InterviewerResponseModel responseModel) {
         JsonInterviewer body = JsonInterviewer.asJsonInterviewer(responseModel);
-        this.responseEntity = new ResponseEntity<JsonInterviewer>(body, HttpStatus.OK);
+        this.responseEntity = new ResponseEntity<>(body, HttpStatus.OK);
     }
 
     public ResponseEntity<JsonInterviewer> getResponseEntity() {

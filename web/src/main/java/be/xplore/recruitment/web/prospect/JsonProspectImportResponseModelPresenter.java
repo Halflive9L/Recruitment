@@ -12,7 +12,7 @@ public class JsonProspectImportResponseModelPresenter implements Consumer<Import
     @Override
     public void accept(ImportProspectsResponseModel importProspectsResponseModel) {
         JsonImportResult body = JsonImportResult.asJsonImportResult(importProspectsResponseModel);
-        responseEntity = new ResponseEntity<JsonImportResult>(body, HttpStatus.OK);
+        responseEntity = new ResponseEntity<>(body, HttpStatus.OK);
     }
 
     public ResponseEntity<JsonImportResult> getResponseEntity() {

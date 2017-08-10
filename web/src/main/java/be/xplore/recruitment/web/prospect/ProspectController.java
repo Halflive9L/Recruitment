@@ -7,8 +7,6 @@ import be.xplore.recruitment.domain.prospect.CreateProspect;
 import be.xplore.recruitment.domain.prospect.CreateProspectRequest;
 import be.xplore.recruitment.domain.prospect.DeleteProspect;
 import be.xplore.recruitment.domain.prospect.DeleteProspectRequest;
-import be.xplore.recruitment.domain.prospect.ImportProspects;
-import be.xplore.recruitment.domain.prospect.ImportProspectsRequest;
 import be.xplore.recruitment.domain.prospect.ReadProspect;
 import be.xplore.recruitment.domain.prospect.ReadProspectRequest;
 import be.xplore.recruitment.domain.prospect.UpdateProspect;
@@ -22,11 +20,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.List;
 
 @CrossOrigin

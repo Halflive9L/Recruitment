@@ -1,7 +1,6 @@
 package be.xplore.recruitment.web.applicant;
 
 import be.xplore.recruitment.domain.applicant.CreateApplicant;
-import be.xplore.recruitment.domain.applicant.CreateApplicantRequest;
 import be.xplore.recruitment.domain.applicant.DeleteApplicant;
 import be.xplore.recruitment.domain.applicant.DeleteApplicantRequest;
 import be.xplore.recruitment.domain.applicant.ReadApplicant;

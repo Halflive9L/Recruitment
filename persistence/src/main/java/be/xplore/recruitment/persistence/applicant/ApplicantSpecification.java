@@ -10,7 +10,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.time.LocalDate;
 
-public class ApplicantSpecification {
+class ApplicantSpecification {
     private final JpaApplicant applicant;
     private final EntityManager entityManager;
 

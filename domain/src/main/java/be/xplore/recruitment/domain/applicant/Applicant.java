@@ -3,13 +3,10 @@ package be.xplore.recruitment.domain.applicant;
 import be.xplore.recruitment.domain.exception.InvalidDateException;
 import be.xplore.recruitment.domain.exception.InvalidEmailException;
 import be.xplore.recruitment.domain.exception.InvalidPhoneException;
-import be.xplore.recruitment.domain.tag.Tag;
 import be.xplore.recruitment.domain.util.Validator;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 public class Applicant {
     private long applicantId;
@@ -20,8 +17,6 @@ public class Applicant {
     private String education;
     private String email;
     private String phone;
-    private List<String> files;
-    private Set<Tag> tags;
 
     public Applicant() {
     }
@@ -117,10 +112,6 @@ public class Applicant {
         this.phone = phone;
     }
 
-    public List<String> getFiles() {
-        return files;
-    }
-
     @Override
     @SuppressWarnings("checkstyle:ExecutableStatementCount")
     public boolean equals(Object o) {
@@ -138,12 +129,11 @@ public class Applicant {
                 Objects.equals(address, applicant.address) &&
                 Objects.equals(education, applicant.education) &&
                 Objects.equals(email, applicant.email) &&
-                Objects.equals(phone, applicant.phone) &&
-                Objects.equals(files, applicant.files);
+                Objects.equals(phone, applicant.phone);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(applicantId, firstName, lastName, dateOfBirth, address, education, email, phone, files);
+        return Objects.hash(applicantId, firstName, lastName, dateOfBirth, address, education, email, phone);
     }
 }

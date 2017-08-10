@@ -36,7 +36,6 @@ import java.util.function.Consumer;
                 .withEducation(request.education)
                 .withEmail(request.email)
                 .withPhone(request.phone)
-                .withTags(request.tags)
                 .build();
     }
 }
