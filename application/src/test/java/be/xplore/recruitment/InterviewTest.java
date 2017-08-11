@@ -65,17 +65,13 @@ public class InterviewTest extends TestBase {
         ParameterizedTypeReference<List<JsonInterview>> typeRef =
                 new ParameterizedTypeReference<List<JsonInterview>>() {
                 };
-        List<JsonInterview> result = restTemplate
-                .exchange("/api/v1/interview/", HttpMethod.GET, null, typeRef)
-                .getBody();
-        return result;
+        return restTemplate.exchange("/api/v1/interview/", HttpMethod.GET, null, typeRef).getBody();
     }
 
     @Test
     @DatabaseSetup(value = "/interview/InterviewTest.testDataWithInterviews.xml")
     public void testReadInterviewById() {
-        JsonInterview interview = restTemplate.getForEntity("/api/v1/interview/1", JsonInterview.class)
-                .getBody();
+        JsonInterview interview = restTemplate.getForEntity("/api/v1/interview/1", JsonInterview.class).getBody();
         assertThat(interview.getInterviewId()).isEqualTo(1);
         assertThat(interview.getApplicantId()).isEqualTo(1);
         assertThat(interview.getInterviewerIds()).contains(1L, 3L);
@@ -95,7 +91,7 @@ public class InterviewTest extends TestBase {
         LocalDateTime time = LocalDateTime.now().plusDays(3);
         JSONObject obj = JSONObjectBuilder.aJsonObject()
                 .with("interviewId", 2)
-                .with("newScheduledTime", formatTime(time))
+                .with("newScheduledTime", time.toString())
                 .with("newLocation", "Veldkant 35A")
                 .build();
         JsonInterview result = postRequest("/api/v1/interview/reschedule", obj);
@@ -112,9 +108,7 @@ public class InterviewTest extends TestBase {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<String> httpEntity = new HttpEntity<>(obj.toJSONString(), headers);
-        return restTemplate
-                .postForEntity(url, httpEntity, JsonInterview.class)
-                .getBody();
+        return restTemplate.postForEntity(url, httpEntity, JsonInterview.class).getBody();
     }
 
     @Test
@@ -128,13 +122,21 @@ public class InterviewTest extends TestBase {
     @Test
     @DatabaseSetup(value = "/interview/InterviewTest.testRemind.xml")
     public void testRemindInterviewersMissingFeedback() throws Exception {
+        setupFeedbackReminderInterview();
+        remindInterviewersFeedback.remind();
+        verifyMailboxesHaveMessages("casandra.kleinveld@email.com", "jitte.slotboom@email.com");
+        verifyFeedbackReminderSent();
+    }
+
+    private void verifyFeedbackReminderSent() {
+        Interview interview = interviewRepository.findById(1).get();
+        assertThat(interview.isFeedbackReminderSent()).isTrue();
+    }
+
+    private void setupFeedbackReminderInterview() {
         Interview interview = interviewRepository.findById(1).get();
         interview.setScheduledTime(LocalDateTime.now().minusDays(3));
         interviewRepository.updateInterview(interview);
-        remindInterviewersFeedback.remind();
-        verifyMailboxesHaveMessages("casandra.kleinveld@email.com", "jitte.slotboom@email.com");
-        interview = interviewRepository.findById(1).get();
-        assertThat(interview.isFeedbackReminderSent()).isTrue();
     }
 
     private void executeRemindersAndVerify(Interview interview) throws Exception {
@@ -169,12 +171,8 @@ public class InterviewTest extends TestBase {
                 .with("interviewId", Long.toString(interviewId))
                 .with("applicantId", Long.toString(applicantId))
                 .withList("interviewerIds", interviewerIds)
-                .with("createdTime", formatTime(LocalDateTime.now()))
-                .with("scheduledTime", formatTime(LocalDateTime.now().plus(5, ChronoUnit.DAYS)))
+                .with("createdTime", LocalDateTime.now().toString())
+                .with("scheduledTime", LocalDateTime.now().plus(5, ChronoUnit.DAYS).toString())
                 .build();
-    }
-
-    private String formatTime(LocalDateTime time) {
-        return time.toString();
     }
 }

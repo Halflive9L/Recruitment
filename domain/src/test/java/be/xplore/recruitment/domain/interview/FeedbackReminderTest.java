@@ -23,6 +23,7 @@ public class FeedbackReminderTest {
     private long nextId;
     private RemindInterviewersFeedback useCase;
     private InterviewRepository repo;
+    private ReminderSender reminderSender;
     private List<Applicant> applicants = Arrays.asList(
             Applicant.builder()
                     .withApplicantId(1)
@@ -53,12 +54,12 @@ public class FeedbackReminderTest {
     @Before
     public void setup() {
         nextId = 1;
+        reminderSender = mock(ReminderSender.class);
     }
 
     @Test
     public void testDoesntSendTooEarly() {
-        ReminderSender sender = mock(ReminderSender.class);
-        useCase = setupUseCase(sender, interviewBuilder(12, applicants.get(0), interviewers)
+        useCase = setupUseCase(reminderSender, interviewBuilder(12, applicants.get(0), interviewers)
                 .withFeedbackReminderSent(false)
                 .build());
         useCase.remind();
@@ -73,39 +74,35 @@ public class FeedbackReminderTest {
 
     @Test
     public void testRemindsOnce() {
-        ReminderSender sender = mock(ReminderSender.class);
-        useCase = setupUseCase(sender, interviewBuilder(60, applicants.get(0), interviewers)
+        useCase = setupUseCase(reminderSender, interviewBuilder(60, applicants.get(0), interviewers)
                 .withFeedbackReminderSent(true)
                 .build());
         useCase.remind();
-        verify(sender, times(0)).remindInterviewer(any(), any(), any());
+        verify(reminderSender, times(0)).remindInterviewer(any(), any(), any());
     }
 
     @Test
     public void testOnlyRemindsInterviewers() {
-        ReminderSender sender = mock(ReminderSender.class);
-        useCase = setupUseCase(sender, interviewBuilder(60, applicants.get(0), interviewers)
+        useCase = setupUseCase(reminderSender, interviewBuilder(60, applicants.get(0), interviewers)
                 .withFeedbackReminderSent(false)
                 .build());
         useCase.remind();
-        verify(sender, times(0)).remindApplicant(any(), any(), any());
+        verify(reminderSender, times(0)).remindApplicant(any(), any(), any());
     }
 
     @Test
     public void testSendsReminder() {
-        ReminderSender sender = mock(ReminderSender.class);
-        useCase = setupUseCase(sender, interviewBuilder(60, applicants.get(0), interviewers)
+        useCase = setupUseCase(reminderSender, interviewBuilder(60, applicants.get(0), interviewers)
                 .withFeedbackReminderSent(false)
                 .build());
         useCase.remind();
-        verify(sender, times(interviewers.size())).remindInterviewer(any(), any(), any());
+        verify(reminderSender, times(interviewers.size())).remindInterviewer(any(), any(), any());
         assertReminderSent(1, true);
     }
 
     @Test
     public void testDontRemindCancelledInterviews() {
-         ReminderSender sender = mock(ReminderSender.class);
-        useCase = setupUseCase(sender, interviewBuilder(60, applicants.get(0), interviewers)
+        useCase = setupUseCase(reminderSender, interviewBuilder(60, applicants.get(0), interviewers)
                 .withFeedbackReminderSent(false)
                 .withCancelled(true)
                 .build());
