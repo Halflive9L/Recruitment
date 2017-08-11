@@ -68,7 +68,7 @@ public class ReminderTest {
                 interviewBuilder(100, applicants.get(0), interviewers).build()
         );
         useCase.checkReminders();
-        verify(sender, times(1)).remindApplicant(any(), any());
+        verify(sender, times(1)).remindApplicant(any(), any(), any());
     }
 
     @Test
@@ -101,8 +101,8 @@ public class ReminderTest {
     }
 
     private void verifyRemindersSent(ReminderSender sender, int applicantCount, int interviewerCount) {
-        verify(sender, times(applicantCount)).remindApplicant(any(), any());
-        verify(sender, times(interviewerCount)).remindInterviewer(any(), any());
+        verify(sender, times(applicantCount)).remindApplicant(any(), any(), any());
+        verify(sender, times(interviewerCount)).remindInterviewer(any(), any(), any());
     }
 
     @Test
@@ -123,7 +123,7 @@ public class ReminderTest {
         ReminderSender sender = mock(ReminderSender.class);
         useCase = setupUseCase(sender, interviewBuilder(12, applicants.get(0), interviewers).build());
         useCase.checkReminders();
-        verify(sender, times(1)).remindApplicant(any(), any());
+        verify(sender, times(1)).remindApplicant(any(), any(), any());
     }
 
     @Test
@@ -131,7 +131,7 @@ public class ReminderTest {
         ReminderSender sender = mock(ReminderSender.class);
         useCase = setupUseCase(sender, interviewBuilder(12, applicants.get(0), interviewers).build());
         useCase.checkReminders();
-        verify(sender, times(interviewers.size())).remindInterviewer(any(), any());
+        verify(sender, times(interviewers.size())).remindInterviewer(any(), any(), any());
     }
 
     private RemindParticipants setupUseCase(ReminderSender sender, Interview... interviews) {

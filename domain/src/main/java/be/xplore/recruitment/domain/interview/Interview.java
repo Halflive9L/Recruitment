@@ -14,6 +14,7 @@ public class Interview {
     private List<Interviewer> interviewers;
     private boolean cancelled;
     private String location;
+    private boolean feedbackReminderSent;
     private boolean preInterviewReminderSent;
 
     public Interview() {
@@ -61,6 +62,14 @@ public class Interview {
 
     public void setInterviewers(List<Interviewer> interviewers) {
         this.interviewers = interviewers;
+    }
+
+    public boolean isFeedbackReminderSent() {
+        return feedbackReminderSent;
+    }
+
+    public void setFeedbackReminderSent(boolean sent) {
+        this.feedbackReminderSent = sent;
     }
 
     public boolean isCancelled() {

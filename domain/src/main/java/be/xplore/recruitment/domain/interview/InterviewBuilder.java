@@ -14,6 +14,7 @@ public final class InterviewBuilder {
     private List<Interviewer> interviewers;
     private boolean cancelled;
     private String location;
+    private boolean feedbackReminderSent;
     private boolean preInterviewReminderSent;
 
     private InterviewBuilder() {
@@ -30,6 +31,11 @@ public final class InterviewBuilder {
 
     public InterviewBuilder withCreatedTime(LocalDateTime createdTime) {
         this.createdTime = createdTime;
+        return this;
+    }
+
+    public InterviewBuilder withFeedbackReminderSent(boolean sent) {
+        this.feedbackReminderSent = sent;
         return this;
     }
 
@@ -70,6 +76,7 @@ public final class InterviewBuilder {
         interview.setScheduledTime(scheduledTime);
         interview.setApplicant(applicant);
         interview.setInterviewers(interviewers);
+        interview.setFeedbackReminderSent(feedbackReminderSent);
         interview.setCancelled(cancelled);
         interview.setLocation(location);
         interview.setPreInterviewReminderSent(preInterviewReminderSent);

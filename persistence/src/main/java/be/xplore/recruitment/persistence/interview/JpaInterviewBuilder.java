@@ -2,6 +2,7 @@ package be.xplore.recruitment.persistence.interview;
 
 import be.xplore.recruitment.persistence.applicant.JpaApplicant;
 import be.xplore.recruitment.persistence.interviewer.JpaInterviewer;
+import be.xplore.recruitment.persistence.interviewer.JpaInterviewerBuilder;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -14,6 +15,7 @@ public final class JpaInterviewBuilder {
     private List<JpaInterviewer> interviewers;
     private boolean cancelled;
     private String location;
+    private boolean feedbackReminderSent;
     private boolean preInterviewReminderSent;
     private JpaInterview in;
 
@@ -29,6 +31,7 @@ public final class JpaInterviewBuilder {
         this.interviewers = interview.getInterviewers();
         this.cancelled = interview.isCancelled();
         this.location = interview.getLocation();
+        this.feedbackReminderSent = interview.isFeedbackReminderSent();
         this.preInterviewReminderSent = interview.isPreInterviewReminderSent();
     }
 
@@ -47,6 +50,11 @@ public final class JpaInterviewBuilder {
 
     public JpaInterviewBuilder withCreatedTime(LocalDateTime createdTime) {
         this.createdTime = createdTime;
+        return this;
+    }
+
+    public JpaInterviewBuilder withFeedbackReminderSent(boolean sent) {
+        this.feedbackReminderSent = sent;
         return this;
     }
 
@@ -95,6 +103,7 @@ public final class JpaInterviewBuilder {
         jpaInterview.setInterviewers(interviewers);
         jpaInterview.setCancelled(cancelled);
         jpaInterview.setLocation(location);
+        jpaInterview.setFeedbackReminderSent(feedbackReminderSent);
         jpaInterview.setPreInterviewReminderSent(preInterviewReminderSent);
         return jpaInterview;
     }

@@ -21,4 +21,6 @@ public interface InterviewRepository {
     Optional<Attachment> addAttachment(long interviewId, Attachment attachment);
 
     List<Interview> findInterviewsToRemind();
+
+    List<Interview> findInterviewsNeedingFeedback();
 }

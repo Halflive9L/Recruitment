@@ -2,6 +2,7 @@ package be.xplore.recruitment;
 
 import be.xplore.recruitment.domain.interview.Interview;
 import be.xplore.recruitment.domain.interview.InterviewRepository;
+import be.xplore.recruitment.domain.interview.RemindInterviewersFeedback;
 import be.xplore.recruitment.domain.interview.RemindParticipants;
 import be.xplore.recruitment.web.interview.JsonInterview;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
@@ -29,6 +30,8 @@ public class InterviewTest extends TestBase {
     private InterviewRepository interviewRepository;
     @Autowired
     private RemindParticipants remindParticipants;
+    @Autowired
+    private RemindInterviewersFeedback remindInterviewersFeedback;
 
     @Before
     public void setup() {
@@ -120,6 +123,18 @@ public class InterviewTest extends TestBase {
         Interview interview = interviewRepository.findById(1).get();
         interview.setScheduledTime(LocalDateTime.now().plusHours(12));
         executeRemindersAndVerify(interview);
+    }
+
+    @Test
+    @DatabaseSetup(value = "/interview/InterviewTest.testRemind.xml")
+    public void testRemindInterviewersMissingFeedback() throws Exception {
+        Interview interview = interviewRepository.findById(1).get();
+        interview.setScheduledTime(LocalDateTime.now().minusDays(3));
+        interviewRepository.updateInterview(interview);
+        remindInterviewersFeedback.remind();
+        verifyMailboxesHaveMessages("casandra.kleinveld@email.com", "jitte.slotboom@email.com");
+        interview = interviewRepository.findById(1).get();
+        assertThat(interview.isFeedbackReminderSent()).isTrue();
     }
 
     private void executeRemindersAndVerify(Interview interview) throws Exception {

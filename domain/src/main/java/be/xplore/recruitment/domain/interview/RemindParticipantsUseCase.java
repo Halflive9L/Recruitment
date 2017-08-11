@@ -30,8 +30,9 @@ public class RemindParticipantsUseCase implements RemindParticipants {
     }
 
     private void sendReminders(Interview interview) {
-        reminderSender.remindApplicant(interview.getApplicant(), getApplicantMessage(interview));
-        interview.getInterviewers().forEach(i -> reminderSender.remindInterviewer(i, getInterviewerMessage(interview)));
+        reminderSender.remindApplicant(interview.getApplicant(), "", getApplicantMessage(interview));
+        interview.getInterviewers().forEach(i ->
+                reminderSender.remindInterviewer(i, "", getInterviewerMessage(interview)));
     }
 
     private void flagInterviewReminded(Interview interview) {

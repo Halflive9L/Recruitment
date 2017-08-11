@@ -1,6 +1,8 @@
 package be.xplore.recruitment.domain.interview;
 
 import be.xplore.recruitment.domain.attachment.Attachment;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -76,6 +78,16 @@ public class MockInterviewRepo implements InterviewRepository {
             }
         }
         return Optional.empty();
+    }
+
+    @Override
+    public List<Interview> findInterviewsNeedingFeedback() {
+        LocalDateTime cutoff = LocalDateTime.now().minusDays(2);
+        return data.stream()
+                .filter(i -> !i.isCancelled())
+                .filter(i -> !i.isFeedbackReminderSent())
+                .filter(i -> i.getScheduledTime().isBefore(cutoff))
+                .collect(Collectors.toList());
     }
 
     private void addInterviewAttachment(Attachment attachment) {

@@ -20,13 +20,13 @@ public class SMTPReminderSender implements ReminderSender {
     }
 
     @Override
-    public void remindApplicant(Applicant applicant, String message) {
+    public void remindApplicant(Applicant applicant, String subject, String message) {
         sendMail(applicant.getEmail(), message);
     }
 
 
     @Override
-    public void remindInterviewer(Interviewer interviewer, String message) {
+    public void remindInterviewer(Interviewer interviewer, String subject, String message) {
         sendMail(interviewer.getEmail(), message);
     }
 

@@ -28,6 +28,8 @@ public class InterviewRepoJpa implements InterviewRepository {
     private static final String FIND_ALL_QUERY = "SELECT i FROM JpaInterview i";
     private static final String FIND_REMIND_INTERVIEWS_QUERY = "SELECT i FROM JpaInterview i WHERE " +
             "i.preInterviewReminderSent = false AND i.cancelled = false AND :reminderCutoff > i.scheduledTime";
+    private static final String FIND_INTERVIEWS_NEED_FEEDBACK_QUERY = "SELECT i FROM JpaInterview i WHERE" +
+            "i.cancelled = FALSE AND i.feedbackReminderSent = false AND :reminderCutoff > i.scheduledTime";
     private EntityManager entityManager;
     private FileManager fileManager;
 
@@ -83,9 +85,16 @@ public class InterviewRepoJpa implements InterviewRepository {
         return Optional.ofNullable(jpaInterview).map(i -> this.updateJpaInterview(interview, i).toInterview());
     }
 
+    @Override
+    public List<Interview> findInterviewsNeedingFeedback() {
+        TypedQuery<JpaInterview> query = entityManager.createQuery(FIND_REMIND_INTERVIEWS_QUERY, JpaInterview.class);
+        query.setParameter("reminderCutoff", LocalDateTime.now().minusDays(2));
+        return query.getResultList().stream().map(JpaInterview::toInterview).collect(Collectors.toList());
+    }
+
     @SuppressWarnings("checkstyle:ExecutableStatementCount")
     private JpaInterview updateJpaInterview(Interview interview, JpaInterview jpaInterview) {
-        JpaInterview e =  JpaInterviewBuilder.aJpaInterview(jpaInterview)
+        JpaInterview e = JpaInterviewBuilder.aJpaInterview(jpaInterview)
                 .withCreatedTime(interview.getCreatedTime())
                 .withInterviewers(interview.getInterviewers().stream()
                         .map(i -> entityManager.find(JpaInterviewer.class, i.getInterviewerId()))
@@ -93,6 +102,7 @@ public class InterviewRepoJpa implements InterviewRepository {
                 .withApplicant(entityManager.find(JpaApplicant.class, interview.getApplicant().getApplicantId()))
                 .withScheduledTime(interview.getScheduledTime())
                 .withLocation(interview.getLocation())
+                .withFeedbackReminderSent(interview.isFeedbackReminderSent())
                 .withCancelled(interview.isCancelled())
                 .withPreInterviewReminderSent(interview.isPreInterviewReminderSent()).build();
         entityManager.persist(e);

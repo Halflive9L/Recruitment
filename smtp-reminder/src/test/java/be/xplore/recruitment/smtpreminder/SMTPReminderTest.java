@@ -42,7 +42,7 @@ public class SMTPReminderTest {
                 .withLastName("Billiet")
                 .withEmail("maarten@email.mock")
                 .build();
-        sender.remindApplicant(applicant, "test message");
+        sender.remindApplicant(applicant, "","test message");
         validateResult();
     }
 

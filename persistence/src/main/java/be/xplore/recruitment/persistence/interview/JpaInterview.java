@@ -50,6 +50,9 @@ public class JpaInterview {
     private String location;
 
     @Column
+    private boolean feedbackReminderSent;
+
+    @Column
     private boolean preInterviewReminderSent;
 
     public JpaInterview() {
@@ -103,6 +106,14 @@ public class JpaInterview {
         this.cancelled = cancelled;
     }
 
+    public boolean isFeedbackReminderSent() {
+        return feedbackReminderSent;
+    }
+
+    public void setFeedbackReminderSent(boolean sent) {
+        this.feedbackReminderSent = sent;
+    }
+
     public String getLocation() {
         return location;
     }
@@ -125,6 +136,7 @@ public class JpaInterview {
                 .withInterviewId(getInterviewId())
                 .withScheduledTime(getScheduledTime())
                 .withCreatedTime(getCreatedTime())
+                .withFeedbackReminderSent(isFeedbackReminderSent())
                 .withInterviewers(getInterviewers().stream()
                         .map(JpaInterviewer::toInterviewer)
                         .collect(Collectors.toList()))
