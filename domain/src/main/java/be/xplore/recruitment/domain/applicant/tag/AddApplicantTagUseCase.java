@@ -2,14 +2,18 @@ package be.xplore.recruitment.domain.applicant.tag;
 
 import be.xplore.recruitment.domain.applicant.ApplicantRepository;
 import be.xplore.recruitment.domain.exception.EntityAlreadyHasTagException;
+import be.xplore.recruitment.domain.tag.AddAllTagsToEntityRequest;
 import be.xplore.recruitment.domain.tag.AddTagResponseModel;
 import be.xplore.recruitment.domain.tag.AddTagToEntityRequest;
 import be.xplore.recruitment.domain.tag.Tag;
 import be.xplore.recruitment.domain.tag.TagRepository;
 
 import javax.inject.Named;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 /**
  * @author Stijn Schack
@@ -28,8 +32,8 @@ public class AddApplicantTagUseCase implements AddApplicantTag {
 
     @Override
     public void addApplicantTag(AddTagToEntityRequest request, Consumer<AddTagResponseModel> response) {
-        if (!applicantRepository.findApplicantById(request.getEntityId()).isPresent()) {
-            response.accept(new AddTagResponseModel(null, false));
+        if (!doesApplicantExist(request.getEntityId())) {
+            response.accept(null);
             return;
         }
         acceptValidResponse(request, response);
@@ -40,11 +44,6 @@ public class AddApplicantTagUseCase implements AddApplicantTag {
         response.accept(getResponseModel(request.getEntityId(), tag));
     }
 
-    private Tag getTagFromRepo(String tagName) {
-        Optional<Tag> optional = tagRepository.findTagByName(tagName);
-        return optional.orElseGet(() -> tagRepository.createTag(tagName));
-    }
-
     private AddTagResponseModel getResponseModel(long applicantId, Tag tag) {
         try {
             applicantRepository.addTagToApplicant(applicantId, tag);
@@ -52,5 +51,31 @@ public class AddApplicantTagUseCase implements AddApplicantTag {
         } catch (EntityAlreadyHasTagException e) {
             return new AddTagResponseModel(e.getMessage(), true);
         }
+    }
+
+    @Override
+    public void addAllTags(AddAllTagsToEntityRequest request, Consumer<List<AddTagResponseModel>> response) {
+        if (!doesApplicantExist(request.getEntityId())) {
+            response.accept(null);
+            return;
+        }
+        acceptValidResponseList(request, response);
+    }
+
+    private void acceptValidResponseList(AddAllTagsToEntityRequest request,
+                                         Consumer<List<AddTagResponseModel>> response) {
+        Set<Tag> tags = request.getTagNames().stream().map(this::getTagFromRepo).collect(Collectors.toSet());
+        tags = applicantRepository.addAllTagsToApplicant(request.getEntityId(), tags);
+        response.accept(tags.stream().map(tag -> new AddTagResponseModel(tag.getTagName(), false))
+                                .collect(Collectors.toList()));
+    }
+
+    private boolean doesApplicantExist(long applicantId) {
+        return applicantRepository.findApplicantById(applicantId).isPresent();
+    }
+
+    private Tag getTagFromRepo(String tagName) {
+        Optional<Tag> optional = tagRepository.findTagByName(tagName);
+        return optional.orElseGet(() -> tagRepository.createTag(tagName));
     }
 }

@@ -7,6 +7,7 @@ import be.xplore.recruitment.domain.tag.Tag;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * @author Stijn Schack
@@ -31,4 +32,6 @@ public interface ApplicantRepository {
     List<Attachment> findAllAttachmentsForApplicant(long applicantId);
 
     Tag addTagToApplicant(long applicantId, Tag tag) throws EntityAlreadyHasTagException;
+
+    Set<Tag> addAllTagsToApplicant(long applicantId, Set<Tag> tags);
 }

@@ -15,7 +15,7 @@ public class AddProspectTagPresenter implements Consumer<AddTagResponseModel> {
 
     @Override
     public void accept(AddTagResponseModel responseModel) {
-        if (responseModel.getTagName() == null) {
+        if (responseModel == null) {
             responseEntity = new ResponseEntity<>("Prospect does not exist", HttpStatus.NOT_FOUND);
         } else {
             responseEntity = responseEntityCheckRedundancy(responseModel);

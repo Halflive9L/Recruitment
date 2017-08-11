@@ -60,10 +60,8 @@ public class JpaApplicant {
     private String phone;
     @ManyToMany(targetEntity = JpaTag.class, fetch = FetchType.LAZY)
     @JoinTable(name = "applicant_tag",
-            joinColumns = @JoinColumn(name = "applicant_id", referencedColumnName = "applicantId", updatable = false,
-            insertable = false),
-            inverseJoinColumns = @JoinColumn(name = "tag_id", referencedColumnName = "tagId", updatable = false,
-            insertable = false))
+            joinColumns = @JoinColumn(name = "applicant_id", referencedColumnName = "applicantId"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id", referencedColumnName = "tagId"))
     private Set<JpaTag> tags;
     @OneToMany(mappedBy = "applicant")
     private Set<JpaAttachment> attachments;

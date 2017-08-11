@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static be.xplore.recruitment.domain.util.Validator.isNullOrEmpty;
 
@@ -156,6 +157,11 @@ public class MockApplicantRepo implements ApplicantRepository {
 
     @Override
     public Tag addTagToApplicant(long applicantId, Tag tag) {
+        return null;
+    }
+
+    @Override
+    public Set<Tag> addAllTagsToApplicant(long applicantId, Set<Tag> tags) {
         return null;
     }
 }

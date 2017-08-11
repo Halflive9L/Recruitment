@@ -88,7 +88,7 @@ public class ApplicantRepoJpa implements ApplicantRepository {
         }
     }
 
-    private void copyTags(long copyFromId, JpaApplicant copyTo) throws NoResultException{
+    private void copyTags(long copyFromId, JpaApplicant copyTo) throws NoResultException {
         JpaApplicant original = findJpaApplicantById(copyFromId);
         copyTo.setTags(original.getTags());
     }
@@ -163,5 +163,14 @@ public class ApplicantRepoJpa implements ApplicantRepository {
         if (!applicant.getTags().add(new JpaTag(tag.getTagId(), tag.getTagName()))) {
             throw new EntityAlreadyHasTagException(Applicant.class, tag);
         }
+    }
+
+    @Override
+    public Set<Tag> addAllTagsToApplicant(long applicantId, Set<Tag> tags)
+            throws NoResultException {
+        JpaApplicant applicant = findJpaApplicantById(applicantId);
+        applicant.getTags().addAll(tags.stream().map(JpaTag::fromTag).collect(Collectors.toSet()));
+        entityManager.merge(applicant);
+        return tags;
     }
 }

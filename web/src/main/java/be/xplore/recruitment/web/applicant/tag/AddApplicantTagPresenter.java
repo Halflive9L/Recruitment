@@ -15,7 +15,7 @@ public class AddApplicantTagPresenter implements Consumer<AddTagResponseModel> {
 
     @Override
     public void accept(AddTagResponseModel responseModel) {
-        if (responseModel.getTagName() == null) {
+        if (responseModel == null) {
             responseEntity = new ResponseEntity<>("Applicant does not exist", HttpStatus.NOT_FOUND);
         } else {
             responseEntity = responseEntityCheckRedundancy(responseModel);

@@ -1,8 +1,10 @@
 package be.xplore.recruitment.domain.applicant.tag;
 
+import be.xplore.recruitment.domain.tag.AddAllTagsToEntityRequest;
 import be.xplore.recruitment.domain.tag.AddTagResponseModel;
 import be.xplore.recruitment.domain.tag.AddTagToEntityRequest;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 /**
@@ -11,4 +13,5 @@ import java.util.function.Consumer;
  */
 public interface AddApplicantTag {
     void addApplicantTag(AddTagToEntityRequest request, Consumer<AddTagResponseModel> response);
+    void addAllTags(AddAllTagsToEntityRequest request, Consumer<List<AddTagResponseModel>> response);
 }
