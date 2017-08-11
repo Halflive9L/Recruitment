@@ -42,10 +42,9 @@ public class ReadProspectTest {
 
     @Test
     public void testReadProspectById() {
-        ReadProspectRequest request = getRequestFromProspect(Prospect.builder().withProspectId(1).build());
         final Prospect[] responseProspect = new Prospect[1];
-        useCase.readProspectById(request, prospectResponseModel -> {
-            responseProspect[0] = getProspectFromProspectResponseModel(prospectResponseModel);
+        useCase.readProspectById(getRequestFromProspect(Prospect.builder().withProspectId(1).build()), prm -> {
+            responseProspect[0] = getProspectFromProspectResponseModel(prm);
         });
         assertEquals(responseProspect[0], mockProspects.get(0));
     }
@@ -68,13 +67,13 @@ public class ReadProspectTest {
 
     @Ignore
     private ReadProspectRequest getRequestFromProspect(Prospect prospect) {
-        ReadProspectRequest request = new ReadProspectRequest();
-        request.prospectId = prospect.getProspectId();
-        request.firstName = prospect.getFirstName();
-        request.lastName = prospect.getLastName();
-        request.email = prospect.getEmail();
-        request.phone = prospect.getPhone();
-        return request;
+        return ReadProspectRequestBuilder.aReadProspectRequest()
+                .withProspectId(prospect.getProspectId())
+                .withFirstName(prospect.getFirstName())
+                .withLastName(prospect.getLastName())
+                .withEmail(prospect.getEmail())
+                .withPhone(prospect.getPhone())
+                .build();
     }
 
     @Ignore
@@ -83,7 +82,6 @@ public class ReadProspectTest {
         for (ProspectResponseModel responseModel : responseModels) {
             prospects.add(getProspectFromProspectResponseModel(responseModel));
         }
-
         return prospects;
     }
 

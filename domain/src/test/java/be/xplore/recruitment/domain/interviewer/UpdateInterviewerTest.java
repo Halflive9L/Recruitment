@@ -37,14 +37,21 @@ public class UpdateInterviewerTest {
                 .withEmail("lies.achten@email.com")
                 .build();
         useCase.updateInterviewer(request, response -> {
-            assertThat(response.getFirstName(), is(request.getFirstName()));
-            assertThat(response.getLastName(), is(request.getLastName()));
-            assertThat(response.getInterviewerId(), is(request.getInterviewerId()));
-
-            Interviewer persisted = repository.findById(1).get();
-            assertThat(persisted.getFirstName(), is(response.getFirstName()));
-            assertThat(persisted.getLastName(), is(response.getLastName()));
+            assertResponseMatchesRequest(request, response);
+            assertInterviewerPersisted(response);
         });
+    }
+
+    private void assertResponseMatchesRequest(UpdateInterviewerRequest request, InterviewerResponseModel response) {
+        assertThat(response.getFirstName(), is(request.getFirstName()));
+        assertThat(response.getLastName(), is(request.getLastName()));
+        assertThat(response.getInterviewerId(), is(request.getInterviewerId()));
+    }
+
+    private void assertInterviewerPersisted(InterviewerResponseModel response) {
+        Interviewer persisted = repository.findById(1).get();
+        assertThat(persisted.getFirstName(), is(response.getFirstName()));
+        assertThat(persisted.getLastName(), is(response.getLastName()));
     }
 
     @Test(expected = NotFoundException.class)

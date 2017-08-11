@@ -46,6 +46,7 @@ public class MockInterviewRepo implements InterviewRepository {
     }
 
     @Override
+    @SuppressWarnings("checkstyle:ExecutableStatementCount")
     public Optional<Interview> updateInterview(Interview interview) {
         return data.stream()
                 .filter(i -> i.getInterviewId() == interview.getInterviewId())
@@ -70,13 +71,18 @@ public class MockInterviewRepo implements InterviewRepository {
     public Optional<Attachment> addAttachment(long interviewId, Attachment attachment) {
         for (Interview i : data) {
             if (i.getInterviewId() == interviewId) {
-                attachment.setAttachmentId(attachments.size() == 0 ? 1 : attachments.size());
-                attachments.add(attachment);
+                addInterviewAttachment(attachment);
                 return Optional.of(attachment);
             }
         }
         return Optional.empty();
     }
+
+    private void addInterviewAttachment(Attachment attachment) {
+        attachment.setAttachmentId(attachments.size() == 0 ? 1 : attachments.size());
+        attachments.add(attachment);
+    }
+
     public List<Attachment> getAttachments() {
         return attachments;
     }

@@ -65,12 +65,20 @@ public class RescheduleInterviewTest {
                 .withInterviewId(1)
                 .withNewScheduledTime(newScheduledTime)
                 .build();
-        useCase.reschedule(request, response -> {
-            assertThat(response.getInterviewId(), is(1L));
-            assertThat(response.getScheduledTime(), is(newScheduledTime));
-            assertThat(response.getLocation(), is("Old Location"));
-            assertThat(response.getApplicantId(), is(1L));
-        });
+        useCase.reschedule(request, response -> verifyResponse(response, InterviewResponseModelBuilder
+                .anInterviewResponseModel()
+                .withInterviewId(1L)
+                .withScheduledTime(newScheduledTime)
+                .withLocation("Old Location")
+                .withApplicantId(1L)
+                .build()));
+    }
+
+    private void verifyResponse(InterviewResponseModel response, InterviewResponseModel expected) {
+        assertThat(response.getInterviewId(), is(expected.getInterviewId()));
+        assertThat(response.getScheduledTime(), is(expected.getScheduledTime()));
+        assertThat(response.getLocation(), is(expected.getLocation()));
+        assertThat(response.getApplicantId(), is(expected.getApplicantId()));
     }
 
     @Test
@@ -80,12 +88,12 @@ public class RescheduleInterviewTest {
                 .withInterviewId(1)
                 .withNewLocation("New Location")
                 .build();
-        useCase.reschedule(request, response -> {
-            assertThat(response.getInterviewId(), is(1L));
-            assertThat(response.getScheduledTime(), is(scheduledTime));
-            assertThat(response.getLocation(), is("New Location"));
-            assertThat(response.getApplicantId(), is(1L));
-        });
+        useCase.reschedule(request, response -> InterviewResponseModelBuilder.anInterviewResponseModel()
+                .withInterviewId(1L)
+                .withScheduledTime(scheduledTime)
+                .withLocation("New Location")
+                .withApplicantId(1L)
+                .build());
     }
 
     @Test
@@ -96,12 +104,12 @@ public class RescheduleInterviewTest {
                 .withNewLocation("New Location")
                 .withNewScheduledTime(newScheduledTime)
                 .build();
-        useCase.reschedule(request, response -> {
-            assertThat(response.getInterviewId(), is(1L));
-            assertThat(response.getLocation(), is("New Location"));
-            assertThat(response.getScheduledTime(), is(newScheduledTime));
-            assertThat(response.getApplicantId(), is(1L));
-        });
+        useCase.reschedule(request, response -> InterviewResponseModelBuilder.anInterviewResponseModel()
+                .withInterviewId(1L)
+                .withLocation("New Location")
+                .withScheduledTime(newScheduledTime)
+                .withApplicantId(1L)
+                .build());
     }
 
     @Test(expected = InvalidSchedulingException.class)
@@ -109,6 +117,7 @@ public class RescheduleInterviewTest {
         RescheduleInterviewRequest request = RescheduleInterviewRequest.builder()
                 .withInterviewId(1)
                 .build();
-        useCase.reschedule(request, response -> {});
+        useCase.reschedule(request, response -> {
+        });
     }
 }

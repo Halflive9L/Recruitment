@@ -47,15 +47,16 @@ public class UpdateApplicantTest {
 
     @Ignore
     private UpdateApplicantRequest getRequestFromApplicant(Applicant applicant) {
-        UpdateApplicantRequest request = new UpdateApplicantRequest(applicant.getApplicantId());
-        request.address = applicant.getAddress();
-        request.dateOfBirth = applicant.getDateOfBirth();
-        request.education = applicant.getEducation();
-        request.firstName = applicant.getFirstName();
-        request.lastName = applicant.getLastName();
-        request.email = applicant.getEmail();
-        request.phone = applicant.getPhone();
-        return request;
+        return UpdateApplicantRequestBuilder.anUpdateApplicantRequest()
+                .withApplicantId(applicant.getApplicantId())
+                .withAddress(applicant.getAddress())
+                .withDateOfBirth(applicant.getDateOfBirth())
+                .withEducation(applicant.getEducation())
+                .withFirstName(applicant.getFirstName())
+                .withLastName(applicant.getLastName())
+                .withEmail(applicant.getEmail())
+                .withPhone(applicant.getPhone())
+                .build();
     }
 
     @Ignore

@@ -39,10 +39,9 @@ public class ReadApplicantTest {
 
     @Test
     public void testReadApplicantById() {
-        ReadApplicantRequest request = getRequestFromApplicant(Applicant.builder().withApplicantId(1).build());
         final Applicant[] responseApplicant = new Applicant[1];
-        useCase.readApplicantById(request, applicantResponseModel -> {
-            responseApplicant[0] = getApplicantFromApplicantResponseModel(applicantResponseModel);
+        useCase.readApplicantById(getRequestFromApplicant(Applicant.builder().withApplicantId(1).build()), resp -> {
+            responseApplicant[0] = getApplicantFromApplicantResponseModel(resp);
         });
         assertEquals(responseApplicant[0], mockApplicants.get(0));
     }
@@ -65,16 +64,16 @@ public class ReadApplicantTest {
 
     @Ignore
     private ReadApplicantRequest getRequestFromApplicant(Applicant applicant) {
-        ReadApplicantRequest request = new ReadApplicantRequest();
-        request.applicantId = applicant.getApplicantId();
-        request.address = applicant.getAddress();
-        request.dateOfBirth = applicant.getDateOfBirth();
-        request.education = applicant.getEducation();
-        request.firstName = applicant.getFirstName();
-        request.lastName = applicant.getLastName();
-        request.email = applicant.getEmail();
-        request.phone = applicant.getPhone();
-        return request;
+        return ReadApplicantRequestBuilder.aReadApplicantRequest()
+                .withApplicantId(applicant.getApplicantId())
+                .withAddress(applicant.getAddress())
+                .withDateOfBirth(applicant.getDateOfBirth())
+                .withEducation(applicant.getEducation())
+                .withFirstName(applicant.getFirstName())
+                .withLastName(applicant.getLastName())
+                .withEmail(applicant.getEmail())
+                .withPhone(applicant.getPhone())
+                .build();
     }
 
     @Ignore
@@ -83,7 +82,6 @@ public class ReadApplicantTest {
         for (ApplicantResponseModel responseModel : responseModels) {
             applicants.add(getApplicantFromApplicantResponseModel(responseModel));
         }
-
         return applicants;
     }
 

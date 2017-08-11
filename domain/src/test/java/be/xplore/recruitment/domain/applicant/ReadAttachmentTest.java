@@ -30,11 +30,15 @@ public class ReadAttachmentTest {
     public void testFindAllAttachments() {
         ListAllAttachmentsForApplicantRequest request = new ListAllAttachmentsForApplicantRequest(1);
         List<Attachment> attachments = new ArrayList<>();
+        listAttachments(request, attachments);
+        assertEquals(2, attachments.size());
+    }
+
+    private void listAttachments(ListAllAttachmentsForApplicantRequest request, List<Attachment> attachments) {
         useCase.listAllAttachmentsForApplicant(request,
                 applicantAttachmentResponseModels -> {
                     applicantAttachmentResponseModels.forEach(applicantAttachmentResponseModel ->
                             attachments.add(applicantAttachmentResponseModel.getAttachment()));
                 });
-        assertEquals(2, attachments.size());
     }
 }
