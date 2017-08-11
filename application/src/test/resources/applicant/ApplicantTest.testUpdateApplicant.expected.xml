@@ -10,6 +10,8 @@
                email="lander.tuyteleers@example.com" phone="+32458621475"
                address="Kontich" education="college"/>
     <!-- Nodig om FK constraint violation te voorkomen -->
+    <tag/>
+    <applicant_tag/>
     <interview/>
     <interview_interviewers/>
 </dataset>

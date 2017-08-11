@@ -100,17 +100,18 @@ public class ProspectRepoJpa implements ProspectRepository {
 
     @Override
     public Optional<Prospect> updateProspect(Prospect prospect) {
-        JpaProspect jpaProspect = prospectToJpaProspect(prospect);
-        prospect = tryMergeProspect(jpaProspect);
-        return Optional.ofNullable(prospect);
+        JpaProspect jpaProspect = JpaProspect.fromProspect(prospect);
+        try {
+            copyTags(prospect.getProspectId(), jpaProspect);
+            return Optional.of(entityManager.merge(jpaProspect).toProspect());
+        } catch (IllegalArgumentException | NoResultException e) {
+            return Optional.empty();
+        }
     }
 
-    private Prospect tryMergeProspect(JpaProspect jpaProspect) {
-        try {
-            return entityManager.merge(jpaProspect).toProspect();
-        } catch (IllegalArgumentException e) {
-            return null;
-        }
+    private void copyTags(long copyFromId, JpaProspect copyTo) throws NoResultException{
+        JpaProspect original = findJpaProspectById(copyFromId);
+        copyTo.setTags(original.getTags());
     }
 
     @Override

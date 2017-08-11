@@ -51,7 +51,7 @@ import java.util.stream.Collectors;
         request.phone = this.getPhone();
     }
 
-    public UpdateProspectRequest toUpdateRequest() {
+    public UpdateProspectRequest toUpdateRequest(long prospectId) {
         UpdateProspectRequest request = new UpdateProspectRequest(prospectId);
         setUpdateRequestProperties(request);
         return request;

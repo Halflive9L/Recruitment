@@ -77,10 +77,16 @@ public class ApplicantRepoJpa implements ApplicantRepository {
     public Optional<Applicant> updateApplicant(Applicant applicant) {
         JpaApplicant jpaApplicant = JpaApplicant.fromApplicant(applicant);
         try {
+            copyTags(applicant.getApplicantId(), jpaApplicant);
             return Optional.of(entityManager.merge(jpaApplicant).toApplicant());
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException | NoResultException e) {
             return Optional.empty();
         }
+    }
+
+    private void copyTags(long copyFromId, JpaApplicant copyTo) throws NoResultException{
+        JpaApplicant original = findJpaApplicantById(copyFromId);
+        copyTo.setTags(original.getTags());
     }
 
     @Override

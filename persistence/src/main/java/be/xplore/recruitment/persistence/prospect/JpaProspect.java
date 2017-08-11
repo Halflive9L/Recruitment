@@ -123,4 +123,14 @@ public class JpaProspect {
     public void setTags(Set<JpaTag> tags) {
         this.tags = tags;
     }
+    static JpaProspect fromProspect(Prospect prospect) {
+        return JpaProspectBuilder.aJpaProspect()
+                .withProspectId(prospect.getProspectId())
+                .withFirstName(prospect.getFirstName())
+                .withLastName(prospect.getLastName())
+                .withEmail(prospect.getEmail())
+                .withPhone(prospect.getPhone())
+                .withTags(prospect.getTags().stream().map(JpaTag::fromTag).collect(Collectors.toSet()))
+                .build();
+    }
 }

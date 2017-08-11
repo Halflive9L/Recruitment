@@ -61,7 +61,7 @@ public class JpaApplicant {
     @ManyToMany(targetEntity = JpaTag.class, fetch = FetchType.LAZY)
     @JoinTable(name = "applicant_tag",
             joinColumns = @JoinColumn(name = "applicant_id", referencedColumnName = "applicantId"),
-            inverseJoinColumns = @JoinColumn(name = "tag_id", referencedColumnName = "tagId"))
+            inverseJoinColumns = @JoinColumn(name = "tag_id", referencedColumnName = "tagId", updatable = false))
     private Set<JpaTag> tags;
     @OneToMany(mappedBy = "applicant")
     private Set<JpaAttachment> attachments;
