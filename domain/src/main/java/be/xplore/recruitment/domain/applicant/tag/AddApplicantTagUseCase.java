@@ -50,7 +50,7 @@ public class AddApplicantTagUseCase implements AddApplicantTag {
             applicantRepository.addTagToApplicant(applicantId, tag);
             return new AddTagResponseModel(tag.getTagName(), false);
         } catch (EntityAlreadyHasTagException e) {
-            return new AddTagResponseModel(tag.getTagName(), true);
+            return new AddTagResponseModel(e.getMessage(), true);
         }
     }
 }
