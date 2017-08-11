@@ -1,15 +1,22 @@
 package be.xplore.recruitment.persistence.prospect;
 
 import be.xplore.recruitment.domain.prospect.Prospect;
+import be.xplore.recruitment.persistence.tag.JpaTag;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @author Lander
@@ -48,6 +55,14 @@ public class JpaProspect {
     @Column
     private String phone;
 
+    @ManyToMany(targetEntity = JpaTag.class, fetch = FetchType.LAZY)
+    @JoinTable(name = "prospect_tag",
+            joinColumns = @JoinColumn(name = "prospect_id", referencedColumnName = "prospectId", updatable = false,
+            insertable = false),
+            inverseJoinColumns = @JoinColumn(name = "tag_id", referencedColumnName = "tagId", updatable = false,
+            insertable = false))
+    private Set<JpaTag> tags;
+
     public JpaProspect() {
     }
 
@@ -58,6 +73,7 @@ public class JpaProspect {
                 .withProspectId(this.getProspectId())
                 .withEmail(this.getEmail())
                 .withPhone(this.getPhone())
+                .withTags(this.getTags().stream().map(JpaTag::toTag).collect(Collectors.toSet()))
                 .build();
     }
 
@@ -100,5 +116,23 @@ public class JpaProspect {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public Set<JpaTag> getTags() {
+        return tags;
+    }
+
+    public void setTags(Set<JpaTag> tags) {
+        this.tags = tags;
+    }
+    static JpaProspect fromProspect(Prospect prospect) {
+        return JpaProspectBuilder.aJpaProspect()
+                .withProspectId(prospect.getProspectId())
+                .withFirstName(prospect.getFirstName())
+                .withLastName(prospect.getLastName())
+                .withEmail(prospect.getEmail())
+                .withPhone(prospect.getPhone())
+                .withTags(prospect.getTags().stream().map(JpaTag::fromTag).collect(Collectors.toSet()))
+                .build();
     }
 }

@@ -22,11 +22,11 @@ public class RemindParticipantsUseCase implements RemindParticipants {
     }
 
     private String getApplicantMessage(Interview interview) {
-        return String.format("applicant message");
+        return "applicant message";
     }
 
     private String getInterviewerMessage(Interview interview) {
-        return String.format("interviewer message");
+        return "interviewer message";
     }
 
     private void sendReminders(Interview interview) {

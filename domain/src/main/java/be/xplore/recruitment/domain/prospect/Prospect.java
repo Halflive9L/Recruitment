@@ -2,8 +2,10 @@ package be.xplore.recruitment.domain.prospect;
 
 import be.xplore.recruitment.domain.exception.InvalidEmailException;
 import be.xplore.recruitment.domain.exception.InvalidPhoneException;
+import be.xplore.recruitment.domain.tag.Tag;
 
 import java.util.Objects;
+import java.util.Set;
 
 import static be.xplore.recruitment.domain.util.Validator.isNullOrEmpty;
 import static be.xplore.recruitment.domain.util.Validator.isValidEmail;
@@ -20,6 +22,7 @@ public class Prospect {
     private String lastName;
     private String email;
     private String phone;
+    private Set<Tag> tags;
 
     public Prospect() {
     }
@@ -75,6 +78,14 @@ public class Prospect {
 
     public void setProspectId(long prospectId) {
         this.prospectId = prospectId;
+    }
+
+    public Set<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(Set<Tag> tags) {
+        this.tags = tags;
     }
 
     @Override

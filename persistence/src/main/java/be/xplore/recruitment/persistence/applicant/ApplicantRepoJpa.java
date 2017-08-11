@@ -3,9 +3,12 @@ package be.xplore.recruitment.persistence.applicant;
 import be.xplore.recruitment.domain.applicant.Applicant;
 import be.xplore.recruitment.domain.applicant.ApplicantRepository;
 import be.xplore.recruitment.domain.attachment.Attachment;
+import be.xplore.recruitment.domain.exception.EntityAlreadyHasTagException;
 import be.xplore.recruitment.domain.exception.NotFoundException;
+import be.xplore.recruitment.domain.tag.Tag;
 import be.xplore.recruitment.persistence.attachment.FileManager;
 import be.xplore.recruitment.persistence.attachment.JpaAttachment;
+import be.xplore.recruitment.persistence.tag.JpaTag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -73,11 +76,21 @@ public class ApplicantRepoJpa implements ApplicantRepository {
     @Override
     public Optional<Applicant> updateApplicant(Applicant applicant) {
         JpaApplicant jpaApplicant = JpaApplicant.fromApplicant(applicant);
+        return getOptionalApplicant(applicant, jpaApplicant);
+    }
+
+    private Optional<Applicant> getOptionalApplicant(Applicant applicant, JpaApplicant jpaApplicant) {
         try {
+            copyTags(applicant.getApplicantId(), jpaApplicant);
             return Optional.of(entityManager.merge(jpaApplicant).toApplicant());
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException | NoResultException e) {
             return Optional.empty();
         }
+    }
+
+    private void copyTags(long copyFromId, JpaApplicant copyTo) throws NoResultException {
+        JpaApplicant original = findJpaApplicantById(copyFromId);
+        copyTo.setTags(original.getTags());
     }
 
     @Override
@@ -138,7 +151,26 @@ public class ApplicantRepoJpa implements ApplicantRepository {
         return jpaApplicant.getAttachments();
     }
 
-    private JpaApplicant applicantToJpaApplicant(Applicant applicant) {
-        return null;
+    @Override
+    public Tag addTagToApplicant(long applicantId, Tag tag) throws EntityAlreadyHasTagException {
+        JpaApplicant applicant = findJpaApplicantById(applicantId);
+        throwExceptionIfApplicantHasTag(applicant, tag);
+        entityManager.merge(applicant);
+        return tag;
+    }
+
+    private void throwExceptionIfApplicantHasTag(JpaApplicant applicant, Tag tag) throws EntityAlreadyHasTagException {
+        if (!applicant.getTags().add(new JpaTag(tag.getTagId(), tag.getTagName()))) {
+            throw new EntityAlreadyHasTagException(Applicant.class, tag);
+        }
+    }
+
+    @Override
+    public Set<Tag> addAllTagsToApplicant(long applicantId, Set<Tag> tags)
+            throws NoResultException {
+        JpaApplicant applicant = findJpaApplicantById(applicantId);
+        applicant.getTags().addAll(tags.stream().map(JpaTag::fromTag).collect(Collectors.toSet()));
+        entityManager.merge(applicant);
+        return tags;
     }
 }

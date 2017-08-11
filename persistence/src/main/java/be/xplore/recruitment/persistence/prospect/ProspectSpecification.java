@@ -8,7 +8,7 @@ import org.springframework.util.StringUtils;
  * @author Stijn Schack
  * @since 7/20/2017
  */
-public class ProspectSpecification {
+class ProspectSpecification {
 
 
     private JpaProspect prospect;

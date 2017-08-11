@@ -81,7 +81,7 @@ public class ApplicantTest extends TestBase {
                 };
         List<JsonApplicant> applicants =
                 restTemplate.exchange("/api/v1/applicant?firstName=stijn", HttpMethod.GET,
-                        null, typeReference).getBody();
+                                      null, typeReference).getBody();
         assertThat(applicants).hasSize(2);
         assertThat(applicants.get(0).getFirstName()).isEqualTo(applicants.get(1).getFirstName())
                 .isEqualToIgnoringCase("stijn");

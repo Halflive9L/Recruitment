@@ -1,10 +1,12 @@
 package be.xplore.recruitment.domain.prospect;
 
 import be.xplore.recruitment.domain.exception.NotFoundException;
+import be.xplore.recruitment.domain.tag.Tag;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static be.xplore.recruitment.domain.util.Validator.isNullOrEmpty;
 
@@ -79,6 +81,16 @@ class MockProspectRepo implements ProspectRepository {
             }
         }
         return Optional.empty();
+    }
+
+    @Override
+    public Tag addTagToProspect(long prospectId, Tag tag) {
+        return null;
+    }
+
+    @Override
+    public Set<Tag> addAllTagsToProspect(long prospectId, Set<Tag> tags) {
+        return null;
     }
 
     private String firstName(Prospect prospect, int i) {

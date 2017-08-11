@@ -1,15 +1,19 @@
 package be.xplore.recruitment.persistence.prospect;
 
 
+import be.xplore.recruitment.domain.exception.EntityAlreadyHasTagException;
 import be.xplore.recruitment.domain.exception.NotFoundException;
 import be.xplore.recruitment.domain.prospect.Prospect;
 import be.xplore.recruitment.domain.prospect.ProspectRepository;
+import be.xplore.recruitment.domain.tag.Tag;
+import be.xplore.recruitment.persistence.tag.JpaTag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -17,6 +21,7 @@ import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static be.xplore.recruitment.persistence.prospect.JpaProspect.QUERY_FIND_ALL;
@@ -49,8 +54,11 @@ public class ProspectRepoJpa implements ProspectRepository {
 
     @Override
     public Optional<Prospect> findProspectById(long prospectId) {
-        JpaProspect jpaProspect = findJpaProspectById(prospectId);
-        return Optional.ofNullable(jpaProspect.toProspect());
+        try {
+            return Optional.of(findJpaProspectById(prospectId).toProspect());
+        } catch (NoResultException e) {
+            return Optional.empty();
+        }
     }
 
     private JpaProspect findJpaProspectById(long prospectId) {
@@ -93,17 +101,22 @@ public class ProspectRepoJpa implements ProspectRepository {
 
     @Override
     public Optional<Prospect> updateProspect(Prospect prospect) {
-        JpaProspect jpaProspect = prospectToJpaProspect(prospect);
-        prospect = tryMergeProspect(jpaProspect);
-        return Optional.ofNullable(prospect);
+        JpaProspect jpaProspect = JpaProspect.fromProspect(prospect);
+        return getOptionalProspect(prospect, jpaProspect);
     }
 
-    private Prospect tryMergeProspect(JpaProspect jpaProspect) {
+    private Optional<Prospect> getOptionalProspect(Prospect prospect, JpaProspect jpaProspect) {
         try {
-            return entityManager.merge(jpaProspect).toProspect();
-        } catch (IllegalArgumentException e) {
-            return null;
+            copyTags(prospect.getProspectId(), jpaProspect);
+            return Optional.of(entityManager.merge(jpaProspect).toProspect());
+        } catch (IllegalArgumentException | NoResultException e) {
+            return Optional.empty();
         }
+    }
+
+    private void copyTags(long copyFromId, JpaProspect copyTo) throws NoResultException {
+        JpaProspect original = findJpaProspectById(copyFromId);
+        copyTo.setTags(original.getTags());
     }
 
     @Override
@@ -115,6 +128,29 @@ public class ProspectRepoJpa implements ProspectRepository {
         return Optional.ofNullable(prospectList.get(0).toProspect());
     }
 
+    @Override
+    public Tag addTagToProspect(long prospectId, Tag tag) throws EntityAlreadyHasTagException {
+        JpaProspect prospect = findJpaProspectById(prospectId);
+        throwExceptionIfProspectHasTag(prospect, tag);
+        entityManager.merge(prospect);
+        return tag;
+    }
+
+    private void throwExceptionIfProspectHasTag(JpaProspect prospect, Tag tag) throws EntityAlreadyHasTagException {
+        if (!prospect.getTags().add(new JpaTag(tag.getTagId(), tag.getTagName()))) {
+            throw new EntityAlreadyHasTagException(Prospect.class, tag);
+        }
+    }
+
+    @Override
+    public Set<Tag> addAllTagsToProspect(long prospectId, Set<Tag> tags)
+            throws NoResultException {
+        JpaProspect prospect = findJpaProspectById(prospectId);
+        prospect.getTags().addAll(tags.stream().map(JpaTag::fromTag).collect(Collectors.toSet()));
+        entityManager.merge(prospect);
+        return tags;
+    }
+
     private JpaProspect prospectToJpaProspect(Prospect prospect) {
         return JpaProspectBuilder.aJpaProspect()
                 .withProspectId(prospect.getProspectId())
@@ -122,6 +158,7 @@ public class ProspectRepoJpa implements ProspectRepository {
                 .withLastName(prospect.getLastName())
                 .withEmail(prospect.getEmail())
                 .withPhone(prospect.getPhone())
+                .withTags(prospect.getTags().stream().map(JpaTag::fromTag).collect(Collectors.toSet()))
                 .build();
     }
 }

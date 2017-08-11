@@ -1,6 +1,7 @@
 package be.xplore.recruitment.web.applicant;
 
 import be.xplore.recruitment.domain.applicant.ApplicantResponseModel;
+import be.xplore.recruitment.domain.tag.Tag;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -9,6 +10,8 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.springframework.boot.jackson.JsonComponent;
 
 import java.time.LocalDate;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @JsonComponent
 public class JsonApplicant {
@@ -20,12 +23,13 @@ public class JsonApplicant {
     private String education;
     private String email;
     private String phone;
+    private Set<String> tags;
 
     @JsonCreator
     public JsonApplicant() {
     }
 
-    public static JsonApplicant asJsonApplicant(ApplicantResponseModel a) {
+    static JsonApplicant asJsonApplicant(ApplicantResponseModel a) {
         return JsonApplicantBuilder.aJsonApplicant()
                 .withFirstName(a.getFirstName())
                 .withLastName(a.getLastName())
@@ -35,6 +39,7 @@ public class JsonApplicant {
                 .withEmail(a.getEmail())
                 .withPhone(a.getPhone())
                 .withApplicantId(a.getApplicantId())
+                .withTags(a.getTags().stream().map(Tag::getTagName).collect(Collectors.toSet()))
                 .build();
     }
 
@@ -119,6 +124,16 @@ public class JsonApplicant {
     @JsonProperty
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    @JsonProperty
+    public void setTags(Set<String> tags) {
+        this.tags = tags;
+    }
+
+    @JsonProperty
+    public Set<String> getTags() {
+        return tags;
     }
 
     boolean isEmpty() {

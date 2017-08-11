@@ -1,5 +1,7 @@
 package be.xplore.recruitment.domain.interview;
 
+import be.xplore.recruitment.domain.interviewer.Interviewer;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,7 +26,7 @@ public class InterviewResponseModel {
                 .withCreatedTime(interview.getCreatedTime())
                 .withInterviewId(interview.getInterviewId())
                 .withInterviewerIds(interview.getInterviewers().stream()
-                        .map(i -> i.getInterviewerId())
+                        .map(Interviewer::getInterviewerId)
                         .collect(Collectors.toList()))
                 .withCancelled(interview.isCancelled())
                 .withLocation(interview.getLocation())

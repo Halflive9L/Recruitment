@@ -33,7 +33,7 @@ public class InterviewerRepoJpa implements InterviewerRepository {
     public List<Interviewer> findAll() {
         List<JpaInterviewer> result = entityManager.createQuery(FIND_ALL_QUERY, JpaInterviewer.class).getResultList();
         return result.stream()
-                .map(e -> e.toInterviewer())
+                .map(JpaInterviewer::toInterviewer)
                 .collect(Collectors.toList());
     }
 

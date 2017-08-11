@@ -2,15 +2,22 @@ package be.xplore.recruitment.domain.applicant;
 
 import be.xplore.recruitment.domain.attachment.Attachment;
 import be.xplore.recruitment.domain.exception.NotFoundException;
+import be.xplore.recruitment.domain.tag.Tag;
 
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static be.xplore.recruitment.domain.util.Validator.isNullOrEmpty;
 
+/**
+ * @author Stijn Schack
+ * @since 7/27/2017
+ */
+@SuppressWarnings("checkstyle:filelength")
 public class MockApplicantRepo implements ApplicantRepository {
     List<Applicant> mockApplicants = new ArrayList<>();
     List<Attachment> mockAttachments = new ArrayList<>(1);
@@ -162,5 +169,15 @@ public class MockApplicantRepo implements ApplicantRepository {
     @Override
     public List<Attachment> findAllAttachmentsForApplicant(long applicantId) {
         return mockAttachments;
+    }
+
+    @Override
+    public Tag addTagToApplicant(long applicantId, Tag tag) {
+        return null;
+    }
+
+    @Override
+    public Set<Tag> addAllTagsToApplicant(long applicantId, Set<Tag> tags) {
+        return null;
     }
 }

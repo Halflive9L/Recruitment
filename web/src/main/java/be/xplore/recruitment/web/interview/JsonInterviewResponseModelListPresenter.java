@@ -16,7 +16,7 @@ public class JsonInterviewResponseModelListPresenter implements Consumer<List<In
         List<JsonInterview> interviews = interviewResponseModels.stream()
                 .map(JsonInterview::asJsonInterview)
                 .collect(Collectors.toList());
-        this.responseEntity = new ResponseEntity<List<JsonInterview>>(interviews, HttpStatus.OK);
+        this.responseEntity = new ResponseEntity<>(interviews, HttpStatus.OK);
     }
 
     public ResponseEntity<List<JsonInterview>> getResponseEntity() {

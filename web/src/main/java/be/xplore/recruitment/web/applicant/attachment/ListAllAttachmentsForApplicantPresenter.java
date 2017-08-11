@@ -5,7 +5,6 @@ import be.xplore.recruitment.web.attachment.JsonAttachment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;

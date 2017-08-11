@@ -2,18 +2,28 @@ package be.xplore.recruitment.persistence.applicant;
 
 import be.xplore.recruitment.domain.applicant.Applicant;
 import be.xplore.recruitment.persistence.attachment.JpaAttachment;
+import be.xplore.recruitment.persistence.tag.JpaTag;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.time.LocalDate;
 import java.util.Set;
+import java.util.stream.Collectors;
+
+/**
+ * Created by Lander on 26/07/2017.
+ */
 
 @SuppressWarnings("JpaDataSourceORMInspection")
 @Entity
@@ -48,6 +58,11 @@ public class JpaApplicant {
     private String email;
     @Column
     private String phone;
+    @ManyToMany(targetEntity = JpaTag.class, fetch = FetchType.LAZY)
+    @JoinTable(name = "applicant_tag",
+            joinColumns = @JoinColumn(name = "applicant_id", referencedColumnName = "applicantId"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id", referencedColumnName = "tagId"))
+    private Set<JpaTag> tags;
     @OneToMany(mappedBy = "applicant")
     private Set<JpaAttachment> attachments;
 
@@ -64,6 +79,7 @@ public class JpaApplicant {
                 .withDateOfBirth(this.getDateOfBirth())
                 .withEmail(this.getEmail())
                 .withPhone(this.getPhone())
+                .withTags(this.getTags().stream().map(JpaTag::toTag).collect(Collectors.toSet()))
                 .build();
     }
 
@@ -135,7 +151,15 @@ public class JpaApplicant {
         return attachments;
     }
 
-    public static JpaApplicant fromApplicant(Applicant applicant) {
+    public void setTags(Set<JpaTag> tags) {
+        this.tags = tags;
+    }
+
+    public Set<JpaTag> getTags() {
+        return tags;
+    }
+
+    static JpaApplicant fromApplicant(Applicant applicant) {
         return JpaApplicantBuilder.aJpaApplicant()
                 .withApplicantId(applicant.getApplicantId())
                 .withFirstName(applicant.getFirstName())
@@ -145,6 +169,7 @@ public class JpaApplicant {
                 .withDateOfBirth(applicant.getDateOfBirth())
                 .withAddress(applicant.getAddress())
                 .withEducation(applicant.getEducation())
+                .withTags(applicant.getTags().stream().map(JpaTag::fromTag).collect(Collectors.toSet()))
                 .build();
     }
 }

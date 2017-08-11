@@ -5,6 +5,7 @@ import be.xplore.recruitment.domain.exception.InvalidPhoneException;
 import be.xplore.recruitment.domain.exception.NotFoundException;
 
 import javax.inject.Named;
+import java.util.Collections;
 import java.util.function.Consumer;
 
 /**
@@ -36,6 +37,7 @@ public class UpdateProspectUseCase implements UpdateProspect {
                 .withLastName(request.lastName)
                 .withEmail(request.email)
                 .withPhone(request.phone)
+                .withTags(Collections.emptySet())
                 .build();
     }
 }

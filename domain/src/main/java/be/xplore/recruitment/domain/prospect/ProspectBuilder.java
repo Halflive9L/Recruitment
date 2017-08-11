@@ -1,11 +1,16 @@
 package be.xplore.recruitment.domain.prospect;
 
+import be.xplore.recruitment.domain.tag.Tag;
+
+import java.util.Set;
+
 public final class ProspectBuilder {
     private long prospectId;
     private String firstName;
     private String lastName;
     private String email;
     private String phone;
+    private Set<Tag> tags;
 
     private ProspectBuilder() {
     }
@@ -39,6 +44,11 @@ public final class ProspectBuilder {
         return this;
     }
 
+    public ProspectBuilder withTags(Set<Tag> tags) {
+        this.tags = tags;
+        return this;
+    }
+
     public Prospect build() {
         Prospect prospect = new Prospect();
         prospect.setFirstName(firstName);
@@ -46,6 +56,7 @@ public final class ProspectBuilder {
         prospect.setEmail(email);
         prospect.setPhone(phone);
         prospect.setProspectId(prospectId);
+        prospect.setTags(tags);
         return prospect;
     }
 }
