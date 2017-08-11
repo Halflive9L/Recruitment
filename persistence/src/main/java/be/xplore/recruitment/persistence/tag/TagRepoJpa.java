@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import java.util.List;
@@ -32,16 +31,8 @@ public class TagRepoJpa implements TagRepository {
     @Override
     public Tag createTag(String tagName) throws TagAlreadyExistsException {
         JpaTag jpaTag = new JpaTag(tagName);
-        tryCreateTag(jpaTag);
+        entityManager.persist(jpaTag);
         return jpaTag.toTag();
-    }
-
-    private void tryCreateTag(JpaTag jpaTag) throws TagAlreadyExistsException {
-        try {
-            entityManager.persist(jpaTag);
-        } catch (EntityExistsException e) {
-            throw new TagAlreadyExistsException(jpaTag.toTag(), e);
-        }
     }
 
     @Override

@@ -33,14 +33,14 @@ public class AddProspectTagUseCase implements AddProspectTag {
         acceptValidResponse(request, response);
     }
 
-    private Tag getTagFromRepo(String tagName) {
-        return tagRepository.findTagByName(tagName)
-                .orElse(tagRepository.createTag(tagName));
-    }
-
     private void acceptValidResponse(AddTagToEntityRequest request, Consumer<AddTagResponseModel> response) {
         Tag tag = getTagFromRepo(request.getTagName());
         tag = prospectRepository.addTagToProspect(request.getEntityId(), tag);
         response.accept(new AddTagResponseModel(tag.getTagName()));
+    }
+
+    private Tag getTagFromRepo(String tagName) {
+        return tagRepository.findTagByName(tagName)
+                .orElseGet(() -> tagRepository.createTag(tagName));
     }
 }

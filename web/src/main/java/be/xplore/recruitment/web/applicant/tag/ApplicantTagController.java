@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 8/10/2017
  */
 @RestController
-@RequestMapping("/api/v1/applicant/tag")
+@RequestMapping("/api/v1/applicant/{applicantId}/tag")
 public class ApplicantTagController {
 
     private final AddApplicantTag addApplicantTag;
@@ -25,7 +25,7 @@ public class ApplicantTagController {
         this.addApplicantTag = addApplicantTag;
     }
 
-    @RequestMapping(value = "/{applicantId}", method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<String> addTagToApplicant(@PathVariable("applicantId") long applicantId,
                                                     @RequestBody String tag) {
         AddTagToEntityRequest request = new AddTagToEntityRequest(applicantId, tag);

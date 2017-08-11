@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 8/10/2017
  */
 @RestController
-@RequestMapping("/api/v1/prospect/tag")
+@RequestMapping("/api/v1/prospect/{prospectId}/tag")
 public class ProspectTagController {
 
     private final AddProspectTag addProspectTag;
@@ -25,9 +25,9 @@ public class ProspectTagController {
         this.addProspectTag = addProspectTag;
     }
 
-    @RequestMapping(value = "/{prospectId}", method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<String> addTagToProspect(@PathVariable("prospectId") long prospectId,
-                                                    @RequestBody String tag) {
+                                                   @RequestBody String tag) {
         AddTagToEntityRequest request = new AddTagToEntityRequest(prospectId, tag);
         AddProspectTagPresenter presenter = new AddProspectTagPresenter();
         addProspectTag.addProspectTag(request, presenter);
