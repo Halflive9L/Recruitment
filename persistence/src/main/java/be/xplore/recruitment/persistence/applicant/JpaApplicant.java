@@ -19,6 +19,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.time.LocalDate;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Created by Lander on 26/07/2017.
@@ -78,6 +79,7 @@ public class JpaApplicant {
                 .withDateOfBirth(this.getDateOfBirth())
                 .withEmail(this.getEmail())
                 .withPhone(this.getPhone())
+                .withTags(this.getTags().stream().map(JpaTag::toTag).collect(Collectors.toSet()))
                 .build();
     }
 
@@ -167,6 +169,7 @@ public class JpaApplicant {
                 .withDateOfBirth(applicant.getDateOfBirth())
                 .withAddress(applicant.getAddress())
                 .withEducation(applicant.getEducation())
+                .withTags(applicant.getTags().stream().map(JpaTag::fromTag).collect(Collectors.toSet()))
                 .build();
     }
 }

@@ -6,15 +6,18 @@ package be.xplore.recruitment.domain.tag;
  */
 public class AddTagResponseModel {
     private String tagName;
+    private boolean redundantTag;
 
-    public AddTagResponseModel() {
-    }
-
-    public AddTagResponseModel(String tagName) {
+    public AddTagResponseModel(String tagName, boolean redundantTag) {
         this.tagName = tagName;
+        this.redundantTag = redundantTag;
     }
 
     public String getTagName() {
         return tagName;
+    }
+
+    public boolean isRedundantTag() {
+        return redundantTag;
     }
 }

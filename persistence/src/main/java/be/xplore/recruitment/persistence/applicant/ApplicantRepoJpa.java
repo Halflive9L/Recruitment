@@ -3,6 +3,7 @@ package be.xplore.recruitment.persistence.applicant;
 import be.xplore.recruitment.domain.applicant.Applicant;
 import be.xplore.recruitment.domain.applicant.ApplicantRepository;
 import be.xplore.recruitment.domain.attachment.Attachment;
+import be.xplore.recruitment.domain.exception.EntityAlreadyHasTagException;
 import be.xplore.recruitment.domain.exception.NotFoundException;
 import be.xplore.recruitment.domain.tag.Tag;
 import be.xplore.recruitment.persistence.attachment.FileManager;
@@ -141,10 +142,16 @@ public class ApplicantRepoJpa implements ApplicantRepository {
     }
 
     @Override
-    public Tag addTagToApplicant(long applicantId, Tag tag) {
+    public Tag addTagToApplicant(long applicantId, Tag tag) throws EntityAlreadyHasTagException {
         JpaApplicant applicant = findJpaApplicantById(applicantId);
-        applicant.getTags().add(new JpaTag(tag.getTagId(), tag.getTagName()));
+        throwExceptionIfApplicantHasTag(applicant, tag);
         entityManager.merge(applicant);
         return tag;
+    }
+
+    private void throwExceptionIfApplicantHasTag(JpaApplicant applicant, Tag tag) throws EntityAlreadyHasTagException {
+        if (!applicant.getTags().add(new JpaTag(tag.getTagId(), tag.getTagName()))) {
+            throw new EntityAlreadyHasTagException(Applicant.class, tag);
+        }
     }
 }

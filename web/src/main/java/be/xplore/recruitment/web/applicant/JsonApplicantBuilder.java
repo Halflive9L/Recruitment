@@ -1,6 +1,7 @@
 package be.xplore.recruitment.web.applicant;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 public final class JsonApplicantBuilder {
     private long applicantId;
@@ -11,6 +12,7 @@ public final class JsonApplicantBuilder {
     private String education;
     private String email;
     private String phone;
+    private Set<String> tags;
 
     private JsonApplicantBuilder() {
     }
@@ -54,8 +56,13 @@ public final class JsonApplicantBuilder {
         return this;
     }
 
-    public JsonApplicantBuilder withPhone(String phone) {
+    JsonApplicantBuilder withPhone(String phone) {
         this.phone = phone;
+        return this;
+    }
+
+    JsonApplicantBuilder withTags(Set<String> tags) {
+        this.tags = tags;
         return this;
     }
 
@@ -69,6 +76,7 @@ public final class JsonApplicantBuilder {
         jsonApplicant.setEducation(education);
         jsonApplicant.setEmail(email);
         jsonApplicant.setPhone(phone);
+        jsonApplicant.setTags(tags);
         return jsonApplicant;
     }
 }

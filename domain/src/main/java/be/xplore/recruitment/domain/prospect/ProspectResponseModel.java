@@ -1,5 +1,9 @@
 package be.xplore.recruitment.domain.prospect;
 
+import be.xplore.recruitment.domain.tag.Tag;
+
+import java.util.Set;
+
 /**
  * @author Lander
  * @since 31/07/2017
@@ -11,6 +15,7 @@ public class ProspectResponseModel {
     private String lastName;
     private String email;
     private String phone;
+    private Set<Tag> tags;
 
     ProspectResponseModel(Prospect prospect) {
         this.prospectId = prospect.getProspectId();
@@ -18,7 +23,7 @@ public class ProspectResponseModel {
         this.lastName = prospect.getLastName();
         this.email = prospect.getEmail();
         this.phone = prospect.getPhone();
-
+        this.tags = prospect.getTags();
     }
 
 
@@ -75,14 +80,11 @@ public class ProspectResponseModel {
         this.phone = phone;
     }
 
-    @Override
-    public String toString() {
-        return "ProspectResponseModel{" +
-                "prospectId=" + prospectId +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", phone='" + phone + '\'' +
-                '}';
+    public Set<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(Set<Tag> tags) {
+        this.tags = tags;
     }
 }

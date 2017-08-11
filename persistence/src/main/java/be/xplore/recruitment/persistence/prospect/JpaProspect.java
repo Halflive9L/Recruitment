@@ -16,6 +16,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @author Lander
@@ -70,6 +71,7 @@ public class JpaProspect {
                 .withProspectId(this.getProspectId())
                 .withEmail(this.getEmail())
                 .withPhone(this.getPhone())
+                .withTags(this.getTags().stream().map(JpaTag::toTag).collect(Collectors.toSet()))
                 .build();
     }
 
@@ -116,5 +118,9 @@ public class JpaProspect {
 
     public Set<JpaTag> getTags() {
         return tags;
+    }
+
+    public void setTags(Set<JpaTag> tags) {
+        this.tags = tags;
     }
 }

@@ -1,6 +1,6 @@
 package be.xplore.recruitment.domain.tag;
 
-import be.xplore.recruitment.domain.exception.TagAlreadyExistsException;
+import be.xplore.recruitment.domain.exception.EntityAlreadyHasTagException;
 
 import java.util.Optional;
 import java.util.Set;
@@ -10,7 +10,7 @@ import java.util.Set;
  * @since 8/10/2017
  */
 public interface TagRepository {
-    Tag createTag(String tagName) throws TagAlreadyExistsException;
+    Tag createTag(String tagName) throws EntityAlreadyHasTagException;
 
     Optional<Tag> findTagById(long tagId);
 

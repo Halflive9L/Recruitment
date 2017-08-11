@@ -66,7 +66,35 @@ public class JpaTag {
         this.tagName = tagName;
     }
 
-    Tag toTag() {
+    public Tag toTag() {
         return new Tag(this.tagId, this.tagName);
+    }
+
+    public static JpaTag fromTag(Tag tag) {
+        return new JpaTag(tag.getTagId(), tag.getTagName());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        JpaTag jpaTag = (JpaTag) o;
+
+        if (tagId != jpaTag.tagId) {
+            return false;
+        }
+        return tagName.equals(jpaTag.tagName);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (int) (tagId ^ (tagId >>> 32));
+        result = 31 * result + tagName.hashCode();
+        return result;
     }
 }

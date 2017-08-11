@@ -1,6 +1,9 @@
 package be.xplore.recruitment.persistence.applicant;
 
+import be.xplore.recruitment.persistence.tag.JpaTag;
+
 import java.time.LocalDate;
+import java.util.Set;
 
 public final class JpaApplicantBuilder {
     private long applicantId;
@@ -11,6 +14,7 @@ public final class JpaApplicantBuilder {
     private String education;
     private String email;
     private String phone;
+    private Set<JpaTag> tags;
 
     private JpaApplicantBuilder() {
     }
@@ -59,6 +63,11 @@ public final class JpaApplicantBuilder {
         return this;
     }
 
+    public JpaApplicantBuilder withTags(Set<JpaTag> tags) {
+        this.tags = tags;
+        return this;
+    }
+
     public JpaApplicant build() {
         JpaApplicant jpaApplicant = new JpaApplicant();
         jpaApplicant.setApplicantId(applicantId);
@@ -69,6 +78,7 @@ public final class JpaApplicantBuilder {
         jpaApplicant.setEducation(education);
         jpaApplicant.setEmail(email);
         jpaApplicant.setPhone(phone);
+        jpaApplicant.setTags(tags);
         return jpaApplicant;
     }
 }

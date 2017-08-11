@@ -1,5 +1,6 @@
 package be.xplore.recruitment.domain.prospect;
 
+import be.xplore.recruitment.domain.exception.EntityAlreadyHasTagException;
 import be.xplore.recruitment.domain.tag.Tag;
 
 import java.util.List;
@@ -22,5 +23,5 @@ public interface ProspectRepository {
 
     Optional<Prospect> updateProspect(Prospect prospect);
 
-    Tag addTagToProspect(long prospectId, Tag tag);
+    Tag addTagToProspect(long prospectId, Tag tag) throws EntityAlreadyHasTagException;
 }

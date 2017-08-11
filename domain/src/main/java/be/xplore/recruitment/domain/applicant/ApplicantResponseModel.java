@@ -1,7 +1,10 @@
 package be.xplore.recruitment.domain.applicant;
 
 
+import be.xplore.recruitment.domain.tag.Tag;
+
 import java.time.LocalDate;
+import java.util.Set;
 
 /**
  * @author Stijn Schack
@@ -16,6 +19,7 @@ public class ApplicantResponseModel {
     private String education;
     private String email;
     private String phone;
+    private Set<Tag> tags;
 
     ApplicantResponseModel(Applicant applicant) {
         this.applicantId = applicant.getApplicantId();
@@ -26,6 +30,7 @@ public class ApplicantResponseModel {
         this.education = applicant.getEducation();
         this.email = applicant.getEmail();
         this.phone = applicant.getPhone();
+        this.tags = applicant.getTags();
     }
 
     public boolean isEmpty() {
@@ -105,5 +110,13 @@ public class ApplicantResponseModel {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public Set<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(Set<Tag> tags) {
+        this.tags = tags;
     }
 }

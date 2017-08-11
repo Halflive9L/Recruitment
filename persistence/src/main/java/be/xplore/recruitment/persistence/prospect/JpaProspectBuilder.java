@@ -1,11 +1,16 @@
 package be.xplore.recruitment.persistence.prospect;
 
+import be.xplore.recruitment.persistence.tag.JpaTag;
+
+import java.util.Set;
+
 public final class JpaProspectBuilder {
     private long prospectId;
     private String firstName;
     private String lastName;
     private String email;
     private String phone;
+    private Set<JpaTag> tags;
 
     private JpaProspectBuilder() {
     }
@@ -39,6 +44,11 @@ public final class JpaProspectBuilder {
         return this;
     }
 
+    JpaProspectBuilder withTags(Set<JpaTag> tags) {
+        this.tags = tags;
+        return this;
+    }
+
     public JpaProspect build() {
         JpaProspect jpaProspect = new JpaProspect();
         jpaProspect.setProspectId(prospectId);
@@ -46,6 +56,7 @@ public final class JpaProspectBuilder {
         jpaProspect.setLastName(lastName);
         jpaProspect.setEmail(email);
         jpaProspect.setPhone(phone);
+        jpaProspect.setTags(tags);
         return jpaProspect;
     }
 }

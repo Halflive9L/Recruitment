@@ -1,11 +1,14 @@
 package be.xplore.recruitment.web.prospect;
 
+import java.util.Set;
+
 public final class JsonProspectBuilder {
     private long prospectId;
     private String firstName;
     private String lastName;
     private String email;
     private String phone;
+    private Set<String> tags;
 
     private JsonProspectBuilder() {
     }
@@ -39,6 +42,11 @@ public final class JsonProspectBuilder {
         return this;
     }
 
+    public JsonProspectBuilder withTags(Set<String> tags) {
+        this.tags = tags;
+        return this;
+    }
+
     public JsonProspect build() {
         JsonProspect jsonProspect = new JsonProspect();
         jsonProspect.setProspectId(prospectId);
@@ -46,6 +54,7 @@ public final class JsonProspectBuilder {
         jsonProspect.setLastName(lastName);
         jsonProspect.setEmail(email);
         jsonProspect.setPhone(phone);
+        jsonProspect.setTags(tags);
         return jsonProspect;
     }
 }

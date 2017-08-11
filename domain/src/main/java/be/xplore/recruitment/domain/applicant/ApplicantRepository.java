@@ -1,6 +1,7 @@
 package be.xplore.recruitment.domain.applicant;
 
 import be.xplore.recruitment.domain.attachment.Attachment;
+import be.xplore.recruitment.domain.exception.EntityAlreadyHasTagException;
 import be.xplore.recruitment.domain.exception.NotFoundException;
 import be.xplore.recruitment.domain.tag.Tag;
 
@@ -29,5 +30,5 @@ public interface ApplicantRepository {
 
     List<Attachment> findAllAttachmentsForApplicant(long applicantId);
 
-    Tag addTagToApplicant(long applicantId, Tag tag);
+    Tag addTagToApplicant(long applicantId, Tag tag) throws EntityAlreadyHasTagException;
 }

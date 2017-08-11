@@ -3,10 +3,12 @@ package be.xplore.recruitment.domain.applicant;
 import be.xplore.recruitment.domain.exception.InvalidDateException;
 import be.xplore.recruitment.domain.exception.InvalidEmailException;
 import be.xplore.recruitment.domain.exception.InvalidPhoneException;
+import be.xplore.recruitment.domain.tag.Tag;
 import be.xplore.recruitment.domain.util.Validator;
 
 import java.time.LocalDate;
 import java.util.Objects;
+import java.util.Set;
 
 public class Applicant {
     private long applicantId;
@@ -17,6 +19,7 @@ public class Applicant {
     private String education;
     private String email;
     private String phone;
+    private Set<Tag> tags;
 
     public Applicant() {
     }
@@ -110,6 +113,14 @@ public class Applicant {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public Set<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(Set<Tag> tags) {
+        this.tags = tags;
     }
 
     @Override

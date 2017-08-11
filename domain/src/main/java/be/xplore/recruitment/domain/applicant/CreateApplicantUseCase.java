@@ -5,6 +5,7 @@ import be.xplore.recruitment.domain.exception.InvalidEmailException;
 import be.xplore.recruitment.domain.exception.InvalidPhoneException;
 
 import javax.inject.Named;
+import java.util.Collections;
 import java.util.function.Consumer;
 
 /**
@@ -36,6 +37,7 @@ import java.util.function.Consumer;
                 .withEducation(request.education)
                 .withEmail(request.email)
                 .withPhone(request.phone)
+                .withTags(Collections.emptySet())
                 .build();
     }
 }

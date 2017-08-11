@@ -15,9 +15,18 @@ public class AddApplicantTagPresenter implements Consumer<AddTagResponseModel> {
 
     @Override
     public void accept(AddTagResponseModel responseModel) {
-        String body = responseModel.getTagName();
-        responseEntity = body != null ? new ResponseEntity<>(body, HttpStatus.OK)
-                : new ResponseEntity<>("Applicant does not exist", HttpStatus.NOT_FOUND);
+        if (responseModel.getTagName() == null) {
+            responseEntity = new ResponseEntity<>("Applicant does not exist", HttpStatus.NOT_FOUND);
+        } else {
+            responseEntity = responseEntityCheckRedundancy(responseModel);
+        }
+    }
+
+    private ResponseEntity<String> responseEntityCheckRedundancy(AddTagResponseModel responseModel) {
+        if (responseModel.isRedundantTag()) {
+            return new ResponseEntity<>(responseModel.getTagName(), HttpStatus.CONFLICT);
+        }
+        return new ResponseEntity<>(responseModel.getTagName(), HttpStatus.OK);
     }
 
     public ResponseEntity<String> getResponseEntity() {

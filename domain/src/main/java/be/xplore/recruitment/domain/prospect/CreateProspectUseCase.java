@@ -4,6 +4,7 @@ import be.xplore.recruitment.domain.exception.InvalidEmailException;
 import be.xplore.recruitment.domain.exception.InvalidPhoneException;
 
 import javax.inject.Named;
+import java.util.Collections;
 import java.util.function.Consumer;
 
 /**
@@ -34,6 +35,7 @@ public class CreateProspectUseCase implements CreateProspect {
                 .withEmail(request.email)
                 .withPhone(request.phone)
                 .withProspectId(request.prospectId)
+                .withTags(Collections.emptySet())
                 .build();
     }
 }

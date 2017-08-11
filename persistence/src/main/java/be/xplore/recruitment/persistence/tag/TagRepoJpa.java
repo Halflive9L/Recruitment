@@ -1,6 +1,5 @@
 package be.xplore.recruitment.persistence.tag;
 
-import be.xplore.recruitment.domain.exception.TagAlreadyExistsException;
 import be.xplore.recruitment.domain.tag.Tag;
 import be.xplore.recruitment.domain.tag.TagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +28,7 @@ public class TagRepoJpa implements TagRepository {
     }
 
     @Override
-    public Tag createTag(String tagName) throws TagAlreadyExistsException {
+    public Tag createTag(String tagName) {
         JpaTag jpaTag = new JpaTag(tagName);
         entityManager.persist(jpaTag);
         return jpaTag.toTag();
