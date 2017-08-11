@@ -29,12 +29,15 @@ public class DownloadAttachmentTest {
     public void testDownloadAttachment() {
         DownloadAttachmentRequest request = new DownloadAttachmentRequest(1,
                 Mockito.mock(OutputStream.class));
-
         useCase.downloadAttachment(request, responseModel -> {
-            assertNotNull(responseModel.getAttachment());
-            assertEquals(1, responseModel.getAttachment().getAttachmentId());
-            assertEquals("testFile", responseModel.getAttachment().getAttachmentName());
+            checkResponse(responseModel);
         });
+    }
+
+    private void checkResponse(DownloadAttachmentResponseModel responseModel) {
+        assertNotNull(responseModel.getAttachment());
+        assertEquals(1, responseModel.getAttachment().getAttachmentId());
+        assertEquals("testFile", responseModel.getAttachment().getAttachmentName());
     }
 
     @Test(expected = NotFoundException.class)

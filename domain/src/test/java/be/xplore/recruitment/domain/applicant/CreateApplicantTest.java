@@ -30,8 +30,7 @@ public class CreateApplicantTest {
     @Test
     public void testCreateApplicant() {
         Applicant expected = Applicant.builder().withFirstName("stijn").build();
-        CreateApplicantRequest request = getRequestFromApplicant(expected);
-        useCase.createApplicant(request, applicantId -> {
+        useCase.createApplicant(getRequestFromApplicant(expected), applicantId -> {
         });
         assertEquals(3, mockRepo.size());
         assertEquals(expected, mockRepo.get(2));
@@ -90,14 +89,14 @@ public class CreateApplicantTest {
 
     @Ignore
     private CreateApplicantRequest getRequestFromApplicant(Applicant applicant) {
-        CreateApplicantRequest request = new CreateApplicantRequest();
-        request.address = applicant.getAddress();
-        request.dateOfBirth = applicant.getDateOfBirth();
-        request.education = applicant.getEducation();
-        request.firstName = applicant.getFirstName();
-        request.lastName = applicant.getLastName();
-        request.email = applicant.getEmail();
-        request.phone = applicant.getPhone();
-        return request;
+        return CreateApplicantRequestBuilder.aCreateApplicantRequest()
+                .withAddress(applicant.getAddress())
+                .withDateOfBirth(applicant.getDateOfBirth())
+                .withEducation(applicant.getEducation())
+                .withFirstName(applicant.getFirstName())
+                .withLastName(applicant.getLastName())
+                .withEmail(applicant.getEmail())
+                .withPhone(applicant.getPhone())
+                .build();
     }
 }

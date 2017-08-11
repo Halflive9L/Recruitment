@@ -52,11 +52,15 @@ public class UpdateProspectTest {
     @Ignore
     private UpdateProspectRequest getRequestFromProspect(Prospect prospect) {
         UpdateProspectRequest request = new UpdateProspectRequest(prospect.getProspectId());
+        setRequestProperties(prospect, request);
+        return request;
+    }
+
+    private void setRequestProperties(Prospect prospect, UpdateProspectRequest request) {
         request.firstName = prospect.getFirstName();
         request.lastName = prospect.getLastName();
         request.email = prospect.getEmail();
         request.phone = prospect.getPhone();
-        return request;
     }
 
     @Ignore

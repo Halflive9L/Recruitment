@@ -30,26 +30,31 @@ public class AddAttachmentTest {
 
     @Test
     public void testAddAttachment() throws IOException {
-        Attachment attachment = new Attachment();
-        attachment.setInputStream(Mockito.mock(InputStream.class));
-        attachment.setAttachmentName("testPdf.pdf");
-        AddApplicantAttachmentRequest request = new AddApplicantAttachmentRequest();
-        request.setAttachment(attachment);
-        request.setApplicantId(1);
+        Attachment attachment = createMockAttachment();
+        AddApplicantAttachmentRequest request = createAddRequest(attachment, 1);
         useCase.addAttachment(request, addApplicantAttachmentResponseModel -> {
-
         });
         assertEquals(3, mockRepo.mockAttachments.size());
     }
 
-    @Test(expected = NotFoundException.class)
-    public void testAddAttachmentForNonExistingApplicant() throws IOException {
+    private AddApplicantAttachmentRequest createAddRequest(Attachment attachment, int applicantId) {
+        AddApplicantAttachmentRequest request = new AddApplicantAttachmentRequest();
+        request.setAttachment(attachment);
+        request.setApplicantId(applicantId);
+        return request;
+    }
+
+    private Attachment createMockAttachment() {
         Attachment attachment = new Attachment();
         attachment.setInputStream(Mockito.mock(InputStream.class));
         attachment.setAttachmentName("testPdf.pdf");
-        AddApplicantAttachmentRequest request = new AddApplicantAttachmentRequest();
-        request.setAttachment(attachment);
-        request.setApplicantId(500);
+        return attachment;
+    }
+
+    @Test(expected = NotFoundException.class)
+    public void testAddAttachmentForNonExistingApplicant() throws IOException {
+        Attachment attachment = createMockAttachment();
+        AddApplicantAttachmentRequest request = createAddRequest(attachment, 500);
         useCase.addAttachment(request, addApplicantAttachmentResponseModel -> {
 
         });

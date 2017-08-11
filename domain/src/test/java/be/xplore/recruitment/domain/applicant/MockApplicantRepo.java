@@ -120,15 +120,19 @@ public class MockApplicantRepo implements ApplicantRepository {
 
     @Override
     public Optional<Applicant> deleteApplicant(long id) {
-        Applicant deletedApplicant;
+        Optional<Applicant> deleted = Optional.empty();
         for (int i = 0; i < mockApplicants.size(); i++) {
             if (mockApplicants.get(i).getApplicantId() == id) {
-                deletedApplicant = mockApplicants.get(i);
-                mockApplicants.remove(i);
-                return Optional.ofNullable(deletedApplicant);
+                deleted = deleteApplicant(i);
             }
         }
-        return Optional.empty();
+        return deleted;
+    }
+
+    private Optional<Applicant> deleteApplicant(int i) {
+        Applicant deletedApplicant = mockApplicants.get(i);
+        mockApplicants.remove(i);
+        return Optional.ofNullable(deletedApplicant);
     }
 
     @Override
@@ -136,18 +140,30 @@ public class MockApplicantRepo implements ApplicantRepository {
         if (applicantId == 500) {
             throw new NotFoundException();
         }
-        if (mockAttachments.size() > 1) {
-            attachment.setAttachmentId(mockAttachments.get(mockAttachments.size() - 1).getAttachmentId() + 1);
-        } else {
-            attachment.setAttachmentId(1);
-        }
+        addAttachment(attachment);
+        return Optional.of(attachment);
+    }
+
+    private void addAttachment(Attachment attachment) {
+        setAttachmentId(attachment);
         mockAttachments.add(attachment);
+        tryClose(attachment);
+    }
+
+    private void tryClose(Attachment attachment) {
         try {
             attachment.getInputStream().close();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return Optional.of(attachment);
+    }
+
+    private void setAttachmentId(Attachment attachment) {
+        if (mockAttachments.size() > 1) {
+            attachment.setAttachmentId(mockAttachments.get(mockAttachments.size() - 1).getAttachmentId() + 1);
+        } else {
+            attachment.setAttachmentId(1);
+        }
     }
 
     @Override

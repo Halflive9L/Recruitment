@@ -29,8 +29,7 @@ public class CreateProspectTest {
     @Test
     public void testCreateProspect() {
         Prospect expected = Prospect.builder().withFirstName("stijn").build();
-        CreateProspectRequest request = getRequestFromProspect(expected);
-        useCase.createProspect(request, prospectId -> {
+        useCase.createProspect(getRequestFromProspect(expected), prospectId -> {
         });
         assertEquals(3, mockRepo.size());
         assertEquals(expected, mockRepo.get(2));
@@ -39,7 +38,7 @@ public class CreateProspectTest {
     @Test(expected = InvalidPhoneException.class)
     public void testCreateProspectWithInvalidPhone() {
         CreateProspectRequest request = getRequestFromProspect(Prospect.builder()
-                                                                         .withPhone("a").build());
+                .withPhone("a").build());
         useCase.createProspect(request, prospectId -> {
         });
     }
@@ -47,7 +46,7 @@ public class CreateProspectTest {
     @Test
     public void testCreateProspectWithValidPhone() {
         CreateProspectRequest request = getRequestFromProspect(Prospect.builder()
-                                                                         .withPhone("+32424589632").build());
+                .withPhone("+32424589632").build());
         useCase.createProspect(request, id -> {
         });
     }
@@ -55,7 +54,7 @@ public class CreateProspectTest {
     @Test(expected = InvalidEmailException.class)
     public void testCreateProspectWithInvalidEmail() {
         CreateProspectRequest request = getRequestFromProspect(Prospect.builder()
-                                                                         .withEmail("a").build());
+                .withEmail("a").build());
         useCase.createProspect(request, prospect -> {
 
         });
@@ -64,7 +63,7 @@ public class CreateProspectTest {
     @Test
     public void testCreateProspectWithValidEmail() {
         CreateProspectRequest request = getRequestFromProspect(Prospect.builder()
-                                                                         .withEmail("test.name@example.com").build());
+                .withEmail("test.name@example.com").build());
         useCase.createProspect(request, id -> {
         });
     }
@@ -72,11 +71,11 @@ public class CreateProspectTest {
     @SuppressWarnings("Duplicates")
     @Ignore
     private CreateProspectRequest getRequestFromProspect(Prospect prospect) {
-        CreateProspectRequest request = new CreateProspectRequest();
-        request.firstName = prospect.getFirstName();
-        request.lastName = prospect.getLastName();
-        request.email = prospect.getEmail();
-        request.phone = prospect.getPhone();
-        return request;
+        return CreateProspectRequestBuilder.aCreateProspectRequest()
+                .withFirstName(prospect.getFirstName())
+                .withLastName(prospect.getLastName())
+                .withEmail(prospect.getEmail())
+                .withPhone(prospect.getPhone())
+                .build();
     }
 }

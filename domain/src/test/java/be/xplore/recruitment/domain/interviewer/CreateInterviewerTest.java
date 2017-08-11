@@ -27,11 +27,21 @@ public class CreateInterviewerTest {
                 .withEmail("mb@email.com")
                 .build();
         useCase.createInterviewer(request, response -> {
-            assertThat(response.getFirstName(), is("Maarten"));
-            assertThat(response.getLastName(), is("Billiet"));
-            Interviewer interviewer = repository.findById(response.getInterviewerId()).get();
-            assertThat(interviewer.getFirstName(), is("Maarten"));
-            assertThat(interviewer.getLastName(), is("Billiet"));
+            assertResponseMatchesRequest(response, request);
+            assertInterviewerPersisted(response, request);
         });
+    }
+
+    private void assertInterviewerPersisted(InterviewerResponseModel response, CreateInterviewerRequest request) {
+        Interviewer interviewer = repository.findById(response.getInterviewerId()).get();
+        assertThat(interviewer.getFirstName(), is(request.getFirstName()));
+        assertThat(interviewer.getLastName(), is(request.getLastName()));
+        assertThat(interviewer.getEmail(), is(request.getEmail()));
+    }
+
+    private void assertResponseMatchesRequest(InterviewerResponseModel response, CreateInterviewerRequest request) {
+        assertThat(response.getFirstName(), is(request.getFirstName()));
+        assertThat(response.getLastName(), is(request.getLastName()));
+        assertThat(response.getEmail(), is(request.getEmail()));
     }
 }

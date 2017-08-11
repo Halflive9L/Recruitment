@@ -34,26 +34,31 @@ public class AddAttachmentTest {
 
     @Test
     public void testAddAttachment() throws IOException {
-        Attachment attachment = new Attachment();
-        attachment.setInputStream(Mockito.mock(InputStream.class));
-        attachment.setAttachmentName("testPdf.pdf");
-        AddInterviewAttachmentRequest request = new AddInterviewAttachmentRequest();
-        request.setAttachment(attachment);
-        request.setInterviewId(1);
-        useCase.addAttachment(request, responseModel -> {
+        Attachment attachment = createMockAttachment();
+        useCase.addAttachment(createAddRequest(attachment, 1), responseModel -> {
             assertEquals("testPdf.pdf", responseModel.getAttachment().getAttachmentName());
         });
         assertEquals(1, mockRepo.getAttachments().size());
     }
 
-    @Test(expected = CouldNotAddAttachmentException.class)
-    public void testAddAttachmentForNonExistingInterview() throws IOException {
+    private AddInterviewAttachmentRequest createAddRequest(Attachment attachment, int interviewId) {
+        AddInterviewAttachmentRequest request = new AddInterviewAttachmentRequest();
+        request.setAttachment(attachment);
+        request.setInterviewId(interviewId);
+        return request;
+    }
+
+    private Attachment createMockAttachment() {
         Attachment attachment = new Attachment();
         attachment.setInputStream(Mockito.mock(InputStream.class));
         attachment.setAttachmentName("testPdf.pdf");
-        AddInterviewAttachmentRequest request = new AddInterviewAttachmentRequest();
-        request.setAttachment(attachment);
-        request.setInterviewId(500);
+        return attachment;
+    }
+
+    @Test(expected = CouldNotAddAttachmentException.class)
+    public void testAddAttachmentForNonExistingInterview() throws IOException {
+        Attachment attachment = createMockAttachment();
+        AddInterviewAttachmentRequest request = createAddRequest(attachment, 500);
         useCase.addAttachment(request, addInterviewAttachmentResponseModel -> {
 
         });
