@@ -60,8 +60,7 @@ public class ApplicantControllerTest {
     @Test
     public void testReadApplicantsByParam() {
         ArgumentCaptor<ReadApplicantRequest> captor = ArgumentCaptor.forClass(ReadApplicantRequest.class);
-        JsonApplicant applicant = new JsonApplicant();
-        applicant.setFirstName("Danny");
+        JsonApplicant applicant = JsonApplicantBuilder.aJsonApplicant().withFirstName("Danny").build();
         controller.getApplicantByParam(applicant);
         verify(readApplicant).readApplicantsByParam(captor.capture(), any());
     }

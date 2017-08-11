@@ -29,6 +29,11 @@ public class ScheduleInterviewTest {
 
     @Before
     public void setup() {
+        setupRepos();
+        useCase = new ScheduleInterviewUseCase(mockInterviewerRepo, mockInterviewRepo, mockApplicantRepo);
+    }
+
+    private void setupRepos() {
         mockInterviewerRepo = new MockInterviewerRepo(Arrays.asList(
                 new Interviewer(1, "Casandra", "Kleinveld"),
                 new Interviewer(2, "Tyra", "van Vlymen"),
@@ -44,7 +49,6 @@ public class ScheduleInterviewTest {
                 .withPhone("+320496123123")
                 .build());
         mockInterviewRepo = new MockInterviewRepo();
-        useCase = new ScheduleInterviewUseCase(mockInterviewerRepo, mockInterviewRepo, mockApplicantRepo);
     }
 
     @Test
@@ -54,13 +58,20 @@ public class ScheduleInterviewTest {
                 .withInterviewerIds(Arrays.asList(1L, 3L))
                 .build();
         useCase.scheduleInterview(request, response -> {
-            assertThat(response.getApplicantId(), is(1L));
-            assertThat(response.getInterviewId(), is(1L));
-            assertThat(response.getInterviewerIds(), is(Arrays.asList(1L, 3L)));
-
-            Interview interview = mockInterviewRepo.findById(1).get();
-            assertThat(interview.getInterviewId(), is(1L));
-            assertThat(interview.getApplicant().getApplicantId(), is(1L));
+            verifyResponse(response);
+            verifyInterview();
         });
+    }
+
+    private void verifyInterview() {
+        Interview interview = mockInterviewRepo.findById(1).get();
+        assertThat(interview.getInterviewId(), is(1L));
+        assertThat(interview.getApplicant().getApplicantId(), is(1L));
+    }
+
+    private void verifyResponse(InterviewResponseModel response) {
+        assertThat(response.getApplicantId(), is(1L));
+        assertThat(response.getInterviewId(), is(1L));
+        assertThat(response.getInterviewerIds(), is(Arrays.asList(1L, 3L)));
     }
 }

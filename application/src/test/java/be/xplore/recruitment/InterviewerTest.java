@@ -59,14 +59,21 @@ public class InterviewerTest extends TestBase {
                 .withLastName("Billiet")
                 .withEmail("mb@email.com")
                 .build());
+        verifyInterviewer(getPostResult("/api/v1/interviewer/create", body));
+    }
+
+    private void verifyInterviewer(JsonInterviewer result) {
+        assertThat(result.getFirstName()).isEqualTo("Maarten");
+        assertThat(result.getLastName()).isEqualTo("Billiet");
+    }
+
+    private JsonInterviewer getPostResult(String url, JSONObject body) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<String> httpEntity = new HttpEntity<>(body.toJSONString(), headers);
-        JsonInterviewer result = restTemplate
-                .postForEntity("/api/v1/interviewer/create", httpEntity, JsonInterviewer.class)
+        return restTemplate
+                .postForEntity(url, httpEntity, JsonInterviewer.class)
                 .getBody();
-        assertThat(result.getFirstName()).isEqualTo("Maarten");
-        assertThat(result.getLastName()).isEqualTo("Billiet");
     }
 
     @Test
@@ -80,14 +87,8 @@ public class InterviewerTest extends TestBase {
                 .withLastName("Billiet")
                 .withEmail("mb@email.com")
                 .build());
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<String> httpEntity = new HttpEntity<>(body.toJSONString(), headers);
-        JsonInterviewer result = restTemplate
-                .postForEntity("/api/v1/interviewer/update", httpEntity, JsonInterviewer.class)
-                .getBody();
-        assertThat(result.getFirstName()).isEqualTo("Maarten");
-        assertThat(result.getLastName()).isEqualTo("Billiet");
+        JsonInterviewer result = getPostResult("/api/v1/interviewer/update", body);
+        verifyInterviewer(result);
     }
 
     @Test
@@ -101,11 +102,11 @@ public class InterviewerTest extends TestBase {
     }
 
     private JSONObject createInterviewerJsonObject(Interviewer interviewer) {
-        JSONObject obj = new JSONObject();
-        obj.put("interviewerId", Long.toString(interviewer.getInterviewerId()));
-        obj.put("firstName", interviewer.getFirstName());
-        obj.put("lastName", interviewer.getLastName());
-        obj.put("email", interviewer.getEmail());
-        return obj;
+        return JSONObjectBuilder.aJsonObject()
+                .with("interviewerId", Long.toString(interviewer.getInterviewerId()))
+                .with("firstName", interviewer.getFirstName())
+                .with("lastName", interviewer.getLastName())
+                .with("email", interviewer.getEmail())
+                .build();
     }
 }

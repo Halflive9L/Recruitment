@@ -9,6 +9,9 @@ import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import javax.mail.Message;
+import javax.mail.MessagingException;
+
+import java.io.IOException;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -40,8 +43,11 @@ public class SMTPReminderTest {
                 .withEmail("maarten@email.mock")
                 .build();
         sender.remindApplicant(applicant, "test message");
-        MockMailbox mb = MockMailbox.get("maarten@email.mock");
-        Message[] messages = mb.getInbox().getMessages();
+        validateResult();
+    }
+
+    private void validateResult() throws IOException, MessagingException {
+        Message[] messages = MockMailbox.get("maarten@email.mock").getInbox().getMessages();
         assertThat(messages.length, is(1));
         Message message = messages[0];
         assertThat(message.getContent().toString().contains("test message"), is (true));
