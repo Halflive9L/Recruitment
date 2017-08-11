@@ -1,8 +1,10 @@
 package be.xplore.recruitment.web.applicant.tag;
 
 import be.xplore.recruitment.domain.applicant.tag.AddApplicantTag;
+import be.xplore.recruitment.domain.applicant.tag.RemoveApplicantTag;
 import be.xplore.recruitment.domain.tag.AddAllTagsToEntityRequest;
 import be.xplore.recruitment.domain.tag.AddTagToEntityRequest;
+import be.xplore.recruitment.domain.tag.RemoveTagFromEntityRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,10 +26,13 @@ import static org.hibernate.validator.internal.util.CollectionHelper.asSet;
 public class ApplicantTagController {
 
     private final AddApplicantTag addApplicantTag;
+    private final RemoveApplicantTag removeApplicantTag;
 
     @Autowired
-    public ApplicantTagController(AddApplicantTag addApplicantTag) {
+    public ApplicantTagController(AddApplicantTag addApplicantTag,
+                                  RemoveApplicantTag removeApplicantTag) {
         this.addApplicantTag = addApplicantTag;
+        this.removeApplicantTag = removeApplicantTag;
     }
 
     @RequestMapping(method = RequestMethod.POST)
@@ -45,6 +50,15 @@ public class ApplicantTagController {
         AddAllTagsToEntityRequest request = new AddAllTagsToEntityRequest(applicantId, asSet(tags));
         AddAllApplicantTagsPresenter presenter = new AddAllApplicantTagsPresenter();
         addApplicantTag.addAllTags(request, presenter);
+        return presenter.getResponseEntity();
+    }
+
+    @RequestMapping(method = RequestMethod.DELETE)
+    public ResponseEntity<String> removeTagFromApplicant(@PathVariable("applicantId") long applicantId,
+                                                         @RequestBody String tag) {
+        RemoveTagFromEntityRequest request = new RemoveTagFromEntityRequest(applicantId, tag);
+        RemoveTagFromApplicantPresenter presenter = new RemoveTagFromApplicantPresenter();
+        removeApplicantTag.removeApplicantTag(request, presenter);
         return presenter.getResponseEntity();
     }
 }

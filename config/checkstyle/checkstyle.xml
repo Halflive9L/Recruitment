@@ -18,7 +18,7 @@
     </module>
     <module name="FileLength">
         <property name="fileExtensions" value="java"/>
-        <property name="max" value="185"/>
+        <property name="max" value="190"/>
     </module>
 
     <module name="TreeWalker">

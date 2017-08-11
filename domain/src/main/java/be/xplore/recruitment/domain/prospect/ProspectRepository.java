@@ -27,4 +27,6 @@ public interface ProspectRepository {
     Tag addTagToProspect(long prospectId, Tag tag) throws EntityAlreadyHasTagException;
 
     Set<Tag> addAllTagsToProspect(long prospectId, Set<Tag> tags);
+
+    Optional<Tag> removeTagFromProspect(long prospectId, Tag tag);
 }
