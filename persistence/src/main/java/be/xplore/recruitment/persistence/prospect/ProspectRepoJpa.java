@@ -151,6 +151,14 @@ public class ProspectRepoJpa implements ProspectRepository {
         return tags;
     }
 
+    @Override
+    public Optional<Tag> removeTagFromProspect(long prospectId, Tag tag) {
+        JpaProspect prospect = entityManager.find(JpaProspect.class, prospectId);
+        tag = prospect.getTags().remove(JpaTag.fromTag(tag)) ? tag : null;
+        entityManager.merge(prospect);
+        return Optional.ofNullable(tag);
+    }
+
     private JpaProspect prospectToJpaProspect(Prospect prospect) {
         return JpaProspectBuilder.aJpaProspect()
                 .withProspectId(prospect.getProspectId())

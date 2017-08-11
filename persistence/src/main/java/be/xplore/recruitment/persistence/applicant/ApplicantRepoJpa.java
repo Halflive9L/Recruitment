@@ -173,4 +173,12 @@ public class ApplicantRepoJpa implements ApplicantRepository {
         entityManager.merge(applicant);
         return tags;
     }
+
+    @Override
+    public Optional<Tag> removeTagFromApplicant(long applicantId, Tag tag) {
+        JpaApplicant applicant = entityManager.find(JpaApplicant.class, applicantId);
+        tag = applicant.getTags().remove(JpaTag.fromTag(tag)) ? tag : null;
+        entityManager.merge(applicant);
+        return Optional.ofNullable(tag);
+    }
 }

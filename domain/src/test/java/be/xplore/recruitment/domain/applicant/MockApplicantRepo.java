@@ -180,4 +180,9 @@ public class MockApplicantRepo implements ApplicantRepository {
     public Set<Tag> addAllTagsToApplicant(long applicantId, Set<Tag> tags) {
         return null;
     }
+
+    @Override
+    public Optional<Tag> removeTagFromApplicant(long applicantId, Tag tag) {
+        return null;
+    }
 }

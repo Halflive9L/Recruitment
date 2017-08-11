@@ -93,6 +93,11 @@ class MockProspectRepo implements ProspectRepository {
         return null;
     }
 
+    @Override
+    public Optional<Tag> removeTagFromProspect(long prospectId, Tag tag) {
+        return null;
+    }
+
     private String firstName(Prospect prospect, int i) {
         return isNullOrEmpty(prospect.getFirstName()) ? mockProspects.get(i).getFirstName() : prospect.getFirstName();
     }

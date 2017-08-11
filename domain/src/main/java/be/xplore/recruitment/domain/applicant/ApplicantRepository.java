@@ -34,4 +34,6 @@ public interface ApplicantRepository {
     Tag addTagToApplicant(long applicantId, Tag tag) throws EntityAlreadyHasTagException;
 
     Set<Tag> addAllTagsToApplicant(long applicantId, Set<Tag> tags);
+
+    Optional<Tag> removeTagFromApplicant(long applicantId, Tag tag);
 }
