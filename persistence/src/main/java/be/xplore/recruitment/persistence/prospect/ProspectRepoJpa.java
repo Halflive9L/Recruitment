@@ -21,6 +21,7 @@ import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static be.xplore.recruitment.persistence.prospect.JpaProspect.QUERY_FIND_ALL;
@@ -113,7 +114,7 @@ public class ProspectRepoJpa implements ProspectRepository {
         }
     }
 
-    private void copyTags(long copyFromId, JpaProspect copyTo) throws NoResultException{
+    private void copyTags(long copyFromId, JpaProspect copyTo) throws NoResultException {
         JpaProspect original = findJpaProspectById(copyFromId);
         copyTo.setTags(original.getTags());
     }
@@ -136,10 +137,18 @@ public class ProspectRepoJpa implements ProspectRepository {
     }
 
     private void throwExceptionIfProspectHasTag(JpaProspect prospect, Tag tag) throws EntityAlreadyHasTagException {
-        boolean added = prospect.getTags().add(new JpaTag(tag.getTagId(), tag.getTagName()));
-        if (!added) {
+        if (!prospect.getTags().add(new JpaTag(tag.getTagId(), tag.getTagName()))) {
             throw new EntityAlreadyHasTagException(Prospect.class, tag);
         }
+    }
+
+    @Override
+    public Set<Tag> addAllTagsToProspect(long prospectId, Set<Tag> tags)
+            throws NoResultException {
+        JpaProspect prospect = findJpaProspectById(prospectId);
+        prospect.getTags().addAll(tags.stream().map(JpaTag::fromTag).collect(Collectors.toSet()));
+        entityManager.merge(prospect);
+        return tags;
     }
 
     private JpaProspect prospectToJpaProspect(Prospect prospect) {
