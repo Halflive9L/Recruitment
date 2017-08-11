@@ -76,6 +76,10 @@ public class ApplicantRepoJpa implements ApplicantRepository {
     @Override
     public Optional<Applicant> updateApplicant(Applicant applicant) {
         JpaApplicant jpaApplicant = JpaApplicant.fromApplicant(applicant);
+        return getOptionalApplicant(applicant, jpaApplicant);
+    }
+
+    private Optional<Applicant> getOptionalApplicant(Applicant applicant, JpaApplicant jpaApplicant) {
         try {
             copyTags(applicant.getApplicantId(), jpaApplicant);
             return Optional.of(entityManager.merge(jpaApplicant).toApplicant());

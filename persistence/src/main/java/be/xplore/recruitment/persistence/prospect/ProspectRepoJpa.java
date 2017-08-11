@@ -101,6 +101,10 @@ public class ProspectRepoJpa implements ProspectRepository {
     @Override
     public Optional<Prospect> updateProspect(Prospect prospect) {
         JpaProspect jpaProspect = JpaProspect.fromProspect(prospect);
+        return getOptionalProspect(prospect, jpaProspect);
+    }
+
+    private Optional<Prospect> getOptionalProspect(Prospect prospect, JpaProspect jpaProspect) {
         try {
             copyTags(prospect.getProspectId(), jpaProspect);
             return Optional.of(entityManager.merge(jpaProspect).toProspect());

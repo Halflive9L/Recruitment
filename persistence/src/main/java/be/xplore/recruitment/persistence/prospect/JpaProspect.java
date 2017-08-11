@@ -57,8 +57,10 @@ public class JpaProspect {
 
     @ManyToMany(targetEntity = JpaTag.class, fetch = FetchType.LAZY)
     @JoinTable(name = "prospect_tag",
-            joinColumns = @JoinColumn(name = "prospect_id", referencedColumnName = "prospectId"),
-            inverseJoinColumns = @JoinColumn(name = "tag_id", referencedColumnName = "tagId"))
+            joinColumns = @JoinColumn(name = "prospect_id", referencedColumnName = "prospectId", updatable = false,
+            insertable = false),
+            inverseJoinColumns = @JoinColumn(name = "tag_id", referencedColumnName = "tagId", updatable = false,
+            insertable = false))
     private Set<JpaTag> tags;
 
     public JpaProspect() {
