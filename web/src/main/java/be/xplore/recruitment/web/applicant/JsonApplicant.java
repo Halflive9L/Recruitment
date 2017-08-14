@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.springframework.boot.jackson.JsonComponent;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -127,11 +128,15 @@ public class JsonApplicant {
     }
 
     @JsonProperty
+//    @JsonDeserialize(as=HashSet.class)
+//    @JsonSerialize(as=HashSet.class)
     public void setTags(Set<String> tags) {
         this.tags = tags;
     }
 
-    @JsonProperty
+    @JsonProperty("tags")
+//    @JsonSerialize(as = HashSet.class)
+//    @JsonDeserialize(as = HashSet.class)
     public Set<String> getTags() {
         return tags;
     }
@@ -139,5 +144,20 @@ public class JsonApplicant {
     boolean isEmpty() {
         return firstName == null && lastName == null && dateOfBirth == null && address == null && education == null
                 && email == null && phone == null;
+    }
+
+    @Override
+    public String toString() {
+        return "JsonApplicant{" +
+                "applicantId=" + applicantId +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", dateOfBirth=" + dateOfBirth +
+                ", address='" + address + '\'' +
+                ", education='" + education + '\'' +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                ", tags=" + tags +
+                '}';
     }
 }

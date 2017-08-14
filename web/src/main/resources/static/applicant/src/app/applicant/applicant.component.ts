@@ -4,6 +4,8 @@ import {ApplicantsService} from "./applicants.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {isUndefined} from "util";
 
+declare let $: any;
+
 @Component({
   selector: 'applicant',
   templateUrl: './applicant.component.html',
@@ -20,12 +22,22 @@ export class applicantComponent {
   updateApplicantForm: FormGroup;
   file: FileList;
   applicantFileList: File;
+  tags: String[] = [];
 
   constructor(private _applicant: ApplicantsService,
               private formBuilder: FormBuilder) {
   }
 
   ngOnInit() {
+
+    $(document).ready(function () {
+      $("#InputTags").select2({
+        data: ["Red", "Green", "Blue", "Orange", "White", "Yellow"],
+        tags: true,
+        tokenSeparators: [',', ' ']
+      });
+    });
+
     this.applicantForm = this.formBuilder.group({
       firstName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
       lastName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
@@ -61,6 +73,10 @@ export class applicantComponent {
       });
   };
 
+  setTags() {
+    this.tags = Array.from($("#InputTags").select2("val"), String);
+  }
+
   readAllApplicantFiles(id: number) {
     this._applicant.readApplicantFileList(id).subscribe(
       file => {
@@ -69,8 +85,8 @@ export class applicantComponent {
   }
 
   addApplicantFile() {
-    if(!isUndefined(this.file) && this.file.length > 0)
-    this._applicant.createApplicantFile(this.file, this.currentApplicantId).subscribe( () => this.readAllApplicantFiles(this.currentApplicantId));
+    if (!isUndefined(this.file) && this.file.length > 0)
+      this._applicant.createApplicantFile(this.file, this.currentApplicantId).subscribe(() => this.readAllApplicantFiles(this.currentApplicantId));
   }
 
   onSelectFile(event) {
@@ -91,26 +107,29 @@ export class applicantComponent {
   };
 
   addApplicant(form: FormGroup): void {
+    this.setTags();
     let body = JSON.stringify(form.value);
+    console.log(form.value);
     this._applicant.createApplicant(body)
       .subscribe(iapplicant => {
-          iapplicant.applicantId = (this.highestApplicantId + 1);
+        iapplicant.applicantId = (this.highestApplicantId + 1);
         this.iapplicants.push(iapplicant);
-        if(!isUndefined(this.file) &&  this.file.length > 0) {
-        this._applicant.createApplicantFile(this.file, iapplicant.applicantId).subscribe();
+        if (!isUndefined(this.file) && this.file.length > 0) {
+          this._applicant.createApplicantFile(this.file, iapplicant.applicantId).subscribe();
         }
+        this._applicant.setAllApplicantsTags(iapplicant.applicantId, this.tags).subscribe();
         this.highestApplicantId++;
       });
   };
 
-  downloadApplicantFile(fileId: number) : void {
+  downloadApplicantFile(fileId: number): void {
     this._applicant.downloadApplicantFile(fileId);
   }
 
-  deleteApplicantFile(fileId: number) : void {
+  deleteApplicantFile(fileId: number): void {
     this._applicant.deleteApplicantFile(fileId)
       .subscribe(() => this.readAllApplicantFiles(this.currentApplicantId));
-    };
+  };
 
   updateApplicant(form: FormGroup): void {
     let body = JSON.stringify(form.value);
@@ -121,7 +140,7 @@ export class applicantComponent {
         let array2 = this.iapplicants.slice(index + 1, this.iapplicants.length);
         array1.push(iapplicant);
         this.iapplicants = array1.concat(array2);
-        if(!isUndefined(this.file) && this.file.length > 0) {
+        if (!isUndefined(this.file) && this.file.length > 0) {
           this._applicant.createApplicantFile(this.file, iapplicant.applicantId).subscribe();
         }
       });

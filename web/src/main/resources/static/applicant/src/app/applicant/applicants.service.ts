@@ -64,5 +64,11 @@ export class ApplicantsService {
       .map(res => res.json());
   }
 
+  setAllApplicantsTags(applicantId: number, tags: String[]) {
+    let headers = new Headers({'content-type': 'application/json'});
+    let options = new RequestOptions({headers: headers});
+    return this._http.put("http://localhost:9090/api/v1/applicant/"+ applicantId+"/tag", options)
+      .map(res => res.json());
+  }
 
 }

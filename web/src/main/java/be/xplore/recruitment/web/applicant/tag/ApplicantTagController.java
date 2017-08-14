@@ -7,6 +7,7 @@ import be.xplore.recruitment.domain.tag.AddTagToEntityRequest;
 import be.xplore.recruitment.domain.tag.RemoveTagFromEntityRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +22,7 @@ import static org.hibernate.validator.internal.util.CollectionHelper.asSet;
  * @author Stijn Schack
  * @since 8/10/2017
  */
+@CrossOrigin
 @RestController
 @RequestMapping("/api/v1/applicant/{applicantId}/tag")
 public class ApplicantTagController {
