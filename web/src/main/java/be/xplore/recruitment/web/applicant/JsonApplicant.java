@@ -10,7 +10,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.springframework.boot.jackson.JsonComponent;
 
 import java.time.LocalDate;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -123,20 +122,18 @@ public class JsonApplicant {
     }
 
     @JsonProperty
+
     public void setPhone(String phone) {
         this.phone = phone;
     }
 
     @JsonProperty
-//    @JsonDeserialize(as=HashSet.class)
-//    @JsonSerialize(as=HashSet.class)
     public void setTags(Set<String> tags) {
+        System.out.println("Tags: " + tags);
         this.tags = tags;
     }
 
-    @JsonProperty("tags")
-//    @JsonSerialize(as = HashSet.class)
-//    @JsonDeserialize(as = HashSet.class)
+    @JsonProperty
     public Set<String> getTags() {
         return tags;
     }

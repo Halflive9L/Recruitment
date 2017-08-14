@@ -5,6 +5,9 @@ import be.xplore.recruitment.domain.applicant.tag.RemoveApplicantTag;
 import be.xplore.recruitment.domain.tag.AddAllTagsToEntityRequest;
 import be.xplore.recruitment.domain.tag.AddTagToEntityRequest;
 import be.xplore.recruitment.domain.tag.RemoveTagFromEntityRequest;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jdk.nashorn.internal.ir.debug.JSONWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Set;
 
 import static org.hibernate.validator.internal.util.CollectionHelper.asSet;

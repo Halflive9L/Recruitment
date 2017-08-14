@@ -118,6 +118,7 @@ export class applicantComponent {
           this._applicant.createApplicantFile(this.file, iapplicant.applicantId).subscribe();
         }
         this._applicant.setAllApplicantsTags(iapplicant.applicantId, this.tags).subscribe();
+        console.log(this.tags);
         this.highestApplicantId++;
       });
   };
